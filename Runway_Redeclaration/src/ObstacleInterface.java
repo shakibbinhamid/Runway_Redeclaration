@@ -4,7 +4,7 @@
  * This interface represents any obstacle that will obstruct the runway.
  * 
  * @author Stefan 
- * @Editors Andrew Stefan
+ * @Editors Stefan
  *
  */
 public interface ObstacleInterface {
