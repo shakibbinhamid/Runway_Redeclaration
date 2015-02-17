@@ -10,6 +10,11 @@
 public interface ObstacleInterface {
 	
 	/**
+	 * The name of the object that is obstructing the runway
+	 */
+	String getName();
+	
+	/**
 	 * The point further from the ground (in m).
 	 * 
 	 * This is in reference to the y perspective
@@ -23,15 +28,4 @@ public interface ObstacleInterface {
 	 * This is in reference to the x,z perspective
 	 */
 	int getRadius();
-	
-	/**
-	 * The distance (in m) from the end of the runway with the smallest angle.
-	 */
-	int getDistanceFromLeft();
-	
-	/**
-	 * The distance (in m) from the end of the runway with the largest angle.
-	 */
-	int getDistanceFromRight();
-
 }
