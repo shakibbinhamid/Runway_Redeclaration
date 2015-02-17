@@ -7,7 +7,7 @@ package CoreInterfaces;
  */
 public interface AirportInterface {
 	
-	Plop getAirfields();
+	AirfieldInterface getAirfields();
 	
 	/**
 	 * The name of the airport

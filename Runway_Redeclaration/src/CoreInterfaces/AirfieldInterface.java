@@ -8,20 +8,60 @@ package CoreInterfaces;
 public interface AirfieldInterface {
 	public static final int LEFT_RUNWAY = 5354;
 	public static final int RIGHT_RUNWAY = 74448;
+
+//====[ Inert Distance Values ]==================================
+	/**
+	 * The width or girth of the tarmac runway
+	 */
+	double getRunwayWidth();
 	
 	/**
-	 * The width or girth of the tarmac 
+	 * The length of the tarmac runway (the initial TORA)
 	 */
-	double getWidth();
+	double getRunwayLength();
 	
 	/**
-	 * The length of the tarmac (the initial TORA)
+	 * (150m horiz on diagram)
 	 */
-	double getHeight();
+	double getInitialStopway();
 	
+	/**
+	 * The extra distance either side (behind) the length of the runway 
+	 * that make up longest reach of the cleared and graded Area
+	 * 
+	 * (60m horizontal on the diagram)
+	 */
+	double getClearedLength();
+	
+	
+	/**
+	 * The distance between the start of the runway and the
+	 * long cleared spacer
+	 *
+	 * (300m horiz on the diagram)
+	 */
+	double distanceToLongSpacer();
+	
+	
+	/**
+	 * (75m vertical in diagram)
+	 */
+	double getShortClearedWidthSpacer();
+	
+	/**
+	 * (105m vertical in diagram)
+	 */
+	double getLongClearedWidthSpacer();
+	
+	/**
+	 * (150m vertical in diagram)
+	 */
+	double getFullWidthSpacer();
+//=====================================================	
+
+//====[ Obstacles ]====================================
 	/**
 	 * Returns null if there is no Obstacle or a PositionedObstacle implementation
-	 * @return
 	 */
 	PositionedObstacleInterface getObstacle();
 	
@@ -50,14 +90,15 @@ public interface AirfieldInterface {
 	 *  true or false whether there is an obstacle on the tarmac
 	 */
 	boolean hasObstacle();
+//===============================================================
 	
 	
-	
-	
+//====[ Declared Runways ]=======================================
 	DeclaredRunwayInterface[] getRunways();
 	
 	DeclaredRunwayInterface getLeftStartingRunway();
 	
 	DeclaredRunwayInterface getRightStartingRunway();
-
+//===============================================================
+	
 }
