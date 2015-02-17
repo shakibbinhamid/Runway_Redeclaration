@@ -1,4 +1,4 @@
-package Core;
+package CoreInterfaces;
 
 public interface AirfieldInterface {
 	
