@@ -1,12 +1,22 @@
-
+/**
+ * The Tarmac refers to the area that the plane can take off from 
+ * @author Stefan 
+ * @Editor Stefan
+ *
+ */
 public interface TarmacInterface {
 	public static final int LEFT_RUNWAY = 5354;
 	public static final int RIGHT_RUNWAY = 74448;
 	
 	
-	
+	/**
+	 * The width or girth of the tarmac 
+	 */
 	int getWidth();
 	
+	/**
+	 * The length of the tarmac (the initial TORA)
+	 */
 	int getHeight();
 	
 	ObstacleInterface getObstacle();
@@ -22,8 +32,14 @@ public interface TarmacInterface {
 	 */
 	DeclaredRunwayInterface[] addObstacle(ObstacleInterface obj, int runwayIdentifier, int howFarIn);
 	
+	/** 
+	 * Changes the obstacle that is on the runway to null 
+	 */
 	void removeObstacle();
 	
+	/**
+	 *  true or false whether there is an obstacle on the tarmac
+	 */
 	boolean hasObstacle();
 	
 	
