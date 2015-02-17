@@ -1,5 +1,9 @@
 package Core;
 
+import CoreInterfaces.DeclaredRunwayInterface;
+import CoreInterfaces.ObstacleInterface;
+import CoreInterfaces.PositionedObstacleInterface;
+
 
 /**
  * This implementation of {@link PositionedObstacleInterface} works as a packer

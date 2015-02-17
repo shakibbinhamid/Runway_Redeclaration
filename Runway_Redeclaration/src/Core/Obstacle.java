@@ -1,4 +1,7 @@
 package Core;
+
+import CoreInterfaces.ObstacleInterface;
+
 /**
  * 
  * @author Stefan 
