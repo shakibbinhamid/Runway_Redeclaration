@@ -10,6 +10,6 @@ public interface PositionedObstacle extends ObstacleInterface{
 	
 	DeclaredRunwayInterface getRunway();
 	
-	int distanceFromEnd();
+	double distanceFromEnd();
 	
 }

@@ -12,12 +12,12 @@ public interface TarmacInterface {
 	/**
 	 * The width or girth of the tarmac 
 	 */
-	int getWidth();
+	double getWidth();
 	
 	/**
 	 * The length of the tarmac (the initial TORA)
 	 */
-	int getHeight();
+	double getHeight();
 	
 	ObstacleInterface getObstacle();
 	

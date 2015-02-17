@@ -1,14 +1,14 @@
 
 public interface AirfieldInterface {
 	
-	int getTotalWidth();
+	double getTotalWidth();
 	
-	int getTotalHeight();
+	double getTotalHeight();
 	
 	
-	int getClearedAreaWidth();
+	double getClearedAreaWidth();
 	
-	int getClearedHeight();
+	double getClearedHeight();
 	
 	
 	TarmacInterface getRunwayArea();

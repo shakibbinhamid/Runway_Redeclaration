@@ -19,7 +19,7 @@ public interface ObstacleInterface {
 	 * 
 	 * This is in reference to the y perspective
 	 */
-	int getHeight();
+	double getHeight();
 	
 	/** 
 	 * The farthest point (in m) from the centre of the object.
@@ -27,5 +27,5 @@ public interface ObstacleInterface {
 	 * 
 	 * This is in reference to the x,z perspective
 	 */
-	int getRadius();
+	double getRadius();
 }
