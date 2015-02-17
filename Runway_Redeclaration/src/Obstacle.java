@@ -1,4 +1,9 @@
-
+/**
+ * 
+ * @author Stefan 
+ * @Editor Stefan
+ * @Tester
+ */
 public class Obstacle implements ObstacleInterface {
 	private String name;
 	private int radius, height;
