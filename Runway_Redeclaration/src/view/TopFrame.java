@@ -2,7 +2,6 @@ package view;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
-import java.util.Collection;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -42,7 +41,7 @@ public class TopFrame extends JFrame{
 	}
 	
 	public void init(){
-		this.setJMenuBar(new TopMenu());
+		this.setJMenuBar(new TopMenu(this));
 		
 		topPanel = new JPanel();
 		this.setContentPane(topPanel);
@@ -51,16 +50,12 @@ public class TopFrame extends JFrame{
 		logPanel = new LogPanel(null);
 		topPanel.add(logPanel, BorderLayout.WEST);
 		
-		tabbedPanel = new JTabbedPane(JTabbedPane.TOP);
-		
+		tabbedPanel = new TabbedPanel(null);
+		topPanel.add(tabbedPanel, BorderLayout.CENTER);
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 539, 350);
 		setVisible(true);
-	}
-	
-	private TabPanel[] createTabs(AirportInterface airport){
-		Collection<AirportInterface> allFields = airport.getAirfields();
 	}
 	
 }

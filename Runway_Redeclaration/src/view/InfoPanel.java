@@ -3,38 +3,43 @@ package view;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 
-import javax.swing.JFrame;
+import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 import CoreInterfaces.AirfieldInterface;
 
 public class InfoPanel extends JPanel{
 	
+	private static final String[] runwayColumnNames = {"Parameter","Default", "Redeclared"};
+	private static final String[] obstacleColumnNames = {"Parameter", "Value"};
+	private static final String[] runwayRowNames ={"TORA", "TODA", "ASDA", "LDA"};
+	private static final String[] runwayAdvancedRowNames = {"Displaced Threshold", "RESA", "Angle of Ascent", "Angle of Descent", "Blast Protection"};
+	private static final String[] obstacleRowNames = {"Name", "Height", "Radius"};
+	
+	AirfieldInterface field;
+	
 	JPanel topLabelPanel;
 		JLabel label;
 	JPanel bottomTablePanel;
 		JPanel tablePanel;
-			JTable runwayDataTable;
-			JTable obstacleDataTable;
-			JTable advancedDataTable;
-		
-	public static void main(String[] args) {
-		JFrame test = new JFrame();
-		
-		InfoPanel ip = new InfoPanel(null);
-		ip.init();
-	}
+			JPanel runwayDataTable;
+			JPanel obstacleDataTable;
+			JPanel advancedDataTable;
 	
 	public InfoPanel(AirfieldInterface field){
+		
+		this.field = field;
+		
 		topLabelPanel = new JPanel();
-			label = new JLabel("Label");
+			label = new JLabel(field.getSmallIdentifier());
 		bottomTablePanel = new JPanel();
 			tablePanel = new JPanel();
-			runwayDataTable = new JTable(5, 3);
-			obstacleDataTable = new JTable(3, 2);
-			advancedDataTable = new JTable(6, 2);			
+				runwayDataTable = new TablePanel("Runway Parameters", runwayRowNames , runwayColumnNames);
+				obstacleDataTable = new TablePanel("Obstacle Data", obstacleRowNames , null);
+				advancedDataTable = new TablePanel("Advanced Parameters", runwayAdvancedRowNames, runwayColumnNames);
 	}
 	
 	public void init(){
@@ -49,10 +54,39 @@ public class InfoPanel extends JPanel{
 			bottomTablePanel.add(runwayDataTable);
 			bottomTablePanel.add(obstacleDataTable);
 			bottomTablePanel.add(advancedDataTable);
-		
-		this.setVisible(true);
 	}
 		
-	
-
+	class TablePanel extends JPanel{
+		
+		JTable table;
+		String title;
+		
+		DefaultTableModel tableModel = new DefaultTableModel(){
+			@Override
+			public boolean isCellEditable(int row, int column) {
+			       return false;
+			}
+		};//the actual data holder in the table
+			
+		TablePanel (String panelName, String[] rowNames, String[] columnNames){
+			
+			title = panelName;	
+			table = new JTable(tableModel);
+			
+			for(int i=0; i<columnNames.length; i++){
+				tableModel.addColumn(columnNames[i]);
+			}
+			
+			table.setFocusable(false);
+			table.setRowSelectionAllowed(false);
+			
+			init();
+		}
+		
+		void init(){
+			this.setBorder(BorderFactory.createTitledBorder(title));
+			this.setLayout(new BorderLayout());
+			this.add(table, BorderLayout.CENTER);
+		}
+	}
 }

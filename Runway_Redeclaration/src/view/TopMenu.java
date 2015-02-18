@@ -14,22 +14,25 @@ public class TopMenu extends JMenuBar{
 	 */
 	private static final long serialVersionUID = 1L;
 
-	JMenu file, edit, print, help;
-	JMenu create, load, save;
+	private JMenu file, edit, print, help;
+	private JMenu create, load, save;
 	
-	JMenuItem createAirport, createRunway, createObstacle;
-	JMenuItem loadAirport, loadObstacle;
-	JMenuItem saveAirport, saveObstacle;
+	private JMenuItem createAirport, createRunway, createObstacle;
+	private JMenuItem loadAirport, loadObstacle;
+	private JMenuItem saveAirport, saveObstacle;
 	
-	JMenuItem exit;
-	JMenuItem editRunway, editObstacle;
-	JMenuItem printCalculation;
-	JMenuItem about, contact;
+	private JMenuItem exit;
+	private JMenuItem editRunway, editObstacle;
+	private JMenuItem printCalculation;
+	private JMenuItem about, contact;
 	
-	Icon icreate, iload, isave, iprint, ihelp, iairport, iobstacle, iabout, icontact;
+	private Icon icreate, iload, isave, iprint, ihelp, iairport, iobstacle, iabout, icontact;
 	
-	public TopMenu(){
+	private TopFrame frame; 
+	
+	public TopMenu(TopFrame top){
 		
+		this.frame = top;
 		loadIcons();
 		createFileMenu();
 		createEditMenu();
