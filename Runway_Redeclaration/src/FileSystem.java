@@ -67,7 +67,8 @@ public class FileSystem {
 		return objFiles;
 	}
 
-	public void saveObj(Obstacle o){
-		File objFile = new File(objDir + subfolder + o.getName() + objext + xmlext);
+	public boolean saveObs(Obstacle o){
+		String dir = wd + datDir + objDir + subfolder + o.getName() + objext + xmlext;
+		return XMLSaver.serialise(o, dir);
 	}
 }
