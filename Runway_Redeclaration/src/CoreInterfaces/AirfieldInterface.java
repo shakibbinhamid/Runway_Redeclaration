@@ -16,8 +16,14 @@ public interface AirfieldInterface {
 	
 	/**
 	 * Which one of the parallel runways you are referring to. 
+	 * In the context of the smallest angle.
 	 */
 	char getSideLetter();
+	
+	/**
+	 * Valid 'letter's are 'C', 'L' or 'R'
+	 */
+	void setSideLetter(char letter);
 //===============================================================
 
 //====[ Inert Distance Values ]==================================

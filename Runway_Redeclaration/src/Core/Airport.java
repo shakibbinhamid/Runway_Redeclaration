@@ -2,6 +2,7 @@ package Core;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -9,14 +10,22 @@ import java.util.Set;
 import CoreInterfaces.AirfieldInterface;
 import CoreInterfaces.AirportInterface;
 import CoreInterfaces.Savable;
+import Exceptions.CannotMakeRunwayException;
+import Exceptions.ParrallelRunwayException;
 import Exceptions.UnrecognisedAirfieldIntifierException;
 
 public class Airport implements AirportInterface, Savable {
-	private Map<String, Airfield> airfields;
+	private Map<String, AirfieldInterface> airfields;
 	private String name;
 
+	
+	public Airport(String name) {
+		this.name = name;
+		this.airfields = new HashMap<>();
+	}
+	
 	@Override
-	public Collection<Airfield> getAirfields() {
+	public Collection<AirfieldInterface> getAirfields() {
 		return this.airfields.values();
 	}
 
@@ -39,7 +48,7 @@ public class Airport implements AirportInterface, Savable {
 	}
 
 	@Override
-	public void addNewAirfield(AirfieldInterface newAirfield) {
+	public void addNewAirfield(AirfieldInterface newAirfield) throws ParrallelRunwayException, CannotMakeRunwayException {
 		List<AirfieldInterface> parrallelRunways = new ArrayList<AirfieldInterface>();
 		
 		for(AirfieldInterface runway : getAirfields()){
@@ -49,9 +58,23 @@ public class Airport implements AirportInterface, Savable {
 				parrallelRunways.add(runway);
 			}
 		}
-		
 		if(!parrallelRunways.isEmpty()){
-			//TODO throw
+			if(parrallelRunways.size()>=3) {
+				throw new CannotMakeRunwayException(newAirfield);
+			}
+			throw new ParrallelRunwayException(this, parrallelRunways, newAirfield);
+		}
+		
+		//Otherwise add the runway with an ? as the identifier
+		updateIdentifierList();
+	}
+
+	@Override
+	public void updateIdentifierList() {
+		Collection<AirfieldInterface> airfields = this.getAirfields();
+		this.airfields = new HashMap<>();
+		for(AirfieldInterface airfield : airfields){
+			this.airfields.add()
 		}
 	}
 

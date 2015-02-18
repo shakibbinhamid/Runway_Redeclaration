@@ -5,7 +5,6 @@ import CoreInterfaces.DeclaredRunwayInterface;
 import CoreInterfaces.ObstacleInterface;
 import CoreInterfaces.PositionedObstacleInterface;
 import CoreInterfaces.Savable;
-import Exceptions.NoRunwayException;
 
 public class Airfield implements AirfieldInterface, Savable {
 	private DeclaredRunwayInterface[] runways;
