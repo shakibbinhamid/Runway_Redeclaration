@@ -26,7 +26,7 @@ public class XMLSaver {
 		}
 	}
 	
-	public static Object deserialise(Class classType, File xmlFile){
+	public static Savable deserialise(Class classType, File xmlFile){
 		Serializer serializer = new Persister();
 		try {
 			return serializer.read(classType, xmlFile);
