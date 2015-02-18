@@ -5,6 +5,7 @@ import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;
 
 import CoreInterfaces.ObstacleInterface;
+import CoreInterfaces.Savable;
 
 /**
  * 
@@ -14,7 +15,7 @@ import CoreInterfaces.ObstacleInterface;
  */
 
 @Root
-public class Obstacle implements ObstacleInterface {
+public class Obstacle implements ObstacleInterface, Savable {
 	
 	@Attribute
 	private String name;

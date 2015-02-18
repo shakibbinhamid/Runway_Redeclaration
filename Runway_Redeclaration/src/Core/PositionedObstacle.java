@@ -1,6 +1,5 @@
 package Core;
 
-import CoreInterfaces.DeclaredRunwayInterface;
 import CoreInterfaces.ObstacleInterface;
 import CoreInterfaces.PositionedObstacleInterface;
 
@@ -15,13 +14,18 @@ import CoreInterfaces.PositionedObstacleInterface;
  */
 public class PositionedObstacle implements PositionedObstacleInterface{
 	private ObstacleInterface unpositionedObj;
-	private int distance;
-	private DeclaredRunwayInterface side;
+	private double distance;
+	
+	public PositionedObstacle(ObstacleInterface obj, double howFarInFromLeft){
+		this.unpositionedObj=  obj;
+		this.distance = howFarInFromLeft;
+	}
 	
 	
 	private ObstacleInterface getObst(){
 		return this.unpositionedObj;
 	}
+	
 	@Override
 	public String getName() {
 		return getObst().getName();
@@ -35,15 +39,7 @@ public class PositionedObstacle implements PositionedObstacleInterface{
 		return getObst().getRadius();
 	}
 	@Override
-	public DeclaredRunwayInterface getRunway() {
-		return this.side;
-	}
-	@Override
 	public double distanceFromEnd() {
 		return this.distance;
 	}
-	
-	
-	
-
 }

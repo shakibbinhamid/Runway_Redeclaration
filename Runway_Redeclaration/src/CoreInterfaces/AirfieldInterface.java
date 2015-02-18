@@ -1,13 +1,26 @@
 package CoreInterfaces;
+
+import Exceptions.NoRunwayException;
+
+
 /**
- * The Tarmac refers to the area that the plane can take off from 
+ * //TODO add a docstring
+ *  
  * @author Stefan 
  * @Editor Stefan
  *
  */
 public interface AirfieldInterface {
-	public static final int LEFT_RUNWAY = 5354;
-	public static final int RIGHT_RUNWAY = 74448;
+//====[ Misc Methods ]===========================================
+	String getName();
+	
+	int getSmallestAngleFromNorth();
+	
+	/**
+	 * Which one of the parallel runways you are referring to. 
+	 */
+	char getSideLetter();
+//===============================================================
 
 //====[ Inert Distance Values ]==================================
 	/**
@@ -75,9 +88,10 @@ public interface AirfieldInterface {
 	 * @param obj - The new obstacle on the runway 
 	 * @param runwayIdentifier - The side it is closest to. Either TarmacInterface.LEFT_RUNWAY or TarmacInterface.RIGHT_RUNWAY
 	 * @param howFarIn - How far from the chosen tarmac side 
-	 * @return The two new declared Runways
+	 * 
+	 * @throws NoRunwayException - When there is no declared runway on that side
 	 */
-	DeclaredRunwayInterface[] addObstacle(ObstacleInterface obj, int runwayIdentifier, int howFarIn);
+	void addObstacle(ObstacleInterface obj, String identifier, double howFarIn) throws NoRunwayException;
 	
 	
 	
@@ -96,9 +110,9 @@ public interface AirfieldInterface {
 //====[ Declared Runways ]=======================================
 	DeclaredRunwayInterface[] getRunways();
 	
-	DeclaredRunwayInterface getLeftStartingRunway();
+	DeclaredRunwayInterface getSmallAngledRunway() throws NoRunwayException;
 	
-	DeclaredRunwayInterface getRightStartingRunway();
+	DeclaredRunwayInterface getLargeAngledRunway() throws NoRunwayException;
 //===============================================================
 	
 }

@@ -1,13 +1,23 @@
 package CoreInterfaces;
+
+import java.util.List;
+import java.util.Set;
+
 /**
  * 
  * @author Stefan
- * @Editor 
+ * @Editor Stefan
  *
  */
 public interface AirportInterface {
 	
-	AirfieldInterface getAirfields();
+	List<AirfieldInterface> getAirfields();
+	
+	AirfieldInterface getAirfield(String identifier);
+	
+	void addNewAirfield(AirfieldInterface newAirfield);
+	
+	Set<String> getIdentifiers();
 	
 	/**
 	 * The name of the airport
