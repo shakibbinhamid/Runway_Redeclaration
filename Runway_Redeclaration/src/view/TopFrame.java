@@ -11,6 +11,7 @@ public class TopFrame extends JFrame{
 	}
 	
 	public static void main(String[] args) {
+		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -20,6 +21,10 @@ public class TopFrame extends JFrame{
 				}
 			}
 		});
+	}
+	
+	public void populateTables(){
+		
 	}
 	
 	public void init(){
