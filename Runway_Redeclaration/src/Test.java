@@ -20,6 +20,9 @@ import javax.swing.BoxLayout;
 import java.awt.CardLayout;
 import java.awt.FlowLayout;
 import javax.swing.JCheckBoxMenuItem;
+import javax.swing.border.SoftBevelBorder;
+import javax.swing.border.BevelBorder;
+import java.awt.Color;
 
 public class Test extends JFrame {
 
@@ -117,6 +120,7 @@ public class Test extends JFrame {
 		contentPane.setLayout(new BorderLayout(0, 0));
 		
 		JPanel panel = new JPanel();
+		panel.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		contentPane.add(panel, BorderLayout.WEST);
 		panel.setLayout(new BorderLayout(0, 0));
 		
