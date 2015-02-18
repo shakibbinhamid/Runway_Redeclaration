@@ -1,7 +1,10 @@
 package Core;
 
+import org.simpleframework.xml.Attribute;
+import org.simpleframework.xml.Element;
+import org.simpleframework.xml.Root;
+
 import CoreInterfaces.ObstacleInterface;
-import CoreInterfaces.Savable;
 
 /**
  * 
@@ -9,14 +12,23 @@ import CoreInterfaces.Savable;
  * @Editor Stefan
  * @Tester
  */
-public class Obstacle implements ObstacleInterface, Savable {
+
+@Root
+public class Obstacle implements ObstacleInterface {
+	
+	@Attribute
 	private String name;
+	@Element
 	private double radius, height;
 	
 	public Obstacle(String name, int farthestPoint, int highestPoint){
 		this.name = name;
 		this.radius = farthestPoint;
 		this.height = highestPoint;
+	}
+	
+	public Obstacle(){
+		
 	}
 	
 	@Override
