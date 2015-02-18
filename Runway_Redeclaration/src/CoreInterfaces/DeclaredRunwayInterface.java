@@ -10,6 +10,9 @@ package CoreInterfaces;
  *
  */
 public interface DeclaredRunwayInterface {
+	
+	static final int DEFAULT_ANGLE_OF_ASCENT = 50;
+	static final int DEFAULT_ANGLE_OF_DESCENT = 50;
 
 	/** 
 	 * The direction/side of the runway we are referring to.
@@ -57,6 +60,10 @@ public interface DeclaredRunwayInterface {
 	/**
 	 * LDA = TORA - Displaced Threshold
 	 */
-	double getDLA();
+	double getLDA();
+	
+	int getAngleOfAscent();
+	
+	int getAngleOfDescent();
 	
 }
