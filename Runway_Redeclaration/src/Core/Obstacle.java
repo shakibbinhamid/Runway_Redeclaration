@@ -1,7 +1,16 @@
+package Core;
 
+import CoreInterfaces.ObstacleInterface;
+
+/**
+ * 
+ * @author Stefan 
+ * @Editor Stefan
+ * @Tester
+ */
 public class Obstacle implements ObstacleInterface {
 	private String name;
-	private int radius, height;
+	private double radius, height;
 	
 	public Obstacle(String name, int farthestPoint, int highestPoint){
 		this.name = name;
@@ -15,12 +24,12 @@ public class Obstacle implements ObstacleInterface {
 	}
 
 	@Override
-	public int getHeight() {
+	public double getHeight() {
 		return this.height;
 	}
 
 	@Override
-	public int getRadius() {
+	public double getRadius() {
 		return this.radius;
 	}
 

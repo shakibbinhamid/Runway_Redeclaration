@@ -1,3 +1,4 @@
+package CoreInterfaces;
 
 /**
  * 
@@ -9,6 +10,9 @@
  *
  */
 public interface DeclaredRunwayInterface {
+	
+	static final int DEFAULT_ANGLE_OF_ASCENT = 50;
+	static final int DEFAULT_ANGLE_OF_DESCENT = 50;
 
 	/** 
 	 * The direction/side of the runway we are referring to.
@@ -35,27 +39,31 @@ public interface DeclaredRunwayInterface {
 	/**
 	 * Take-Off-Runway-Available
 	 */
-	int getTORA();
+	double getTORA();
 	
-	int getClearway();
+	double getClearway();
 	
-	int getStopway();
+	double getStopway();
 	
-	int getDisplacedThreshold();
+	double getDisplacedThreshold();
 	
 	/**
 	 * ASDA = TORA + Stopway
 	 */
-	int getASDA();
+	double getASDA();
 	
 	/**
 	 * TODA = TORA + Clearway
 	 */
-	int getTODA();
+	double getTODA();
 	
 	/**
 	 * LDA = TORA - Displaced Threshold
 	 */
-	int getDLA();
+	double getLDA();
+	
+	int getAngleOfAscent();
+	
+	int getAngleOfDescent();
 	
 }
