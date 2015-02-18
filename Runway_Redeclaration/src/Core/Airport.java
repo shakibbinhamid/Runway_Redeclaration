@@ -8,9 +8,10 @@ import java.util.Set;
 
 import CoreInterfaces.AirfieldInterface;
 import CoreInterfaces.AirportInterface;
+import CoreInterfaces.Savable;
 import Exceptions.UnrecognisedAirfieldIntifierException;
 
-public class Airport implements AirportInterface {
+public class Airport implements AirportInterface, Savable {
 	private Map<String, Airfield> airfields;
 	private String name;
 
