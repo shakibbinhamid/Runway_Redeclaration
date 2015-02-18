@@ -8,6 +8,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 
+import CoreInterfaces.AirfieldInterface;
+
 public class InfoPanel extends JPanel{
 	
 	JPanel topLabelPanel;
@@ -21,11 +23,11 @@ public class InfoPanel extends JPanel{
 	public static void main(String[] args) {
 		JFrame test = new JFrame();
 		
-		InfoPanel ip = new InfoPanel();
+		InfoPanel ip = new InfoPanel(null);
 		ip.init();
 	}
 	
-	public InfoPanel(){
+	public InfoPanel(AirfieldInterface field){
 		topLabelPanel = new JPanel();
 			label = new JLabel("Label");
 		bottomTablePanel = new JPanel();
