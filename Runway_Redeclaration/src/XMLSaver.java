@@ -14,9 +14,9 @@ import CoreInterfaces.Savable;
 
 public class XMLSaver {
 
-	public static boolean serialise(Savable object, String name){
+	public static boolean serialise(Savable object, String dir){
 		Serializer serializer = new Persister();
-		File result = new File(name + ".xml");
+		File result = new File(dir);
 		try {
 			serializer.write(object, result);
 			return true;
