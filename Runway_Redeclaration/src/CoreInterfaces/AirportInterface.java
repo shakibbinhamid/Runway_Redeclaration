@@ -1,6 +1,7 @@
 package CoreInterfaces;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * 
@@ -14,7 +15,9 @@ public interface AirportInterface {
 	
 	AirfieldInterface getAirfield(String identifier);
 	
-	List<String> getIdentifiers();
+	void addNewAirfield(AirfieldInterface newAirfield);
+	
+	Set<String> getIdentifiers();
 	
 	/**
 	 * The name of the airport

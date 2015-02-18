@@ -14,12 +14,12 @@ public class Airfield implements AirfieldInterface, Savable {
 	public Airfield(int angleFromNorth, char sideLetter){
 		//TODO add stuff - dunno what though
 		
-		//Add all distances to the the fields
+		//TODO Add all distances to the the fields
 		this.obstacle = null;
 		
 		
 		this.runways = new DeclaredRunway[2];
-		//generate a runway for each 
+		//TODO generate a runway for each 
 	}
 	
 	
@@ -134,5 +134,6 @@ public class Airfield implements AirfieldInterface, Savable {
 		if(this.runways[1] == null) throw new NoRunwayException(getName()+"Large Angle");
 		return this.runways[1];
 	}
-
+	
+	
 }
