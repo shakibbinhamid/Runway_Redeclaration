@@ -9,6 +9,11 @@ import javax.swing.SwingConstants;
 
 public class TopMenu extends JMenuBar{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	JMenu file, edit, print, help;
 	
 	JMenuItem open, openRecent, save, exit;
@@ -43,13 +48,18 @@ public class TopMenu extends JMenuBar{
 		
 		help = getMenu("Help", new JMenuItem[]{about, contact});
 		
-		this.add(file);
-		this.add(edit);
-		this.add(print);
-		this.add(help);
+		//================================Adding menus==============================================//
+		addMenus(new JMenu[] {file, edit, print, help});
 		
 	}
 	
+	/**
+	 * 
+	 * @param text Name of the menu
+	 * @param icon Icon to be displayed
+	 * @param textAllignment text allignment of the menuitem
+	 * @return a jmenuitem with the settings
+	 */
 	private JMenuItem getItem(String text, Icon icon, int textAllignment){
 		
 		JMenuItem item = new JMenuItem(text);
@@ -59,18 +69,41 @@ public class TopMenu extends JMenuBar{
 		return item;
 	}
 	
-	private ImageIcon getIcon(String location){
+	/**
+	 * 
+	 * @param location file location of the icon
+	 * @return an icon object based on the file
+	 */
+	private Icon getIcon(String location){
 		
 		return new ImageIcon(location);
 	}
 	
+	/**
+	 * 
+	 * @param text the name of the Menu
+	 * @param items the jmenuitems to be added to it
+	 * @return a jmenu with the jmenuitems
+	 */
 	private JMenu getMenu(String text, JMenuItem[] items){
 		
 		JMenu menu = new JMenu(text);
+		menu.setHorizontalAlignment(SwingConstants.CENTER);
 		for(int i=0; i<items.length; i++)
 			menu.add(items[i]);
 		
 		return menu;
+	}
+	
+	/**
+	 * 
+	 * @param menus the menus to be added
+	 */
+	private void addMenus(JMenu[] menus){
+		
+		for(int i=0; i<menus.length; i++)
+			this.add(menus[i]);
+		
 	}
 	
 }

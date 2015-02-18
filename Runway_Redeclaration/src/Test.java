@@ -16,6 +16,9 @@ import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.JMenuItem;
 import javax.swing.ImageIcon;
+import javax.swing.BoxLayout;
+import java.awt.CardLayout;
+import java.awt.FlowLayout;
 
 public class Test extends JFrame {
 
