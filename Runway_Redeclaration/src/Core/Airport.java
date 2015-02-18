@@ -65,7 +65,7 @@ public class Airport implements AirportInterface, Savable {
 			throw new ParrallelRunwayException(this, parrallelRunways, newAirfield);
 		}
 		
-		//Otherwise add the runway with an ? as the identifier
+		this.airfields.put("?", newAirfield);
 		updateIdentifierList();
 	}
 
@@ -74,7 +74,8 @@ public class Airport implements AirportInterface, Savable {
 		Collection<AirfieldInterface> airfields = this.getAirfields();
 		this.airfields = new HashMap<>();
 		for(AirfieldInterface airfield : airfields){
-			this.airfields.add()
+			this.airfields.put(airfield.getSmallIdentifier(),airfield);
+			this.airfields.put(airfield.getLargeIdentifier(), airfield);
 		}
 	}
 
