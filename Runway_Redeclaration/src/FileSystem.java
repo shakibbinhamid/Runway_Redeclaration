@@ -4,10 +4,6 @@ import java.util.ArrayList;
 import Core.Obstacle;
 
 /**
- * 
- */
-
-/**
  * Handles the saving and loading of objects
  * @author Jonathan
  *
