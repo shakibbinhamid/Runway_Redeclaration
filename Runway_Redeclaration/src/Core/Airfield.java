@@ -38,6 +38,13 @@ public class Airfield implements AirfieldInterface, Savable {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+	
+	@Override
+	public void setSideLetter(char letter) {
+		// TODO Auto-generated method stub
+		
+	}
+	
 	@Override
 	public double getRunwayWidth() {
 		// TODO Auto-generated method stub
@@ -145,6 +152,6 @@ public class Airfield implements AirfieldInterface, Savable {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
-	
+
+
 }
