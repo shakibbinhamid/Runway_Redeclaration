@@ -1,12 +1,10 @@
 import java.io.File;
 import java.util.ArrayList;
 
-/**
- * 
- */
+import Core.Obstacle;
 
 /**
- * This class handles the saving and loading of objects
+ * Handles the saving and loading of objects
  * @author Jonathan
  *
  */
@@ -16,6 +14,10 @@ public class FileSystem {
 	private String datDir = "\\dat";
 	private String airDir = "\\airports";
 	private String objDir = "\\obj";
+	private String sub = "\\";
+	private String xmlext = ".xml";
+	private String objext = ".obj";
+	private String airext = ".air";
 	private File dat, airports, obstacles;
 	
 	public FileSystem(){
@@ -61,7 +63,14 @@ public class FileSystem {
 		return objFiles;
 	}
 
-	public void save(Object o){
-		
+	public boolean saveObs(Obstacle o){
+		String dir = wd + datDir + objDir + sub + o.getName() + objext + xmlext;
+		return XMLSaver.serialise(o, dir);
+	}
+	
+	public Obstacle loadObs(String fileName){
+		File obsFile = new File(wd + datDir + objDir + sub + fileName);
+		Obstacle loadedObs = (Obstacle) XMLSaver.deserialise(Obstacle.class, obsFile);
+		return loadedObs;
 	}
 }

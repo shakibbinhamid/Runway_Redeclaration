@@ -3,6 +3,7 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
@@ -12,42 +13,29 @@ import Core.Obstacle;
 public class XMLTest {
 
 	public static void main(String[] args) {
-		Serializer serializer = new Persister();
-		Obstacle example = new Obstacle("obj name", 123, 0);
-		File result = new File("example.xml");
-
-		try {
-			serializer.write(example, result);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		Obstacle o = new Obstacle("Brian", 12, 13);
+		FileSystem fs = new FileSystem();
+		System.out.println(fs.saveObs(o));
+		
+		ArrayList<File> files = fs.listObstacles();
+		System.out.println("Files:");
+		for(File file : files){
+			System.out.println(file.getName());
 		}
 		
-		try {
-			System.out.println(readFile(result.getAbsolutePath()));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		String brian = files.get(0).getName();
+		System.out.println("\nAttempting to load " + brian + "...\n");
 		
-		Serializer serializer2 = new Persister();
-		Obstacle obj = null;
-		try {
-			obj = serializer2.read(Obstacle.class, result);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		Obstacle o2 = fs.loadObs(brian);
 		
-		System.out.println(obj.toString());
-
+		System.out.println("Obstacle loaded. \nName: " + o2.getName() + "\nHeight: " + o2.getHeight() + "\nRadius: " + o2.getRadius());
 	}
-	
+
 	static String readFile(String path) 
-			  throws IOException 
+			throws IOException 
 			{
-			  byte[] encoded = Files.readAllBytes(Paths.get(path));
-			  return new String(encoded);
+		byte[] encoded = Files.readAllBytes(Paths.get(path));
+		return new String(encoded);
 			}
 
 }
