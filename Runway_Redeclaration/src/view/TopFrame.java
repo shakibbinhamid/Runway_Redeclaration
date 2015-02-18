@@ -22,6 +22,10 @@ public class TopFrame extends JFrame{
 		});
 	}
 	
+	public void populateTables(){
+		
+	}
+	
 	public void init(){
 		this.setJMenuBar(new TopMenu());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
