@@ -9,8 +9,6 @@ import org.simpleframework.xml.core.Persister;
 
 import Core.Obstacle;
 
-
-
 public class XMLTest {
 
 	public static void main(String[] args) {
