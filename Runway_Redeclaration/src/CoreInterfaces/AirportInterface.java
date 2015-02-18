@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.Set;
 
 import Core.Airfield;
+import Exceptions.CannotMakeRunwayException;
+import Exceptions.ParrallelRunwayException;
 import Exceptions.UnrecognisedAirfieldIntifierException;
 
 /**
@@ -14,13 +16,15 @@ import Exceptions.UnrecognisedAirfieldIntifierException;
  */
 public interface AirportInterface {
 	
-	Collection<Airfield> getAirfields();
+	Collection<AirfieldInterface> getAirfields();
 	
 	AirfieldInterface getAirfield(String identifier) throws UnrecognisedAirfieldIntifierException;
 	
-	void addNewAirfield(AirfieldInterface newAirfield);
+	void addNewAirfield(AirfieldInterface newAirfield) throws ParrallelRunwayException, CannotMakeRunwayException;
 	
 	Set<String> getIdentifiers();
+	
+	void updateIdentifierList();
 	
 	/**
 	 * The name of the airport
