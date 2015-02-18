@@ -42,12 +42,12 @@ public class XMLTest {
 		System.out.println(obj.toString());
 
 	}
-	
+
 	static String readFile(String path) 
-			  throws IOException 
+			throws IOException 
 			{
-			  byte[] encoded = Files.readAllBytes(Paths.get(path));
-			  return new String(encoded);
+		byte[] encoded = Files.readAllBytes(Paths.get(path));
+		return new String(encoded);
 			}
 
 }
