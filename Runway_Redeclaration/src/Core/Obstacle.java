@@ -1,6 +1,7 @@
 package Core;
 
 import CoreInterfaces.ObstacleInterface;
+import CoreInterfaces.Savable;
 
 /**
  * 
@@ -8,7 +9,7 @@ import CoreInterfaces.ObstacleInterface;
  * @Editor Stefan
  * @Tester
  */
-public class Obstacle implements ObstacleInterface {
+public class Obstacle implements ObstacleInterface, Savable {
 	private String name;
 	private double radius, height;
 	
