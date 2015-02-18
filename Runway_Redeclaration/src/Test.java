@@ -19,6 +19,7 @@ import javax.swing.ImageIcon;
 import javax.swing.BoxLayout;
 import java.awt.CardLayout;
 import java.awt.FlowLayout;
+import javax.swing.JCheckBoxMenuItem;
 
 public class Test extends JFrame {
 
@@ -55,6 +56,9 @@ public class Test extends JFrame {
 		JMenu mnFile = new JMenu("File");
 		mnFile.setHorizontalAlignment(SwingConstants.CENTER);
 		menuBar.add(mnFile);
+		
+		JMenu mnNewMenu = new JMenu("New menu");
+		mnFile.add(mnNewMenu);
 		
 		JMenuItem mntmOpen = new JMenuItem("Open");
 		mntmOpen.setIcon(new ImageIcon(Test.class.getResource("/com/sun/java/swing/plaf/windows/icons/TreeOpen.gif")));
