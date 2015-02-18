@@ -24,7 +24,7 @@ public class Airfield implements AirfieldInterface, Savable {
 	
 	@Override
 	public String getName(){
-		return ""+this.getSmallestAngleFromNorth()+this.getSideLetter();
+		return this.getSmallIdentifier()+"/"+this.getLargeIdentifier();
 	}
 	
 	@Override

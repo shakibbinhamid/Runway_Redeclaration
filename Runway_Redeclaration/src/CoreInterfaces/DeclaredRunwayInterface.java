@@ -1,5 +1,8 @@
 package CoreInterfaces;
 
+import Exceptions.UnusableRunwayException;
+import Exceptions.VariableDeclarationException;
+
 /**
  * 
  * This represents a newly declared runway.
@@ -21,6 +24,8 @@ public interface DeclaredRunwayInterface {
 	 */
 	char getSideLetter();
 	
+	void setSideLetter(char side) throws VariableDeclarationException;
+	
 	/**
 	 * The anti-clockwise angle in degrees of the that runway from North
 	 * e.g. 150 (degrees) 
@@ -37,31 +42,31 @@ public interface DeclaredRunwayInterface {
 	/**
 	 * Take-Off-Runway-Available
 	 */
-	double getTORA();
+	double getTORA() throws UnusableRunwayException;
 	
-	double getClearway();
+	double getClearway() throws UnusableRunwayException;
 	
-	double getStopway();
+	double getStopway() throws UnusableRunwayException;
 	
-	double getDisplacedThreshold();
+	double getDisplacedThreshold() throws UnusableRunwayException;
 	
 	/**
 	 * ASDA = TORA + Stopway
 	 */
-	double getASDA();
+	double getASDA() throws UnusableRunwayException;
 	
 	/**
 	 * TODA = TORA + Clearway
 	 */
-	double getTODA();
+	double getTODA() throws UnusableRunwayException;
 	
 	/**
 	 * LDA = TORA - Displaced Threshold
 	 */
-	double getLDA();
+	double getLDA() throws UnusableRunwayException;
 	
-	int getAngleOfAscent();
+	int getAngleOfAscent() throws UnusableRunwayException;
 	
-	int getAngleOfDescent();
+	int getAngleOfDescent() throws UnusableRunwayException;
 	
 }

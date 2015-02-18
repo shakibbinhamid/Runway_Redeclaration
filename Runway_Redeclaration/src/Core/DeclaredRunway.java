@@ -2,6 +2,7 @@ package Core;
 
 import CoreInterfaces.AirfieldInterface;
 import CoreInterfaces.DeclaredRunwayInterface;
+import Exceptions.UnusableRunwayException;
 import Exceptions.VariableDeclarationException;
 
 /**
@@ -29,8 +30,9 @@ public class DeclaredRunway implements DeclaredRunwayInterface{
 	 * @param angleFromNorth - The angle (in degrees) divided by 10 and rounded to the nearest 10
 	 * 
 	 * @throws VariableDeclarationException is thrown when an invalid distance variable is declared
+	 * @throws UnusableRunwayException 
 	 */
-	public DeclaredRunway(AirfieldInterface runway, double displacedThreshold ,int angleFromNorth) throws VariableDeclarationException{
+	public DeclaredRunway(AirfieldInterface runway, double displacedThreshold ,int angleFromNorth) throws VariableDeclarationException, UnusableRunwayException{
 		
 		setDisplacedThreshold(displacedThreshold);
 		if(!runway.hasObstacle()){
@@ -79,9 +81,10 @@ public class DeclaredRunway implements DeclaredRunwayInterface{
 		return out;
 	}
 //----[ Setters ]------------------------------------------------------
-	private void setDirection(char leftOrRight) throws VariableDeclarationException{
+	@Override
+	public void setSideLetter(char leftOrRight) throws VariableDeclarationException{
 		//If LoR is not L or R
-		if ( !(leftOrRight == 'L' || leftOrRight == 'R') )
+		if ( !(leftOrRight == 'L' || leftOrRight == 'R' || leftOrRight == 'C') )
 			throw new VariableDeclarationException("Direction",leftOrRight,"Must be 'L' or 'R'");
 		
 		this.direction = leftOrRight;
@@ -98,22 +101,22 @@ public class DeclaredRunway implements DeclaredRunwayInterface{
 //====[ Inert Direction Methods  ]=====================================
 //----[ Getters ]------------------------------------------------------
 	@Override
-	public double getTORA() {
+	public double getTORA() throws UnusableRunwayException {
 		return decTora;
 	}
 
 	@Override
-	public double getClearway() {
+	public double getClearway()throws UnusableRunwayException {
 		return clearway;
 	}
 
 	@Override
-	public double getStopway() {
+	public double getStopway() throws UnusableRunwayException {
 		return stopway;
 	}
 
 	@Override
-	public double getDisplacedThreshold() {
+	public double getDisplacedThreshold() throws UnusableRunwayException {
 		return disThreshold;
 	}
 //----[ Setters ]---------------------------------------------------------
@@ -135,24 +138,24 @@ public class DeclaredRunway implements DeclaredRunwayInterface{
 
 	private void setClearway(double clearway) throws VariableDeclarationException{
 		if( clearway < 0 ) throw new VariableDeclarationException("Clearway", clearway, "Clearway > 0");
-		if( clearway < getStopway() ) throw new VariableDeclarationException("Clearway", clearway, "Clearway >= Stopway");
+		if( clearway < this.stopway ) throw new VariableDeclarationException("Clearway", clearway, "Clearway >= Stopway");
 
 		this.clearway = clearway;
 	}
 
 //====[ Calculated Distance Methods  ]=====================================
 	@Override
-	public double getASDA() {
+	public double getASDA() throws UnusableRunwayException{
 		return getTORA()+getStopway();
 	}
 
 	@Override
-	public double getTODA() {
+	public double getTODA() throws UnusableRunwayException{
 		return getTORA()+getClearway();
 	}
 
 	@Override
-	public double getLDA() {
+	public double getLDA() throws UnusableRunwayException {
 		return getTORA()-getDisplacedThreshold();
 	}
 
