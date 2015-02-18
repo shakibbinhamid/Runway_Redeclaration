@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * 
  * @author Stefan
- * @Editor 
+ * @Editor Stefan
  *
  */
 public interface AirportInterface {
@@ -14,7 +14,7 @@ public interface AirportInterface {
 	
 	AirfieldInterface getAirfield(String identifier);
 	
-	String get
+	List<String> getIdentifiers();
 	
 	/**
 	 * The name of the airport

@@ -5,14 +5,14 @@ import CoreInterfaces.DeclaredRunwayInterface;
 import CoreInterfaces.ObstacleInterface;
 import CoreInterfaces.PositionedObstacleInterface;
 import CoreInterfaces.Savable;
-import Exceptions.NoRunwaysException;
+import Exceptions.NoRunwayException;
 
 public class Airfield implements AirfieldInterface, Savable {
 	private DeclaredRunwayInterface[] runways;
 	private PositionedObstacle obstacle;
 	
-	public Airfield(int angleFromNorth, char leftOrRight){
-		//TODO add stuff
+	public Airfield(int angleFromNorth, char sideLetter){
+		//TODO add stuff - dunno what though
 		
 		//Add all distances to the the fields
 		this.obstacle = null;
@@ -25,12 +25,9 @@ public class Airfield implements AirfieldInterface, Savable {
 	
 	@Override
 	public String getName(){
-		try {
-			return this.getLeftStartingRunway().getIdentifier();
-		} catch (NoRunwaysException e) {
-			return "?";
-		}
+		return ""+this.getSmallestAngleFromNorth()+this.getSideLetter();
 	}
+	
 	@Override
 	public int getSmallestAngleFromNorth() {
 		// TODO Auto-generated method stub
@@ -38,7 +35,7 @@ public class Airfield implements AirfieldInterface, Savable {
 	}
 
 	@Override
-	public char getDirection() {
+	public char getSideLetter() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
@@ -92,15 +89,16 @@ public class Airfield implements AirfieldInterface, Savable {
 
 	@Override
 	public PositionedObstacleInterface getObstacle() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.obstacle;
 	}
 
 	@Override
-	public DeclaredRunwayInterface[] addObstacle(ObstacleInterface obj,
-			char leftOrRight, double howFarIn) {
-		if(leftOrRight == 'L'){
+	public void addObstacle(ObstacleInterface obj,
+			String indentifier, double howFarIn) throws NoRunwayException {
+		
+		if(indentifier.contains(""+this.getSmallestAngleFromNorth())){
 			this.obstacle = new PositionedObstacle(obj,howFarIn);
+			
 		}else{
 			howFarIn = this.getRunwayLength()-howFarIn;
 			this.obstacle = new PositionedObstacle(obj,howFarIn);
@@ -108,7 +106,6 @@ public class Airfield implements AirfieldInterface, Savable {
 		
 		// TODO Re-process and redeclare all the runways
 		
-		return null;
 	}
 
 	@Override
@@ -123,20 +120,19 @@ public class Airfield implements AirfieldInterface, Savable {
 
 	@Override
 	public DeclaredRunwayInterface[] getRunways() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.runways;
 	}
 
 	@Override
-	public DeclaredRunwayInterface getLeftStartingRunway() throws NoRunwaysException {
-		if(this.runways[LEFT_RUNWAY]==null) throw new NoRunwaysException(getName());
-		return this.runways[LEFT_RUNWAY];
+	public DeclaredRunwayInterface getSmallAngledRunway() throws NoRunwayException {
+		if(this.runways[0] == null) throw new NoRunwayException(getName()+"Small Angle");
+		return this.runways[0];
 	}
 
 	@Override
-	public DeclaredRunwayInterface getRightStartingRunway() {
-		// TODO Auto-generated method stub
-		return null;
+	public DeclaredRunwayInterface getLargeAngledRunway() throws NoRunwayException{
+		if(this.runways[1] == null) throw new NoRunwayException(getName()+"Large Angle");
+		return this.runways[1];
 	}
 
 }
