@@ -94,7 +94,7 @@ public class Airfield implements AirfieldInterface, Savable {
 
 	@Override
 	public void addObstacle(ObstacleInterface obj,
-			String indentifier, double howFarIn) throws NoRunwayException {
+			String indentifier, double howFarIn) {
 		
 		if(indentifier.contains(""+this.getSmallestAngleFromNorth())){
 			this.obstacle = new PositionedObstacle(obj,howFarIn);
@@ -124,15 +124,27 @@ public class Airfield implements AirfieldInterface, Savable {
 	}
 
 	@Override
-	public DeclaredRunwayInterface getSmallAngledRunway() throws NoRunwayException {
-		if(this.runways[0] == null) throw new NoRunwayException(getName()+"Small Angle");
+	public DeclaredRunwayInterface getSmallAngledRunway()  {
 		return this.runways[0];
 	}
 
 	@Override
-	public DeclaredRunwayInterface getLargeAngledRunway() throws NoRunwayException{
-		if(this.runways[1] == null) throw new NoRunwayException(getName()+"Large Angle");
+	public DeclaredRunwayInterface getLargeAngledRunway() {
 		return this.runways[1];
+	}
+
+
+	@Override
+	public String getSmallIdentifier() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public String getLargeIdentifier() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	

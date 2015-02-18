@@ -1,7 +1,5 @@
 package CoreInterfaces;
 
-import Exceptions.NoRunwayException;
-
 
 /**
  * //TODO add a docstring
@@ -88,10 +86,8 @@ public interface AirfieldInterface {
 	 * @param obj - The new obstacle on the runway 
 	 * @param runwayIdentifier - The side it is closest to. Either TarmacInterface.LEFT_RUNWAY or TarmacInterface.RIGHT_RUNWAY
 	 * @param howFarIn - How far from the chosen tarmac side 
-	 * 
-	 * @throws NoRunwayException - When there is no declared runway on that side
 	 */
-	void addObstacle(ObstacleInterface obj, String identifier, double howFarIn) throws NoRunwayException;
+	void addObstacle(ObstacleInterface obj, String identifier, double howFarIn);
 	
 	
 	
@@ -110,9 +106,13 @@ public interface AirfieldInterface {
 //====[ Declared Runways ]=======================================
 	DeclaredRunwayInterface[] getRunways();
 	
-	DeclaredRunwayInterface getSmallAngledRunway() throws NoRunwayException;
+	DeclaredRunwayInterface getSmallAngledRunway();
 	
-	DeclaredRunwayInterface getLargeAngledRunway() throws NoRunwayException;
+	DeclaredRunwayInterface getLargeAngledRunway();
+	
+	String getSmallIdentifier();
+	
+	String getLargeIdentifier();
 //===============================================================
 	
 }
