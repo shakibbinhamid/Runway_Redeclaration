@@ -1,7 +1,10 @@
 package CoreInterfaces;
 
-import java.util.List;
+import java.util.Collection;
 import java.util.Set;
+
+import Core.Airfield;
+import Exceptions.UnrecognisedAirfieldIntifierException;
 
 /**
  * 
@@ -11,9 +14,9 @@ import java.util.Set;
  */
 public interface AirportInterface {
 	
-	List<AirfieldInterface> getAirfields();
+	Collection<Airfield> getAirfields();
 	
-	AirfieldInterface getAirfield(String identifier);
+	AirfieldInterface getAirfield(String identifier) throws UnrecognisedAirfieldIntifierException;
 	
 	void addNewAirfield(AirfieldInterface newAirfield);
 	

@@ -27,11 +27,10 @@ public class DeclaredRunway implements DeclaredRunwayInterface{
 	 * @param runway - The airfield with the runway on it that you want to redeclare
 	 * @param displacedThreshold - The user defined threshold to start from
 	 * @param angleFromNorth - The angle (in degrees) divided by 10 and rounded to the nearest 10
-	 * @param leftOrRight - Which side of the runway the plane will start from/take off to
 	 * 
 	 * @throws VariableDeclarationException is thrown when an invalid distance variable is declared
 	 */
-	public DeclaredRunway(AirfieldInterface runway, double displacedThreshold ,int angleFromNorth, char leftOrRight) throws VariableDeclarationException{
+	public DeclaredRunway(AirfieldInterface runway, double displacedThreshold ,int angleFromNorth) throws VariableDeclarationException{
 		
 		setDisplacedThreshold(displacedThreshold);
 		if(!runway.hasObstacle()){
@@ -55,13 +54,13 @@ public class DeclaredRunway implements DeclaredRunwayInterface{
 		descentAngle = DeclaredRunwayInterface.DEFAULT_ANGLE_OF_DESCENT;
 
 		angle = angleFromNorth;
-		direction = leftOrRight;
+		direction = ' ';
 	}
 
 //====[ Direction Methods  ]=====================================
 //----[ Getters ]------------------------------------------------------
 	@Override
-	public char getDirection() {
+	public char getSideLetter() {
 		return direction;
 	}
 
@@ -73,10 +72,10 @@ public class DeclaredRunway implements DeclaredRunwayInterface{
 	@Override
 	public String getIdentifier() {
 		String out = "";
-		if(angle<10){
+		if(angle<100){
 			out += "0";
 		}
-		out += String.valueOf(angle)+direction;
+		out += String.valueOf(angle/10)+direction;
 		return out;
 	}
 //----[ Setters ]------------------------------------------------------
@@ -90,9 +89,9 @@ public class DeclaredRunway implements DeclaredRunwayInterface{
 	
 	public void setAngle(int angle) {
 		while(angle<0){
-			angle += 36;
+			angle += 360;
 		}
-		this.angle = angle%36;
+		this.angle = angle%360;
 	}
 	
 	
