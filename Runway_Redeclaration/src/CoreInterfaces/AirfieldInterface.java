@@ -113,6 +113,10 @@ public interface AirfieldInterface {
 	DeclaredRunwayInterface getSmallAngledRunway() throws NoRunwayException;
 	
 	DeclaredRunwayInterface getLargeAngledRunway() throws NoRunwayException;
+	
+	String getSmallIdentifier();
+	
+	String getLargeIdentifier();
 //===============================================================
 	
 }

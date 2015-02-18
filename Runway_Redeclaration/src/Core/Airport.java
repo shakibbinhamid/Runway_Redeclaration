@@ -1,28 +1,30 @@
 package Core;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.sun.org.apache.xalan.internal.xsltc.runtime.Hashtable;
-
 import CoreInterfaces.AirfieldInterface;
 import CoreInterfaces.AirportInterface;
+import Exceptions.UnrecognisedAirfieldIntifierException;
 
 public class Airport implements AirportInterface {
 	private Map<String, Airfield> airfields;
 	private String name;
 
 	@Override
-	public List<AirfieldInterface> getAirfields() {
-		// TODO Auto-generated method stub
-		return null;
+	public Collection<Airfield> getAirfields() {
+		return this.airfields.values();
 	}
 
 	@Override
-	public AirfieldInterface getAirfield(String identifier) {
-		// TODO Auto-generated method stub
-		return null;
+	public AirfieldInterface getAirfield(String identifier) throws UnrecognisedAirfieldIntifierException {
+		AirfieldInterface chosen = this.airfields.get(identifier);
+		if(chosen == null) 
+			throw new UnrecognisedAirfieldIntifierException(this, identifier);
+		return chosen;
 	}
 
 	@Override
@@ -37,8 +39,19 @@ public class Airport implements AirportInterface {
 
 	@Override
 	public void addNewAirfield(AirfieldInterface newAirfield) {
-		// TODO Auto-generated method stub
-
+		List<AirfieldInterface> parrallelRunways = new ArrayList<AirfieldInterface>();
+		
+		for(AirfieldInterface runway : getAirfields()){
+			String id = runway.getSmallIdentifier();
+			
+			if(newAirfield.getSmallAngledRunway().getIdentifier().equals(id)){
+				parrallelRunways.add(runway);
+			}
+		}
+		
+		if(!parrallelRunways.isEmpty()){
+			//TODO throw
+		}
 	}
 
 }

@@ -17,15 +17,13 @@ public interface DeclaredRunwayInterface {
 	/** 
 	 * The direction/side of the runway we are referring to.
 	 * 
-	 * @return 'L' for left or 'R' for right 
+	 * @return 'L' for left or 'R' for right or 'C' for centre
 	 */
-	char getDirection();
+	char getSideLetter();
 	
 	/**
-	 * The anti-clockwise angle of the that runway from North 
-	 *   divided by and rounded to the nearest 10.
-	 *   
-	 *   e.g. 247degrees = 25 
+	 * The anti-clockwise angle in degrees of the that runway from North
+	 * e.g. 150 (degrees) 
 	 */
 	int getAngle();
 	
