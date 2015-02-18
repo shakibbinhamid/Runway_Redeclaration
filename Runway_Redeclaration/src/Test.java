@@ -129,7 +129,7 @@ public class Test extends JFrame {
 		panel_3.add(scrollPane);
 		
 		JTextPane txtpnDataWillBe = new JTextPane();
-		txtpnDataWillBe.setText("log will be here");
+		txtpnDataWillBe.setBorder(new EmptyBorder(6, 6, 6, 6));
 		txtpnDataWillBe.setEditable(false);
 		scrollPane.setViewportView(txtpnDataWillBe);
 		
