@@ -2,9 +2,17 @@ package Core;
 
 import CoreInterfaces.DeclaredRunwayInterface;
 
+/**
+ * This so far is a stub for editing
+ * 
+ * @author Shakib
+ * @Editor Stefan
+ * @Tester 
+ *
+ */
 public class DeclaredRunway implements DeclaredRunwayInterface{
 
-	private double decTora, decAsda, decToda, decLda;
+	private double decTora;
 	
 	private double disThreshold, stopway, clearway;
 	
@@ -18,10 +26,6 @@ public class DeclaredRunway implements DeclaredRunwayInterface{
 		stopway = stop;
 		clearway = clear;
 		
-		decAsda = tora + stopway;
-		decToda = tora + clearway;
-		decLda = tora - disThreshold;
-		
 		ascentAngle = DeclaredRunwayInterface.DEFAULT_ANGLE_OF_ASCENT;
 		descentAngle = DeclaredRunwayInterface.DEFAULT_ANGLE_OF_DESCENT;
 		
@@ -29,7 +33,7 @@ public class DeclaredRunway implements DeclaredRunwayInterface{
 		direction = dirc;
 	}
 	
-	//============================GETTERS=====================================//
+	//====[ Direction Methods  ]=====================================
 	@Override
 	public char getDirection() {
 		return direction;
@@ -42,9 +46,15 @@ public class DeclaredRunway implements DeclaredRunwayInterface{
 
 	@Override
 	public String getIdentifier() {
-		return String.valueOf(angle)+String.valueOf(direction);
+		String out = "";
+		if(angle<10){
+			out += "0";
+		}
+		out += String.valueOf(angle)+direction;
+		return out;
 	}
-
+	
+//====[ Direction Methods  ]=====================================
 	@Override
 	public double getTORA() {
 		return decTora;
@@ -65,20 +75,24 @@ public class DeclaredRunway implements DeclaredRunwayInterface{
 		return disThreshold;
 	}
 
+	
+	
 	@Override
 	public double getASDA() {
-		return decAsda;
+		return getTORA()+getStopway();
 	}
 
 	@Override
 	public double getTODA() {
-		return decToda;
+		return getTORA()+getClearway();
 	}
 
 	@Override
 	public double getLDA() {
-		return decLda;
+		return getTORA()-getDisplacedThreshold();
 	}
+	
+	
 
 	@Override
 	public int getAngleOfAscent() {
