@@ -32,20 +32,22 @@ public class InfoPanel extends JPanel{
 	public InfoPanel(AirfieldInterface field){
 		
 		this.field = field;
-		
-		topLabelPanel = new JPanel();
-			label = new JLabel(field.getSmallIdentifier());
-		bottomTablePanel = new JPanel();
-			tablePanel = new JPanel();
-				runwayDataTable = new TablePanel("Runway Parameters", runwayRowNames , runwayColumnNames);
-				obstacleDataTable = new TablePanel("Obstacle Data", obstacleRowNames , obstacleColumnNames);
-				advancedDataTable = new TablePanel("Advanced Parameters", runwayAdvancedRowNames, runwayColumnNames);
+		System.out.println("BLEH");
+		init();
 	}
 	
 	public void init(){
+		
+		topLabelPanel = new JPanel();
+		label = new JLabel(field.getSmallIdentifier());
+		bottomTablePanel = new JPanel();
+			runwayDataTable = new TablePanel("Runway Parameters", runwayRowNames , runwayColumnNames);
+			obstacleDataTable = new TablePanel("Obstacle Data", obstacleRowNames , obstacleColumnNames);
+			advancedDataTable = new TablePanel("Advanced Parameters", runwayAdvancedRowNames, runwayColumnNames);
+			
 		this.setLayout(new BorderLayout());
-			this.add(topLabelPanel, BorderLayout.NORTH);
-			this.add(bottomTablePanel, BorderLayout.CENTER);
+		this.add(topLabelPanel, BorderLayout.NORTH);
+		this.add(bottomTablePanel, BorderLayout.CENTER);
 		
 		topLabelPanel.setLayout(new BorderLayout());
 			topLabelPanel.add(label, BorderLayout.CENTER);
