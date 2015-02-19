@@ -13,6 +13,7 @@ import CoreInterfaces.Savable;
 import Exceptions.CannotMakeRunwayException;
 import Exceptions.ParrallelRunwayException;
 import Exceptions.UnrecognisedAirfieldIntifierException;
+import Exceptions.VariableDeclarationException;
 
 public class Airport implements AirportInterface, Savable {
 	private Map<String, AirfieldInterface> airfields;
@@ -48,19 +49,18 @@ public class Airport implements AirportInterface, Savable {
 	}
 
 	@Override
-	public void addNewAirfield(AirfieldInterface newAirfield) throws ParrallelRunwayException, CannotMakeRunwayException {
+	public void addNewAirfield(int angleFromNorth, double[] dimensions) throws ParrallelRunwayException, CannotMakeRunwayException, VariableDeclarationException {
+		angleFromNorth %= 180;
+		
+		AirfieldInterface newAirfield = new Airfield(angleFromNorth, dimensions);
 		
 		//Identify parallel runways
 		List<AirfieldInterface> parrallelRunways = new ArrayList<AirfieldInterface>();
-		
-		//Local var => shortens code
-		int newAngle = newAirfield.getSmallAngledRunway().getAngle()/10;
-		
 		for(AirfieldInterface runway : getAirfields()){
 			int angle = runway.getSmallAngledRunway().getAngle()/10;
 			
 			//parallel runways would have the same angle part of the identifier
-			if(newAngle == angle){
+			if(angleFromNorth == angle){
 				parrallelRunways.add(runway);
 			}
 		}
@@ -71,7 +71,7 @@ public class Airport implements AirportInterface, Savable {
 			throw new ParrallelRunwayException(this, parrallelRunways, newAirfield);
 		}
 		
-		//We use "?"  for now as the sides will be recalculated afterwards
+		//We use "?"  for now as the sides will be recalculated afterwards in next line
 		this.airfields.put("?", newAirfield);
 		updateIdentifierList();
 	}

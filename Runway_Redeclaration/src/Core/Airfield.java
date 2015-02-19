@@ -20,7 +20,7 @@ class Airfield implements AirfieldInterface, Savable {
 	 * @param lengths
 	 * @throws VariableDeclarationException - There are invalid variable declarations
 	 */
-	protected Airfield(int angleFromNorth, char sideLetter, double[] lengths) throws VariableDeclarationException{
+	protected Airfield(int angleFromNorth, double[] lengths) throws VariableDeclarationException{
 		if(lengths.length != 8) throw new VariableDeclarationException("lengths", lengths, "Needs to be 8 cells");
 		
 		this.runWidth = lengths[0];
@@ -31,6 +31,7 @@ class Airfield implements AirfieldInterface, Savable {
 		this.shortClearWSpace = lengths[5];
 		this.longClearWSpace = lengths[6];
 		this.fullWSpace = lengths[7];
+		//TODO Check these values against CAA stuff in INCREMENT 2
 		
 		this.obstacle = null;
 		
