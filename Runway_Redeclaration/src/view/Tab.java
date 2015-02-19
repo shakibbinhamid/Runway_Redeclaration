@@ -1,33 +1,57 @@
 package view;
 
 import java.awt.BorderLayout;
+import java.awt.GridLayout;
 
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
 import CoreInterfaces.AirfieldInterface;
+import CoreInterfaces.DeclaredRunwayInterface;
 
 public class Tab extends JPanel{
 	
 	private AirfieldInterface field;
+	private DeclaredRunwayInterface runway;
 	
-	private InfoPanel info;
+	private JPanel dataPanel;
+		private ChooseRunwayPanel selectDirectionPanel;
+		private InfoPanel info;
 	private ViewPanel views;
-	private JPanel selectDirectionPanel;
 	
 	public Tab(AirfieldInterface field){
 		this.field = field;
+		this.runway = field.getLargeAngledRunway();
 		init();
 	}
 	
 	private void init(){
 		this.setLayout(new BorderLayout());
 		
-		info = new InfoPanel(field);
-		this.add(info, BorderLayout.WEST);
+		dataPanel = new JPanel();
+		dataPanel.setLayout(new BorderLayout());
+		this.add(dataPanel, BorderLayout.WEST);
 		
-		views = new ViewPanel(field);
+		selectDirectionPanel = new ChooseRunwayPanel(this);
+		dataPanel.add(selectDirectionPanel, BorderLayout.NORTH);
+		
+		info = new InfoPanel(runway);
+		dataPanel.add(info, BorderLayout.CENTER);
+		
+		views = new ViewPanel(runway);
 		this.add(views, BorderLayout.CENTER);
 		
+	}
+	
+	protected InfoPanel getInfoPanel(){
+		return info;
+	}
+
+	protected ViewPanel getViewPanel(){
+		return views;
+	}
+	
+	protected DeclaredRunwayInterface getRunway(){
+		return runway;
 	}
 }

@@ -6,10 +6,12 @@ import java.awt.GridLayout;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import CoreInterfaces.AirfieldInterface;
+import CoreInterfaces.DeclaredRunwayInterface;
 
 public class InfoPanel extends JPanel{
 	
@@ -19,7 +21,7 @@ public class InfoPanel extends JPanel{
 	private static final String[] runwayAdvancedRowNames = {"Displaced Threshold", "RESA", "Angle of Ascent", "Angle of Descent", "Blast Protection"};
 	private static final String[] obstacleRowNames = {"Name", "Height", "Radius"};
 	
-	AirfieldInterface field;
+	DeclaredRunwayInterface runway;
 	
 	JPanel topLabelPanel;
 		JLabel label;
@@ -29,16 +31,16 @@ public class InfoPanel extends JPanel{
 			JPanel obstacleDataTable;
 			JPanel advancedDataTable;
 	
-	public InfoPanel(AirfieldInterface field){
+	public InfoPanel(DeclaredRunwayInterface runway){
 		
-		this.field = field;
+		this.runway = runway;
 		init();
 	}
 	
 	public void init(){
 		
 		topLabelPanel = new JPanel();
-		label = new JLabel(field.getSmallIdentifier());
+		label = new JLabel(runway.getIdentifier());
 		bottomTablePanel = new JPanel();
 			runwayDataTable = new TablePanel("Runway Parameters", runwayRowNames , runwayColumnNames);
 			obstacleDataTable = new TablePanel("Obstacle Data", obstacleRowNames , obstacleColumnNames);
@@ -87,7 +89,7 @@ public class InfoPanel extends JPanel{
 		void init(){
 			this.setBorder(BorderFactory.createTitledBorder(title));
 			this.setLayout(new BorderLayout());
-			this.add(table, BorderLayout.CENTER);
+			this.add(new JScrollPane(table), BorderLayout.CENTER);
 		}
 	}
 }

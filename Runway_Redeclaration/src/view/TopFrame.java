@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -52,9 +53,10 @@ public class TopFrame extends JFrame{
 		 * DON'T USE THIS
 		 */
 		// TODO 
-		airport = new Airport("Heathrow");
+		airport = new Airport("     Heathrodnf kol     ");
 		try {
 			airport.addNewAirfield(new Airfield(32, 'L'));
+			//airport.addNewAirfield(new Airfield(49, 'R'));
 		} catch (ParrallelRunwayException | CannotMakeRunwayException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -70,11 +72,14 @@ public class TopFrame extends JFrame{
 		logPanel = new LogPanel(airport);
 		topPanel.add(logPanel, BorderLayout.WEST);
 		
+		//TODO
 		tabbedPanel = new TabbedPanel(airport);
 		topPanel.add(tabbedPanel, BorderLayout.CENTER);
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 539, 350);
+		this.setSize(new Dimension(1200,800));
+		this.pack();
+		//setBounds(100, 100, 539, 350);
 		setVisible(true);
 	}
 

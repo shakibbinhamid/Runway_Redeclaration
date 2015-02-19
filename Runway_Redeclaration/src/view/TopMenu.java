@@ -1,5 +1,8 @@
 package view;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JMenu;
@@ -80,6 +83,14 @@ public class TopMenu extends JMenuBar{
 		save = getMenu("Save", isave, new JMenuItem[]{saveAirport, saveObstacle});
 
 		exit = getItem("Exit", getIcon("./icon/ExitIcon.png"), SwingConstants.CENTER);
+		exit.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				frame.dispose();
+			}
+			
+		});
 		
 		file = getMenu("File", null, new JMenuItem[]{create, load, save, exit});
 	}
