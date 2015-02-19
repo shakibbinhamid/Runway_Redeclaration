@@ -19,6 +19,7 @@ public class ViewPanel extends JPanel{
 	private View view1, view2;
 
 	public ViewPanel(AirfieldInterface field){
+		this.field = field;
 		view1 = new View();
 		view2 = new View();
 		init();
