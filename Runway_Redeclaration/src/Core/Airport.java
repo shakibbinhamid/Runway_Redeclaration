@@ -1,11 +1,7 @@
 package Core;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import CoreInterfaces.AirfieldInterface;
 import CoreInterfaces.AirportInterface;
@@ -16,31 +12,37 @@ import Exceptions.UnrecognisedAirfieldIntifierException;
 import Exceptions.VariableDeclarationException;
 
 public class Airport implements AirportInterface, Savable {
-	private Map<String, AirfieldInterface> airfields;
+	private List<AirfieldInterface> airfields;
 	private String name;
 
 	
 	public Airport(String name) {
 		this.name = name;
-		this.airfields = new HashMap<>();
+		this.airfields = new ArrayList<>();
 	}
 	
 	@Override
-	public Collection<AirfieldInterface> getAirfields() {
-		return this.airfields.values();
+	public List<AirfieldInterface> getAirfields() {
+		return this.airfields;
 	}
 
 	@Override
-	public AirfieldInterface getAirfield(String identifier) throws UnrecognisedAirfieldIntifierException {
-		AirfieldInterface chosen = this.airfields.get(identifier);
-		if(chosen == null) 
-			throw new UnrecognisedAirfieldIntifierException(this, identifier);
-		return chosen;
+	public AirfieldInterface getAirfield(String name) throws UnrecognisedAirfieldIntifierException {
+		for(AirfieldInterface af : getAirfields()){
+			if(af.getName().equals(name)){
+				return af;
+			}
+		}
+		throw new UnrecognisedAirfieldIntifierException(this, name);
 	}
 
 	@Override
-	public Set<String> getIdentifiers() {
-		return this.airfields.keySet();
+	public List<String> getAirfieldNames() {
+		List<String> names = new ArrayList<String>();
+		for(AirfieldInterface af : getAirfields()){
+			names.add(af.getName());
+		}
+		return names;
 	}
 
 	@Override
@@ -71,19 +73,9 @@ public class Airport implements AirportInterface, Savable {
 			throw new ParrallelRunwayException(this, parrallelRunways, newAirfield);
 		}
 		
-		//We use "?"  for now as the sides will be recalculated afterwards in next line
-		this.airfields.put("?", newAirfield);
-		updateIdentifierList();
+		this.airfields.add(newAirfield);
 	}
 
-	@Override
-	public void updateIdentifierList() {
-		Collection<AirfieldInterface> airfields = this.getAirfields();
-		this.airfields = new HashMap<>();
-		for(AirfieldInterface airfield : airfields){
-			this.airfields.put(airfield.getSmallAngledRunway().getIdentifier(),airfield);
-			this.airfields.put(airfield.getLargeAngledRunway().getIdentifier(), airfield);
-		}
-	}
+
 
 }

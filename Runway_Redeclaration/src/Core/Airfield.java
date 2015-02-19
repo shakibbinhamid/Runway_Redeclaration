@@ -9,6 +9,8 @@ import Exceptions.VariableDeclarationException;
 
 class Airfield implements AirfieldInterface, Savable {
 	private DeclaredRunwayInterface[] runways;
+	//TODO make this private and do that sheeeet bro
+	public DeclaredRunwayInterface[] defaultRunways;
 	private PositionedObstacle obstacle;
 	
 	private double runWidth,runLen,initStop,clearLen,dToLongSpace,shortClearWSpace,longClearWSpace,fullWSpace;
@@ -36,7 +38,11 @@ class Airfield implements AirfieldInterface, Savable {
 		this.obstacle = null;
 		
 		this.runways = new DeclaredRunway[2];
+		this.defaultRunways= new DeclaredRunway[2];
 		this.redeclareRunways(angleFromNorth);
+		this.defaultRunways[0] = this.runways[0];
+		this.defaultRunways[1] = this.runways[1];
+		
 	}
 	
 	private void redeclareRunways(int angleFromNorth) throws VariableDeclarationException{

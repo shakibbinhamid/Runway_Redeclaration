@@ -1,7 +1,7 @@
 package Exceptions;
 
 import java.util.Iterator;
-import java.util.Set;
+import java.util.List;
 
 
 
@@ -12,10 +12,10 @@ public class UnrecognisedAirfieldIntifierException extends Exception{
 
 	public UnrecognisedAirfieldIntifierException(AirportInterface airport, String attemptedIdentifier){
 		super("The identifier \""+attemptedIdentifier+"\" is not a know runway\n"+
-				"known runways: "+ interpretStringSet(airport.getIdentifiers()));
+				"known runways: "+ interpretStringSet(airport.getAirfieldNames()));
 	}
 
-	private static String interpretStringSet(Set<String> ids){
+	private static String interpretStringSet(List<String> ids){
 		String out = "";
 		if(ids.size()>0){
 			Iterator<String> iter = ids.iterator();
