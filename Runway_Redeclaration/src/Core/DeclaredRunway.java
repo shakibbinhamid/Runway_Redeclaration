@@ -13,8 +13,8 @@ import Exceptions.VariableDeclarationException;
  * @Tester 
  *
  */
-public class DeclaredRunway implements DeclaredRunwayInterface{
-
+ class DeclaredRunway implements DeclaredRunwayInterface{
+	 
 	private double decTora;
 
 	private double disThreshold, stopway, clearway;
@@ -32,15 +32,15 @@ public class DeclaredRunway implements DeclaredRunwayInterface{
 	 * @throws VariableDeclarationException is thrown when an invalid distance variable is declared
 	 * @throws UnusableRunwayException 
 	 */
-	public DeclaredRunway(AirfieldInterface runway, double displacedThreshold ,int angleFromNorth) throws VariableDeclarationException, UnusableRunwayException{
+	protected DeclaredRunway(AirfieldInterface runway ,int angleFromNorth) throws VariableDeclarationException{
 		
-		setDisplacedThreshold(displacedThreshold);
+		setDisplacedThreshold(DeclaredRunway.DEFAULT_STOPWAY);
 		if(!runway.hasObstacle()){
 			
 			setTORA(runway.getRunwayLength());
 			setStopway(runway.getInitialStopway());
 			
-			double clearway = getStopway()+runway.getClearedLength();
+			double clearway = this.stopway+runway.getClearedLength();
 			setClearway(clearway);
 			
 		}else{

@@ -1,5 +1,7 @@
 package CoreInterfaces;
 
+import Exceptions.VariableDeclarationException;
+
 
 /**
  * //TODO add a docstring
@@ -12,18 +14,13 @@ public interface AirfieldInterface {
 //====[ Misc Methods ]===========================================
 	String getName();
 	
-	int getSmallestAngleFromNorth();
-	
-	/**
-	 * Which one of the parallel runways you are referring to. 
-	 * In the context of the smallest angle.
-	 */
-	char getSideLetter();
-	
 	/**
 	 * Valid 'letter's are 'C', 'L' or 'R'
+	 * By changing the smallest side letter, this method must 
+	 * automatically update the other side as well.
+	 * @throws VariableDeclarationException 
 	 */
-	void setSideLetter(char letter);
+	void setSmallestSideLetter(char letter) throws VariableDeclarationException;
 //===============================================================
 
 //====[ Inert Distance Values ]==================================
@@ -115,10 +112,6 @@ public interface AirfieldInterface {
 	DeclaredRunwayInterface getSmallAngledRunway();
 	
 	DeclaredRunwayInterface getLargeAngledRunway();
-	
-	String getSmallIdentifier();
-	
-	String getLargeIdentifier();
 //===============================================================
 	
 }

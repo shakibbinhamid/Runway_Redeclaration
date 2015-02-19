@@ -3,7 +3,6 @@ package CoreInterfaces;
 import java.util.Collection;
 import java.util.Set;
 
-import Core.Airfield;
 import Exceptions.CannotMakeRunwayException;
 import Exceptions.ParrallelRunwayException;
 import Exceptions.UnrecognisedAirfieldIntifierException;

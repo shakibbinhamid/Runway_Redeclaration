@@ -49,12 +49,18 @@ public class Airport implements AirportInterface, Savable {
 
 	@Override
 	public void addNewAirfield(AirfieldInterface newAirfield) throws ParrallelRunwayException, CannotMakeRunwayException {
+		
+		//Identify parallel runways
 		List<AirfieldInterface> parrallelRunways = new ArrayList<AirfieldInterface>();
 		
+		//Local var => shortens code
+		int newAngle = newAirfield.getSmallAngledRunway().getAngle()/10;
+		
 		for(AirfieldInterface runway : getAirfields()){
-			String id = runway.getSmallIdentifier();
+			int angle = runway.getSmallAngledRunway().getAngle()/10;
 			
-			if(newAirfield.getSmallAngledRunway().getIdentifier().equals(id)){
+			//parallel runways would have the same angle part of the identifier
+			if(newAngle == angle){
 				parrallelRunways.add(runway);
 			}
 		}
@@ -65,6 +71,7 @@ public class Airport implements AirportInterface, Savable {
 			throw new ParrallelRunwayException(this, parrallelRunways, newAirfield);
 		}
 		
+		//We use "?"  for now as the sides will be recalculated afterwards
 		this.airfields.put("?", newAirfield);
 		updateIdentifierList();
 	}
@@ -74,8 +81,8 @@ public class Airport implements AirportInterface, Savable {
 		Collection<AirfieldInterface> airfields = this.getAirfields();
 		this.airfields = new HashMap<>();
 		for(AirfieldInterface airfield : airfields){
-			this.airfields.put(airfield.getSmallIdentifier(),airfield);
-			this.airfields.put(airfield.getLargeIdentifier(), airfield);
+			this.airfields.put(airfield.getSmallAngledRunway().getIdentifier(),airfield);
+			this.airfields.put(airfield.getLargeAngledRunway().getIdentifier(), airfield);
 		}
 	}
 

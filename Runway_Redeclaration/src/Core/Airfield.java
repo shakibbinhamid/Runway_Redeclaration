@@ -5,92 +5,111 @@ import CoreInterfaces.DeclaredRunwayInterface;
 import CoreInterfaces.ObstacleInterface;
 import CoreInterfaces.PositionedObstacleInterface;
 import CoreInterfaces.Savable;
+import Exceptions.VariableDeclarationException;
 
-public class Airfield implements AirfieldInterface, Savable {
+class Airfield implements AirfieldInterface, Savable {
 	private DeclaredRunwayInterface[] runways;
 	private PositionedObstacle obstacle;
 	
-	public Airfield(int angleFromNorth, char sideLetter){
-		//TODO add stuff - dunno what though
+	private double runWidth,runLen,initStop,clearLen,dToLongSpace,shortClearWSpace,longClearWSpace,fullWSpace;
+	
+	/**
+	 * 
+	 * @param angleFromNorth
+	 * @param sideLetter
+	 * @param lengths
+	 * @throws VariableDeclarationException - There are invalid variable declarations
+	 */
+	protected Airfield(int angleFromNorth, char sideLetter, double[] lengths) throws VariableDeclarationException{
+		if(lengths.length != 8) throw new VariableDeclarationException("lengths", lengths, "Needs to be 8 cells");
 		
-		//TODO Add all distances to the the fields
+		this.runWidth = lengths[0];
+		this.runLen = lengths[1];
+		this.initStop = lengths[2];
+		this.clearLen = lengths[3];
+		this.dToLongSpace = lengths[4];
+		this.shortClearWSpace = lengths[5];
+		this.longClearWSpace = lengths[6];
+		this.fullWSpace = lengths[7];
+		
 		this.obstacle = null;
 		
-		
 		this.runways = new DeclaredRunway[2];
-		//TODO generate a runway for each 
+		this.redeclareRunways(angleFromNorth);
+	}
+	
+	private void redeclareRunways(int angleFromNorth) throws VariableDeclarationException{
+		//Ensure that it is above 0
+		while(angleFromNorth < 0){
+			angleFromNorth+= 360;
+		}
+		
+		//Modding it by 180 finds the smallest angle ;)
+		angleFromNorth %= 180;
+		
+		this.runways[0] = new DeclaredRunway(this, angleFromNorth);
+		this.runways[1] = new DeclaredRunway(this, angleFromNorth+180);
 	}
 	
 	
 	@Override
 	public String getName(){
-		return this.getSmallIdentifier()+"/"+this.getLargeIdentifier();
+		return this.getSmallAngledRunway().getIdentifier()+"/"+this.getLargeAngledRunway().getIdentifier();
 	}
 	
 	@Override
-	public int getSmallestAngleFromNorth() {
-		// TODO Auto-generated method stub
-		return 0;
+	public void setSmallestSideLetter(char letter) throws VariableDeclarationException {
+		getSmallAngledRunway().setSideLetter(letter);
+		
+		//Change other side as well
+		if(letter=='C'){
+			getLargeAngledRunway().setSideLetter(letter);
+		}else if(letter == 'R'){
+			getLargeAngledRunway().setSideLetter('L');
+		}else{//letter must == 'L'
+			getLargeAngledRunway().setSideLetter('R');
+		}
 	}
 
-	@Override
-	public char getSideLetter() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	
-	@Override
-	public void setSideLetter(char letter) {
-		// TODO Auto-generated method stub
-		
-	}
 	
 	@Override
 	public double getRunwayWidth() {
-		// TODO Auto-generated method stub
-		return 0;
+		return runWidth;
 	}
 
 	@Override
 	public double getRunwayLength() {
-		// TODO Auto-generated method stub
-		return 0;
+		return runLen;
 	}
 
 	@Override
 	public double getInitialStopway() {
-		// TODO Auto-generated method stub
-		return 0;
+		return initStop;
 	}
 
 	@Override
 	public double getClearedLength() {
-		// TODO Auto-generated method stub
-		return 0;
+		return clearLen;
 	}
 
 	@Override
 	public double distanceToLongSpacer() {
-		// TODO Auto-generated method stub
-		return 0;
+		return dToLongSpace;
 	}
 
 	@Override
 	public double getShortClearedWidthSpacer() {
-		// TODO Auto-generated method stub
-		return 0;
+		return shortClearWSpace;
 	}
 
 	@Override
 	public double getLongClearedWidthSpacer() {
-		// TODO Auto-generated method stub
-		return 0;
+		return longClearWSpace;
 	}
 
 	@Override
 	public double getFullWidthSpacer() {
-		// TODO Auto-generated method stub
-		return 0;
+		return fullWSpace;
 	}
 
 	@Override
@@ -102,7 +121,7 @@ public class Airfield implements AirfieldInterface, Savable {
 	public void addObstacle(ObstacleInterface obj,
 			String indentifier, double howFarIn) {
 		
-		if(indentifier.contains(""+this.getSmallestAngleFromNorth())){
+		if(indentifier.equals(this.getSmallAngledRunway().getIdentifier())){
 			this.obstacle = new PositionedObstacle(obj,howFarIn);
 			
 		}else{
@@ -110,7 +129,11 @@ public class Airfield implements AirfieldInterface, Savable {
 			this.obstacle = new PositionedObstacle(obj,howFarIn);
 		}
 		
-		// TODO Re-process and redeclare all the runways
+		try {
+			this.redeclareRunways(getSmallAngledRunway().getAngle());
+		} catch (VariableDeclarationException e) {
+			e.printStackTrace();
+		}
 		
 	}
 
@@ -137,20 +160,6 @@ public class Airfield implements AirfieldInterface, Savable {
 	@Override
 	public DeclaredRunwayInterface getLargeAngledRunway() {
 		return this.runways[1];
-	}
-
-
-	@Override
-	public String getSmallIdentifier() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-	@Override
-	public String getLargeIdentifier() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 
