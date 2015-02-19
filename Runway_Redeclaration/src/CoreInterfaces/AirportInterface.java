@@ -3,10 +3,10 @@ package CoreInterfaces;
 import java.util.Collection;
 import java.util.Set;
 
-import Core.Airfield;
 import Exceptions.CannotMakeRunwayException;
 import Exceptions.ParrallelRunwayException;
 import Exceptions.UnrecognisedAirfieldIntifierException;
+import Exceptions.VariableDeclarationException;
 
 /**
  * 
@@ -20,7 +20,7 @@ public interface AirportInterface {
 	
 	AirfieldInterface getAirfield(String identifier) throws UnrecognisedAirfieldIntifierException;
 	
-	void addNewAirfield(AirfieldInterface newAirfield) throws ParrallelRunwayException, CannotMakeRunwayException;
+	void addNewAirfield(int angleFromNorth, double[] dimensions) throws ParrallelRunwayException, CannotMakeRunwayException, VariableDeclarationException;
 	
 	Set<String> getIdentifiers();
 	

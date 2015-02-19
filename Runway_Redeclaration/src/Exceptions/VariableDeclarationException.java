@@ -6,6 +6,7 @@ public class VariableDeclarationException extends Exception{
 
 	private String distanceName;
 	private double incorrectValue;
+	private double[] arr;
 	
 	public VariableDeclarationException(String distanceName, double value, String constraintInequality){
 		super("DistanceDeclarationException:\n"
@@ -21,6 +22,18 @@ public class VariableDeclarationException extends Exception{
 				+"Which does not follow: "+constraintInequality);
 		this.distanceName = distanceName;
 		this.incorrectValue = value;
+	}
+	
+	public VariableDeclarationException(String distanceName, double[] values, String constraintInequality) {
+		super("DistanceDeclarationException:\n"
+				+"The variable "+distanceName+" has the value: "+values
+				+"Which does not follow: "+constraintInequality);
+		this.distanceName = distanceName;
+		this.arr = values;
+	}
+
+	public double[] getInvalidArray(){
+		return this.arr;
 	}
 	
 	public double getIncorrectvalue(){
