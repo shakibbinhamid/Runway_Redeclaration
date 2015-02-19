@@ -27,9 +27,9 @@ public class InfoPanel extends JPanel{
 		JLabel label;
 	JPanel bottomTablePanel;
 		JPanel tablePanel;
-			JPanel runwayDataTable;
-			JPanel obstacleDataTable;
-			JPanel advancedDataTable;
+			TablePanel runwayDataTable;
+			TablePanel obstacleDataTable;
+			TablePanel advancedDataTable;
 	
 	public InfoPanel(DeclaredRunwayInterface runway){
 		
@@ -57,6 +57,22 @@ public class InfoPanel extends JPanel{
 			bottomTablePanel.add(runwayDataTable);
 			bottomTablePanel.add(obstacleDataTable);
 			bottomTablePanel.add(advancedDataTable);
+	}
+	
+	public void updateRunwayTable(String[][] data){
+		updateTable(runwayDataTable, data);
+	}
+	
+	public void updateObstacleTable(String[][] data){
+		updateTable(obstacleDataTable, data);
+	}
+	
+	public void updateAdvancedTable(String[][] data){
+		updateTable(advancedDataTable, data);
+	}	
+	
+	private void updateTable(TablePanel table, String[][] data){
+		table.redrawTable(data);
 	}
 		
 	class TablePanel extends JPanel{
@@ -91,5 +107,17 @@ public class InfoPanel extends JPanel{
 			this.setLayout(new BorderLayout());
 			this.add(new JScrollPane(table), BorderLayout.CENTER);
 		}
+		
+		void redrawTable(String[][] data){;
+			int rowCount=tableModel.getRowCount();
+			for(int i = rowCount - 1; i >=0; i--){
+				tableModel.removeRow(i); 
+			}
+			for(int i=0; i<data.length; i++){
+				tableModel.addRow(data[i]);
+			}
+			table.revalidate();
+		}
+	
 	}
 }

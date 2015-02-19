@@ -8,13 +8,13 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
-import Core.Airfield;
 import Core.Airport;
 import CoreInterfaces.AirfieldInterface;
 import CoreInterfaces.AirportInterface;
 import CoreInterfaces.ObstacleInterface;
 import Exceptions.CannotMakeRunwayException;
 import Exceptions.ParrallelRunwayException;
+import Exceptions.VariableDeclarationException;
 
 public class TopFrame extends JFrame{
 	
@@ -55,9 +55,10 @@ public class TopFrame extends JFrame{
 		// TODO 
 		airport = new Airport("     Heathrodnf kol     ");
 		try {
-			airport.addNewAirfield(new Airfield(32, 'L'));
+			airport.addNewAirfield(50, new double[]{50,500,50,100,100,200,300,400});
+			//airport.getAirfield("50 ").;
 			//airport.addNewAirfield(new Airfield(49, 'R'));
-		} catch (ParrallelRunwayException | CannotMakeRunwayException e) {
+		} catch (ParrallelRunwayException | CannotMakeRunwayException | VariableDeclarationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

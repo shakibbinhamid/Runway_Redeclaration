@@ -20,8 +20,8 @@ public class ChooseRunwayPanel extends JPanel{
 		}
 		
 		private void init(){
-			smallAngled = new JRadioButton(tab.getRunway().getIdentifier());
-			bigAngled = new JRadioButton(tab.getRunway().getIdentifier());
+			smallAngled = new JRadioButton(tab.getField().getSmallAngledRunway().getIdentifier());
+			bigAngled = new JRadioButton(tab.getField().getLargeAngledRunway().getIdentifier());
 			
 			ButtonGroup runwaySelection = new ButtonGroup();
 			runwaySelection.add(smallAngled);
