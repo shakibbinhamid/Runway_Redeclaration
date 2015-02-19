@@ -77,6 +77,5 @@ public class ParrallelRunwayException extends Exception {
 				}
 			}
 		}
-		this.airport.updateIdentifierList();
 	}
 }
