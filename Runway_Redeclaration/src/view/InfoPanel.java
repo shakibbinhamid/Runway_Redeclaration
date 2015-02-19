@@ -38,7 +38,7 @@ public class InfoPanel extends JPanel{
 		bottomTablePanel = new JPanel();
 			tablePanel = new JPanel();
 				runwayDataTable = new TablePanel("Runway Parameters", runwayRowNames , runwayColumnNames);
-				obstacleDataTable = new TablePanel("Obstacle Data", obstacleRowNames , null);
+				obstacleDataTable = new TablePanel("Obstacle Data", obstacleRowNames , obstacleColumnNames);
 				advancedDataTable = new TablePanel("Advanced Parameters", runwayAdvancedRowNames, runwayColumnNames);
 	}
 	
@@ -66,7 +66,7 @@ public class InfoPanel extends JPanel{
 			public boolean isCellEditable(int row, int column) {
 			       return false;
 			}
-		};//the actual data holder in the table
+		};
 			
 		TablePanel (String panelName, String[] rowNames, String[] columnNames){
 			

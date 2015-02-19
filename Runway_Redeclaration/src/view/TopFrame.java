@@ -9,6 +9,7 @@ import javax.swing.JTabbedPane;
 
 import CoreInterfaces.AirfieldInterface;
 import CoreInterfaces.AirportInterface;
+import CoreInterfaces.ObstacleInterface;
 
 public class TopFrame extends JFrame{
 	
@@ -18,6 +19,7 @@ public class TopFrame extends JFrame{
 	
 	private AirportInterface airport;
 	private AirfieldInterface airfield;
+	private ObstacleInterface obstacle;
 
 	public TopFrame(){
 		init();
@@ -56,6 +58,30 @@ public class TopFrame extends JFrame{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 539, 350);
 		setVisible(true);
+	}
+
+	public AirportInterface getAirport() {
+		return airport;
+	}
+
+	public void setAirport(AirportInterface airport) {
+		this.airport = airport;
+	}
+
+	public AirfieldInterface getAirfield() {
+		return airfield;
+	}
+
+	public void setAirfield(AirfieldInterface airfield) {
+		this.airfield = airfield;
+	}
+
+	public ObstacleInterface getObstacle() {
+		return obstacle;
+	}
+
+	public void setObstacle(ObstacleInterface obstacle) {
+		this.obstacle = obstacle;
 	}
 	
 }
