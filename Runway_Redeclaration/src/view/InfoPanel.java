@@ -32,7 +32,6 @@ public class InfoPanel extends JPanel{
 	public InfoPanel(AirfieldInterface field){
 		
 		this.field = field;
-		System.out.println("BLEH");
 		init();
 	}
 	

@@ -7,9 +7,13 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
+import Core.Airfield;
+import Core.Airport;
 import CoreInterfaces.AirfieldInterface;
 import CoreInterfaces.AirportInterface;
 import CoreInterfaces.ObstacleInterface;
+import Exceptions.CannotMakeRunwayException;
+import Exceptions.ParrallelRunwayException;
 
 public class TopFrame extends JFrame{
 	
@@ -43,16 +47,30 @@ public class TopFrame extends JFrame{
 	}
 	
 	public void init(){
+		
+		/**
+		 * DON'T USE THIS
+		 */
+		// TODO 
+		airport = new Airport("Heathrow");
+		try {
+			airport.addNewAirfield(new Airfield(32, 'L'));
+		} catch (ParrallelRunwayException | CannotMakeRunwayException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		this.setJMenuBar(new TopMenu(this));
 		
 		topPanel = new JPanel();
 		this.setContentPane(topPanel);
 		topPanel.setLayout(new BorderLayout());
 		
-		logPanel = new LogPanel(null);
+		//TODO
+		logPanel = new LogPanel(airport);
 		topPanel.add(logPanel, BorderLayout.WEST);
 		
-		tabbedPanel = new TabbedPanel(null);
+		tabbedPanel = new TabbedPanel(airport);
 		topPanel.add(tabbedPanel, BorderLayout.CENTER);
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

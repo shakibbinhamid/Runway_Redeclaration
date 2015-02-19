@@ -13,6 +13,7 @@ public class TabbedPanel extends JTabbedPane{
 	
 	public TabbedPanel(AirportInterface airport){
 		this.airport = airport;
+		init();
 	}
 	
 	private void init(){

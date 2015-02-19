@@ -17,6 +17,7 @@ public class Tab extends JPanel{
 	
 	public Tab(AirfieldInterface field){
 		this.field = field;
+		init();
 	}
 	
 	private void init(){
