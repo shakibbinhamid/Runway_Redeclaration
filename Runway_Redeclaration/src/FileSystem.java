@@ -1,6 +1,7 @@
 import java.io.File;
 import java.util.ArrayList;
 
+import Core.Airport;
 import Core.Obstacle;
 
 /**
@@ -72,5 +73,10 @@ public class FileSystem {
 		File obsFile = new File(wd + datDir + objDir + sub + fileName);
 		Obstacle loadedObs = (Obstacle) XMLSaver.deserialise(Obstacle.class, obsFile);
 		return loadedObs;
+	}
+	
+	public boolean saveAir(Airport a){
+		String dir = wd + datDir + airDir + sub + a.getName() + airext + xmlext;
+		return XMLSaver.serialise(a, dir);
 	}
 }
