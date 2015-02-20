@@ -3,6 +3,10 @@ package Core;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.simpleframework.xml.Attribute;
+import org.simpleframework.xml.ElementMap;
+import org.simpleframework.xml.Root;
+
 import CoreInterfaces.AirfieldInterface;
 import CoreInterfaces.AirportInterface;
 import CoreInterfaces.Savable;
@@ -11,8 +15,11 @@ import Exceptions.ParrallelRunwayException;
 import Exceptions.UnrecognisedAirfieldIntifierException;
 import Exceptions.VariableDeclarationException;
 
+@Root
 public class Airport implements AirportInterface, Savable {
+	@ElementMap
 	private List<AirfieldInterface> airfields;
+	@Attribute
 	private String name;
 
 	

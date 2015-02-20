@@ -1,5 +1,8 @@
 package Core;
 
+import org.simpleframework.xml.Element;
+import org.simpleframework.xml.Root;
+
 import CoreInterfaces.AirfieldInterface;
 import CoreInterfaces.DeclaredRunwayInterface;
 import CoreInterfaces.ObstacleInterface;
@@ -7,10 +10,11 @@ import CoreInterfaces.PositionedObstacleInterface;
 import CoreInterfaces.Savable;
 import Exceptions.VariableDeclarationException;
 
+@Root
 class Airfield implements AirfieldInterface, Savable {
-	private DeclaredRunwayInterface[] runways;
-	//TODO make this private and do that sheeeet bro
-	public DeclaredRunwayInterface[] defaultRunways;
+	@Element
+	private DeclaredRunwayInterface[] runways,defaultRunways;
+	@Element
 	private PositionedObstacle obstacle;
 	
 	private double runWidth,runLen,initStop,clearLen,dToLongSpace,shortClearWSpace,longClearWSpace,fullWSpace;
@@ -40,9 +44,9 @@ class Airfield implements AirfieldInterface, Savable {
 		this.runways = new DeclaredRunway[2];
 		this.defaultRunways= new DeclaredRunway[2];
 		this.redeclareRunways(angleFromNorth);
-		this.defaultRunways[0] = this.runways[0];
-		this.defaultRunways[1] = this.runways[1];
 		
+		this.defaultRunways[0] = new DeclaredRunway(this, this.getSmallAngledRunway().getAngle());
+		this.defaultRunways[1] = new DeclaredRunway(this, this.getLargeAngledRunway().getAngle());;		
 	}
 	
 	private void redeclareRunways(int angleFromNorth) throws VariableDeclarationException{
@@ -168,6 +172,20 @@ class Airfield implements AirfieldInterface, Savable {
 	public DeclaredRunwayInterface getLargeAngledRunway() {
 		return this.runways[1];
 	}
+	
+	
+	@Override
+	public DeclaredRunwayInterface[] getDefaultRunways() {
+		return this.defaultRunways;
+	}
+	
+	@Override
+	public DeclaredRunwayInterface getDefaultSmallAngledRunway(){
+		return this.defaultRunways[0];
+	}
 
-
+	@Override
+	public DeclaredRunwayInterface getDefaultLargeAngledRunway(){
+		return this.defaultRunways[1];
+	}
 }
