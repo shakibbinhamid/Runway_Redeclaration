@@ -20,6 +20,16 @@ public class ParrallelRunwayException extends Exception {
 		this.airport = airportWithIssue;
 	}
 
+	public List<AirfieldInterface> getParallel(){
+		return this.parrallels;
+	}
+	public AirfieldInterface getNewAirway(){
+		return this.newAirfield;
+	}
+	public AirportInterface getAirportWithIssue(){
+		return this.airport;
+	}
+	
 
 	private static String interpretStringSet(List<AirfieldInterface> runways){
 		String out = "";
