@@ -107,11 +107,19 @@ public interface AirfieldInterface {
 	
 	
 //====[ Declared Runways ]=======================================
+	//---[ Active ]--------------------------------------
 	DeclaredRunwayInterface[] getRunways();
 	
 	DeclaredRunwayInterface getSmallAngledRunway();
 	
 	DeclaredRunwayInterface getLargeAngledRunway();
-//===============================================================
 	
+	//---[ Default/Origonal ]------------------------------
+	DeclaredRunwayInterface[] getDefaultRunways();
+	
+	DeclaredRunwayInterface getDefaultLargeAngledRunway();
+
+	DeclaredRunwayInterface getDefaultSmallAngledRunway();
+//===============================================================
+
 }
