@@ -79,4 +79,10 @@ public class FileSystem {
 		String dir = wd + datDir + airDir + sub + a.getName() + airext + xmlext;
 		return XMLSaver.serialise(a, dir);
 	}
+	
+	public Airport loadAir(String fileName){
+		File airFile = new File(wd + datDir + airDir + sub + fileName);
+		Airport a = (Airport) XMLSaver.deserialise(Airport.class, airFile);
+		return a;
+	}
 }
