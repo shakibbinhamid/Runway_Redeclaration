@@ -1,5 +1,8 @@
 package Core;
 
+import org.simpleframework.xml.Element;
+import org.simpleframework.xml.Root;
+
 import CoreInterfaces.AirfieldInterface;
 import CoreInterfaces.DeclaredRunwayInterface;
 import CoreInterfaces.ObstacleInterface;
@@ -7,8 +10,11 @@ import CoreInterfaces.PositionedObstacleInterface;
 import CoreInterfaces.Savable;
 import Exceptions.VariableDeclarationException;
 
+@Root
 class Airfield implements AirfieldInterface, Savable {
+	@Element
 	private DeclaredRunwayInterface[] runways,defaultRunways;
+	@Element
 	private PositionedObstacle obstacle;
 	
 	private double runWidth,runLen,initStop,clearLen,dToLongSpace,shortClearWSpace,longClearWSpace,fullWSpace;
