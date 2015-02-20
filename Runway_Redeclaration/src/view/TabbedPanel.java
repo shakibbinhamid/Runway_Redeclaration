@@ -21,7 +21,6 @@ public class TabbedPanel extends JTabbedPane{
 		Collection<AirfieldInterface> airfields = airport.getAirfields();
 		
 		for(AirfieldInterface airfield: airfields){
-			System.out.println(airfield);
 			this.addTab(airfield.getName(), new Tab(airfield));
 		}
 	}

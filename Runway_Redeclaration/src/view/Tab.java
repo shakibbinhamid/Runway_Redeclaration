@@ -6,6 +6,7 @@ import javax.swing.JPanel;
 
 import CoreInterfaces.AirfieldInterface;
 import CoreInterfaces.DeclaredRunwayInterface;
+import CoreInterfaces.ObstacleInterface;
 import Exceptions.UnusableRunwayException;
 
 public class Tab extends JPanel{
@@ -23,10 +24,11 @@ public class Tab extends JPanel{
 		this.runway = field.getSmallAngledRunway();
 		init();
 		try {
-			if(field != null)
+			if(field != null){
 				populateRunwayTable(field.getLargeAngledRunway(),field.getLargeAngledRunway());
+				populateAdvancedTable(field.getLargeAngledRunway(), field.getSmallAngledRunway());
+			}
 		} catch (UnusableRunwayException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -67,25 +69,40 @@ public class Tab extends JPanel{
 	
 	protected void populateRunwayTable(DeclaredRunwayInterface def, DeclaredRunwayInterface run) throws UnusableRunwayException{
 		String[] tora, toda, asda, lda, dt;
-		String[] resa, blast, clear, stop, angleA, angleD;
 		
-		tora = new String[]{"TORA", getPara(def, "tora"), getPara(run, "tora")};
-		toda = new String[]{"TODA", getPara(def, "toda"), getPara(run, "toda")};
-		asda = new String[]{"ASDA", getPara(def, "asda"), getPara(run, "asda")};
-		lda = new String[]{"LDA", getPara(def, "lda"), getPara(run, "lda")};
-		dt = new String[]{"Displaced Threshold", getPara(def, "dt"), getPara(run, "dt")};
-		
-		stop = new String[]{"Stopway",getPara(def, "stop"), getPara(run, "stop")};
-		clear = new String[]{"Clearway",getPara(def, "clear"), getPara(run, "clear")};
-		//blast= new String[]{"Blast Protection", getPara(def, "blast"), getPara(run, "blast")};
-		//resa = new String[]{"RESA", getPara(def, "resa"), getPara(run, "resa")};
-		angleA = new String[]{"Angle of Ascent", getPara(def, "ascent"), getPara(run, "ascent")};
-		angleD = new String[]{"Angle of Descent", getPara(def, "descent"), getPara(run, "descent")};
+		tora = new String[]{"TORA", getRunwayPara(def, "tora"), getRunwayPara(run, "tora")};
+		toda = new String[]{"TODA", getRunwayPara(def, "toda"), getRunwayPara(run, "toda")};
+		asda = new String[]{"ASDA", getRunwayPara(def, "asda"), getRunwayPara(run, "asda")};
+		lda = new String[]{"LDA", getRunwayPara(def, "lda"), getRunwayPara(run, "lda")};
+		dt = new String[]{"Displaced Threshold", getRunwayPara(def, "dt"), getRunwayPara(run, "dt")};
 		
 		info.updateRunwayTable(new String[][]{tora, toda, asda, lda, dt});
 	}
 	
-	String getPara(DeclaredRunwayInterface runway, String para) throws UnusableRunwayException{
+	protected void populateAdvancedTable(DeclaredRunwayInterface def, DeclaredRunwayInterface run) throws UnusableRunwayException{
+		String[] resa, blast, clear, stop, angleA, angleD;
+		
+		stop = new String[]{"Stopway",getRunwayPara(def, "stop"), getRunwayPara(run, "stop")};
+		clear = new String[]{"Clearway",getRunwayPara(def, "clear"), getRunwayPara(run, "clear")};
+		//blast= new String[]{"Blast Protection", getRunwayPara(def, "blast"), getRunwayPara(run, "blast")};
+		//resa = new String[]{"RESA", getRunwayPara(def, "resa"), getRunwayPara(run, "resa")};
+		angleA = new String[]{"Angle of Ascent", getRunwayPara(def, "ascent"), getRunwayPara(run, "ascent")};
+		angleD = new String[]{"Angle of Descent", getRunwayPara(def, "descent"), getRunwayPara(run, "descent")};
+		
+		info.updateAdvancedTable(new String[][]{stop, clear, angleA, angleD});
+	}
+	
+	protected void populateObstacleTable(ObstacleInterface obs){
+		String[] name, height, radius;
+		
+		name = new String[]{"Name", getObstaclePara(obs, "name")};
+		height = new String[]{"Height", getObstaclePara(obs, "height")};
+		radius = new String[]{"Radius", getObstaclePara(obs, "radius")};
+		
+		info.updateObstacleTable(new String[][]{name, height, radius});
+	}
+	
+	private String getRunwayPara(DeclaredRunwayInterface runway, String para) throws UnusableRunwayException{
 		switch(para){
 		case "tora": return String.valueOf(runway.getTORA());
 		case "asda": return String.valueOf(runway.getASDA());
@@ -99,6 +116,15 @@ public class Tab extends JPanel{
 		//case "blast": return String.valueOf(runway.());
 		case "ascent": return String.valueOf(runway.getAngleOfAscent());
 		case "descent": return String.valueOf(runway.getAngleOfDescent());
+		}
+		return null;
+	}
+	
+	private String getObstaclePara(ObstacleInterface obs, String para){
+		switch(para){
+		case "name" : return obs.getName();
+		case "radius" : return String.valueOf(obs.getRadius());
+		case "height" : return String.valueOf(obs.getHeight());
 		}
 		return null;
 	}
