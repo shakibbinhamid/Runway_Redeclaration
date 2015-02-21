@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.simpleframework.xml.Attribute;
+import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.ElementMap;
 import org.simpleframework.xml.Root;
 
@@ -28,7 +29,7 @@ import Exceptions.VariableDeclarationException;
  *
  */
 public class Airport implements AirportInterface, Savable {
-	@ElementMap
+	@ElementList
 	private List<AirfieldInterface> airfields;
 	@Attribute
 	private String name;
