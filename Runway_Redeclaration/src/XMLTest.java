@@ -17,9 +17,24 @@ import Exceptions.VariableDeclarationException;
 public class XMLTest {
 
 	public static void main(String[] args) {
-		Obstacle o = new Obstacle("Bob", 0, 0);
+		Airport a = new Airport("Gatwick");
+		double[] numbers = {10,11,12,13,14,15,16,17};
+		try {
+			a.addNewAirfield(78, numbers);
+		} catch (ParrallelRunwayException | CannotMakeRunwayException
+				| VariableDeclarationException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		FileSystem fs = new FileSystem();
-		System.out.println(fs.saveObs(o));
+		System.out.println(fs.saveAir(a));
+		String dir = System.getProperty("user.dir") + "\\dat\\airports\\Gatwick.air.xml";
+		try {
+			System.out.println(readFile(dir));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	static String readFile(String path) 

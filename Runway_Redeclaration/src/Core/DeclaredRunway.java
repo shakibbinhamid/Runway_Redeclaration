@@ -1,5 +1,8 @@
 package Core;
 
+import org.simpleframework.xml.Element;
+import org.simpleframework.xml.Root;
+
 import CoreInterfaces.AirfieldInterface;
 import CoreInterfaces.DeclaredRunwayInterface;
 import Exceptions.UnusableRunwayException;
@@ -27,12 +30,13 @@ import Exceptions.VariableDeclarationException;
  * @Tester Stefan
  *
  */
+@Root
  class DeclaredRunway implements DeclaredRunwayInterface{
-	 
+	 @Element
 	private double decTora, disThreshold, stopway, clearway;
-
+	 @Element
 	private int angle, ascentAngle, descentAngle;
-
+	 @Element
 	private char direction;
 
 	/**
