@@ -10,15 +10,16 @@ import CoreInterfaces.PositionedObstacleInterface;
  * 
  * @author Stefan
  * @Editor Stefan
+ * @Testor Stefan
  *
  */
 public class PositionedObstacle implements PositionedObstacleInterface{
 	private ObstacleInterface unpositionedObj;
 	private double distance;
 	
-	public PositionedObstacle(ObstacleInterface obj, double howFarInFromLeft){
+	public PositionedObstacle(ObstacleInterface obj, double howFarInFromSmallAngledSide){
 		this.unpositionedObj=  obj;
-		this.distance = howFarInFromLeft;
+		this.distance = howFarInFromSmallAngledSide;
 	}
 	
 	

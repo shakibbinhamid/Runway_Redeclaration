@@ -16,6 +16,17 @@ import Exceptions.UnrecognisedAirfieldIntifierException;
 import Exceptions.VariableDeclarationException;
 
 @Root
+/**
+ * This is what represents an Airport, airports can have multiple airfields.
+ * Please note that an airfield cannot handle more than 3 parallel runways.
+ * 
+ * This class discourages the use of constructing new AirfieldInterface implementations 
+ * and parsing them as arguments to be stored in this object. This is to prevent 
+ * two or more airports having the same airfield.
+ * 
+ * @author Stefan
+ *
+ */
 public class Airport implements AirportInterface, Savable {
 	@ElementMap
 	private List<AirfieldInterface> airfields;
@@ -63,13 +74,19 @@ public class Airport implements AirportInterface, Savable {
 		
 		AirfieldInterface newAirfield = new Airfield(angleFromNorth, dimensions);
 		
-		//Identify parallel runways
+		/*---[ Identify parallel runways ]----
+		 * Note: Having one previous runway at the same angle is handled differently 
+		 * to having two at the previous angle and 4 runways of the same angle are
+		 * not allowed, so we must count up all runways at that angle before throwing 
+		 * any exceptions.
+		 */
 		List<AirfieldInterface> parrallelRunways = new ArrayList<AirfieldInterface>();
+		String id_newAngle = newAirfield.getSmallAngledRunway().getIdentifier().substring(0, 2);
+		
 		for(AirfieldInterface runway : getAirfields()){
-			int angle = runway.getSmallAngledRunway().getAngle()/10;
-			
+			String id_angle =  runway.getSmallAngledRunway().getIdentifier().substring(0, 2);
 			//parallel runways would have the same angle part of the identifier
-			if(angleFromNorth == angle){
+			if(id_angle.equals(id_newAngle)){
 				parrallelRunways.add(runway);
 			}
 		}

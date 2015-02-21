@@ -10,26 +10,18 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-import CoreInterfaces.AirfieldInterface;
 import CoreInterfaces.DeclaredRunwayInterface;
 
 public class InfoPanel extends JPanel{
 	
 	private static final String[] runwayColumnNames = {"Parameter","Default", "Redeclared"};
 	private static final String[] obstacleColumnNames = {"Parameter", "Value"};
-	private static final String[] runwayRowNames ={"TORA", "TODA", "ASDA", "LDA"};
-	private static final String[] runwayAdvancedRowNames = {"Displaced Threshold", "RESA", "Angle of Ascent", "Angle of Descent", "Blast Protection"};
-	private static final String[] obstacleRowNames = {"Name", "Height", "Radius"};
 	
 	DeclaredRunwayInterface runway;
 	
-	JPanel topLabelPanel;
-		JLabel label;
-	JPanel bottomTablePanel;
-		JPanel tablePanel;
-			TablePanel runwayDataTable;
-			TablePanel obstacleDataTable;
-			TablePanel advancedDataTable;
+	TablePanel runwayDataTable;
+	TablePanel obstacleDataTable;
+	TablePanel advancedDataTable;
 	
 	public InfoPanel(DeclaredRunwayInterface runway){
 		
@@ -39,24 +31,15 @@ public class InfoPanel extends JPanel{
 	
 	public void init(){
 		
-		topLabelPanel = new JPanel();
-		label = new JLabel(runway.getIdentifier());
-		bottomTablePanel = new JPanel();
-			runwayDataTable = new TablePanel("Runway Parameters", runwayRowNames , runwayColumnNames);
-			obstacleDataTable = new TablePanel("Obstacle Data", obstacleRowNames , obstacleColumnNames);
-			advancedDataTable = new TablePanel("Advanced Parameters", runwayAdvancedRowNames, runwayColumnNames);
+		runwayDataTable = new TablePanel("Runway Parameters", runwayColumnNames);
+		obstacleDataTable = new TablePanel("Obstacle Data", obstacleColumnNames);
+		advancedDataTable = new TablePanel("Advanced Parameters", runwayColumnNames);
 			
-		this.setLayout(new BorderLayout());
-		this.add(topLabelPanel, BorderLayout.NORTH);
-		this.add(bottomTablePanel, BorderLayout.CENTER);
+		this.setLayout(new GridLayout(3,1));
 		
-		topLabelPanel.setLayout(new BorderLayout());
-			topLabelPanel.add(label, BorderLayout.CENTER);
-			
-		bottomTablePanel.setLayout(new GridLayout(3, 1));
-			bottomTablePanel.add(runwayDataTable);
-			bottomTablePanel.add(obstacleDataTable);
-			bottomTablePanel.add(advancedDataTable);
+		this.add(runwayDataTable);
+		this.add(obstacleDataTable);
+		this.add(advancedDataTable);
 	}
 	
 	public void updateRunwayTable(String[][] data){
@@ -87,7 +70,7 @@ public class InfoPanel extends JPanel{
 			}
 		};
 			
-		TablePanel (String panelName, String[] rowNames, String[] columnNames){
+		TablePanel (String panelName, String[] columnNames){
 			
 			title = panelName;	
 			table = new JTable(tableModel);
