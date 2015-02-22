@@ -1,17 +1,11 @@
 import io.FileSystem;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 
-import org.simpleframework.xml.Serializer;
-import org.simpleframework.xml.core.Persister;
 
 import Core.Airport;
-import Core.Obstacle;
 import Exceptions.CannotMakeRunwayException;
 import Exceptions.ParrallelRunwayException;
 import Exceptions.VariableDeclarationException;

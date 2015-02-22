@@ -4,7 +4,7 @@ import java.io.File;
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
 
-import Core.Obstacle;
+
 import CoreInterfaces.Savable;
 /**
  * 
