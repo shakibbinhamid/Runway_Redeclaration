@@ -35,6 +35,9 @@ public class XMLTest {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		Airport a2 = fs.loadAir("Gatwick.air.xml");
+		System.out.println(a2.toString());
 	}
 
 	static String readFile(String path) 

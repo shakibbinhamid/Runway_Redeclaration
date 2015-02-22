@@ -48,6 +48,12 @@ import Exceptions.VariableDeclarationException;
 	 * 
 	 * @throws VariableDeclarationException is thrown when an invalid distance variable is declared
 	 */
+	
+	//nullary constructor
+	 protected DeclaredRunway(){
+		 
+	 }
+	 
 	protected DeclaredRunway(AirfieldInterface runway ,int angleFromNorth) throws VariableDeclarationException{
 		
 		setDisplacedThreshold(DeclaredRunway.DEFAULT_STOPWAY);

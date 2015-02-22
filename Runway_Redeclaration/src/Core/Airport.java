@@ -34,6 +34,10 @@ public class Airport implements AirportInterface, Savable {
 	@Attribute
 	private String name;
 
+	//nullary constructor
+	public Airport(){
+		
+	}
 	
 	public Airport(String name) {
 		this.name = name;

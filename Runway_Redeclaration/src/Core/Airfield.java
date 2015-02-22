@@ -15,7 +15,7 @@ import Exceptions.VariableDeclarationException;
 class Airfield implements AirfieldInterface, Savable {
 	@ElementArray
 	private DeclaredRunwayInterface[] runways,defaultRunways;
-	@Element
+	@Element (required = false)
 	private PositionedObstacle obstacle;
 	
 	private double runWidth,runLen,initStop,clearLen,dToLongSpace,shortClearWSpace,longClearWSpace,fullWSpace;
@@ -27,6 +27,12 @@ class Airfield implements AirfieldInterface, Savable {
 	 * @param lengths
 	 * @throws VariableDeclarationException - There are invalid variable declarations
 	 */
+	
+	//nullary constructor
+	protected Airfield(){
+		
+	}
+	
 	protected Airfield(int angleFromNorth, double[] lengths) throws VariableDeclarationException{
 		if(lengths.length != 8) throw new VariableDeclarationException("lengths", lengths, "Needs to be 8 cells");
 		
