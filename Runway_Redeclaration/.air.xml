@@ -1,0 +1,58 @@
+<airport name="Gatwick">
+   <airfields class="java.util.ArrayList">
+      <airfieldInterface class="Core.Airfield">
+         <runways length="2" class="CoreInterfaces.DeclaredRunwayInterface">
+            <declaredRunwayInterface class="Core.DeclaredRunway">
+               <decTora>11.0</decTora>
+               <disThreshold>0.0</disThreshold>
+               <stopway>0.0</stopway>
+               <clearway>13.0</clearway>
+               <angle>78</angle>
+               <ascentAngle>50</ascentAngle>
+               <descentAngle>50</descentAngle>
+               <direction> </direction>
+            </declaredRunwayInterface>
+            <declaredRunwayInterface class="Core.DeclaredRunway">
+               <decTora>11.0</decTora>
+               <disThreshold>0.0</disThreshold>
+               <stopway>0.0</stopway>
+               <clearway>13.0</clearway>
+               <angle>258</angle>
+               <ascentAngle>50</ascentAngle>
+               <descentAngle>50</descentAngle>
+               <direction> </direction>
+            </declaredRunwayInterface>
+         </runways>
+         <defaultRunways length="2" class="CoreInterfaces.DeclaredRunwayInterface">
+            <declaredRunwayInterface class="Core.DeclaredRunway">
+               <decTora>11.0</decTora>
+               <disThreshold>0.0</disThreshold>
+               <stopway>0.0</stopway>
+               <clearway>13.0</clearway>
+               <angle>78</angle>
+               <ascentAngle>50</ascentAngle>
+               <descentAngle>50</descentAngle>
+               <direction> </direction>
+            </declaredRunwayInterface>
+            <declaredRunwayInterface class="Core.DeclaredRunway">
+               <decTora>11.0</decTora>
+               <disThreshold>0.0</disThreshold>
+               <stopway>0.0</stopway>
+               <clearway>13.0</clearway>
+               <angle>258</angle>
+               <ascentAngle>50</ascentAngle>
+               <descentAngle>50</descentAngle>
+               <direction> </direction>
+            </declaredRunwayInterface>
+         </defaultRunways>
+         <runWidth>10.0</runWidth>
+         <runLen>11.0</runLen>
+         <initStop>12.0</initStop>
+         <clearLen>13.0</clearLen>
+         <dToLongSpace>14.0</dToLongSpace>
+         <shortClearWSpace>15.0</shortClearWSpace>
+         <longClearWSpace>16.0</longClearWSpace>
+         <fullWSpace>17.0</fullWSpace>
+      </airfieldInterface>
+   </airfields>
+</airport>

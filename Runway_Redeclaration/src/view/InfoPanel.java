@@ -4,29 +4,37 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 
 import javax.swing.BorderFactory;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import CoreInterfaces.DeclaredRunwayInterface;
+import CoreInterfaces.ObstacleInterface;
+import Exceptions.UnusableRunwayException;
 
 public class InfoPanel extends JPanel{
 	
-	private static final String[] runwayColumnNames = {"Parameter","Default", "Redeclared"};
-	private static final String[] obstacleColumnNames = {"Parameter", "Value"};
+	private static final String[] runwayColumnNames 	= 	{"Parameter","Default", "Redeclared"};
+	private static final String[] obstacleColumnNames 	= 	{"Parameter", "Value"};
 	
-	DeclaredRunwayInterface runway;
+	private DeclaredRunwayInterface defaultRunway;
+	private DeclaredRunwayInterface runway;
+	private ObstacleInterface obs;
 	
-	TablePanel runwayDataTable;
-	TablePanel obstacleDataTable;
-	TablePanel advancedDataTable;
+	private TablePanel runwayDataTable;
+	private TablePanel obstacleDataTable;
+	private TablePanel advancedDataTable;
 	
-	public InfoPanel(DeclaredRunwayInterface runway){
+	public InfoPanel(DeclaredRunwayInterface[] runways, ObstacleInterface obs){
 		
-		this.runway = runway;
+		this.setRunway(runways[0]);
+		this.setRunway(runways[1]);
+		this.setObs(obs);
+		
 		init();
+		
+		updateAllTables(runways, obs);
 	}
 	
 	public void init(){
@@ -40,6 +48,133 @@ public class InfoPanel extends JPanel{
 		this.add(runwayDataTable);
 		this.add(obstacleDataTable);
 		this.add(advancedDataTable);
+		
+	}
+	
+	//=============================== GETTERS AND SETTERS =============================//
+	public DeclaredRunwayInterface getDefaultRunway() {
+		return defaultRunway;
+	}
+
+	public void setDefaultRunway(DeclaredRunwayInterface defaultRunway) {
+		this.defaultRunway = defaultRunway;
+	}
+	
+	public DeclaredRunwayInterface getRunway() {
+		return runway;
+	}
+
+	public void setRunway(DeclaredRunwayInterface runway) {
+		this.runway = runway;
+	}
+
+	public ObstacleInterface getObs() {
+		return obs;
+	}
+
+	public void setObs(ObstacleInterface obs) {
+		this.obs = obs;
+	}
+	
+	/**
+	 * Update all tables with a single command.
+	 * If any of the runways is null, no runway table is updated.
+	 * If the obstacle table is null, that table isn't updated.
+	 * @param runways default,current
+	 * @param obs the obstacle
+	 */
+	public void updateAllTables(DeclaredRunwayInterface[] runways, ObstacleInterface obs){
+		updateRunwayTables(runways);
+		updateObstacleTable(obs);
+	}
+	
+	/**
+	 * Update the runway tables only with the default runway and current runway.
+	 * 
+	 * @param runways an array where {airfield.default, airfield.dec}
+	 */
+	public void updateRunwayTables(DeclaredRunwayInterface[] runways){
+		if(runways == null)
+			return;
+		DeclaredRunwayInterface def = runways[0];
+		DeclaredRunwayInterface run = runways[1];
+		
+		if(def != null && run != null){
+			try {
+				populateRunwayTable(def, run);
+				populateAdvancedTable(def, run);
+			} catch (UnusableRunwayException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	/**
+	 * Update the obstacle table with an obstacle object data
+	 * @param obs the obstacle whose data we will update on the table
+	 */
+	public void updateObstacleTable(ObstacleInterface obs){
+		if(obs != null){
+			String[] name, height, radius;
+		
+			name = new String[]{"Name", getObstaclePara(obs, "name")};
+			height = new String[]{"Height", getObstaclePara(obs, "height")};
+			radius = new String[]{"Radius", getObstaclePara(obs, "radius")};
+		
+			updateObstacleTable(new String[][]{name, height, radius});
+		}
+	}
+	
+	private void populateRunwayTable(DeclaredRunwayInterface def, DeclaredRunwayInterface run) throws UnusableRunwayException{
+		String[] tora, toda, asda, lda, dt;
+		
+		tora = new String[]{"TORA", getRunwayPara(def, "tora"), getRunwayPara(run, "tora")};
+		toda = new String[]{"TODA", getRunwayPara(def, "toda"), getRunwayPara(run, "toda")};
+		asda = new String[]{"ASDA", getRunwayPara(def, "asda"), getRunwayPara(run, "asda")};
+		lda = new String[]{"LDA", getRunwayPara(def, "lda"), getRunwayPara(run, "lda")};
+		dt = new String[]{"Displaced Threshold", getRunwayPara(def, "dt"), getRunwayPara(run, "dt")};
+		
+		updateRunwayTable(new String[][]{tora, toda, asda, lda, dt});
+	}
+	
+	private void populateAdvancedTable(DeclaredRunwayInterface def, DeclaredRunwayInterface run) throws UnusableRunwayException{
+		String[] resa, blast, clear, stop, angleA, angleD;
+		
+		stop = new String[]{"Stopway",getRunwayPara(def, "stop"), getRunwayPara(run, "stop")};
+		clear = new String[]{"Clearway",getRunwayPara(def, "clear"), getRunwayPara(run, "clear")};
+		//blast= new String[]{"Blast Protection", getRunwayPara(def, "blast"), getRunwayPara(run, "blast")};
+		//resa = new String[]{"RESA", getRunwayPara(def, "resa"), getRunwayPara(run, "resa")};
+		angleA = new String[]{"Angle of Ascent", getRunwayPara(def, "ascent"), getRunwayPara(run, "ascent")};
+		angleD = new String[]{"Angle of Descent", getRunwayPara(def, "descent"), getRunwayPara(run, "descent")};
+		
+		updateAdvancedTable(new String[][]{stop, clear, angleA, angleD});
+	}
+	
+	private String getRunwayPara(DeclaredRunwayInterface runway, String para) throws UnusableRunwayException{
+		switch(para){
+		case "tora": return String.valueOf(runway.getTORA());
+		case "asda": return String.valueOf(runway.getASDA());
+		case "toda": return String.valueOf(runway.getTODA());
+		case "lda": return String.valueOf(runway.getLDA());
+		case "dt": return String.valueOf(runway.getDisplacedThreshold());
+		
+		case "stop": return String.valueOf(runway.getStopway());
+		//case "resa": return String.valueOf(runway.ge);
+		case "clear": return String.valueOf(runway.getClearway());
+		//case "blast": return String.valueOf(runway.());
+		case "ascent": return String.valueOf(runway.getAngleOfAscent());
+		case "descent": return String.valueOf(runway.getAngleOfDescent());
+		}
+		return null;
+	}
+	
+	private String getObstaclePara(ObstacleInterface obs, String para){
+		switch(para){
+		case "name" : return obs.getName();
+		case "radius" : return String.valueOf(obs.getRadius());
+		case "height" : return String.valueOf(obs.getHeight());
+		}
+		return null;
 	}
 	
 	public void updateRunwayTable(String[][] data){
@@ -57,19 +192,33 @@ public class InfoPanel extends JPanel{
 	private void updateTable(TablePanel table, String[][] data){
 		table.redrawTable(data);
 	}
+
+	/**
+	 * This is a titled panel with a table on it
+	 * We must be able to update the tables on it.
+	 * This class knows nothing about the runway or anything.
+	 * It only works as a data holder for any sort of titled table.
+	 * We use it for both obstacle and runway data.
+	 * 
+	 * Primary method is redraw table with an array of rows of data (string)
+	 * @author shakib-binhamid
+	 *
+	 */
+	private class TablePanel extends JPanel{
 		
-	class TablePanel extends JPanel{
+		private JTable table;
+		private String title;
 		
-		JTable table;
-		String title;
-		
-		DefaultTableModel tableModel = new DefaultTableModel(){
+		private DefaultTableModel tableModel = new DefaultTableModel(){
 			@Override
 			public boolean isCellEditable(int row, int column) {
 			       return false;
 			}
 		};
-			
+		
+		/**
+		 * Cannot change table name and column headers once constructed.
+		 */
 		TablePanel (String panelName, String[] columnNames){
 			
 			title = panelName;	
@@ -82,16 +231,15 @@ public class InfoPanel extends JPanel{
 			table.setFocusable(false);
 			table.setRowSelectionAllowed(false);
 			
-			init();
-		}
-		
-		void init(){
 			this.setBorder(BorderFactory.createTitledBorder(title));
 			this.setLayout(new BorderLayout());
 			this.add(new JScrollPane(table), BorderLayout.CENTER);
 		}
 		
-		void redrawTable(String[][] data){;
+		/*
+		 * Every string[] is a row of data of the table.
+		 */
+		private void redrawTable(String[][] data){;
 			int rowCount=tableModel.getRowCount();
 			for(int i = rowCount - 1; i >=0; i--){
 				tableModel.removeRow(i); 
