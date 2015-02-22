@@ -33,7 +33,7 @@ public class LoadListener implements ActionListener{
 
 		File chosen = fc.getSelectedFile();
 		FileSystem fs = new FileSystem();
-		if(checkObs(chosen)){
+		if(fs.checkObs(chosen)){
 			//If true, user is not allowed to load an obstacle
 			if(frame.getAirport() == null){
 				JOptionPane.showMessageDialog(null, "You cannot load an obstacle before loading an airport.", "Error",JOptionPane.ERROR_MESSAGE);
@@ -43,27 +43,12 @@ public class LoadListener implements ActionListener{
 			}
 		}
 		else{
-			if(checkAir(chosen)){
+			if(fs.checkAir(chosen)){
 				frame.setAirport(fs.loadAir(chosen.getName()));
 			}
 		}
 	}
 
-	private boolean checkAir(File chosen) {
-		String name = chosen.getName();
-		if (name.split(".")[1] == "air"){
-			return true;
-		}
-		return false;
-	}
-
-	//Returns true if chosen file is an obstacle file
-	private boolean checkObs(File chosen) {
-		String name = chosen.getName();
-		if (name.split(".")[1] == "obj"){
-			return true;
-		}
-		return false;
-	}
+	
 
 }
