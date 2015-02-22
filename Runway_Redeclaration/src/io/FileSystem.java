@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import Core.Airport;
 import Core.Obstacle;
+import CoreInterfaces.AirportInterface;
 
 /**
  * Handles the saving and loading of objects
@@ -89,16 +90,17 @@ public class FileSystem {
 		return XMLSaver.serialise(a, dir);
 	}
 	
-	public Airport loadAir(String fileName){
+	public AirportInterface loadAir(String fileName){
 		File airFile = new File(fileName);
-		Airport a = (Airport) XMLSaver.deserialise(Airport.class, airFile);
+		AirportInterface a = (AirportInterface) XMLSaver.deserialise(Airport.class, airFile);
 		return a;
 	}
 	
 	//Returns true if chosen file is an airport file
 	public boolean checkAir(File chosen) {
 		String name = chosen.getName();
-		if (name.split("\\.")[1] == "air"){
+		System.out.println(name.split("\\.")[1]);
+		if (name.split("\\.")[1].equals("air")){
 			return true;
 		}
 		return false;
@@ -111,7 +113,7 @@ public class FileSystem {
 		String[] parts = name.split("\\.");
 		for(int i = 0; i<parts.length; i++)
 			System.out.println(parts[i]);
-		if (name.split("\\.")[1] == "obj"){
+		if (name.split("\\.")[1].equals("obj")){
 			return true;
 		}
 		return false;

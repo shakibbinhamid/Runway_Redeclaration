@@ -96,13 +96,13 @@ public class InfoPanel extends JPanel{
 	public void updateRunwayTables(DeclaredRunwayInterface[] runways){
 		if(runways == null)
 			return;
-		DeclaredRunwayInterface def = runways[0];
-		DeclaredRunwayInterface run = runways[1];
+		defaultRunway = runways[0];
+		runway = runways[1];
 		
-		if(def != null && run != null){
+		if(defaultRunway != null && runway != null){
 			try {
-				populateRunwayTable(def, run);
-				populateAdvancedTable(def, run);
+				populateRunwayTable(defaultRunway, runway);
+				populateAdvancedTable(defaultRunway, runway);
 			} catch (UnusableRunwayException e) {
 				e.printStackTrace();
 			}
@@ -115,6 +115,7 @@ public class InfoPanel extends JPanel{
 	 */
 	public void updateObstacleTable(ObstacleInterface obs){
 		if(obs != null){
+			this.obs = obs;
 			String[] name, height, radius;
 		
 			name = new String[]{"Name", getObstaclePara(obs, "name")};

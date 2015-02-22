@@ -81,11 +81,11 @@ public class Tab extends JPanel{
 	}
 	
 	/**
-	 * This is the method to call on a tab to switch between runways with obstacles
-	 * @param another {default, current}
+	 * This is the method to call on a tab to switch between obstacles
 	 * @param obs
 	 */
-	public void changeCurrentRunway(DeclaredRunwayInterface[] another, ObstacleInterface obs){
-		info.updateAllTables(another, obs);
+	public void changeCurrentObstacle(ObstacleInterface obs){
+		this.obs = obs;
+		info.updateObstacleTable(obs);
 	}
 }
