@@ -18,6 +18,7 @@ public class XMLSaver {
 	public static boolean serialise(Savable object, String dir){
 		Serializer serializer = new Persister();
 		File result = new File(dir);
+		System.out.println(result.getAbsolutePath());
 		try {
 			serializer.write(object, result);
 			return true;

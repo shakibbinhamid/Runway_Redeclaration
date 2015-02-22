@@ -47,10 +47,8 @@ public class TopFrame extends JFrame{
 	}
 	
 	public void populateTables(){
-		
+		tabbedPanel.
 	}
-	
-	
 	
 	public void init(){
 		

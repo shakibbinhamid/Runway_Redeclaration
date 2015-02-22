@@ -31,24 +31,28 @@ public class LoadListener implements ActionListener{
 		fc.setFileFilter(filter);
 		fc.setAcceptAllFileFilterUsed(false);
 
-		File chosen = fc.getSelectedFile();
-		FileSystem fs = new FileSystem();
-		if(fs.checkObs(chosen)){
-			//If true, user is not allowed to load an obstacle
-			if(frame.getAirport() == null){
-				JOptionPane.showMessageDialog(null, "You cannot load an obstacle before loading an airport.", "Error",JOptionPane.ERROR_MESSAGE);
+		int result = fc.showOpenDialog(frame);
+		File chosen = null;
+		if (result == JFileChooser.APPROVE_OPTION) {
+			chosen = fc.getSelectedFile();
+			FileSystem fs = new FileSystem();
+			if(fs.checkObs(chosen)){
+				//If true, user is not allowed to load an obstacle
+				if(frame.getAirport() == null){
+					JOptionPane.showMessageDialog(null, "You cannot load an obstacle before loading an airport.", "Error",JOptionPane.ERROR_MESSAGE);
+				}
+				else{
+					frame.setObstacle(fs.loadObs(chosen.getName()));
+				}
 			}
 			else{
-				frame.setObstacle(fs.loadObs(chosen.getName()));
-			}
-		}
-		else{
-			if(fs.checkAir(chosen)){
-				frame.setAirport(fs.loadAir(chosen.getName()));
+				if(fs.checkAir(chosen)){
+					frame.setAirport(fs.loadAir(chosen.getName()));
+				}
 			}
 		}
 	}
 
-	
+
 
 }

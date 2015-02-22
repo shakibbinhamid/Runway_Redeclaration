@@ -24,4 +24,5 @@ public class TabbedPanel extends JTabbedPane{
 			this.addTab(airfield.getName(), new Tab(airfield));
 		}
 	}
+	
 }

@@ -24,23 +24,22 @@ public class XMLTest {
 		}
 		FileSystem fs = new FileSystem();
 		System.out.println(fs.saveAir(a));
-		String dir = System.getProperty("user.dir") + "\\dat\\airports\\Gatwick.air.xml";
+		String dir = "./Gatwick.air.xml";
 		try {
 			System.out.println(readFile(dir));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		Airport a2 = fs.loadAir("Gatwick.air.xml");
-		System.out.println(a2.toString());
 	}
 
 	static String readFile(String path) 
 			throws IOException 
-			{
+	{
 		byte[] encoded = Files.readAllBytes(Paths.get(path));
 		return new String(encoded);
-			}
+	}
 
 }
