@@ -22,12 +22,9 @@ public class TopFrame extends JFrame{
 	
 	private JPanel topPanel;
 		private LogPanel logPanel;
-		private JTabbedPane tabbedPanel;
+		private TabbedPanel tabbedPanel;
 	
 	private AirportInterface airport;
-	private AirfieldInterface airfield;
-	private DeclaredRunwayInterface runway;
-	private ObstacleInterface obstacle;
 
 	public TopFrame(){
 		init();
@@ -46,9 +43,6 @@ public class TopFrame extends JFrame{
 		});
 	}
 	
-	public void populateTables(){
-	}
-	
 	public void init(){
 		
 		/**
@@ -58,8 +52,8 @@ public class TopFrame extends JFrame{
 		airport = new Airport("     Heathrodnf kol     ");
 		try {
 			airport.addNewAirfield(50, new double[]{50,500,50,100,100,200,300,400});
-			runway = airport.getAirfield("05 /23 ").getSmallAngledRunway();
-		} catch (ParrallelRunwayException | CannotMakeRunwayException | VariableDeclarationException | UnrecognisedAirfieldIntifierException e) {
+			//runway = airport.getAirfield("05 /23 ").getSmallAngledRunway();
+		} catch (ParrallelRunwayException | CannotMakeRunwayException | VariableDeclarationException e) {
 			e.printStackTrace();
 		}
 		
@@ -74,13 +68,20 @@ public class TopFrame extends JFrame{
 		topPanel.add(logPanel, BorderLayout.WEST);
 		
 		//TODO
-		tabbedPanel = new TabbedPanel(airport);
+		tabbedPanel = new TabbedPanel();
 		topPanel.add(tabbedPanel, BorderLayout.CENTER);
+		
+		this.loadOrCreateAirport(airport);
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(new Dimension(1200,800));
 		this.pack();
 		setVisible(true);
+	}
+	
+	public void loadOrCreateAirport(AirportInterface airport){
+		setAirport(airport);
+		tabbedPanel.updateTabs(airport);
 	}
 
 	public AirportInterface getAirport() {
@@ -90,21 +91,8 @@ public class TopFrame extends JFrame{
 	public void setAirport(AirportInterface airport) {
 		this.airport = airport;
 	}
-
-	public AirfieldInterface getAirfield() {
-		return airfield;
-	}
-
-	public void setAirfield(AirfieldInterface airfield) {
-		this.airfield = airfield;
-	}
-
-	public ObstacleInterface getObstacle() {
-		return obstacle;
-	}
-
-	public void setObstacle(ObstacleInterface obstacle) {
-		this.obstacle = obstacle;
-	}
 	
+	public TabbedPanel getTabbePanel(){
+		return this.tabbedPanel;
+	}
 }
