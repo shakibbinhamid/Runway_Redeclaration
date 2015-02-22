@@ -17,7 +17,7 @@ class Airfield implements AirfieldInterface, Savable {
 	private DeclaredRunwayInterface[] runways,defaultRunways;
 	@Element (required = false)
 	private PositionedObstacle obstacle;
-	
+	@Element
 	private double runWidth,runLen,initStop,clearLen,dToLongSpace,shortClearWSpace,longClearWSpace,fullWSpace;
 	
 	/**
