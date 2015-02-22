@@ -1,6 +1,7 @@
 package Core;
 
 import org.simpleframework.xml.Element;
+import org.simpleframework.xml.ElementArray;
 import org.simpleframework.xml.Root;
 
 import CoreInterfaces.AirfieldInterface;
@@ -12,7 +13,7 @@ import Exceptions.VariableDeclarationException;
 
 @Root
 class Airfield implements AirfieldInterface, Savable {
-	@Element
+	@ElementArray
 	private DeclaredRunwayInterface[] runways,defaultRunways;
 	@Element
 	private PositionedObstacle obstacle;
