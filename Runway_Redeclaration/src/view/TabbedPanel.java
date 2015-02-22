@@ -9,6 +9,8 @@ import CoreInterfaces.AirfieldInterface;
 import CoreInterfaces.AirportInterface;
 /**
  * This is just a holder class for all the tabs.
+ * 
+ * primary method is updateTabs
  * @author shakib-binhamid
  *
  */
@@ -21,6 +23,11 @@ public class TabbedPanel extends JTabbedPane{
 		tabs = new HashMap<>();
 	}
 	
+	/**
+	 * Removes all the current tabs and airfields.
+	 * Then readds all the tabs- one for each airfield.
+	 * @param airport
+	 */
 	public void updateTabs(AirportInterface airport){
 		tabs.clear();
 		this.removeAll();

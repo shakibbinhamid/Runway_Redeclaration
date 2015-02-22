@@ -23,7 +23,7 @@ public class SaveListener implements ActionListener{
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Take saveItem, serialise and verify
 		FileSystem fs = new FileSystem();
-		
+		saveItem = (Savable) frame.getAirport();
 		//Horrible code
 		if(saveItem instanceof Obstacle){
 			fs.saveObs((Obstacle)saveItem);

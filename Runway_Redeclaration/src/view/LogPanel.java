@@ -1,27 +1,23 @@
 package view;
 
 import java.awt.BorderLayout;
-import java.awt.Graphics;
+import java.awt.Dimension;
 
 import javax.swing.JEditorPane;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.border.BevelBorder;
-import javax.swing.border.SoftBevelBorder;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 
-import CoreInterfaces.AirportInterface;
-
 public class LogPanel extends JPanel{
 	
-	private AirportInterface airport;
+	private String label;
 	private JLabel airportLabel;
 	private Log logPanel;
 	
-	public LogPanel(AirportInterface airport){
-		this.airport = airport;
+	public LogPanel(String name){
+		this.label = name;
 		init();
 	}
 	
@@ -32,16 +28,17 @@ public class LogPanel extends JPanel{
 		this.setLayout(new BorderLayout());
 		
 		airportLabel = new JLabel("Airport");
+		airportLabel.setPreferredSize(new Dimension(200,20));
 		this.add(airportLabel, BorderLayout.NORTH);
 		
-		if(airport != null)
-			setLabelText(airport.getName());
+		if(label != null)
+			updateLabelText(label);
 		
 		logPanel = new Log();
 		this.add(logPanel, BorderLayout.CENTER);
 	}
 	
-	public void setLabelText(String airport){
+	public void updateLabelText(String airport){
 		airportLabel.setText(airport);
 	}
 	
@@ -49,18 +46,18 @@ public class LogPanel extends JPanel{
 		logPanel.addLog(s);
 	}
 
-	class Log extends JPanel{
-		JScrollPane scroll;
-		JEditorPane text;
+	private class Log extends JPanel{
+		private JScrollPane scroll;
+		private JEditorPane text;
 		
-		Log(){
+		private Log(){
 			scroll = new JScrollPane();
 			text = new JEditorPane();
 			
 			init();
 		}
 		
-		void init(){
+		private void init(){
 			this.setLayout(new BorderLayout());
 			
 			text.setEditable(false);
@@ -68,7 +65,7 @@ public class LogPanel extends JPanel{
 			this.add(scroll, BorderLayout.CENTER);
 			scroll.add(text);
 		}
-		void addLog(String s){
+		private void addLog(String s){
 			try {
 			      Document doc = text.getDocument();
 			      doc.insertString(doc.getLength(), s, null);

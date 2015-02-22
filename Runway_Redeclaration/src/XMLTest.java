@@ -5,7 +5,9 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 
+
 import Core.Airport;
+import CoreInterfaces.AirportInterface;
 import Exceptions.CannotMakeRunwayException;
 import Exceptions.ParrallelRunwayException;
 import Exceptions.VariableDeclarationException;
@@ -32,7 +34,7 @@ public class XMLTest {
 			e.printStackTrace();
 		}
 
-		Airport a2 = fs.loadAir("Gatwick.air.xml");
+		AirportInterface a2 = fs.loadAir("Gatwick.air.xml");
 	}
 
 	static String readFile(String path) 
