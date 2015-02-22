@@ -11,7 +11,7 @@ import CoreInterfaces.Savable;
  * 
  * @author Stefan 
  * @Editor Stefan
- * @Tester
+ * @Tester Stefan
  */
 
 @Root
@@ -22,14 +22,10 @@ public class Obstacle implements ObstacleInterface, Savable {
 	@Element
 	private double radius, height;
 	
-	public Obstacle(String name, int farthestPoint, int highestPoint){
+	public Obstacle(String name, double radius, double height){
 		this.name = name;
-		this.radius = farthestPoint;
-		this.height = highestPoint;
-	}
-	
-	public Obstacle(){
-		
+		this.radius = radius;
+		this.height = height;
 	}
 	
 	@Override

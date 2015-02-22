@@ -1,6 +1,7 @@
 package Core;
 
 import org.simpleframework.xml.Element;
+import org.simpleframework.xml.ElementArray;
 import org.simpleframework.xml.Root;
 
 import CoreInterfaces.AirfieldInterface;
@@ -12,11 +13,11 @@ import Exceptions.VariableDeclarationException;
 
 @Root
 class Airfield implements AirfieldInterface, Savable {
-	@Element
+	@ElementArray
 	private DeclaredRunwayInterface[] runways,defaultRunways;
-	@Element
+	@Element (required = false)
 	private PositionedObstacle obstacle;
-	
+	@Element
 	private double runWidth,runLen,initStop,clearLen,dToLongSpace,shortClearWSpace,longClearWSpace,fullWSpace;
 	
 	/**
@@ -26,6 +27,12 @@ class Airfield implements AirfieldInterface, Savable {
 	 * @param lengths
 	 * @throws VariableDeclarationException - There are invalid variable declarations
 	 */
+	
+	//nullary constructor
+	protected Airfield(){
+		
+	}
+	
 	protected Airfield(int angleFromNorth, double[] lengths) throws VariableDeclarationException{
 		if(lengths.length != 8) throw new VariableDeclarationException("lengths", lengths, "Needs to be 8 cells");
 		
@@ -38,6 +45,7 @@ class Airfield implements AirfieldInterface, Savable {
 		this.longClearWSpace = lengths[6];
 		this.fullWSpace = lengths[7];
 		//TODO Check these values against CAA stuff in INCREMENT 2
+		
 		
 		this.obstacle = null;
 		

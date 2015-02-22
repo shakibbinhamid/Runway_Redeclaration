@@ -1,3 +1,4 @@
+package io;
 import java.io.File;
 import java.util.ArrayList;
 
@@ -84,5 +85,23 @@ public class FileSystem {
 		File airFile = new File(wd + datDir + airDir + sub + fileName);
 		Airport a = (Airport) XMLSaver.deserialise(Airport.class, airFile);
 		return a;
+	}
+	
+	//Returns true if chosen file is an airport file
+	public boolean checkAir(File chosen) {
+		String name = chosen.getName();
+		if (name.split(".")[1] == "air"){
+			return true;
+		}
+		return false;
+	}
+
+	//Returns true if chosen file is an obstacle file
+	public boolean checkObs(File chosen) {
+		String name = chosen.getName();
+		if (name.split(".")[1] == "obj"){
+			return true;
+		}
+		return false;
 	}
 }

@@ -1,34 +1,39 @@
-import java.io.File;
+import io.FileSystem;
+
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 
-import org.simpleframework.xml.Serializer;
-import org.simpleframework.xml.core.Persister;
 
-import Core.Obstacle;
+import Core.Airport;
+import Exceptions.CannotMakeRunwayException;
+import Exceptions.ParrallelRunwayException;
+import Exceptions.VariableDeclarationException;
 
 public class XMLTest {
 
 	public static void main(String[] args) {
-		Obstacle o = new Obstacle("Brian", 12, 13);
+		Airport a = new Airport("Gatwick");
+		double[] numbers = {10,11,12,13,14,15,16,17};
+		try {
+			a.addNewAirfield(78, numbers);
+		} catch (ParrallelRunwayException | CannotMakeRunwayException
+				| VariableDeclarationException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		FileSystem fs = new FileSystem();
-		System.out.println(fs.saveObs(o));
-		
-		ArrayList<File> files = fs.listObstacles();
-		System.out.println("Files:");
-		for(File file : files){
-			System.out.println(file.getName());
+		System.out.println(fs.saveAir(a));
+		String dir = System.getProperty("user.dir") + "\\dat\\airports\\Gatwick.air.xml";
+		try {
+			System.out.println(readFile(dir));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		
-		String brian = files.get(0).getName();
-		System.out.println("\nAttempting to load " + brian + "...\n");
-		
-		Obstacle o2 = fs.loadObs(brian);
-		
-		System.out.println("Obstacle loaded. \nName: " + o2.getName() + "\nHeight: " + o2.getHeight() + "\nRadius: " + o2.getRadius());
+		Airport a2 = fs.loadAir("Gatwick.air.xml");
+		System.out.println(a2.toString());
 	}
 
 	static String readFile(String path) 
