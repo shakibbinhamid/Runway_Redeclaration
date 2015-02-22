@@ -40,6 +40,7 @@ class Airfield implements AirfieldInterface, Savable {
 		this.fullWSpace = lengths[7];
 		//TODO Check these values against CAA stuff in INCREMENT 2
 		
+		
 		this.obstacle = null;
 		
 		this.runways = new DeclaredRunway[2];
