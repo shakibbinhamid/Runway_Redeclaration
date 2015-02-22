@@ -50,6 +50,8 @@ public class TopFrame extends JFrame{
 		
 	}
 	
+	
+	
 	public void init(){
 		
 		/**
