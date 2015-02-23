@@ -45,6 +45,10 @@ public class LogPanel extends JPanel{
 	public void makeLog(String s){
 		logPanel.addLog(s);
 	}
+	
+	public void notify(String s){
+		logPanel.addLog(s);
+	}
 
 	private class Log extends JPanel{
 		private JScrollPane scroll;
