@@ -30,7 +30,7 @@ public class LoadListener{
 		JFileChooser fc = new JFileChooser();
 		fc.setFileFilter(filter);
 		fc.setAcceptAllFileFilterUsed(false);
-		fc.setCurrentDirectory(new File(System.getProperty("user.dir")));
+		fc.setCurrentDirectory(new File(System.getProperty("user.dir") + "/dat/"));
 
 		int result = fc.showOpenDialog(frame);
 		File chosen = null;
