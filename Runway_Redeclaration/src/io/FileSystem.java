@@ -95,13 +95,13 @@ public class FileSystem {
 	//Returns true if chosen file is an airport file
 	public boolean checkAir(File chosen) {
 		try{
-		String name = chosen.getName();
-		if (name.split("\\.")[1].equals("air")){
-			return true;
-		}
+			String name = chosen.getName();
+			if (name.split("\\.")[1].equals("air")){
+				return true;
+			}
 		}
 		catch (Exception e){
-			
+
 		}
 		return false;
 	}
@@ -109,13 +109,13 @@ public class FileSystem {
 	//Returns true if chosen file is an obstacle file
 	public boolean checkObs(File chosen) {
 		try{
-		String name = chosen.getName();
-		if (name.split("\\.")[1].equals("obj")){
-			return true;
-		}
+			String name = chosen.getName();
+			if (name.split("\\.")[1].equals("obj")){
+				return true;
+			}
 		}
 		catch (Exception e){
-			
+
 		}
 		return false;
 	}
