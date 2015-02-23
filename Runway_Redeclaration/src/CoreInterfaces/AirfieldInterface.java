@@ -45,7 +45,7 @@ public interface AirfieldInterface {
 	 * 
 	 * (60m horizontal on the diagram)
 	 */
-	double getClearedLength();
+	double getStripEndSideLength();
 	
 	
 	/**

@@ -62,7 +62,7 @@ import Exceptions.VariableDeclarationException;
 			setTORA(runway.getRunwayLength());
 			setStopway(runway.getInitialStopway());
 			
-			double clearway = this.stopway+runway.getClearedLength();
+			double clearway = this.stopway+runway.getStripEndSideLength();
 			setClearway(clearway);
 			
 		}else{

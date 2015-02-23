@@ -18,7 +18,7 @@ class Airfield implements AirfieldInterface, Savable {
 	@Element (required = false)
 	private PositionedObstacle obstacle;
 	@Element
-	private double runWidth,runLen,initStop,clearLen,dToLongSpace,shortClearWSpace,longClearWSpace,fullWSpace;
+	private double runWidth,runLen,initStop,stripEndL,dToLongSpace,shortClearWSpace,longClearWSpace,fullWSpace;
 	
 	/**
 	 * 
@@ -33,17 +33,17 @@ class Airfield implements AirfieldInterface, Savable {
 		
 	}
 	
-	protected Airfield(int angleFromNorth, double[] lengths) throws VariableDeclarationException{
-		if(lengths.length != 8) throw new VariableDeclarationException("lengths", lengths, "Needs to be 8 cells");
+	protected Airfield(int angleFromNorth, double[] dimensions) throws VariableDeclarationException{
+		if(dimensions.length != 8) throw new VariableDeclarationException("lengths", dimensions, "Needs to be 8 cells");
 		
-		this.runWidth = lengths[0];
-		this.runLen = lengths[1];
-		this.initStop = lengths[2];
-		this.clearLen = lengths[3];
-		this.dToLongSpace = lengths[4];
-		this.shortClearWSpace = lengths[5];
-		this.longClearWSpace = lengths[6];
-		this.fullWSpace = lengths[7];
+		this.runWidth = dimensions[0];
+		this.runLen = dimensions[1];
+		this.initStop = dimensions[2];
+		this.stripEndL = dimensions[3];
+		this.dToLongSpace = dimensions[4];
+		this.shortClearWSpace = dimensions[5];
+		this.longClearWSpace = dimensions[6];
+		this.fullWSpace = dimensions[7];
 		//TODO Check these values against CAA stuff in INCREMENT 2
 		
 		
@@ -107,8 +107,8 @@ class Airfield implements AirfieldInterface, Savable {
 	}
 
 	@Override
-	public double getClearedLength() {
-		return clearLen;
+	public double getStripEndSideLength() {
+		return stripEndL;
 	}
 
 	@Override
