@@ -13,18 +13,23 @@ public class TEST_PositionedObstacle {
 	
 	public static final Obstacle obj = new Obstacle("Jim",54.02,67.99);
 	public static final double dFromSmallAnge = 1994;
-
+	public static final double dFromLargeAnge = 28;
+	
 	public PositionedObstacle posObj;
 	
 	@Before
 	public void setUp() {
-		this.posObj = new PositionedObstacle(obj, dFromSmallAnge);
+		this.posObj = new PositionedObstacle(obj, dFromSmallAnge,dFromLargeAnge );
 	}
 
 	@Test
-	public void testDistance() {
-		assertEquals(dFromSmallAnge, this.posObj.distanceFromEnd(),0);
+	public void testSmallDistance() {
+		assertEquals(dFromSmallAnge, this.posObj.distanceFromSmallEnd(),0);
+	}	@Test
+	public void testLargeDistance() {
+		assertEquals(dFromLargeAnge, this.posObj.distanceFromLargeEnd(),0);
 	}
+	
 	
 	@Test
 	public void testName(){

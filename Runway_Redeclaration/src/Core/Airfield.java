@@ -13,6 +13,12 @@ import Exceptions.InvalidIdentifierException;
 import Exceptions.VariableDeclarationException;
 
 @Root
+/**
+ * 
+ * @author Stefan
+ * @Editor Stefan Shakib
+ * @Testor Stefan
+ */
 class Airfield implements AirfieldInterface, Savable {
 	@ElementArray
 	private DeclaredRunwayInterface[] runways,defaultRunways;

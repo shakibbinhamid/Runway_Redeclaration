@@ -5,6 +5,7 @@ import org.simpleframework.xml.Root;
 
 import CoreInterfaces.AirfieldInterface;
 import CoreInterfaces.DeclaredRunwayInterface;
+import CoreInterfaces.PositionedObstacleInterface;
 import Exceptions.UnusableRunwayException;
 import Exceptions.VariableDeclarationException;
 
@@ -65,7 +66,7 @@ class DeclaredRunway implements DeclaredRunwayInterface{
 	protected DeclaredRunway(){
 
 	}
-
+	
 	protected DeclaredRunway(AirfieldInterface runway ,int angleFromNorth) throws VariableDeclarationException{
 
 		setDisplacedThreshold(0);
@@ -99,11 +100,13 @@ class DeclaredRunway implements DeclaredRunwayInterface{
 		setClearway(clearway);
 		setDisplacedThreshold(displacedThreshold);
 		
+		setLDA(this.decTora - displacedThreshold);
+		setASDA(this.decTora + clearway);
+		setTODA(this.decTora + stopway);
 		
-		this.decLda = this.decTora - displacedThreshold;
-		this.decToda = this.decTora + stopway;
-		this.decAsda = this.decTora + clearway;
-		//TODO include final check: TORA <= ASDA <= TODA 
+		if(!(this.decTora <= this.decAsda && this.decAsda <= this.decToda)) 
+			throw new VariableDeclarationException("TORA, ASDA, TODA", new double[] {decTora,decAsda,decToda}, "TORA <= ASDA <= TODA");
+		
 
 		setAngle(angleFromNorth);
 		this.direction = ' ';
@@ -176,25 +179,33 @@ class DeclaredRunway implements DeclaredRunwayInterface{
 	public double getTORA() throws UnusableRunwayException {
 		return decTora;
 	}
-
 	@Override
 	public double getClearway()throws UnusableRunwayException {
 		return clearway;
 	}
-
 	@Override
 	public double getStopway() throws UnusableRunwayException {
 		return stopway;
 	}
-
 	@Override
 	public double getDisplacedThreshold() throws UnusableRunwayException {
 		return disThreshold;
 	}
-
 	@Override
 	public double getRESA() throws UnusableRunwayException{
 		return DEFAULT_RESA;
+	}
+	@Override
+	public double getTODA() throws UnusableRunwayException{
+		return this.decToda;
+	}
+	@Override
+	public double getASDA() throws UnusableRunwayException{
+		return this.decAsda;
+	}
+	@Override
+	public double getLDA() throws UnusableRunwayException {
+		return this.decLda;
 	}
 	//----[ Setters ]---------------------------------------------------------
 	/**
@@ -205,7 +216,6 @@ class DeclaredRunway implements DeclaredRunwayInterface{
 
 		this.decTora = tora;
 	}
-
 	/**
 	 * @throws VariableDeclarationException - when 'threshold'  is not >= 0
 	 */
@@ -214,7 +224,6 @@ class DeclaredRunway implements DeclaredRunwayInterface{
 
 		this.disThreshold = threshold;
 	}
-
 	/**
 	 * @throws VariableDeclarationException - when 'stopway'  is not >= 0
 	 */
@@ -223,7 +232,6 @@ class DeclaredRunway implements DeclaredRunwayInterface{
 		
 		this.stopway = stopway;
 	}
-
 	/**
 	 * @throws VariableDeclarationException - when 'clearway'  is not >= 0 OR when 'clearway' < getStopway
 	 */
@@ -233,96 +241,89 @@ class DeclaredRunway implements DeclaredRunwayInterface{
 
 		this.clearway = clearway;
 	}
-
+	/**
+	 * @throws VariableDeclarationException - when 'lda' is not >= 0
+	 */
+	private void setLDA(double lda) throws VariableDeclarationException{
+		if ( lda  < 0 ) throw new VariableDeclarationException("LDA", lda, "LDA >= 0");
+		
+		this.decLda = lda;
+	}
+	private void setASDA(double asda) throws VariableDeclarationException{
+		if ( asda  <= 0 ) throw new VariableDeclarationException("ASDA", asda, "ASDA > 0");
+		
+		this.decAsda = asda;
+	}
+	private void setTODA(double toda) throws VariableDeclarationException{
+		if ( toda  < 0 ) throw new VariableDeclarationException("TODA", toda, "TODA > 0");
+		
+		this.decToda = toda;
+	}
 	//====[ Calculated Distance Methods  ]=====================================
-	@Override
-	public double getASDA() throws UnusableRunwayException{
-		return this.decAsda;
-	}
-
-	@Override
-	public double getTODA() throws UnusableRunwayException{
-		return this.decToda;
-	}
-
-	@Override
-	public double getLDA() throws UnusableRunwayException {
-		return this.decLda;
-	}
+	
 	//====[ Mutators ]=============================================================
 
 	@Override
-	public void landOver(DeclaredRunwayInterface original, AirfieldInterface parent) throws UnusableRunwayException {
-		// Max of RESA, ALS, blast prot
-		//ALS = obj.height * angle of DESC
-		//RESA = def RESA = 240
-		//blast prot = def blast prot = 300 (Std 300->500)
-		double distFromObs;
-		if(isSmallEnd()){
-			distFromObs = parent.getObstacle().distanceFromSmallEnd();
-		}else{
-			distFromObs = parent.getObstacle().distanceFromLargeEnd();
-		}
+	public void landOver(DeclaredRunwayInterface original, AirfieldInterface parent) throws UnusableRunwayException, VariableDeclarationException {
 		
-		//TODO this is dist to centre , todo = make it from nearest side of obj - USE RADIUS
+		double distFromObs = distanceFrom(parent.getObstacle());
 		double RESA = DEFAULT_RESA;
 		double ALS = parent.getObstacle().getHeight() * DEFAULT_DESC_ANGLE;
 		
-		double maxReduction = Math.max(Math.max(RESA,ALS)+parent.getStripEndSideLength(), Airfield.BLAST_PROT);
-		this.decLda = original.getLDA() - maxReduction -  distFromObs;
+		double largestFactor = Math.max(Math.max(RESA,ALS)+parent.getStripEndSideLength(), Airfield.BLAST_PROT);
+		double newLDA = original.getLDA() - largestFactor -  distFromObs;
+		setLDA(newLDA);
 			
 	}
 
 	@Override
-	public void landTowards(DeclaredRunwayInterface original, AirfieldInterface parent) {
-		//RESA, side len, obj pos, 
-		double distFromObs;
-		if(isSmallEnd()){
-			distFromObs = parent.getObstacle().distanceFromSmallEnd();
-		}else{
-			distFromObs = parent.getObstacle().distanceFromLargeEnd();
-		}
+	public void landTowards(DeclaredRunwayInterface original, AirfieldInterface parent) throws VariableDeclarationException {
+		double distFromObs = distanceFrom(parent.getObstacle());
 		double resa = DEFAULT_RESA;
 		
-		this.decLda = distFromObs - resa - parent.getStripEndSideLength();
+		double newLDA = distFromObs - resa - parent.getStripEndSideLength();
+		setLDA(newLDA);
 	}
 
 	@Override
-	public void takeOffAwayFrom(DeclaredRunwayInterface original, AirfieldInterface parent) throws UnusableRunwayException {
-		//default (TORA ASDA TODA), blast prot, clearway, (?stopway?), obj pos
+	public void takeOffAwayFrom(DeclaredRunwayInterface original, AirfieldInterface parent) throws UnusableRunwayException, VariableDeclarationException {
 		//ASSUMPTION: stopway is part of clearway
 		
-		double distFromObs;
-		if(isSmallEnd()){
-			distFromObs = parent.getObstacle().distanceFromSmallEnd();
-		}else{
-			distFromObs = parent.getObstacle().distanceFromLargeEnd();
-		}
+		double distFromObs = distanceFrom(parent.getObstacle());
 		
-		this.decTora = original.getTORA() - distFromObs - Airfield.BLAST_PROT;
+		double newTORA = original.getTORA() - distFromObs - Airfield.BLAST_PROT;
+		setTORA(newTORA);
 	}
 
 	@Override
-	public void takeOffTowardsOver(DeclaredRunwayInterface original, AirfieldInterface parent) throws UnusableRunwayException {
-		//ALS RESA Strip End displThresh
-		double distFromObs;
-		if(isSmallEnd()){
-			distFromObs = parent.getObstacle().distanceFromSmallEnd();
-		}else{
-			distFromObs = parent.getObstacle().distanceFromLargeEnd();
-		}
+	public void takeOffTowardsOver(DeclaredRunwayInterface original, AirfieldInterface parent) throws UnusableRunwayException, VariableDeclarationException {
+		double distFromObs = distanceFrom(parent.getObstacle());
 		double ALS = getAscentAngle()*parent.getObstacle().getHeight();
 		
-		this.decTora = distFromObs + getDisplacedThreshold() - ALS - parent.getStripEndSideLength();
-		this.decAsda = this.decTora; //Stopway blocked
-		this.decToda = this.decTora; //clearway blocked
+		double newTORA = distFromObs + getDisplacedThreshold() - ALS - parent.getStripEndSideLength();
 		
+		setTORA(newTORA);
+		setASDA(newTORA); //Stopway blocked
+		setTODA(newTORA);//clearway blocked
+		setStopway(0);
+		setClearway(0);
 	}
 
 	private boolean isSmallEnd(){
 		return this.angle<180;
 	}
 
+	/**
+	 * Returns the distance from threshold to the nearest part of the obstacle
+	 */
+	private double distanceFrom(PositionedObstacleInterface obs){
+		if(this.isSmallEnd()){
+			return obs.distanceFromSmallEnd()-obs.getRadius();
+		}else{
+			return obs.distanceFromLargeEnd()-obs.getRadius();
+		}
+	}
+	
 	@Override
 	public int getDescentAngle() {
 		return DEFAULT_DESC_ANGLE;
