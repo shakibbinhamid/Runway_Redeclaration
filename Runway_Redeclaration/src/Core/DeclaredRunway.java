@@ -62,7 +62,7 @@ import Exceptions.VariableDeclarationException;
 			setTORA(runway.getRunwayLength());
 			setStopway(runway.getInitialStopway());
 			
-			double clearway = this.stopway+runway.getClearedLength();
+			double clearway = this.stopway+runway.getStripEndSideLength();
 			setClearway(clearway);
 			
 		}else{
@@ -110,7 +110,7 @@ import Exceptions.VariableDeclarationException;
 		if(angle<100){
 			out += "0";
 		}
-		out += String.valueOf(Math.round(angle/10))+direction;
+		out += String.valueOf(Math.round((double)angle/10))+direction;
 		return out;
 	}
 //----[ Setters ]---------------------------------------------------s---
