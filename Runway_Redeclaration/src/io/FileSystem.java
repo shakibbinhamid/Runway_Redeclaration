@@ -87,7 +87,7 @@ public class FileSystem {
 	}
 	
 	public AirportInterface loadAir(String fileName){
-		File airFile = new File(fileName);
+		File airFile = new File(wd + datDir + airDir + "/" + fileName);
 		AirportInterface a = (AirportInterface) XMLSaver.deserialise(Airport.class, airFile);
 		return a;
 	}
