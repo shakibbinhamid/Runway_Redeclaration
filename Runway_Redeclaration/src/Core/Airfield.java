@@ -9,6 +9,7 @@ import CoreInterfaces.DeclaredRunwayInterface;
 import CoreInterfaces.ObstacleInterface;
 import CoreInterfaces.PositionedObstacleInterface;
 import CoreInterfaces.Savable;
+import Exceptions.InvalidIdentifierException;
 import Exceptions.VariableDeclarationException;
 
 @Root
@@ -144,19 +145,22 @@ class Airfield implements AirfieldInterface, Savable {
 
 	@Override
 	public void addObstacle(ObstacleInterface obj,
-			String indentifier, double howFarIn) {
+			String indentifier, double howFarIn) throws InvalidIdentifierException {
 		
 		if(indentifier.equals(this.getSmallAngledRunway().getIdentifier())){
 			this.obstacle = new PositionedObstacle(obj,howFarIn);
 			
-		}else{
+		}else if(indentifier.equals(this.getLargeAngledRunway().getIdentifier())){
 			howFarIn = this.getRunwayLength()-howFarIn;
 			this.obstacle = new PositionedObstacle(obj,howFarIn);
+		}else{
+			throw new InvalidIdentifierException(indentifier, this);
 		}
 		
 		try {
 			this.redeclareRunways(getSmallAngledRunway().getAngle());
 		} catch (VariableDeclarationException e) {
+			System.err.println("Stefan Here: This really should not happen!");
 			e.printStackTrace();
 		}
 		

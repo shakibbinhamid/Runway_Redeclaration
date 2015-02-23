@@ -1,5 +1,6 @@
 package CoreInterfaces;
 
+import Exceptions.InvalidIdentifierException;
 import Exceptions.VariableDeclarationException;
 
 
@@ -92,7 +93,7 @@ public interface AirfieldInterface {
 	 * @param runwayIdentifier - The side it is closest to. Either TarmacInterface.LEFT_RUNWAY or TarmacInterface.RIGHT_RUNWAY
 	 * @param howFarIn - How far from the chosen tarmac side 
 	 */
-	void addObstacle(ObstacleInterface obj, String identifier, double howFarIn);
+	void addObstacle(ObstacleInterface obj, String identifier, double howFarIn) throws InvalidIdentifierException;
 	
 	
 	

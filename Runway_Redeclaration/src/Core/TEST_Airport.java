@@ -21,10 +21,10 @@ public class TEST_Airport {
 
 	public Airport airport;
 
-
+	
 
 	@Before
-	public void setUp()  {
+	public void setUp() {
 		this.airport = new Airport(name);
 	}
 
