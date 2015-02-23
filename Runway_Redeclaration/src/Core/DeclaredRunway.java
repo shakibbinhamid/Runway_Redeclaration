@@ -79,7 +79,7 @@ import Exceptions.VariableDeclarationException;
 		ascentAngle = DeclaredRunwayInterface.DEFAULT_ANGLE_OF_ASCENT;
 		descentAngle = DeclaredRunwayInterface.DEFAULT_ANGLE_OF_DESCENT;
 
-		angle = angleFromNorth;
+		setAngle(angleFromNorth);
 		direction = ' ';
 	}
 	
@@ -91,6 +91,8 @@ import Exceptions.VariableDeclarationException;
 		setClearway(clearway);
 		setDisplacedThreshold(displacedThreshold);
 		
+		
+		setAngle(angleFromNorth);
 		
 		
 	}
