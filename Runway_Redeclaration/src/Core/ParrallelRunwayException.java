@@ -1,19 +1,19 @@
-package Exceptions;
+package Core;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import CoreInterfaces.AirfieldInterface;
-import CoreInterfaces.AirportInterface;
+import Exceptions.VariableDeclarationException;
 
 public class ParrallelRunwayException extends Exception {
 	private static final long serialVersionUID = 1L;
 	private List<AirfieldInterface> parrallels;
 	private AirfieldInterface newAirfield;
-	private AirportInterface airport;
+	private Airport airport;
 
 
-	public ParrallelRunwayException(AirportInterface airportWithIssue, List<AirfieldInterface> parrallels, AirfieldInterface newAirfield){
+	public ParrallelRunwayException(Airport airportWithIssue, List<AirfieldInterface> parrallels, AirfieldInterface newAirfield){
 		super("The new runway is parrallel to "+interpretStringSet(parrallels));
 		this.parrallels = parrallels;
 		this.newAirfield = newAirfield;
@@ -26,7 +26,7 @@ public class ParrallelRunwayException extends Exception {
 	public AirfieldInterface getNewAirway(){
 		return this.newAirfield;
 	}
-	public AirportInterface getAirportWithIssue(){
+	public Airport getAirportWithIssue(){
 		return this.airport;
 	}
 	
@@ -55,7 +55,7 @@ public class ParrallelRunwayException extends Exception {
 	}
 
 	public void chooseOption(char sideOfNewRunway) throws VariableDeclarationException{
-		newAirfield.setSmallestSideLetter(sideOfNewRunway);
+		getNewAirway().setSmallestSideLetter(sideOfNewRunway);
 
 		//Case 1: There is one other parrallel so we must give that parrallel the other side for the smallest runway
 		//		   That runway does not actually have a side letter
@@ -87,5 +87,6 @@ public class ParrallelRunwayException extends Exception {
 				}
 			}
 		}
+		getAirportWithIssue().addParrallelAirfield(getNewAirway());
 	}
 }
