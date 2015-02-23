@@ -48,6 +48,8 @@ public class TopFrame extends JFrame{
 		tabbedPanel = new TabbedPanel();
 		topPanel.add(tabbedPanel, BorderLayout.CENTER);
 		
+		Notification.setFrame(this);
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setMinimumSize(new Dimension(1200,800));
 		this.pack();
@@ -70,5 +72,10 @@ public class TopFrame extends JFrame{
 	
 	public TabbedPanel getTabbePanel(){
 		return this.tabbedPanel;
+	}
+
+	public LogPanel getLogPanel() {
+		return logPanel;
+		
 	}
 }

@@ -2,6 +2,7 @@ package io;
 import java.io.File;
 import java.util.ArrayList;
 
+import view.Notification;
 import Core.Airport;
 import Core.Obstacle;
 import CoreInterfaces.AirportInterface;
@@ -83,11 +84,13 @@ public class FileSystem {
 
 	public boolean saveAir(Airport a){
 		String dir = wd + datDir + airDir + "/" + a.getName()+airext + xmlext;
+		Notification.notify("Saving airport to " + dir + "...");
 		return XMLSaver.serialise(a, dir);
 	}
 
 	public AirportInterface loadAir(String fileName){
 		File airFile = new File(wd + datDir + airDir + "/" + fileName);
+		Notification.notify("Loading airport from " + airFile.getAbsolutePath() + "...");
 		AirportInterface a = (AirportInterface) XMLSaver.deserialise(Airport.class, airFile);
 		return a;
 	}
@@ -110,7 +113,7 @@ public class FileSystem {
 	public boolean checkObs(File chosen) {
 		try{
 			String name = chosen.getName();
-			if (name.split("\\.")[1].equals("obj")){
+			if (name.split("\\.")[1].equals("obs")){
 				return true;
 			}
 		}

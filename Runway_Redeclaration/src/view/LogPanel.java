@@ -45,14 +45,20 @@ public class LogPanel extends JPanel{
 	public void makeLog(String s){
 		logPanel.addLog(s);
 	}
+	
+	public void notify(String s){
+		logPanel.addLog(s);
+	}
 
 	private class Log extends JPanel{
 		private JScrollPane scroll;
 		private JEditorPane text;
+		private Document doc;
 		
 		private Log(){
 			scroll = new JScrollPane();
 			text = new JEditorPane();
+			doc = text.getDocument();
 			
 			init();
 		}
@@ -67,8 +73,10 @@ public class LogPanel extends JPanel{
 		}
 		private void addLog(String s){
 			try {
-			      Document doc = text.getDocument();
 			      doc.insertString(doc.getLength(), s, null);
+			      scroll.repaint();
+			      
+			      System.out.println(text.getText());
 			} catch(BadLocationException exc) {
 			      exc.printStackTrace();
 			}
