@@ -13,8 +13,7 @@ public class AirportFileFilter extends javax.swing.filechooser.FileFilter {
 
 	@Override
 	public String getDescription() {
-		// TODO Auto-generated method stub
-		return null;
+		return "Airports";
 	}
 
 }
