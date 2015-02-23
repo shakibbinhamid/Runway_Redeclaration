@@ -5,6 +5,7 @@ import io.FileSystem;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileFilter;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -15,9 +16,9 @@ import CoreInterfaces.AirportInterface;
 public class LoadListener{
 
 	private TopFrame frame;
-	private FileNameExtensionFilter filter;
+	private javax.swing.filechooser.FileFilter filter;
 	
-	public LoadListener(TopFrame frame, FileNameExtensionFilter filter){
+	public LoadListener(TopFrame frame, javax.swing.filechooser.FileFilter filter){
 		this.frame = frame;
 		this.filter = filter;
 		
@@ -48,6 +49,7 @@ public class LoadListener{
 			else{
 				if(fs.checkAir(chosen)){
 					AirportInterface airport = fs.loadAir(chosen.getName());
+					System.out.println(airport.toString());
 					frame.loadOrCreateAirport(airport);
 				}
 			}
