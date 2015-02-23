@@ -98,18 +98,15 @@ class DeclaredRunway implements DeclaredRunwayInterface{
 		setStopway(stopway);
 		setClearway(clearway);
 		setDisplacedThreshold(displacedThreshold);
-
+		
+		
+		this.decLda = this.decTora - displacedThreshold;
+		this.decToda = this.decTora + stopway;
+		this.decAsda = this.decTora + clearway;
 		//TODO include final check: TORA <= ASDA <= TODA 
-		try {
-			decLda = getLDA();
-			decToda = getTODA();
-			decAsda = getASDA();
-		} catch (UnusableRunwayException e) {
-			e.printStackTrace();
-		}
 
 		setAngle(angleFromNorth);
-		direction = ' ';
+		this.direction = ' ';
 
 	}
 
@@ -223,6 +220,8 @@ class DeclaredRunway implements DeclaredRunwayInterface{
 	 */
 	private void setStopway(double stopway) throws VariableDeclarationException{
 		if( stopway < 0 ) throw new VariableDeclarationException("Stopway", stopway, "Stopway >= 0");
+		
+		this.stopway = stopway;
 	}
 
 	/**
@@ -238,17 +237,17 @@ class DeclaredRunway implements DeclaredRunwayInterface{
 	//====[ Calculated Distance Methods  ]=====================================
 	@Override
 	public double getASDA() throws UnusableRunwayException{
-		return getTORA()+getStopway();
+		return this.decAsda;
 	}
 
 	@Override
 	public double getTODA() throws UnusableRunwayException{
-		return getTORA()+getClearway();
+		return this.decToda;
 	}
 
 	@Override
 	public double getLDA() throws UnusableRunwayException {
-		return getTORA()-getDisplacedThreshold();
+		return this.decLda;
 	}
 	//====[ Mutators ]=============================================================
 
@@ -264,6 +263,7 @@ class DeclaredRunway implements DeclaredRunwayInterface{
 		}else{
 			distFromObs = parent.getObstacle().distanceFromLargeEnd();
 		}
+		
 		//TODO this is dist to centre , todo = make it from nearest side of obj - USE RADIUS
 		double RESA = DEFAULT_RESA;
 		double ALS = parent.getObstacle().getHeight() * DEFAULT_DESC_ANGLE;
