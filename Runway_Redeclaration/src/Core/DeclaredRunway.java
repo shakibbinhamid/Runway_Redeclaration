@@ -35,7 +35,7 @@ import Exceptions.VariableDeclarationException;
 	 @Element
 	private double decTora, disThreshold, stopway, clearway;
 	 @Element
-	private int angle, ascentAngle, descentAngle;
+	private int angle;
 	 @Element
 	private char direction;
 	 
@@ -76,9 +76,6 @@ import Exceptions.VariableDeclarationException;
 		}
 		//TODO include final check: TORA <= ASDA <= TODA 
 
-		ascentAngle = DeclaredRunwayInterface.DEFAULT_ANGLE_OF_ASCENT;
-		descentAngle = DeclaredRunwayInterface.DEFAULT_ANGLE_OF_DESCENT;
-
 		setAngle(angleFromNorth);
 		direction = ' ';
 	}
@@ -93,7 +90,7 @@ import Exceptions.VariableDeclarationException;
 		
 		
 		setAngle(angleFromNorth);
-		
+		direction = ' ';
 		
 	}
 
