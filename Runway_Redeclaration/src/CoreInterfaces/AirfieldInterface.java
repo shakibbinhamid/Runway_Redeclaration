@@ -71,6 +71,8 @@ public interface AirfieldInterface {
 	 * (150m vertical in diagram)
 	 */
 	double getFullWidthSpacer();
+	
+	double getBlastAllowanceDistance();
 //=====================================================	
 
 //====[ Obstacles ]====================================

@@ -38,6 +38,8 @@ import Exceptions.VariableDeclarationException;
 	private int angle, ascentAngle, descentAngle;
 	 @Element
 	private char direction;
+	 
+	protected static final double DEFAULT_RESA = 240;
 
 	/**
 	 * An Airfield has all the relevant information needed to declare a runway except we need the 
@@ -141,7 +143,7 @@ import Exceptions.VariableDeclarationException;
 	}
 	
 	
-//====[ Inert Direction Methods  ]=====================================
+//====[ Inert Distance Methods  ]=====================================
 //----[ Getters ]------------------------------------------------------
 	@Override
 	public double getTORA() throws UnusableRunwayException {
@@ -161,6 +163,11 @@ import Exceptions.VariableDeclarationException;
 	@Override
 	public double getDisplacedThreshold() throws UnusableRunwayException {
 		return disThreshold;
+	}
+	
+	@Override
+	public double getRESA() throws UnusableRunwayException{
+		return DEFAULT_RESA;
 	}
 //----[ Setters ]---------------------------------------------------------
 	/**

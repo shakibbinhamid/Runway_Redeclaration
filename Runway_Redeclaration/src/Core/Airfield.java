@@ -20,6 +20,7 @@ class Airfield implements AirfieldInterface, Savable {
 	@Element
 	private double runWidth,runLen,initStop,stripEndL,dToLongSpace,shortClearWSpace,longClearWSpace,fullWSpace;
 	
+	public static final double blastProt = 300;
 	/**
 	 * 
 	 * @param angleFromNorth
@@ -131,6 +132,11 @@ class Airfield implements AirfieldInterface, Savable {
 		return fullWSpace;
 	}
 
+	@Override
+	public double getBlastAllowanceDistance() {
+		return Airfield.blastProt;
+	}
+	
 	@Override
 	public PositionedObstacleInterface getObstacle() {
 		return this.obstacle;
