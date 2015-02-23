@@ -9,6 +9,6 @@ public class Notification {
 	}
 
 	public static void notify(String s){
-		frame.getLogPanel().notify(s);
+		frame.getLogPanel().notify("\n" + s);
 	}
 }
