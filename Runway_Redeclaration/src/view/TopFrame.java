@@ -7,12 +7,7 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import Core.Airport;
 import CoreInterfaces.AirportInterface;
-
-import Exceptions.CannotMakeRunwayException;
-import Exceptions.ParrallelRunwayException;
-import Exceptions.VariableDeclarationException;
 
 public class TopFrame extends JFrame{
 	

@@ -18,7 +18,6 @@ public class XMLSaver {
 	public static boolean serialise(Savable object, String dir){
 		Serializer serializer = new Persister();
 		File result = new File(dir);
-		System.out.println(result.getAbsolutePath());
 		try {
 			serializer.write(object, result);
 			return true;
@@ -33,7 +32,6 @@ public class XMLSaver {
 		try {
 			return serializer.read(classType, xmlFile);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		

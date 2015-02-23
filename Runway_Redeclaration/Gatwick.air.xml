@@ -1,7 +1,7 @@
 <airport name="Gatwick">
    <airfields class="java.util.ArrayList">
       <airfieldInterface class="Core.Airfield">
-         <runways length="2" class="CoreInterfaces.DeclaredRunwayInterface">
+         <runways length="2">
             <declaredRunwayInterface class="Core.DeclaredRunway">
                <decTora>11.0</decTora>
                <disThreshold>0.0</disThreshold>
@@ -23,7 +23,7 @@
                <direction> </direction>
             </declaredRunwayInterface>
          </runways>
-         <defaultRunways length="2" class="CoreInterfaces.DeclaredRunwayInterface">
+         <defaultRunways length="2">
             <declaredRunwayInterface class="Core.DeclaredRunway">
                <decTora>11.0</decTora>
                <disThreshold>0.0</disThreshold>

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import Core.Airport;
 import Core.Obstacle;
 import CoreInterfaces.AirportInterface;
+import CoreInterfaces.ObstacleInterface;
 
 /**
  * Handles the saving and loading of objects
@@ -13,7 +14,7 @@ import CoreInterfaces.AirportInterface;
  */
 public class FileSystem {
 	
-	private String wd;
+	private String wd = "./";
 	private String datDir = "/dat";
 	private String airDir = "/airports";
 	private String objDir = "/obs";
@@ -24,12 +25,7 @@ public class FileSystem {
 	
 	private File dat, airports, obstacles;
 	
-	public static void main(String[] s){
-		FileSystem fs = new FileSystem();
-	}
-	
 	public FileSystem(){
-		wd = "./";
 		makedirs();
 	}
 	
@@ -38,7 +34,7 @@ public class FileSystem {
 		dat = new File(wd + datDir);
 		airports = new File(dat.getAbsolutePath() + airDir);
 		obstacles = new File(dat.getAbsoluteFile() + objDir);
-		//System.out.println(dat);
+
 		if(!dat.exists())
 			dat.mkdirs();
 		if(!airports.exists())
@@ -75,18 +71,18 @@ public class FileSystem {
 	}
 
 	public boolean saveObs(Obstacle o){
-		String dir = o.getName() + objext + xmlext;
+		String dir = wd + datDir + objDir + "/" + o.getName() + objext + xmlext;
 		return XMLSaver.serialise(o, dir);
 	}
 	
-	public Obstacle loadObs(String fileName){
+	public ObstacleInterface loadObs(String fileName){
 		File obsFile = new File(fileName);
-		Obstacle loadedObs = (Obstacle) XMLSaver.deserialise(Obstacle.class, obsFile);
+		ObstacleInterface loadedObs = (ObstacleInterface) XMLSaver.deserialise(Obstacle.class, obsFile);
 		return loadedObs;
 	}
 	
 	public boolean saveAir(Airport a){
-		String dir = a.getName()+airext + xmlext;
+		String dir = wd + datDir + airDir + "/" + a.getName()+airext + xmlext;
 		return XMLSaver.serialise(a, dir);
 	}
 	
@@ -99,7 +95,6 @@ public class FileSystem {
 	//Returns true if chosen file is an airport file
 	public boolean checkAir(File chosen) {
 		String name = chosen.getName();
-		System.out.println(name.split("\\.")[1]);
 		if (name.split("\\.")[1].equals("air")){
 			return true;
 		}
@@ -108,11 +103,7 @@ public class FileSystem {
 
 	//Returns true if chosen file is an obstacle file
 	public boolean checkObs(File chosen) {
-		System.out.println(chosen.getAbsolutePath());
 		String name = chosen.getName();
-		String[] parts = name.split("\\.");
-		for(int i = 0; i<parts.length; i++)
-			System.out.println(parts[i]);
 		if (name.split("\\.")[1].equals("obj")){
 			return true;
 		}
