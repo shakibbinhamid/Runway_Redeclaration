@@ -12,19 +12,21 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import CoreInterfaces.AirportInterface;
 
-public class LoadListener implements ActionListener{
+public class LoadListener{
 
 	private TopFrame frame;
-
-	public LoadListener(TopFrame frame){
+	private FileNameExtensionFilter filter;
+	
+	public LoadListener(TopFrame frame, FileNameExtensionFilter filter){
 		this.frame = frame;
+		this.filter = filter;
+		
+		load();
 	}
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
+	public void load(){
 
 		JFileChooser fc = new JFileChooser();
-		FileNameExtensionFilter filter = new FileNameExtensionFilter("Airport Files", "xml"); //Could be extended for individual type choice in future (i.e. "Obstacle", "obj" and "Airport", "air"). Requires custom filter class
 		fc.setFileFilter(filter);
 		fc.setAcceptAllFileFilterUsed(false);
 		fc.setCurrentDirectory(new File(System.getProperty("user.dir")));

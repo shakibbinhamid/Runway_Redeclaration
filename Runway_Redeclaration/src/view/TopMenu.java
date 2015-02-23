@@ -76,7 +76,7 @@ public class TopMenu extends JMenuBar{
 		
 		load = getMenu("Load", iload, new JMenuItem[]{loadAirport, loadObstacle});
 		loadAirport.addActionListener(new LoadListener(frame));
-		loadObstacle.addActionListener(new LoadListener(frame));
+		loadObstacle.addActionListener(new LoadObstacleListener(frame));
 		
 		//================================SAVE MENU==============================================//
 		saveAirport = getItem("Save Airport", iairport, SwingConstants.CENTER);
