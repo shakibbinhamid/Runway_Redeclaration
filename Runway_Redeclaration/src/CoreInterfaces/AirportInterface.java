@@ -2,8 +2,8 @@ package CoreInterfaces;
 
 import java.util.List;
 
+import Core.ParrallelRunwayException;
 import Exceptions.CannotMakeRunwayException;
-import Exceptions.ParrallelRunwayException;
 import Exceptions.UnrecognisedAirfieldIntifierException;
 import Exceptions.VariableDeclarationException;
 

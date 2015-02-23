@@ -7,7 +7,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import Exceptions.CannotMakeRunwayException;
-import Exceptions.ParrallelRunwayException;
 import Exceptions.VariableDeclarationException;
 
 public class TEST_Airport {
@@ -52,7 +51,7 @@ public class TEST_Airport {
 		try {
 			this.airport.addNewAirfield(45, airfieldVars);
 			this.airport.addNewAirfield(76, airfieldVars);
-
+			assertEquals(2, this.airport.getAirfields().size());
 			
 		} catch (ParrallelRunwayException e) {
 			fail("ParrallelRunwayException");
@@ -67,13 +66,33 @@ public class TEST_Airport {
 	}
 	
 	@Test
-	public void testParallelRunways_DoNothing() {
+	public void testTwoParallels_DoNothing() {
 		try {
 			this.airport.addNewAirfield(45, airfieldVars);
 			this.airport.addNewAirfield(40, airfieldVars);
 			fail("Exception not caught");
 			
 		} catch (ParrallelRunwayException e) {
+			assertEquals("Ensure 2 runways",2, this.airport.getAirfields().size());
+			
+		} catch (CannotMakeRunwayException e) {
+			fail("CannotMakeRunwayException");
+			e.printStackTrace();
+		} catch (VariableDeclarationException e) {
+			fail("VariableDeclarationException \n"+e.getMessage());
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void testTwoParallels_CheckList() {
+		try {
+			this.airport.addNewAirfield(45, airfieldVars);
+			this.airport.addNewAirfield(40, airfieldVars);
+			fail("Exception not caught");
+			
+		} catch (ParrallelRunwayException e) {
+			this.airport.getAirfields();
 			
 		} catch (CannotMakeRunwayException e) {
 			fail("CannotMakeRunwayException");

@@ -5,14 +5,12 @@ import java.util.List;
 
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.ElementList;
-import org.simpleframework.xml.ElementMap;
 import org.simpleframework.xml.Root;
 
 import CoreInterfaces.AirfieldInterface;
 import CoreInterfaces.AirportInterface;
 import CoreInterfaces.Savable;
 import Exceptions.CannotMakeRunwayException;
-import Exceptions.ParrallelRunwayException;
 import Exceptions.UnrecognisedAirfieldIntifierException;
 import Exceptions.VariableDeclarationException;
 
@@ -36,7 +34,7 @@ public class Airport implements AirportInterface, Savable {
 
 	//nullary constructor
 	public Airport(){
-		
+		//Used for XML
 	}
 	
 	public Airport(String name) {
@@ -102,6 +100,10 @@ public class Airport implements AirportInterface, Savable {
 			throw new ParrallelRunwayException(this, parrallelRunways, newAirfield);
 		}
 		
+		this.airfields.add(newAirfield);
+	}
+	
+	protected void addParrallelAirfield(AirfieldInterface newAirfield){
 		this.airfields.add(newAirfield);
 	}
 
