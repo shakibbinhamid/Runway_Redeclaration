@@ -26,19 +26,27 @@ import Exceptions.VariableDeclarationException;
  *   (inert and calculated) will result in a UnusableRunwayException.
  *  
  * @author Shakib
- * @Editor Stefan
+ * @Editor Stefan Shakib
  * @Tester Stefan
  *
  */
 @Root
- class DeclaredRunway implements DeclaredRunwayInterface{
-	 @Element
+class DeclaredRunway implements DeclaredRunwayInterface{
+	@Element
 	private double decTora, disThreshold, stopway, clearway;
-	 @Element
+	
+	/** Ratio Format 1:n NOT DEGREES*/
+	public static final int DEFAULT_DESC_ANGLE = 50;
+	/** Ratio Format 1:n NOT DEGREES*/
+	public static final int DEFAULT_ASC_ANGLE = 50;
+	
+	private double decLda, decAsda, decToda;
+	
+	@Element
 	private int angle;
-	 @Element
+	@Element
 	private char direction;
-	 
+
 	protected static final double DEFAULT_RESA = 240;
 
 	/**
@@ -46,27 +54,27 @@ import Exceptions.VariableDeclarationException;
 	 * angleFromNorth to know which end of the tarmac we are heading from.s
 	 * 
 	 * @param runway - The airfield with the runway on it that you want to redeclare
-	 * @param angleFromNorth - The angle (in degrees '°') divided by 10 and rounded to the nearest 10
+	 * @param angleFromNorth - The angle (in degrees 'ï¿½') divided by 10 and rounded to the nearest 10
 	 * 
 	 * @throws VariableDeclarationException is thrown when an invalid distance variable is declared
 	 */
-	
+
 	//nullary constructor
-	 protected DeclaredRunway(){
-		 
-	 }
-	
+	protected DeclaredRunway(){
+
+	}
+
 	protected DeclaredRunway(AirfieldInterface runway ,int angleFromNorth) throws VariableDeclarationException{
-		
-		setDisplacedThreshold(DeclaredRunway.DEFAULT_STOPWAY);
+
+		setDisplacedThreshold(0);
 		if(!runway.hasObstacle()){
-			
+
 			setTORA(runway.getRunwayLength());
 			setStopway(runway.getInitialStopway());
-			
+
 			double clearway = this.stopway+runway.getStripEndSideLength();
 			setClearway(clearway);
-			
+
 		}else{
 			//These are garuneteed to fail, as we have not handled the obstacle scenarios yet!
 			//TODO handle an obstacle
@@ -79,23 +87,31 @@ import Exceptions.VariableDeclarationException;
 		setAngle(angleFromNorth);
 		direction = ' ';
 	}
-	
+
 	protected DeclaredRunway(AirfieldInterface airfield, int angleFromNorth,
 			double tora, double stopway, double clearway, double displacedThreshold) throws VariableDeclarationException{
-		
+
 		setTORA(tora);
 		setStopway(stopway);
 		setClearway(clearway);
 		setDisplacedThreshold(displacedThreshold);
-		
-		
+
+		//TODO include final check: TORA <= ASDA <= TODA 
+		try {
+			decLda = getLDA();
+			decToda = getTODA();
+			decAsda = getASDA();
+		} catch (UnusableRunwayException e) {
+			e.printStackTrace();
+		}
+
 		setAngle(angleFromNorth);
 		direction = ' ';
-		
+
 	}
 
-//====[ Direction Methods  ]=====================================
-//----[ Getters ]------------------------------------------------------
+	//====[ Direction Methods  ]=====================================
+	//----[ Getters ]------------------------------------------------------
 	@Override
 	public char getSideLetter() {
 		return direction;
@@ -103,7 +119,7 @@ import Exceptions.VariableDeclarationException;
 
 	@Override
 	/**
-	 * The angle will be in actual degrees i.e. 270° or 51° 
+	 * The angle will be in actual degrees i.e. 270ï¿½ or 51ï¿½ 
 	 * Note: they are not the shortened 2sf version used in the identifier 
 	 */
 	public int getAngle() {
@@ -116,7 +132,7 @@ import Exceptions.VariableDeclarationException;
 	 * nearest 10 and divided by 10 followed by the its parallel 
 	 * runway side character.
 	 * 
-	 * e.g. 289° on the left side = "29L"
+	 * e.g. 289ï¿½ on the left side = "29L"
 	 */
 	public String getIdentifier() {
 		String out = "";
@@ -126,7 +142,7 @@ import Exceptions.VariableDeclarationException;
 		out += String.valueOf(Math.round((double)angle/10))+direction;
 		return out;
 	}
-//----[ Setters ]---------------------------------------------------s---
+	//----[ Setters ]---------------------------------------------------s---
 	@Override
 	/**
 	 * The character that identifies a runway from a group of parallel,
@@ -139,12 +155,12 @@ import Exceptions.VariableDeclarationException;
 		//If LoR is not L or R
 		if ( !(leftOrRight == ' ' || leftOrRight == 'L' || leftOrRight == 'R' || leftOrRight == 'C') )
 			throw new VariableDeclarationException("Direction",leftOrRight,"Must be 'L', 'C', 'R' or space ");
-		
+
 		this.direction = leftOrRight;
 	}
-	
+
 	/**
-	 * Accepts any angle of degree but stores it as a value of v where:  0° <= v < 360°
+	 * Accepts any angle of degree but stores it as a value of v where:  0ï¿½ <= v < 360ï¿½
 	 */
 	public void setAngle(int angle) {
 		while(angle<0){
@@ -152,10 +168,10 @@ import Exceptions.VariableDeclarationException;
 		}
 		this.angle = angle%360;
 	}
-	
-	
-//====[ Inert Distance Methods  ]=====================================
-//----[ Getters ]------------------------------------------------------
+
+
+	//====[ Inert Distance Methods  ]=====================================
+	//----[ Getters ]------------------------------------------------------
 	@Override
 	public double getTORA() throws UnusableRunwayException {
 		return decTora;
@@ -175,12 +191,12 @@ import Exceptions.VariableDeclarationException;
 	public double getDisplacedThreshold() throws UnusableRunwayException {
 		return disThreshold;
 	}
-	
+
 	@Override
 	public double getRESA() throws UnusableRunwayException{
 		return DEFAULT_RESA;
 	}
-//----[ Setters ]---------------------------------------------------------
+	//----[ Setters ]---------------------------------------------------------
 	/**
 	 * @throws VariableDeclarationException - when the 'tora' is not > 0
 	 */
@@ -198,14 +214,14 @@ import Exceptions.VariableDeclarationException;
 
 		this.disThreshold = threshold;
 	}
-	
+
 	/**
 	 * @throws VariableDeclarationException - when 'stopway'  is not >= 0
 	 */
 	private void setStopway(double stopway) throws VariableDeclarationException{
 		if( stopway < 0 ) throw new VariableDeclarationException("Stopway", stopway, "Stopway >= 0");
 	}
-	
+
 	/**
 	 * @throws VariableDeclarationException - when 'clearway'  is not >= 0 OR when 'clearway' < getStopway
 	 */
@@ -216,7 +232,7 @@ import Exceptions.VariableDeclarationException;
 		this.clearway = clearway;
 	}
 
-//====[ Calculated Distance Methods  ]=====================================
+	//====[ Calculated Distance Methods  ]=====================================
 	@Override
 	public double getASDA() throws UnusableRunwayException{
 		return getTORA()+getStopway();
@@ -231,17 +247,62 @@ import Exceptions.VariableDeclarationException;
 	public double getLDA() throws UnusableRunwayException {
 		return getTORA()-getDisplacedThreshold();
 	}
+	//====[ Mutators ]=============================================================
 
-
-//====[ Angle Methods  ]==================================================
 	@Override
-	public int getAngleOfAscent() {
-		return ascentAngle;
+	public void landOver(DeclaredRunwayInterface original, AirfieldInterface parent) throws UnusableRunwayException {
+		// Max of RESA, ALS, blast prot
+		//ALS = obj.height * angle of DESC
+		//RESA = def RESA = 240
+		//blast prot = def blast prot = 300 (Std 300->500)
+		double distFromObs;
+		if(isSmallEnd()){
+			distFromObs = parent.getObstacle().distanceFromSmallEnd();
+		}else{
+			distFromObs = parent.getObstacle().distanceFromLargeEnd();
+		}
+		//TODO this is dist to centre , todo = make it from nearest side of obj - USE RADIUS
+		double RESA = DEFAULT_RESA;
+		double ALS = parent.getObstacle().getHeight() * DEFAULT_DESC_ANGLE;
+		
+		double maxReduction = Math.max(Math.max(RESA,ALS)+parent.getStripEndSideLength(), Airfield.BLAST_PROT);
+		this.decLda = original.getLDA() - maxReduction -  distFromObs;
+			
 	}
 
 	@Override
-	public int getAngleOfDescent() {
-		return descentAngle;
+	public void landTowards(DeclaredRunwayInterface original, AirfieldInterface parent) {
+		//RESA, side len, obj pos, 
+		double distFromObs;
+		if(isSmallEnd()){
+			distFromObs = parent.getObstacle().distanceFromSmallEnd();
+		}else{
+			distFromObs = parent.getObstacle().distanceFromLargeEnd();
+		}
+		double resa = DEFAULT_RESA;
+		
+		this.decLda = distFromObs - resa - parent.getStripEndSideLength();
 	}
+
+	@Override
+	public void takeOffAwayFrom(DeclaredRunwayInterface original, AirfieldInterface parent) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void takeOffTowardsOver(DeclaredRunwayInterface original, AirfieldInterface parent) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private boolean isSmallEnd(){
+		return this.angle<180;
+	}
+
+
+
+
+
 
 }

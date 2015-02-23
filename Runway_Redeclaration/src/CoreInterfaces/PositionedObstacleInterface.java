@@ -8,10 +8,9 @@ package CoreInterfaces;
  *
  */
 public interface PositionedObstacleInterface extends ObstacleInterface{
-	/**
-	 * Distance in m aways from that side
-	 * @return
-	 */
-	double distanceFromEnd();
+
+	double distanceFromSmallEnd();
+
+	double distanceFromLargeEnd();
 	
 }

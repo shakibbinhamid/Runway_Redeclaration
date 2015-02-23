@@ -14,9 +14,6 @@ import Exceptions.VariableDeclarationException;
  */
 public interface DeclaredRunwayInterface {
 	
-	static final int DEFAULT_ANGLE_OF_ASCENT = 50;
-	static final int DEFAULT_ANGLE_OF_DESCENT = 50;
-	public static final double DEFAULT_STOPWAY = 0;
 	/** 
 	 * The direction/side of the runway we are referring to.
 	 * 
@@ -67,4 +64,12 @@ public interface DeclaredRunwayInterface {
 	
 	double getRESA() throws UnusableRunwayException;
 	
+//=====[ Mutators ]=================================================
+	void landOver(DeclaredRunwayInterface original, AirfieldInterface parent) throws UnusableRunwayException;
+	
+	void landTowards(DeclaredRunwayInterface original, AirfieldInterface parent);
+	
+	void takeOffAwayFrom(DeclaredRunwayInterface original, AirfieldInterface parent);
+	
+	void takeOffTowardsOver(DeclaredRunwayInterface original, AirfieldInterface parent);
 }

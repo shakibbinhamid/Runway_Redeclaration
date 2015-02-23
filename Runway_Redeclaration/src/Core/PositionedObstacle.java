@@ -15,11 +15,12 @@ import CoreInterfaces.PositionedObstacleInterface;
  */
 public class PositionedObstacle implements PositionedObstacleInterface{
 	private ObstacleInterface unpositionedObj;
-	private double distance;
+	private double distanceSmall, distanceLarge;
 	
-	public PositionedObstacle(ObstacleInterface obj, double howFarInFromSmallAngledSide){
+	public PositionedObstacle(ObstacleInterface obj, double howFarInFromSmallAngledSide, double howFarInFromLargeAngledSide){
 		this.unpositionedObj=  obj;
-		this.distance = howFarInFromSmallAngledSide;
+		this.distanceSmall = howFarInFromSmallAngledSide;
+		this.distanceLarge = howFarInFromLargeAngledSide;
 	}
 	
 	
@@ -40,7 +41,12 @@ public class PositionedObstacle implements PositionedObstacleInterface{
 		return getObst().getRadius();
 	}
 	@Override
-	public double distanceFromEnd() {
-		return this.distance;
+	public double distanceFromSmallEnd() {
+		return this.distanceSmall;
+	}
+	
+	@Override
+	public double distanceFromLargeEnd() {
+		return this.distanceLarge;
 	}
 }
