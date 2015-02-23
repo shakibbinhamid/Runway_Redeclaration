@@ -1,5 +1,7 @@
 package view;
 
+import io.ObstacleFileFilter;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -11,7 +13,7 @@ public class LoadObstacleListener implements ActionListener{
 	private FileNameExtensionFilter filter;
 	
 	public LoadObstacleListener(TopFrame frame){
-		filter = new FileNameExtensionFilter("Obstacle Files", "obs.xml"); 
+		filter = new FileNameExtensionFilter(new ObstacleFileFilter()); 
 		
 
 	}

@@ -92,5 +92,13 @@ public class FileSystem {
 		return a;
 	}
 	
+	public boolean checkAir(File chosen){
+		MasterFileFilter f = new MasterFileFilter();
+		return f.checkAir(chosen);
+	}
 	
+	public boolean checkObs(File chosen){
+		MasterFileFilter f = new MasterFileFilter();
+		return f.checkObs(chosen);
+	}
 }
