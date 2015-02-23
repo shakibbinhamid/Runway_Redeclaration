@@ -51,6 +51,8 @@ public class LoadListener{
 					AirportInterface airport = fs.loadAir(chosen.getName());
 					System.out.println(airport.toString());
 					frame.loadOrCreateAirport(airport);
+					frame.getLogPanel().makeLog("Airport loaded.");
+					frame.getLogPanel().repaint();
 				}
 			}
 		}

@@ -110,7 +110,7 @@ public class FileSystem {
 	public boolean checkObs(File chosen) {
 		try{
 			String name = chosen.getName();
-			if (name.split("\\.")[1].equals("obj")){
+			if (name.split("\\.")[1].equals("obs")){
 				return true;
 			}
 		}

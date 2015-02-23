@@ -71,4 +71,9 @@ public class TopFrame extends JFrame{
 	public TabbedPanel getTabbePanel(){
 		return this.tabbedPanel;
 	}
+
+	public LogPanel getLogPanel() {
+		return logPanel;
+		
+	}
 }

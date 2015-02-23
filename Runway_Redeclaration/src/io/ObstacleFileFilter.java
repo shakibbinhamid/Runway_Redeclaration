@@ -13,8 +13,7 @@ public class ObstacleFileFilter extends javax.swing.filechooser.FileFilter{
 
 	@Override
 	public String getDescription() {
-		// TODO Auto-generated method stub
-		return null;
+		return "Obstacles";
 	}
 
 }
