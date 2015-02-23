@@ -4,7 +4,11 @@ import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
-
+/**
+ * 
+ * @author Stefan
+ *
+ */
 public class TEST_PositionedObstacle {
 	
 	public static final Obstacle obj = new Obstacle("Jim",54.02,67.99);

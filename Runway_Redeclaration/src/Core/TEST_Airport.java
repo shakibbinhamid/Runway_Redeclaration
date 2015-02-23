@@ -8,7 +8,12 @@ import org.junit.Test;
 
 import Exceptions.CannotMakeRunwayException;
 import Exceptions.VariableDeclarationException;
-
+/**
+ * Tests Airport and ParallelRunwayException
+ * 
+ * @author Stefan
+ *
+ */
 public class TEST_Airport {
 	public static final String name = "The super awesome airport";
 	public static final double[] airfieldVars = {50,100,100,100,200,300,400,500};

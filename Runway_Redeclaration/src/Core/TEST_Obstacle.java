@@ -4,7 +4,11 @@ import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
-
+/**
+ * 
+ * @author Stefan
+ *
+ */
 public class TEST_Obstacle {
 	
 	public static final String name = "TestName";
