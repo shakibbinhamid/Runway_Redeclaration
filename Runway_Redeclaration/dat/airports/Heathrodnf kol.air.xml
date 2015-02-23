@@ -1,0 +1,58 @@
+<airport name="Heathrodnf kol">
+   <airfields class="java.util.ArrayList">
+      <airfieldInterface class="Core.Airfield">
+         <runways length="2" class="CoreInterfaces.DeclaredRunwayInterface">
+            <declaredRunwayInterface class="Core.DeclaredRunway">
+               <decTora>500.0</decTora>
+               <disThreshold>0.0</disThreshold>
+               <stopway>0.0</stopway>
+               <clearway>100.0</clearway>
+               <angle>50</angle>
+               <ascentAngle>50</ascentAngle>
+               <descentAngle>50</descentAngle>
+               <direction> </direction>
+            </declaredRunwayInterface>
+            <declaredRunwayInterface class="Core.DeclaredRunway">
+               <decTora>500.0</decTora>
+               <disThreshold>0.0</disThreshold>
+               <stopway>0.0</stopway>
+               <clearway>100.0</clearway>
+               <angle>230</angle>
+               <ascentAngle>50</ascentAngle>
+               <descentAngle>50</descentAngle>
+               <direction> </direction>
+            </declaredRunwayInterface>
+         </runways>
+         <defaultRunways length="2" class="CoreInterfaces.DeclaredRunwayInterface">
+            <declaredRunwayInterface class="Core.DeclaredRunway">
+               <decTora>500.0</decTora>
+               <disThreshold>0.0</disThreshold>
+               <stopway>0.0</stopway>
+               <clearway>100.0</clearway>
+               <angle>50</angle>
+               <ascentAngle>50</ascentAngle>
+               <descentAngle>50</descentAngle>
+               <direction> </direction>
+            </declaredRunwayInterface>
+            <declaredRunwayInterface class="Core.DeclaredRunway">
+               <decTora>500.0</decTora>
+               <disThreshold>0.0</disThreshold>
+               <stopway>0.0</stopway>
+               <clearway>100.0</clearway>
+               <angle>230</angle>
+               <ascentAngle>50</ascentAngle>
+               <descentAngle>50</descentAngle>
+               <direction> </direction>
+            </declaredRunwayInterface>
+         </defaultRunways>
+         <runWidth>50.0</runWidth>
+         <runLen>500.0</runLen>
+         <initStop>50.0</initStop>
+         <clearLen>100.0</clearLen>
+         <dToLongSpace>100.0</dToLongSpace>
+         <shortClearWSpace>200.0</shortClearWSpace>
+         <longClearWSpace>300.0</longClearWSpace>
+         <fullWSpace>400.0</fullWSpace>
+      </airfieldInterface>
+   </airfields>
+</airport>

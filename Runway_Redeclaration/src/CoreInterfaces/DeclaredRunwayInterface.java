@@ -67,8 +67,4 @@ public interface DeclaredRunwayInterface {
 	
 	double getRESA() throws UnusableRunwayException;
 	
-	int getAngleOfAscent() throws UnusableRunwayException;
-	
-	int getAngleOfDescent() throws UnusableRunwayException;
-	
 }
