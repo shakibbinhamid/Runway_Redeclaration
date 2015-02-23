@@ -55,7 +55,7 @@ import Exceptions.VariableDeclarationException;
 	 protected DeclaredRunway(){
 		 
 	 }
-	 
+	
 	protected DeclaredRunway(AirfieldInterface runway ,int angleFromNorth) throws VariableDeclarationException{
 		
 		setDisplacedThreshold(DeclaredRunway.DEFAULT_STOPWAY);
@@ -81,6 +81,18 @@ import Exceptions.VariableDeclarationException;
 
 		angle = angleFromNorth;
 		direction = ' ';
+	}
+	
+	protected DeclaredRunway(AirfieldInterface airfield, int angleFromNorth,
+			double tora, double stopway, double clearway, double displacedThreshold) throws VariableDeclarationException{
+		
+		setTORA(tora);
+		setStopway(stopway);
+		setClearway(clearway);
+		setDisplacedThreshold(displacedThreshold);
+		
+		
+		
 	}
 
 //====[ Direction Methods  ]=====================================
