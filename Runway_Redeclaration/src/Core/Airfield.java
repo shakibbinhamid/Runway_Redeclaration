@@ -21,20 +21,15 @@ class Airfield implements AirfieldInterface, Savable {
 	@Element
 	private double runWidth,runLen,initStop,stripEndL,dToLongSpace,shortClearWSpace,longClearWSpace,fullWSpace;
 	
-	public static final double blastProt = 300;
-	/**
-	 * 
-	 * @param angleFromNorth
-	 * @param sideLetter
-	 * @param lengths
-	 * @throws VariableDeclarationException - There are invalid variable declarations
-	 */
+	public static final double BLAST_PROT = 300;
+	
 	
 	//nullary constructor
 	protected Airfield(){
 		
 	}
 	
+	//TODO change the dimensions to hanlde asymetric runways (Yeh that shite)
 	protected Airfield(int angleFromNorth, double[] dimensions) throws VariableDeclarationException{
 		if(dimensions.length != 8) throw new VariableDeclarationException("lengths", dimensions, "Needs to be 8 cells");
 		
@@ -59,6 +54,7 @@ class Airfield implements AirfieldInterface, Savable {
 		this.defaultRunways[1] = new DeclaredRunway(this, this.getLargeAngledRunway().getAngle());;		
 	}
 	
+	//TODO this should be changed to a mutate method using the new ones me and shaka made
 	private void redeclareRunways(int angleFromNorth) throws VariableDeclarationException{
 		//Ensure that it is above 0
 		while(angleFromNorth < 0){
@@ -122,7 +118,7 @@ class Airfield implements AirfieldInterface, Savable {
 	public double getShortClearedWidthSpacer() {
 		return shortClearWSpace;
 	}
-
+	
 	@Override
 	public double getLongClearedWidthSpacer() {
 		return longClearWSpace;
@@ -135,7 +131,7 @@ class Airfield implements AirfieldInterface, Savable {
 
 	@Override
 	public double getBlastAllowanceDistance() {
-		return Airfield.blastProt;
+		return Airfield.BLAST_PROT;
 	}
 	
 	@Override
@@ -148,11 +144,12 @@ class Airfield implements AirfieldInterface, Savable {
 			String indentifier, double howFarIn) throws InvalidIdentifierException {
 		
 		if(indentifier.equals(this.getSmallAngledRunway().getIdentifier())){
-			this.obstacle = new PositionedObstacle(obj,howFarIn);
+			double otherhowFarIn = this.getRunwayLength()-howFarIn;
+			this.obstacle = new PositionedObstacle(obj,howFarIn, otherhowFarIn);
 			
 		}else if(indentifier.equals(this.getLargeAngledRunway().getIdentifier())){
-			howFarIn = this.getRunwayLength()-howFarIn;
-			this.obstacle = new PositionedObstacle(obj,howFarIn);
+			double otherhowFarIn = this.getRunwayLength()-howFarIn;
+			this.obstacle = new PositionedObstacle(obj,otherhowFarIn, howFarIn);
 		}else{
 			throw new InvalidIdentifierException(indentifier, this);
 		}
@@ -165,7 +162,7 @@ class Airfield implements AirfieldInterface, Savable {
 		}
 		
 	}
-
+	
 	@Override
 	public void removeObstacle() {
 		this.obstacle = null;

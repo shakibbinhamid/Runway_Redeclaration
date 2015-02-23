@@ -69,7 +69,12 @@ public interface DeclaredRunwayInterface {
 	
 	void landTowards(DeclaredRunwayInterface original, AirfieldInterface parent);
 	
-	void takeOffAwayFrom(DeclaredRunwayInterface original, AirfieldInterface parent);
+	void takeOffAwayFrom(DeclaredRunwayInterface original, AirfieldInterface parent) throws UnusableRunwayException;
 	
-	void takeOffTowardsOver(DeclaredRunwayInterface original, AirfieldInterface parent);
+	void takeOffTowardsOver(DeclaredRunwayInterface original, AirfieldInterface parent) throws UnusableRunwayException;
+	
+//=====[ Angles ]====================================================
+	int getDescentAngle();
+	
+	int getAscentAngle();
 }

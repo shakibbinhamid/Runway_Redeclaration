@@ -40,6 +40,8 @@ class DeclaredRunway implements DeclaredRunwayInterface{
 	/** Ratio Format 1:n NOT DEGREES*/
 	public static final int DEFAULT_ASC_ANGLE = 50;
 	
+	
+	//TODO Use these!
 	private double decLda, decAsda, decToda;
 	
 	@Element
@@ -88,6 +90,7 @@ class DeclaredRunway implements DeclaredRunwayInterface{
 		direction = ' ';
 	}
 
+	//This is the new one
 	protected DeclaredRunway(AirfieldInterface airfield, int angleFromNorth,
 			double tora, double stopway, double clearway, double displacedThreshold) throws VariableDeclarationException{
 
@@ -285,19 +288,49 @@ class DeclaredRunway implements DeclaredRunwayInterface{
 	}
 
 	@Override
-	public void takeOffAwayFrom(DeclaredRunwayInterface original, AirfieldInterface parent) {
-		// TODO Auto-generated method stub
+	public void takeOffAwayFrom(DeclaredRunwayInterface original, AirfieldInterface parent) throws UnusableRunwayException {
+		//default (TORA ASDA TODA), blast prot, clearway, (?stopway?), obj pos
+		//ASSUMPTION: stopway is part of clearway
 		
+		double distFromObs;
+		if(isSmallEnd()){
+			distFromObs = parent.getObstacle().distanceFromSmallEnd();
+		}else{
+			distFromObs = parent.getObstacle().distanceFromLargeEnd();
+		}
+		
+		this.decTora = original.getTORA() - distFromObs - Airfield.BLAST_PROT;
 	}
 
 	@Override
-	public void takeOffTowardsOver(DeclaredRunwayInterface original, AirfieldInterface parent) {
-		// TODO Auto-generated method stub
+	public void takeOffTowardsOver(DeclaredRunwayInterface original, AirfieldInterface parent) throws UnusableRunwayException {
+		//ALS RESA Strip End displThresh
+		double distFromObs;
+		if(isSmallEnd()){
+			distFromObs = parent.getObstacle().distanceFromSmallEnd();
+		}else{
+			distFromObs = parent.getObstacle().distanceFromLargeEnd();
+		}
+		double ALS = getAscentAngle()*parent.getObstacle().getHeight();
+		
+		this.decTora = distFromObs + getDisplacedThreshold() - ALS - parent.getStripEndSideLength();
+		this.decAsda = this.decTora; //Stopway blocked
+		this.decToda = this.decTora; //clearway blocked
 		
 	}
 
 	private boolean isSmallEnd(){
 		return this.angle<180;
+	}
+
+	@Override
+	public int getDescentAngle() {
+		return DEFAULT_DESC_ANGLE;
+	}
+
+	@Override
+	public int getAscentAngle() {
+		return DEFAULT_ASC_ANGLE;
 	}
 
 
