@@ -281,8 +281,9 @@ class DeclaredRunway implements DeclaredRunwayInterface{
 		setTORA(original.getTORA());
 		setStopway(original.getStopway());
 		setClearway(original.getClearway());
-		//This was chosen and hence we do not revert it
-		//setDisplacedThreshold(original.getDisplacedThreshold());
+
+		//This was chosen and hence we do not revert it?????
+		setDisplacedThreshold(original.getDisplacedThreshold());
 		
 		setLDA(original.getLDA());
 		setASDA(original.getASDA());
@@ -310,7 +311,7 @@ class DeclaredRunway implements DeclaredRunwayInterface{
 	@Override
 	/**  ________________
 	 *  |
-	 * ~~~------>   X
+	 * ~~~---->   X
 	 *  |________________
 	 */
 	public void landTowards(DeclaredRunwayInterface original, AirfieldInterface parent) throws VariableDeclarationException {
@@ -330,7 +331,7 @@ class DeclaredRunway implements DeclaredRunwayInterface{
 	public void takeOffAwayFrom(DeclaredRunwayInterface original, AirfieldInterface parent) throws UnusableRunwayException, VariableDeclarationException {
 		//ASSUMPTION: stopway is part of clearway
 		
-		double distFromObs = distanceFrom(parent.getObstacle());
+		double distFromObs = distanceFrom(parent.getObstacle()) + parent.getObstacle().getRadius()*2;
 		
 		double newTORA = original.getTORA() - distFromObs - Airfield.BLAST_PROT;
 		setTORA(newTORA);
@@ -381,10 +382,5 @@ class DeclaredRunway implements DeclaredRunwayInterface{
 	public int getAscentAngle() {
 		return DEFAULT_ASC_ANGLE;
 	}
-
-
-
-
-
-
+	
 }
