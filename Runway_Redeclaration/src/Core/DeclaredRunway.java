@@ -15,7 +15,7 @@ import Exceptions.VariableDeclarationException;
  * tarmac strip the runway needs to be redeclared. This is creating a new RedeclaredRunway rather than mutating it.
  * 
  * It consists of 4 main attributes: 
- * 	-TORA 
+ * 	-TORA
  *  -Stopway
  *  -Clearway
  *  -Displaced Threshold
