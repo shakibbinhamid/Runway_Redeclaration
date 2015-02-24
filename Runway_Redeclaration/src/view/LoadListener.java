@@ -12,6 +12,7 @@ import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import CoreInterfaces.AirportInterface;
+import CoreInterfaces.PositionedObstacleInterface;
 
 public class LoadListener{
 
@@ -43,13 +44,12 @@ public class LoadListener{
 					JOptionPane.showMessageDialog(null, "You cannot load an obstacle before loading an airport.", "Error",JOptionPane.ERROR_MESSAGE);
 				}
 				else{
-					((Tab) frame.getTabbePanel().getSelectedComponent()).setObs(fs.loadObs(chosen.getName()));
+					//PositionedObstacleInterface obs = fs.loadObs(chosen.getName()));
 				}
 			}
 			else{
 				if(fs.checkAir(chosen)){
 					AirportInterface airport = fs.loadAir(chosen.getName());
-					System.out.println(airport.toString());
 					frame.loadOrCreateAirport(airport);
 					frame.getLogPanel().makeLog("Airport loaded.");
 					frame.getLogPanel().repaint();

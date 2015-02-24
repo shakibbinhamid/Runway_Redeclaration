@@ -68,8 +68,8 @@ public class Tab extends JPanel{
 		return obs;
 	}
 
-	public void setObs(ObstacleInterface obs) {
-		this.obs = obs;
+	public void setField(AirfieldInterface field) {
+		this.field = field;
 	}
 	
 	/**

@@ -7,6 +7,8 @@ import javax.swing.JTabbedPane;
 
 import CoreInterfaces.AirfieldInterface;
 import CoreInterfaces.AirportInterface;
+import CoreInterfaces.DeclaredRunwayInterface;
+import CoreInterfaces.PositionedObstacleInterface;
 /**
  * This is just a holder class for all the tabs.
  * 
@@ -41,6 +43,16 @@ public class TabbedPanel extends JTabbedPane{
 			this.addTab(airfield.getName(), new Tab(airfield));
 		}
 		
+	}
+	
+	public void updateTab(AirfieldInterface field){
+		Tab whichTab = getTab(field.getName());
+		Tab newTab = new Tab(field);
+		int location = this.indexOfComponent(whichTab);
+		this.remove(whichTab);
+		this.add(newTab, location);
+		//whichTab.setField(field);
+	
 	}
 
 	public AirportInterface getAirport() {

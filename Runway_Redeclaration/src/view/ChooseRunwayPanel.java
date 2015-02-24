@@ -5,9 +5,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.ButtonGroup;
-import javax.swing.ButtonModel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+
+import CoreInterfaces.DeclaredRunwayInterface;
 
 /**
  * This class will be responsible to change between the runways and 
@@ -39,26 +40,20 @@ public class ChooseRunwayPanel extends JPanel{
 			
 			smallAngled.setSelected(true);
 			
-			smallAngled.addActionListener(new RunwayChangeListener(smallAngled.getText()));
-			bigAngled.addActionListener(new RunwayChangeListener(bigAngled.getText()));
-			
+			smallAngled.addActionListener(new ActionListener(){
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					tab.changeCurrentRunway(new DeclaredRunwayInterface[]{ tab.getField().getDefaultSmallAngledRunway()
+																		, tab.getField().getSmallAngledRunway()});
+				}});
+			bigAngled.addActionListener(new ActionListener(){
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					tab.changeCurrentRunway(new DeclaredRunwayInterface[]{ tab.getField().getDefaultLargeAngledRunway()
+																		, tab.getField().getLargeAngledRunway()});
+				}});
 			this.setLayout(new GridLayout(1,0));
 			this.add(smallAngled);
 			this.add(bigAngled);
-		}
-		
-		private class RunwayChangeListener implements ActionListener{
-			
-			private String runwayId;
-			
-			private RunwayChangeListener(String runwayId){
-				this.runwayId = runwayId;
-			}
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				tab.changeCurrentRunway(null);//TODO get a tab.getField().getDefaultRunway(String name) tab.getField().getRunway(String name);
-			}
-			
 		}
 	}

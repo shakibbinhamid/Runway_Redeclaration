@@ -9,7 +9,9 @@ import javax.swing.JPanel;
 
 import Core.Obstacle;
 import Core.PositionedObstacle;
+import CoreInterfaces.AirfieldInterface;
 import CoreInterfaces.AirportInterface;
+import CoreInterfaces.ObstacleInterface;
 import CoreInterfaces.PositionedObstacleInterface;
 import Exceptions.InvalidIdentifierException;
 import Exceptions.UnrecognisedAirfieldIntifierException;
@@ -21,8 +23,6 @@ public class TopFrame extends JFrame{
 		private TabbedPanel tabbedPanel;
 	
 	private AirportInterface airport;
-	
-	private PositionedObstacleInterface obs;
 
 	public TopFrame(){
 		init();
@@ -67,26 +67,23 @@ public class TopFrame extends JFrame{
 		setAirport(airport);
 		logPanel.updateLabelText(airport.getName());
 		tabbedPanel.updateTabs(airport);
-		//PositionedObstacle o = new PositionedObstacle(new Obstacle("A380", 8, 9), 100, 100);
-		//loadOrCreateObstacle(o);
-	}
-	
-	public void loadOrCreateObstacle(PositionedObstacleInterface obs){
-		setObstacle(obs);
-		Tab current = ((Tab)tabbedPanel.getSelectedComponent());
+		ObstacleInterface o = new Obstacle("A380", 2, 2);
 		try {
-			airport.getAirfield(current.getName()).addObstacle(obs, current.getField().getSmallAngledRunway().getIdentifier(), obs.distanceFromSmallEnd());
-			//current.getField().addObstacle(obs, current.getField().getSmallAngledRunway().getIdentifier(), obs.distanceFromSmallEnd());
-		} catch (InvalidIdentifierException e) {
-			e.printStackTrace();
+			loadOrCreateObstacle(o,airport.getAirfield("07 /25 "), 3);
 		} catch (UnrecognisedAirfieldIntifierException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		tabbedPanel.updateTabs(airport);
 	}
-
-	private void setObstacle(PositionedObstacleInterface obs) {
-		this.obs = obs;
+	
+	public void loadOrCreateObstacle(ObstacleInterface obs, AirfieldInterface field, double distanceFromLeft){
+		try {
+			field.addObstacle(obs, field.getSmallAngledRunway().getIdentifier(), distanceFromLeft);
+			
+		} catch (InvalidIdentifierException e) {
+			e.printStackTrace();
+		}
+		tabbedPanel.updateTab(field);
 	}
 
 	public AirportInterface getAirport() {
