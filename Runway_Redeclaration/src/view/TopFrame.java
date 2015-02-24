@@ -67,7 +67,7 @@ public class TopFrame extends JFrame{
 		setAirport(airport);
 		logPanel.updateLabelText(airport.getName());
 		tabbedPanel.updateTabs(airport);
-		ObstacleInterface o = new Obstacle("A380", 2, 2);
+		ObstacleInterface o = new Obstacle("A380", 0, 2);
 		try {
 			loadOrCreateObstacle(o,airport.getAirfield("07 /25 "), 3);
 		} catch (UnrecognisedAirfieldIntifierException e) {
@@ -83,7 +83,7 @@ public class TopFrame extends JFrame{
 		} catch (InvalidIdentifierException e) {
 			e.printStackTrace();
 		}
-		tabbedPanel.updateTab(field);
+		tabbedPanel.updateTabs(this.airport);
 	}
 
 	public AirportInterface getAirport() {

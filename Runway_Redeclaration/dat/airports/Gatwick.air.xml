@@ -8,8 +8,8 @@
                <stopway>100.0</stopway>
                <clearway>150.0</clearway>
                <decLda>1000.0</decLda>
-               <decAsda>1150.0</decAsda>
-               <decToda>1100.0</decToda>
+               <decAsda>1100.0</decAsda>
+               <decToda>1150.0</decToda>
                <angle>65</angle>
                <direction> </direction>
             </declaredRunwayInterface>
@@ -19,8 +19,8 @@
                <stopway>10.0</stopway>
                <clearway>20.0</clearway>
                <decLda>1000.0</decLda>
-               <decAsda>1020.0</decAsda>
-               <decToda>1010.0</decToda>
+               <decAsda>1010.0</decAsda>
+               <decToda>1020.0</decToda>
                <angle>245</angle>
                <direction> </direction>
             </declaredRunwayInterface>
@@ -32,8 +32,8 @@
                <stopway>100.0</stopway>
                <clearway>150.0</clearway>
                <decLda>1000.0</decLda>
-               <decAsda>1150.0</decAsda>
-               <decToda>1100.0</decToda>
+               <decAsda>1100.0</decAsda>
+               <decToda>1150.0</decToda>
                <angle>65</angle>
                <direction> </direction>
             </declaredRunwayInterface>
@@ -43,14 +43,14 @@
                <stopway>10.0</stopway>
                <clearway>20.0</clearway>
                <decLda>1000.0</decLda>
-               <decAsda>1020.0</decAsda>
-               <decToda>1010.0</decToda>
+               <decAsda>1010.0</decAsda>
+               <decToda>1020.0</decToda>
                <angle>245</angle>
                <direction> </direction>
             </declaredRunwayInterface>
          </defaultRunways>
-         <runWidth>14.0</runWidth>
-         <runLen>16.0</runLen>
+         <runWidth>1400.0</runWidth>
+         <runLen>160.0</runLen>
          <initStop>123.0</initStop>
          <stripEndL>16.0</stripEndL>
          <dToLongSpace>34.0</dToLongSpace>
@@ -66,8 +66,8 @@
                <stopway>134.0</stopway>
                <clearway>150.0</clearway>
                <decLda>1343.0</decLda>
-               <decAsda>1493.0</decAsda>
-               <decToda>1477.0</decToda>
+               <decAsda>1477.0</decAsda>
+               <decToda>1493.0</decToda>
                <angle>30</angle>
                <direction> </direction>
             </declaredRunwayInterface>
@@ -77,8 +77,8 @@
                <stopway>10.0</stopway>
                <clearway>20.0</clearway>
                <decLda>1000.0</decLda>
-               <decAsda>1020.0</decAsda>
-               <decToda>1010.0</decToda>
+               <decAsda>1010.0</decAsda>
+               <decToda>1020.0</decToda>
                <angle>210</angle>
                <direction> </direction>
             </declaredRunwayInterface>
@@ -90,8 +90,8 @@
                <stopway>134.0</stopway>
                <clearway>150.0</clearway>
                <decLda>1343.0</decLda>
-               <decAsda>1493.0</decAsda>
-               <decToda>1477.0</decToda>
+               <decAsda>1477.0</decAsda>
+               <decToda>1493.0</decToda>
                <angle>30</angle>
                <direction> </direction>
             </declaredRunwayInterface>
@@ -101,8 +101,8 @@
                <stopway>10.0</stopway>
                <clearway>20.0</clearway>
                <decLda>1000.0</decLda>
-               <decAsda>1020.0</decAsda>
-               <decToda>1010.0</decToda>
+               <decAsda>1010.0</decAsda>
+               <decToda>1020.0</decToda>
                <angle>210</angle>
                <direction> </direction>
             </declaredRunwayInterface>

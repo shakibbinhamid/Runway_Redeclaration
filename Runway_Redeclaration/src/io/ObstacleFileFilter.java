@@ -1,7 +1,6 @@
 package io;
 
 import java.io.File;
-import java.io.FileFilter;
 
 public class ObstacleFileFilter extends javax.swing.filechooser.FileFilter{
 
