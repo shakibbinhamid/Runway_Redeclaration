@@ -16,10 +16,9 @@ public class TEST_Airfield_NoRunwayStuff {
 	
 	public Airfield air;
 	
-	
 	@Before
 	public void setUp() throws Exception {
-		this.air = new Airfield(angle, airfieldVars,smallVars,largeVars);
+		this.air = new Airfield(angle, airfieldVars, smallVars, largeVars);
 	}
 
 	@Test
