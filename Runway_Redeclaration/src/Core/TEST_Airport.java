@@ -17,7 +17,8 @@ import Exceptions.VariableDeclarationException;
 public class TEST_Airport {
 	public static final String name = "The super awesome airport";
 	public static final double[] airfieldVars = {50,100,100,100,200,300,400,500};
-
+	public static final double[] smallVars = {};
+	public static final double[] largeVars = {};
 
 	public Airport airport;
 

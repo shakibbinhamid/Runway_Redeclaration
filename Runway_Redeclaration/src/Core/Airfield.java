@@ -38,8 +38,12 @@ class Airfield implements AirfieldInterface, Savable {
 	
 	//TODO change the dimensions to hanlde asymetric runways (Yeh that shite)
 	protected Airfield(int angleFromNorth, double[] dimensions, double[] smallAngledDistances, double[] largeAngledDistances) throws VariableDeclarationException{
+		//Checks
 		if(dimensions.length != 8) throw new VariableDeclarationException("lengths", dimensions, "Needs to be 8 cells");
+		if(smallAngledDistances.length != 4)throw new VariableDeclarationException("smallAngledDistances", smallAngledDistances, "Needs to be 4 cells");
+		if(largeAngledDistances.length != 4)throw new VariableDeclarationException("largeAngledDistances", largeAngledDistances, "Needs to be 4 cells");
 		
+		//Dimensions
 		this.runWidth = dimensions[0];
 		this.runLen = dimensions[1];
 		this.initStop = dimensions[2];
@@ -52,6 +56,7 @@ class Airfield implements AirfieldInterface, Savable {
 		
 		this.obstacle = null;
 		
+		//small angled runway stuff
 		this.runways = new DeclaredRunway[2];
 		this.defaultRunways= new DeclaredRunway[2];
 		double sTORA = smallAngledDistances[0];
@@ -63,6 +68,8 @@ class Airfield implements AirfieldInterface, Savable {
 		this.runways[0] = new DeclaredRunway(this, angleFromNorth, sTORA, sStopway, sClearway, sDisThresh);
 		this.defaultRunways[0] = new DeclaredRunway(this, angleFromNorth, sTORA, sStopway, sClearway, sDisThresh);
 		
+		
+		//large angled runway stuff
 		this.runways = new DeclaredRunway[2];
 		this.defaultRunways= new DeclaredRunway[2];
 		double lTORA = largeAngledDistances[0];
