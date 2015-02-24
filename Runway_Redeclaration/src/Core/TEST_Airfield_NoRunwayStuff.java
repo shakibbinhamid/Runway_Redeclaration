@@ -19,7 +19,7 @@ public class TEST_Airfield_NoRunwayStuff {
 	public void setUp() throws Exception {
 		this.air = new Airfield(angle, airfieldVars, smallVars, largeVars);
 	}
-
+	
 	@Test
 	public void testNoObstacle() {
 		assertEquals(null, this.air.getObstacle());
