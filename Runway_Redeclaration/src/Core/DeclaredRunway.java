@@ -375,11 +375,11 @@ class DeclaredRunway implements DeclaredRunwayInterface{
 		double ALS = getAscentAngle()*parent.getPositionedObstacle().getHeight();
 		
 		double newTORA = distFromObs + getDisplacedThreshold() - ALS - parent.getStripEndSideLength();
-		System.out.println("-[ "+getIdentifier()+" Take Off Over: Calculations ]-");
+		System.out.println("-[ "+getIdentifier()+" Take Off Towards: Calculations ]-");
 		System.out.println("distFromObs: "+distFromObs);
 		System.out.println("ALS: "+ALS);
 		System.out.println("disThres: "+getDisplacedThreshold());
-		System.out.println("TORA = original TORA + displaced Threshold - ALS - strip end");
+		System.out.println("TORA = distFromObs + displaced Threshold - ALS - strip end");
 		System.out.println("newTORA: "+newTORA+" = "+distFromObs+" + "+getDisplacedThreshold()+" - "+ALS+" - "+parent.getStripEndSideLength());
 		System.out.println("----------------------------");
 		
