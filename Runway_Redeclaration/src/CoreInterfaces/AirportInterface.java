@@ -56,7 +56,7 @@ public interface AirportInterface {
 	 * @throws CannotMakeRunwayException - There is a problem making the runway that is not a variable problem
 	 * @throws VariableDeclarationException - There is an incorrectly defined variable, check your dimensions array
 	 */
-	void addNewAirfield(int angleFromNorth, double[] dimensions) throws ParrallelRunwayException, CannotMakeRunwayException, VariableDeclarationException;
+	void addNewAirfield(int angleFromNorth, double[] dimensions, double[] smallAngledDistances, double[] largeAngledDistances) throws ParrallelRunwayException, CannotMakeRunwayException, VariableDeclarationException;
 	
 	/**
 	 * Returns a list of all the names of the runways associated with this airport

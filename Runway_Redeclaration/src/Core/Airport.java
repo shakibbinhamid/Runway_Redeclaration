@@ -72,8 +72,8 @@ public class Airport implements AirportInterface, Savable {
 	}
 
 	@Override
-	public void addNewAirfield(int angleFromNorth, double[] dimensions) throws ParrallelRunwayException, CannotMakeRunwayException, VariableDeclarationException {
-		AirfieldInterface newAirfield = new Airfield(angleFromNorth, dimensions);
+	public void addNewAirfield(int angleFromNorth, double[] dimensions, double[] smallAngledDistances, double[] largeAngledDistances) throws ParrallelRunwayException, CannotMakeRunwayException, VariableDeclarationException {
+		AirfieldInterface newAirfield = new Airfield(angleFromNorth, dimensions, smallAngledDistances,largeAngledDistances );
 		
 		/*---[ Identify parallel runways ]----
 		 * Note: Having one previous runway at the same angle is handled differently 
