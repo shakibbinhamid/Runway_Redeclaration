@@ -331,7 +331,7 @@ class DeclaredRunway implements DeclaredRunwayInterface{
 		
 		System.out.println("distFromObs: "+distFromObs);
 		System.out.println("resa: "+resa);
-		System.out.println("LDA = distFromObs - RESA - side Length");
+		System.out.println("LDA = distFromObs - RESA - strip end");
 		System.out.println("lda: "+newLDA+" = "+distFromObs+" - "+resa+" - "+parent.getStripEndSideLength());
 		System.out.println("----------------------------");
 
@@ -375,6 +375,7 @@ class DeclaredRunway implements DeclaredRunwayInterface{
 		System.out.println("distFromObs: "+distFromObs);
 		System.out.println("ALS: "+ALS);
 		System.out.println("disThres: "+getDisplacedThreshold());
+		System.out.println("TORA = original TORA + displaced Threshold - ALS - strip end");
 		System.out.println("newTORA: "+newTORA+" = "+distFromObs+" + "+getDisplacedThreshold()+" - "+ALS+" - "+parent.getStripEndSideLength());
 		System.out.println("----------------------------");
 		

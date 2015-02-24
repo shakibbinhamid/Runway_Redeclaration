@@ -89,9 +89,9 @@ public interface AirfieldInterface {
 	 * Even though an ObstacleInterface is used to add an object,
 	 *  a PositionedObstacleObject must be stored. An internal conversion must be made.
 	 */
-	void addObstacle(ObstacleInterface obj, double distanceFromSmall,
-			double distanceFromLarge) throws InvalidIdentifierException;
+	//void addObstacle(ObstacleInterface obj, double distanceFromSmall, double distanceFromLarge) throws InvalidIdentifierException;
 	
+	void addObstacle(ObstacleInterface obj, String indentifier, double howFarIn) throws InvalidIdentifierException;
 	
 	
 	/** 
@@ -121,5 +121,6 @@ public interface AirfieldInterface {
 
 	DeclaredRunwayInterface getDefaultSmallAngledRunway();
 //===============================================================
+
 
 }

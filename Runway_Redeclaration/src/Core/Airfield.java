@@ -190,16 +190,16 @@ class Airfield implements AirfieldInterface, Savable {
 		return this.obstacle;
 	}
 
-	@Override
+	/*@Override
 	public void addObstacle(ObstacleInterface obj,
-			double distanceFromSmall, double distanceFromLarge) throws InvalidIdentifierException {
-/*
+			double distanceFromSmall, double distanceFromLarge) throws InvalidIdentifierException {*/
+
 @Override
 public void addObstacle(ObstacleInterface obj,
 String indentifier, double howFarIn) throws InvalidIdentifierException {
-*/
+
 	/* 
-	 ***********************************************
+	 ************************************************/
 		//Figuring where dat ting is near bruv... 
 		if(indentifier.equals(this.getSmallAngledRunway().getIdentifier())){
 			double otherhowFarIn = this.getRunwayLength()-howFarIn;
@@ -214,9 +214,10 @@ String indentifier, double howFarIn) throws InvalidIdentifierException {
 			//Excuse me! I don't own one of those, how dare you suggest such a thing!
 			throw new InvalidIdentifierException(indentifier, this);
 		}
-	**************************************************
-	*/
+	/* *************************************************
+	*
 		this.obstacle = new PositionedObstacle(obj, distanceFromSmall, distanceFromLarge);
+		*/
 		
 		try {
 			this.redeclareRunways();
