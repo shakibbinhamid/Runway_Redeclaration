@@ -7,7 +7,12 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import Core.Obstacle;
+import Core.PositionedObstacle;
 import CoreInterfaces.AirportInterface;
+import CoreInterfaces.PositionedObstacleInterface;
+import Exceptions.InvalidIdentifierException;
+import Exceptions.UnrecognisedAirfieldIntifierException;
 
 public class TopFrame extends JFrame{
 	
@@ -16,6 +21,8 @@ public class TopFrame extends JFrame{
 		private TabbedPanel tabbedPanel;
 	
 	private AirportInterface airport;
+	
+	private PositionedObstacleInterface obs;
 
 	public TopFrame(){
 		init();
@@ -60,6 +67,26 @@ public class TopFrame extends JFrame{
 		setAirport(airport);
 		logPanel.updateLabelText(airport.getName());
 		tabbedPanel.updateTabs(airport);
+		//PositionedObstacle o = new PositionedObstacle(new Obstacle("A380", 8, 9), 100, 100);
+		//loadOrCreateObstacle(o);
+	}
+	
+	public void loadOrCreateObstacle(PositionedObstacleInterface obs){
+		setObstacle(obs);
+		Tab current = ((Tab)tabbedPanel.getSelectedComponent());
+		try {
+			airport.getAirfield(current.getName()).addObstacle(obs, current.getField().getSmallAngledRunway().getIdentifier(), obs.distanceFromSmallEnd());
+			//current.getField().addObstacle(obs, current.getField().getSmallAngledRunway().getIdentifier(), obs.distanceFromSmallEnd());
+		} catch (InvalidIdentifierException e) {
+			e.printStackTrace();
+		} catch (UnrecognisedAirfieldIntifierException e) {
+			e.printStackTrace();
+		}
+		tabbedPanel.updateTabs(airport);
+	}
+
+	private void setObstacle(PositionedObstacleInterface obs) {
+		this.obs = obs;
 	}
 
 	public AirportInterface getAirport() {

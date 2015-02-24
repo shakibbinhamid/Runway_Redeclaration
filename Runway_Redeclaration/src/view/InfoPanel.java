@@ -11,6 +11,7 @@ import javax.swing.table.DefaultTableModel;
 
 import CoreInterfaces.DeclaredRunwayInterface;
 import CoreInterfaces.ObstacleInterface;
+import CoreInterfaces.PositionedObstacleInterface;
 import Exceptions.UnusableRunwayException;
 
 public class InfoPanel extends JPanel{
@@ -20,13 +21,13 @@ public class InfoPanel extends JPanel{
 	
 	private DeclaredRunwayInterface defaultRunway;
 	private DeclaredRunwayInterface runway;
-	private ObstacleInterface obs;
+	private PositionedObstacleInterface obs;
 	
 	private TablePanel runwayDataTable;
 	private TablePanel obstacleDataTable;
 	private TablePanel advancedDataTable;
 	
-	public InfoPanel(DeclaredRunwayInterface[] runways, ObstacleInterface obs){
+	public InfoPanel(DeclaredRunwayInterface[] runways, PositionedObstacleInterface obs){
 		
 		this.setRunway(runways[0]);
 		this.setRunway(runways[1]);
@@ -72,7 +73,7 @@ public class InfoPanel extends JPanel{
 		return obs;
 	}
 
-	public void setObs(ObstacleInterface obs) {
+	public void setObs(PositionedObstacleInterface obs) {
 		this.obs = obs;
 	}
 	
@@ -83,7 +84,7 @@ public class InfoPanel extends JPanel{
 	 * @param runways default,current
 	 * @param obs the obstacle
 	 */
-	public void updateAllTables(DeclaredRunwayInterface[] runways, ObstacleInterface obs){
+	public void updateAllTables(DeclaredRunwayInterface[] runways, PositionedObstacleInterface obs){
 		updateRunwayTables(runways);
 		updateObstacleTable(obs);
 	}
@@ -113,14 +114,15 @@ public class InfoPanel extends JPanel{
 	 * Update the obstacle table with an obstacle object data
 	 * @param obs the obstacle whose data we will update on the table
 	 */
-	public void updateObstacleTable(ObstacleInterface obs){
+	public void updateObstacleTable(PositionedObstacleInterface obs){
 		if(obs != null){
 			this.obs = obs;
-			String[] name, height, radius;
+			String[] name, height, radius, distance;
 		
 			name = new String[]{"Name", getObstaclePara(obs, "name")};
 			height = new String[]{"Height", getObstaclePara(obs, "height")};
 			radius = new String[]{"Radius", getObstaclePara(obs, "radius")};
+			distance = new String[]{"Distance from left side", getObstaclePara(obs, "distance")};
 		
 			updateObstacleTable(new String[][]{name, height, radius});
 		}
@@ -143,8 +145,8 @@ public class InfoPanel extends JPanel{
 		
 		stop = new String[]{"Stopway",getRunwayPara(def, "stop"), getRunwayPara(run, "stop")};
 		clear = new String[]{"Clearway",getRunwayPara(def, "clear"), getRunwayPara(run, "clear")};
-		//blast= new String[]{"Blast Protection", getRunwayPara(def, "blast"), getRunwayPara(run, "blast")};
-		//resa = new String[]{"RESA", getRunwayPara(def, "resa"), getRunwayPara(run, "resa")};
+		blast= new String[]{"Blast Protection", getRunwayPara(def, "blast"), getRunwayPara(run, "blast")};
+		resa = new String[]{"RESA", getRunwayPara(def, "resa"), getRunwayPara(run, "resa")};
 		angleA = new String[]{"Angle of Ascent", getRunwayPara(def, "ascent"), getRunwayPara(run, "ascent")};
 		angleD = new String[]{"Angle of Descent", getRunwayPara(def, "descent"), getRunwayPara(run, "descent")};
 		
@@ -160,20 +162,21 @@ public class InfoPanel extends JPanel{
 		case "dt": return String.valueOf(runway.getDisplacedThreshold());
 		
 		case "stop": return String.valueOf(runway.getStopway());
-		//case "resa": return String.valueOf(runway.ge);
+		case "resa": return String.valueOf(runway.getRESA());
 		case "clear": return String.valueOf(runway.getClearway());
-		//case "blast": return String.valueOf(runway.());
-		case "ascent": return String.valueOf(runway.getAngleOfAscent());
-		case "descent": return String.valueOf(runway.getAngleOfDescent());
+		//case "blast": return String.valueOf();
+		case "ascent": return String.valueOf(runway.getAscentAngle());
+		case "descent": return String.valueOf(runway.getDescentAngle());
 		}
 		return null;
 	}
 	
-	private String getObstaclePara(ObstacleInterface obs, String para){
+	private String getObstaclePara(PositionedObstacleInterface obs, String para){
 		switch(para){
 		case "name" : return obs.getName();
 		case "radius" : return String.valueOf(obs.getRadius());
 		case "height" : return String.valueOf(obs.getHeight());
+		case "distance": return String.valueOf(obs.distanceFromSmallEnd());
 		}
 		return null;
 	}
