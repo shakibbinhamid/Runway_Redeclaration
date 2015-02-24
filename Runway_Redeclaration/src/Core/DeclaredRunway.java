@@ -92,6 +92,19 @@ class DeclaredRunway implements DeclaredRunwayInterface{
 	}
 
 	//This is the new one
+	/**
+	 * Assumption is that there is no object, if you want to inform us of an object you better use one of the manipulator methods
+	 *
+	 * @param airfield
+	 * @param angleFromNorth
+	 * 
+	 * @param tora
+	 * @param stopway
+	 * @param clearway
+	 * @param displacedThreshold
+	 * 
+	 * @throws VariableDeclarationException - Invalid value for parameter given
+	 */
 	protected DeclaredRunway(AirfieldInterface airfield, int angleFromNorth,
 			double tora, double stopway, double clearway, double displacedThreshold) throws VariableDeclarationException{
 
@@ -262,8 +275,25 @@ class DeclaredRunway implements DeclaredRunwayInterface{
 	//====[ Calculated Distance Methods  ]=====================================
 	
 	//====[ Mutators ]=============================================================
+	@Override 
+	public void resetToNoObstacle(DeclaredRunwayInterface original) throws VariableDeclarationException, UnusableRunwayException{
+		setTORA(original.getTORA());
+		setStopway(original.getStopway());
+		setClearway(original.getClearway());
+		//This was chosen and hence we do not revert it
+		//setDisplacedThreshold(original.getDisplacedThreshold());
+		
+		setLDA(original.getLDA());
+		setASDA(original.getASDA());
+		setTODA(original.getTODA());
+	}
 
 	@Override
+	/**  ________________
+	 *  |
+	 *  |   ~~X~---->
+	 *  |________________
+	 */
 	public void landOver(DeclaredRunwayInterface original, AirfieldInterface parent) throws UnusableRunwayException, VariableDeclarationException {
 		
 		double distFromObs = distanceFrom(parent.getObstacle());
@@ -277,6 +307,11 @@ class DeclaredRunway implements DeclaredRunwayInterface{
 	}
 
 	@Override
+	/**  ________________
+	 *  |
+	 * ~~~------>   X
+	 *  |________________
+	 */
 	public void landTowards(DeclaredRunwayInterface original, AirfieldInterface parent) throws VariableDeclarationException {
 		double distFromObs = distanceFrom(parent.getObstacle());
 		double resa = DEFAULT_RESA;
@@ -286,6 +321,11 @@ class DeclaredRunway implements DeclaredRunwayInterface{
 	}
 
 	@Override
+	/**  ________________
+	 *  |
+	 *  |     X  ----~~~>
+	 *  |________________
+	 */
 	public void takeOffAwayFrom(DeclaredRunwayInterface original, AirfieldInterface parent) throws UnusableRunwayException, VariableDeclarationException {
 		//ASSUMPTION: stopway is part of clearway
 		
@@ -293,9 +333,16 @@ class DeclaredRunway implements DeclaredRunwayInterface{
 		
 		double newTORA = original.getTORA() - distFromObs - Airfield.BLAST_PROT;
 		setTORA(newTORA);
+		//TODO check please
+		setDisplacedThreshold(0);
 	}
 
 	@Override
+	/**  ________________
+	 *  |
+	 *  |  ----~~X~>
+	 *  |________________
+	 */
 	public void takeOffTowardsOver(DeclaredRunwayInterface original, AirfieldInterface parent) throws UnusableRunwayException, VariableDeclarationException {
 		double distFromObs = distanceFrom(parent.getObstacle());
 		double ALS = getAscentAngle()*parent.getObstacle().getHeight();

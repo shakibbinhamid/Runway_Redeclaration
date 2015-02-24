@@ -65,6 +65,8 @@ public interface DeclaredRunwayInterface {
 	double getRESA() throws UnusableRunwayException;
 	
 //=====[ Mutators ]=================================================
+	void resetToNoObstacle(DeclaredRunwayInterface original) throws UnusableRunwayException, VariableDeclarationException;
+
 	void landOver(DeclaredRunwayInterface original, AirfieldInterface parent) throws UnusableRunwayException, VariableDeclarationException;
 	
 	void landTowards(DeclaredRunwayInterface original, AirfieldInterface parent) throws VariableDeclarationException;
@@ -77,4 +79,5 @@ public interface DeclaredRunwayInterface {
 	int getDescentAngle();
 	
 	int getAscentAngle();
+
 }

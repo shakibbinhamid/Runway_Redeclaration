@@ -10,6 +10,7 @@ import CoreInterfaces.ObstacleInterface;
 import CoreInterfaces.PositionedObstacleInterface;
 import CoreInterfaces.Savable;
 import Exceptions.InvalidIdentifierException;
+import Exceptions.UnusableRunwayException;
 import Exceptions.VariableDeclarationException;
 
 @Root
@@ -54,24 +55,47 @@ class Airfield implements AirfieldInterface, Savable {
 		
 		this.runways = new DeclaredRunway[2];
 		this.defaultRunways= new DeclaredRunway[2];
-		this.redeclareRunways(angleFromNorth);
 		
 		this.defaultRunways[0] = new DeclaredRunway(this, this.getSmallAngledRunway().getAngle());
 		this.defaultRunways[1] = new DeclaredRunway(this, this.getLargeAngledRunway().getAngle());;		
 	}
 	
 	//TODO this should be changed to a mutate method using the new ones me and shaka made
-	private void redeclareRunways(int angleFromNorth) throws VariableDeclarationException{
-		//Ensure that it is above 0
-		while(angleFromNorth < 0){
-			angleFromNorth+= 360;
+	/**
+	 * We redeclare when there is an object added or removed
+	 * 
+	 * @throws VariableDeclarationException
+	 * @throws UnusableRunwayException 
+	 */
+	private void redeclareRunways() throws VariableDeclarationException, UnusableRunwayException{
+		if(!hasObstacle()){
+			getSmallAngledRunway().resetToNoObstacle(getDefaultSmallAngledRunway());
+			getLargeAngledRunway().resetToNoObstacle(getDefaultLargeAngledRunway());
+		
+		//Excuse me sir we seem to have a collision imminent, CHANGE YOUR JAM! SORT DAT SHEET OUT MUN!
+		}else{
+			//OK MUN, WE GOTS TO DECIDE IF DEM PROBLEMS IS NEAREREST TO WHAT SIDE OF DEM AIRPORT ROAD TINGS
+			if(getObstacle().distanceFromSmallEnd() < getObstacle().distanceFromLargeEnd()){
+				//closer to small angled end
+				
+				getSmallAngledRunway().takeOffAwayFrom(getDefaultSmallAngledRunway(), this);
+				getSmallAngledRunway().landOver(getDefaultSmallAngledRunway(), this);
+				
+				getLargeAngledRunway().takeOffTowardsOver(getDefaultLargeAngledRunway(), this);
+				getLargeAngledRunway().landTowards(getDefaultLargeAngledRunway(), this);
+				
+			}else{
+				//closer to large angled end or equal hence IT DONT MATTER BRUV
+				
+				getSmallAngledRunway().takeOffTowardsOver(getDefaultLargeAngledRunway(), this);
+				getSmallAngledRunway().landTowards(getDefaultLargeAngledRunway(), this);
+				
+				getLargeAngledRunway().takeOffAwayFrom(getDefaultSmallAngledRunway(), this);
+				getLargeAngledRunway().landOver(getDefaultSmallAngledRunway(), this);
+			}
 		}
-		
-		//Modding it by 180 finds the smallest angle ;)
-		angleFromNorth %= 180;
-		
-		this.runways[0] = new DeclaredRunway(this, angleFromNorth);
-		this.runways[1] = new DeclaredRunway(this, angleFromNorth+180);
+		//ALL DEM CHANGES IS MADE MUN, Go chill dem plane drivers sort da rest of it out mun ;)
+		//Wait for the stewardesses, it's safe ;*
 	}
 	
 	
@@ -81,6 +105,9 @@ class Airfield implements AirfieldInterface, Savable {
 	}
 	
 	@Override
+	/**
+	 * Sets the smallest side letter, please note that the 
+	 */
 	public void setSmallestSideLetter(char letter) throws VariableDeclarationException {
 		getSmallAngledRunway().setSideLetter(letter);
 		
@@ -149,6 +176,8 @@ class Airfield implements AirfieldInterface, Savable {
 	public void addObstacle(ObstacleInterface obj,
 			String indentifier, double howFarIn) throws InvalidIdentifierException {
 		
+		//Figuring where dat ting is near bruv... 
+		
 		if(indentifier.equals(this.getSmallAngledRunway().getIdentifier())){
 			double otherhowFarIn = this.getRunwayLength()-howFarIn;
 			this.obstacle = new PositionedObstacle(obj,howFarIn, otherhowFarIn);
@@ -156,14 +185,17 @@ class Airfield implements AirfieldInterface, Savable {
 		}else if(indentifier.equals(this.getLargeAngledRunway().getIdentifier())){
 			double otherhowFarIn = this.getRunwayLength()-howFarIn;
 			this.obstacle = new PositionedObstacle(obj,otherhowFarIn, howFarIn);
+		
+			
 		}else{
+			//Excuse me! I don't own one of those, how dare you suggest such a thing!
 			throw new InvalidIdentifierException(indentifier, this);
 		}
 		
 		try {
-			this.redeclareRunways(getSmallAngledRunway().getAngle());
-		} catch (VariableDeclarationException e) {
-			System.err.println("Stefan Here: This really should not happen!");
+			this.redeclareRunways();
+		} catch (VariableDeclarationException | UnusableRunwayException e) {
+			System.err.println("Stefan Here: This really should not happen! ... me thinks");
 			e.printStackTrace();
 		}
 		
@@ -172,6 +204,13 @@ class Airfield implements AirfieldInterface, Savable {
 	@Override
 	public void removeObstacle() {
 		this.obstacle = null;
+		try {
+			this.redeclareRunways();
+			
+		} catch (VariableDeclarationException | UnusableRunwayException e) {
+			System.err.println("Stefan Again: Urm I don't think any of this should have happened...");
+			e.printStackTrace();
+		}
 	}
 
 	@Override
