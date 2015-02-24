@@ -9,13 +9,13 @@ import Core.Airport;
 import Core.Obstacle;
 import CoreInterfaces.Savable;
 
-public class SaveListener implements ActionListener{
+public class SaveAirportListener implements ActionListener{
 
 	private TopFrame frame;
 
 	private Savable saveItem;
 	
-	public SaveListener(TopFrame frame){
+	public SaveAirportListener(TopFrame frame){
 		this.frame = frame;
 	}
 

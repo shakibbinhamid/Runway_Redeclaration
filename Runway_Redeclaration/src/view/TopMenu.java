@@ -83,7 +83,8 @@ public class TopMenu extends JMenuBar{
 		saveObstacle = getItem("Save Obstacle", iobstacle, SwingConstants.CENTER);
 		
 		save = getMenu("Save", isave, new JMenuItem[]{saveAirport, saveObstacle});
-		saveAirport.addActionListener(new SaveListener(frame));
+		saveAirport.addActionListener(new SaveAirportListener(frame));
+		saveObstacle.addActionListener(new SaveObjectListener(frame));
 
 		exit = getItem("Exit", getIcon("./icon/ExitIcon.png"), SwingConstants.CENTER);
 		exit.addActionListener(new ActionListener(){

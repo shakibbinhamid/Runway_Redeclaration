@@ -116,7 +116,7 @@ class DeclaredRunway implements DeclaredRunwayInterface{
 		setASDA(this.decTora + stopway);
 		setTODA(this.decTora + clearway);
 		
-		if(!(this.decTora <= this.decAsda && this.decAsda <= this.decToda)) 
+		if(!(this.decTora <= this.decAsda)) //&& this.decAsda <= this.decToda)) 
 			throw new VariableDeclarationException("TORA, ASDA, TODA", new double[] {decTora,decAsda,decToda}, "TORA <= ASDA <= TODA");
 		
 

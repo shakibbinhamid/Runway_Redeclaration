@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 import CoreInterfaces.AirfieldInterface;
 import CoreInterfaces.DeclaredRunwayInterface;
 import CoreInterfaces.ObstacleInterface;
+import CoreInterfaces.PositionedObstacleInterface;
 
 /**
  * This is a Tab. A Tab holds is responsible for viewing all data and views of an airfield.
@@ -67,8 +68,8 @@ public class Tab extends JPanel{
 		return obs;
 	}
 
-	public void setObs(ObstacleInterface obs) {
-		this.obs = obs;
+	public void setField(AirfieldInterface field) {
+		this.field = field;
 	}
 	
 	/**
@@ -84,7 +85,7 @@ public class Tab extends JPanel{
 	 * This is the method to call on a tab to switch between obstacles
 	 * @param obs
 	 */
-	public void changeCurrentObstacle(ObstacleInterface obs){
+	public void changeCurrentObstacle(PositionedObstacleInterface obs){
 		this.obs = obs;
 		info.updateObstacleTable(obs);
 	}

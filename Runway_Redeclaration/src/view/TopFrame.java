@@ -7,7 +7,14 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import Core.Obstacle;
+import Core.PositionedObstacle;
+import CoreInterfaces.AirfieldInterface;
 import CoreInterfaces.AirportInterface;
+import CoreInterfaces.ObstacleInterface;
+import CoreInterfaces.PositionedObstacleInterface;
+import Exceptions.InvalidIdentifierException;
+import Exceptions.UnrecognisedAirfieldIntifierException;
 
 public class TopFrame extends JFrame{
 	
@@ -60,6 +67,15 @@ public class TopFrame extends JFrame{
 		setAirport(airport);
 		logPanel.updateLabelText(airport.getName());
 		tabbedPanel.updateTabs(airport);
+	}
+	
+	public void loadOrCreateObstacle(ObstacleInterface obs, AirfieldInterface field, double distanceFromLeft){
+		try {
+			field.addObstacle(obs, field.getSmallAngledRunway().getIdentifier(), distanceFromLeft);	
+		} catch (InvalidIdentifierException e) {
+			e.printStackTrace();
+		}
+		tabbedPanel.updateTabs(this.airport);
 	}
 
 	public AirportInterface getAirport() {
