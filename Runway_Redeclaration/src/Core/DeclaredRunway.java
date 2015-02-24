@@ -33,15 +33,16 @@ import Exceptions.VariableDeclarationException;
  */
 @Root
 class DeclaredRunway implements DeclaredRunwayInterface{
-	@Element
-	private double decTora, disThreshold, stopway, clearway;
-	
 	/** Ratio Format 1:n NOT DEGREES*/
 	public static final int DEFAULT_DESC_ANGLE = 50;
 	/** Ratio Format 1:n NOT DEGREES*/
 	public static final int DEFAULT_ASC_ANGLE = 50;
 	
+	protected static final double DEFAULT_RESA = 240;
+
 	
+	@Element
+	private double decTora, disThreshold, stopway, clearway;
 	@Element
 	private double decLda, decAsda, decToda;
 	
@@ -50,7 +51,6 @@ class DeclaredRunway implements DeclaredRunwayInterface{
 	@Element
 	private char direction;
 
-	protected static final double DEFAULT_RESA = 240;
 
 	/**
 	 * An Airfield has all the relevant information needed to declare a runway except we need the 
