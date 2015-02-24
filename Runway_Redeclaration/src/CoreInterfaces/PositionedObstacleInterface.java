@@ -12,5 +12,7 @@ public interface PositionedObstacleInterface extends ObstacleInterface{
 	double distanceFromSmallEnd();
 
 	double distanceFromLargeEnd();
+
+	ObstacleInterface getUnpositionedObstacle();
 	
 }

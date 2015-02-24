@@ -296,13 +296,22 @@ class DeclaredRunway implements DeclaredRunwayInterface{
 	public void landOver(DeclaredRunwayInterface original, AirfieldInterface parent) throws UnusableRunwayException, VariableDeclarationException {
 		System.out.println("-[ "+getIdentifier()+" Land Over: Calculations ]-");
 		
-		double distFromObs = distanceFrom(parent.getObstacle());
+		double distFromObs = distanceFrom(parent.getPositionedObstacle());
 		double RESA = DEFAULT_RESA;
-		double ALS = parent.getObstacle().getHeight() * DEFAULT_DESC_ANGLE;
+		double ALS = parent.getPositionedObstacle().getHeight() * DEFAULT_DESC_ANGLE;
 		
 		double largestFactor = Math.max(Math.max(RESA,ALS)+parent.getStripEndSideLength(), Airfield.BLAST_PROT);
 		double newLDA = original.getLDA() - largestFactor -  distFromObs;
 		setLDA(newLDA);
+		
+		System.out.println("distFromObs: "+distFromObs);
+		System.out.println("resa: "+RESA);
+		System.out.println("ALS: "+ALS);
+		System.out.println("largestFactor: "+largestFactor);
+		System.out.println("LDA = original LDA - max(ALS,RESA,Blast Protection) - distFromObs");
+		System.out.println("LDA: "+newLDA+" = "+original.getLDA()+" - "+largestFactor+" - "+distFromObs);
+		System.out.println("----------------------------");
+
 	}
 
 	@Override
@@ -314,7 +323,7 @@ class DeclaredRunway implements DeclaredRunwayInterface{
 	public void landTowards(DeclaredRunwayInterface original, AirfieldInterface parent) throws VariableDeclarationException {
 		System.out.println("-[ "+getIdentifier()+" Land Towards: Calculations ]-");
 		
-		double distFromObs = distanceFrom(parent.getObstacle());
+		double distFromObs = distanceFrom(parent.getPositionedObstacle());
 		double resa = DEFAULT_RESA;
 		
 		double newLDA = distFromObs - resa - parent.getStripEndSideLength();
@@ -322,7 +331,10 @@ class DeclaredRunway implements DeclaredRunwayInterface{
 		
 		System.out.println("distFromObs: "+distFromObs);
 		System.out.println("resa: "+resa);
-		System.out.println("lda: "+newLDA+" = ");
+		System.out.println("LDA = distFromObs - RESA - strip end");
+		System.out.println("lda: "+newLDA+" = "+distFromObs+" - "+resa+" - "+parent.getStripEndSideLength());
+		System.out.println("----------------------------");
+
 	}
 
 	@Override
@@ -335,12 +347,15 @@ class DeclaredRunway implements DeclaredRunwayInterface{
 		//ASSUMPTION: stopway is part of clearway
 		System.out.println("-[ "+getIdentifier()+" Take Off Away: Calculations ]- ");
 		
-		double distFromObs = distanceFrom(parent.getObstacle()) + parent.getObstacle().getRadius()*2;
-		System.out.println("distFromObs: "+distFromObs);
+		double distFromObs = distanceFrom(parent.getPositionedObstacle()) + parent.getPositionedObstacle().getRadius()*2;
 		double newTORA = original.getTORA() - distFromObs - Airfield.BLAST_PROT;
+		
+		System.out.println("distFromObs: "+distFromObs);
+		System.out.println("TORA = origonal TORA - distFromObs - Blast Distance");
 		System.out.println("newTORA: "+newTORA+" = "+original.getTORA()+" - "+distFromObs+" - "+Airfield.BLAST_PROT);
 		setTORA(newTORA);
-		
+		System.out.println("----------------------------");
+
 		//TODO check please
 		setDisplacedThreshold(0);
 	}
@@ -352,14 +367,15 @@ class DeclaredRunway implements DeclaredRunwayInterface{
 	 *  |________________
 	 */
 	public void takeOffTowardsOver(DeclaredRunwayInterface original, AirfieldInterface parent) throws UnusableRunwayException, VariableDeclarationException {
-		double distFromObs = distanceFrom(parent.getObstacle());
-		double ALS = getAscentAngle()*parent.getObstacle().getHeight();
+		double distFromObs = distanceFrom(parent.getPositionedObstacle());
+		double ALS = getAscentAngle()*parent.getPositionedObstacle().getHeight();
 		
 		double newTORA = distFromObs + getDisplacedThreshold() - ALS - parent.getStripEndSideLength();
 		System.out.println("-[ "+getIdentifier()+" Take Off Over: Calculations ]-");
 		System.out.println("distFromObs: "+distFromObs);
 		System.out.println("ALS: "+ALS);
 		System.out.println("disThres: "+getDisplacedThreshold());
+		System.out.println("TORA = original TORA + displaced Threshold - ALS - strip end");
 		System.out.println("newTORA: "+newTORA+" = "+distFromObs+" + "+getDisplacedThreshold()+" - "+ALS+" - "+parent.getStripEndSideLength());
 		System.out.println("----------------------------");
 		

@@ -6,93 +6,87 @@ import org.junit.Before;
 import org.junit.Test;
 
 import Exceptions.InvalidIdentifierException;
+import Exceptions.UnusableRunwayException;
 
 public class TEST_DeclaredRunway_ObstacleStuff {
-	public static final double[] airfieldVars = {100,3000,200,100,200,300,400,500};
-	public static final double[] smallVars = {3660,0,0,7};
-	public static final double[] largeVars = {3660,0,0,0};
-	public static final int angle = 340;
+	public static final double[] airfieldVars = {100,4000,200,100,200,300,400,500};//TODO check the size of the runway ?4000?
+	public static final double[] smallVars = {3902,0,0,306};
+	public static final double[] LargeVars = {3884,0,78,0};
+	public static final int angle = 90;
 	
 	public Airfield air;
 	
 	@Before
 	public void setUp() throws Exception {
-		this.air = new Airfield(angle, airfieldVars, smallVars, largeVars);
+		this.air = new Airfield(angle, airfieldVars, smallVars, LargeVars);
 	}
-	
+
 	@Test
-	public void testNoObstacle() {
-		assertEquals(null, this.air.getObstacle());
-	}
-	
-	@Test
-	public void testAddingObstacleWithBadID(){
-		Obstacle obj = new Obstacle("Spongebob", 2.3, 4.5);
+	public void testAddingObstacleWithGoodID() throws UnusableRunwayException{
+		Obstacle obj = new Obstacle("Scenario 1 Obstacle", 0, 12);
+		double dist = 50;
 		try {
-			this.air.addObstacle(obj, "jim", 20);
-			fail("Exception not thrown");
-		} catch (InvalidIdentifierException e) {
-			//WE want to be found 
-		}
-	}
-	
-	@Test
-	public void testAddingObstacleWithGoodID(){
-		Obstacle obj = new Obstacle("Spongebob", 2.3, 4.5);
-		double dist = 20;
-		try {
-			this.air.addObstacle(obj,this.air.getSmallAngledRunway().getIdentifier(),dist);
+			//===[ Check Pre-Obstacle values ]===================================
+			//--[ small angled ]------------
+			assertEquals("Small TORA",3902,air.getSmallAngledRunway().getTORA(),0);
+			assertEquals("Small ASDA",3902,air.getSmallAngledRunway().getASDA(),0);
+			assertEquals("Small TODA",3902,air.getSmallAngledRunway().getTODA(),0);
+			assertEquals("Small LDA",3596,air.getSmallAngledRunway().getLDA(),0);
 			
-			assertNotEquals(this.air.getObstacle(), null);
+			assertEquals("Small Stopway",0,air.getSmallAngledRunway().getStopway(),0);
+			assertEquals("Small Clearway",0,air.getSmallAngledRunway().getClearway(),0);
+			assertEquals("Small Displaced Threshold",306,air.getSmallAngledRunway().getDisplacedThreshold(),0);
+
+			//--[ Large angled ]------------
+			assertEquals("Large TORA",3884,air.getLargeAngledRunway().getTORA(),0);
+			assertEquals("Large ASDA",3884,air.getLargeAngledRunway().getASDA(),0);
+			assertEquals("Large TODA",3962,air.getLargeAngledRunway().getTODA(),0);
+			assertEquals("Large LDA",3884,air.getLargeAngledRunway().getLDA(),0);
 			
-			assertEquals(dist,this.air.getObstacle().distanceFromSmallEnd(),0);
-			assertEquals(airfieldVars[1]-dist,this.air.getObstacle().distanceFromLargeEnd(),0);
+			assertEquals("Large Stopway",0,air.getLargeAngledRunway().getStopway(),0);
+			assertEquals("Large Clearway",78,air.getLargeAngledRunway().getClearway(),0);
+			assertEquals("Large Displaced Threshold",0,air.getLargeAngledRunway().getDisplacedThreshold(),0);
+			//===< END pre checks >========================
 			
-		} catch (InvalidIdentifierException e) {
-			System.out.println(this.air.getSmallAngledRunway().getIdentifier());
-			fail("We used a valid id");
-		}
-	}
-	
-	@Test
-	public void testRemovingObstacle(){
-		Obstacle obj = new Obstacle("Spongebob", 2.3, 4.5);
-		double dist = 20;
-		try {
-			this.air.addObstacle(obj,this.air.getSmallAngledRunway().getIdentifier(),dist);
-			
-			assertNotEquals(this.air.getObstacle(), null);
-			
-		} catch (InvalidIdentifierException e) {
-			System.out.println(this.air.getSmallAngledRunway().getIdentifier());
-			fail("We used a valid id");
-		}
 		
-		this.air.removeObstacle();
-		assertEquals(this.air.getObstacle(), null);
-	}
-	
-	@Test
-	public void testChangingObstacle(){
-		Obstacle obj = new Obstacle("Spongebob", 2.3, 4.5);
-		Obstacle obj2 = new Obstacle("Side Show Bob", 23, 8);
-		double dist = 20;
-		double dist2 = 40;
-		try {
-			assertEquals(this.air.hasObstacle(), false);
+			//===[ Add Obstacle ]==============================================================
 			this.air.addObstacle(obj,this.air.getSmallAngledRunway().getIdentifier(),dist);
-			assertEquals(this.air.hasObstacle(), true);
-			this.air.addObstacle(obj2, this.air.getSmallAngledRunway().getIdentifier(), dist2);
+			assertNotEquals("Obstacle is actually added",this.air.getPositionedObstacle(), null);
+			assertEquals("MY maths calculating small side works",dist,this.air.getPositionedObstacle().distanceFromSmallEnd(),0);
+			assertEquals("My maths in calculating other side worked",airfieldVars[1]-dist,this.air.getPositionedObstacle().distanceFromLargeEnd(),0);
+			//===< End add Obstacle >============================
 			
-			assertNotEquals(obj.getName(), this.air.getObstacle().getName());
-			assertEquals(obj2.getName(), this.air.getObstacle().getName());
+			//===[ Check Post-Obstacle values ]===================================
+			//--[ small angled ]------------
+			assertEquals("NEW Small TORA",3346,air.getSmallAngledRunway().getTORA(),0);
+			assertEquals("NEW Small ASDA",3346,air.getSmallAngledRunway().getASDA(),0);
+			assertEquals("NEW Small TODA",3346,air.getSmallAngledRunway().getTODA(),0);
+			assertEquals("NEW Small LDA",2985,air.getSmallAngledRunway().getLDA(),0);
+			
+			assertEquals("NEW Small Stopway",0,air.getSmallAngledRunway().getStopway(),0);
+			assertEquals("NEW Small Clearway",0,air.getSmallAngledRunway().getClearway(),0);
+			//assertEquals("NEW Displaced Threshold",306,air.getSmallAngledRunway().getDisplacedThreshold(),0);
+			//TODO figure out the displaced Threshold
+			
+			//--[ Large angled ]------------
+			assertEquals("NEW Large TORA",2986,air.getLargeAngledRunway().getTORA(),0);
+			assertEquals("NEW Large ASDA",2986,air.getLargeAngledRunway().getASDA(),0);
+			assertEquals("NEW Large TODA",2986,air.getLargeAngledRunway().getTODA(),0);
+			assertEquals("NEW Large LDA",3346,air.getLargeAngledRunway().getLDA(),0);
+			
+			assertEquals("NEW Large Stopway",0,air.getLargeAngledRunway().getStopway(),0);
+			assertEquals("NEW Large Clearway",0,air.getLargeAngledRunway().getClearway(),0);
+			//assertEquals("NEW Displaced Threshold",0,air.getLargeAngledRunway().getDisplacedThreshold(),0);
+			//===< END Post checks >========================
+			
 			
 			
 		} catch (InvalidIdentifierException e) {
 			System.out.println(this.air.getSmallAngledRunway().getIdentifier());
 			fail("We used a valid id");
 		}
-		
 	}
+	
+	
 
 }

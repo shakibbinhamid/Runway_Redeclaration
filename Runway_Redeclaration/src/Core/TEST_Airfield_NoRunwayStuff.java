@@ -22,7 +22,7 @@ public class TEST_Airfield_NoRunwayStuff {
 	
 	@Test
 	public void testNoObstacle() {
-		assertEquals(null, this.air.getObstacle());
+		assertEquals(null, this.air.getPositionedObstacle());
 	}
 	
 	@Test
@@ -43,10 +43,10 @@ public class TEST_Airfield_NoRunwayStuff {
 		try {
 			this.air.addObstacle(obj,this.air.getSmallAngledRunway().getIdentifier(),dist);
 			
-			assertNotEquals(this.air.getObstacle(), null);
+			assertNotEquals(this.air.getPositionedObstacle(), null);
 			
-			assertEquals(dist,this.air.getObstacle().distanceFromSmallEnd(),0);
-			assertEquals(airfieldVars[1]-dist,this.air.getObstacle().distanceFromLargeEnd(),0);
+			assertEquals(dist,this.air.getPositionedObstacle().distanceFromSmallEnd(),0);
+			assertEquals(airfieldVars[1]-dist,this.air.getPositionedObstacle().distanceFromLargeEnd(),0);
 			
 		} catch (InvalidIdentifierException e) {
 			System.out.println(this.air.getSmallAngledRunway().getIdentifier());
@@ -61,7 +61,7 @@ public class TEST_Airfield_NoRunwayStuff {
 		try {
 			this.air.addObstacle(obj,this.air.getSmallAngledRunway().getIdentifier(),dist);
 			
-			assertNotEquals(this.air.getObstacle(), null);
+			assertNotEquals(this.air.getPositionedObstacle(), null);
 			
 		} catch (InvalidIdentifierException e) {
 			System.out.println(this.air.getSmallAngledRunway().getIdentifier());
@@ -69,7 +69,7 @@ public class TEST_Airfield_NoRunwayStuff {
 		}
 		
 		this.air.removeObstacle();
-		assertEquals(this.air.getObstacle(), null);
+		assertEquals(this.air.getPositionedObstacle(), null);
 	}
 	
 	@Test
@@ -84,8 +84,8 @@ public class TEST_Airfield_NoRunwayStuff {
 			assertEquals(this.air.hasObstacle(), true);
 			this.air.addObstacle(obj2, this.air.getSmallAngledRunway().getIdentifier(), dist2);
 			
-			assertNotEquals(obj.getName(), this.air.getObstacle().getName());
-			assertEquals(obj2.getName(), this.air.getObstacle().getName());
+			assertNotEquals(obj.getName(), this.air.getPositionedObstacle().getName());
+			assertEquals(obj2.getName(), this.air.getPositionedObstacle().getName());
 			
 			
 		} catch (InvalidIdentifierException e) {

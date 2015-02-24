@@ -93,7 +93,7 @@ class Airfield implements AirfieldInterface, Savable {
 		//Excuse me sir we seem to have a collision imminent, CHANGE YOUR JAM! SORT DAT SHEET OUT MUN!
 		if(hasObstacle()){
 			//OK MUN, WE GOTS TO DECIDE IF DEM PROBLEMS IS NEAREREST TO WHAT SIDE OF DEM AIRPORT ROAD TINGS
-			if(getObstacle().distanceFromSmallEnd() < getObstacle().distanceFromLargeEnd()){
+			if(getPositionedObstacle().distanceFromSmallEnd() < getPositionedObstacle().distanceFromLargeEnd()){
 				//closer to small angled end
 
 				getSmallAngledRunway().takeOffAwayFrom(getDefaultSmallAngledRunway(), this);
@@ -186,14 +186,19 @@ class Airfield implements AirfieldInterface, Savable {
 	}
 
 	@Override
-	public PositionedObstacleInterface getObstacle() {
+	public PositionedObstacleInterface getPositionedObstacle() {
 		return this.obstacle;
 	}
 
-	@Override
+	/*@Override
 	public void addObstacle(ObstacleInterface obj,
-			String indentifier, double howFarIn) throws InvalidIdentifierException {
+			double distanceFromSmall, double distanceFromLarge) throws InvalidIdentifierException {*/
 
+@Override
+public void addObstacle(ObstacleInterface obj, String indentifier, double howFarIn) throws InvalidIdentifierException {
+
+	/* 
+	 ************************************************/
 		//Figuring where dat ting is near bruv... 
 		if(indentifier.equals(this.getSmallAngledRunway().getIdentifier())){
 			double otherhowFarIn = this.getRunwayLength()-howFarIn;
@@ -208,7 +213,11 @@ class Airfield implements AirfieldInterface, Savable {
 			//Excuse me! I don't own one of those, how dare you suggest such a thing!
 			throw new InvalidIdentifierException(indentifier, this);
 		}
-
+	/* *************************************************
+	*
+		this.obstacle = new PositionedObstacle(obj, distanceFromSmall, distanceFromLarge);
+		*/
+		
 		try {
 			this.redeclareRunways();
 
@@ -234,7 +243,7 @@ class Airfield implements AirfieldInterface, Savable {
 
 	@Override
 	public boolean hasObstacle() {
-		return !(getObstacle()==null);
+		return !(getPositionedObstacle()==null);
 	}
 
 	@Override

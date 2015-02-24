@@ -80,7 +80,7 @@ public interface AirfieldInterface {
 	/**
 	 * Returns null if there is no Obstacle or a PositionedObstacle implementation
 	 */
-	PositionedObstacleInterface getObstacle();
+	PositionedObstacleInterface getPositionedObstacle();
 	
 	/**
 	 * Changing/adding the obstacle on the tarmac. 
@@ -88,13 +88,10 @@ public interface AirfieldInterface {
 	 * 
 	 * Even though an ObstacleInterface is used to add an object,
 	 *  a PositionedObstacleObject must be stored. An internal conversion must be made.
-	 * 
-	 * @param obj - The new obstacle on the runway 
-	 * @param runwayIdentifier - The side it is closest to. Either TarmacInterface.LEFT_RUNWAY or TarmacInterface.RIGHT_RUNWAY
-	 * @param howFarIn - How far from the chosen tarmac side 
 	 */
-	void addObstacle(ObstacleInterface obj, String identifier, double howFarIn) throws InvalidIdentifierException;
+	//void addObstacle(ObstacleInterface obj, double distanceFromSmall, double distanceFromLarge) throws InvalidIdentifierException;
 	
+	void addObstacle(ObstacleInterface obj, String indentifier, double howFarIn) throws InvalidIdentifierException;
 	
 	
 	/** 
@@ -124,5 +121,6 @@ public interface AirfieldInterface {
 
 	DeclaredRunwayInterface getDefaultSmallAngledRunway();
 //===============================================================
+
 
 }
