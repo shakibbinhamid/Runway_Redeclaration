@@ -93,7 +93,7 @@ class Airfield implements AirfieldInterface, Savable {
 		//Excuse me sir we seem to have a collision imminent, CHANGE YOUR JAM! SORT DAT SHEET OUT MUN!
 		if(hasObstacle()){
 			//OK MUN, WE GOTS TO DECIDE IF DEM PROBLEMS IS NEAREREST TO WHAT SIDE OF DEM AIRPORT ROAD TINGS
-			if(getObstacle().distanceFromSmallEnd() < getObstacle().distanceFromLargeEnd()){
+			if(getPositionedObstacle().distanceFromSmallEnd() < getPositionedObstacle().distanceFromLargeEnd()){
 				//closer to small angled end
 
 				getSmallAngledRunway().takeOffAwayFrom(getDefaultSmallAngledRunway(), this);
@@ -186,7 +186,7 @@ class Airfield implements AirfieldInterface, Savable {
 	}
 
 	@Override
-	public PositionedObstacleInterface getObstacle() {
+	public PositionedObstacleInterface getPositionedObstacle() {
 		return this.obstacle;
 	}
 
@@ -195,8 +195,7 @@ class Airfield implements AirfieldInterface, Savable {
 			double distanceFromSmall, double distanceFromLarge) throws InvalidIdentifierException {*/
 
 @Override
-public void addObstacle(ObstacleInterface obj,
-String indentifier, double howFarIn) throws InvalidIdentifierException {
+public void addObstacle(ObstacleInterface obj, String indentifier, double howFarIn) throws InvalidIdentifierException {
 
 	/* 
 	 ************************************************/
@@ -244,7 +243,7 @@ String indentifier, double howFarIn) throws InvalidIdentifierException {
 
 	@Override
 	public boolean hasObstacle() {
-		return !(getObstacle()==null);
+		return !(getPositionedObstacle()==null);
 	}
 
 	@Override

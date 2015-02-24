@@ -51,9 +51,9 @@ public class TEST_DeclaredRunway_ObstacleStuff {
 		
 			//===[ Add Obstacle ]==============================================================
 			this.air.addObstacle(obj,this.air.getSmallAngledRunway().getIdentifier(),dist);
-			assertNotEquals("Obstacle is actually added",this.air.getObstacle(), null);
-			assertEquals("MY maths calculating small side works",dist,this.air.getObstacle().distanceFromSmallEnd(),0);
-			assertEquals("My maths in calculating other side worked",airfieldVars[1]-dist,this.air.getObstacle().distanceFromLargeEnd(),0);
+			assertNotEquals("Obstacle is actually added",this.air.getPositionedObstacle(), null);
+			assertEquals("MY maths calculating small side works",dist,this.air.getPositionedObstacle().distanceFromSmallEnd(),0);
+			assertEquals("My maths in calculating other side worked",airfieldVars[1]-dist,this.air.getPositionedObstacle().distanceFromLargeEnd(),0);
 			//===< End add Obstacle >============================
 			
 			//===[ Check Post-Obstacle values ]===================================

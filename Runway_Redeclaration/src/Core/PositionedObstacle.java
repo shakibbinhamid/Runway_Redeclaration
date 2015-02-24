@@ -13,7 +13,7 @@ import CoreInterfaces.Savable;
  * It requires an un-positioned obstacle to instantiate {@link PositionedObstacleInterface}
  * 
  * @author Stefan
- * @Editor Stefan
+ * @Editor Stefan Jon
  * @Testor Stefan
  *
  */
@@ -34,22 +34,22 @@ public class PositionedObstacle implements PositionedObstacleInterface, Savable{
 		this.distanceLarge = howFarInFromLargeAngledSide;
 	}
 	
-	
-	private ObstacleInterface getObst(){
+	@Override
+	public ObstacleInterface getUnpositionedObstacle(){
 		return this.unpositionedObj;
 	}
 	
 	@Override
 	public String getName() {
-		return getObst().getName();
+		return getUnpositionedObstacle().getName();
 	}
 	@Override
 	public double getHeight() {
-		return getObst().getHeight();
+		return getUnpositionedObstacle().getHeight();
 	}
 	@Override
 	public double getRadius() {
-		return getObst().getRadius();
+		return getUnpositionedObstacle().getRadius();
 	}
 	@Override
 	public double distanceFromSmallEnd() {

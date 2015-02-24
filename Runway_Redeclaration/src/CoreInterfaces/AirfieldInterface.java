@@ -80,7 +80,7 @@ public interface AirfieldInterface {
 	/**
 	 * Returns null if there is no Obstacle or a PositionedObstacle implementation
 	 */
-	PositionedObstacleInterface getObstacle();
+	PositionedObstacleInterface getPositionedObstacle();
 	
 	/**
 	 * Changing/adding the obstacle on the tarmac. 
