@@ -37,7 +37,7 @@ class Airfield implements AirfieldInterface, Savable {
 	}
 	
 	//TODO change the dimensions to hanlde asymetric runways (Yeh that shite)
-	protected Airfield(int angleFromNorth, double[] dimensions) throws VariableDeclarationException{
+	protected Airfield(int angleFromNorth, double[] dimensions, double[] smallAngledDistances, double[] largeAngledDistances) throws VariableDeclarationException{
 		if(dimensions.length != 8) throw new VariableDeclarationException("lengths", dimensions, "Needs to be 8 cells");
 		
 		this.runWidth = dimensions[0];
@@ -50,17 +50,30 @@ class Airfield implements AirfieldInterface, Savable {
 		this.fullWSpace = dimensions[7];
 		//TODO Check these values against CAA stuff in INCREMENT 2
 		
-		
 		this.obstacle = null;
 		
 		this.runways = new DeclaredRunway[2];
 		this.defaultRunways= new DeclaredRunway[2];
+		double sTORA = smallAngledDistances[0];
+		double sStopway = smallAngledDistances[1];
+		double sClearway = smallAngledDistances[2];
+		double sDisThresh = smallAngledDistances[3];
 		
-		this.defaultRunways[0] = new DeclaredRunway(this, this.getSmallAngledRunway().getAngle());
-		this.defaultRunways[1] = new DeclaredRunway(this, this.getLargeAngledRunway().getAngle());;		
+		angleFromNorth %= 180;
+		this.runways[0] = new DeclaredRunway(this, angleFromNorth, sTORA, sStopway, sClearway, sDisThresh);
+		this.defaultRunways[0] = new DeclaredRunway(this, angleFromNorth, sTORA, sStopway, sClearway, sDisThresh);
+		
+		this.runways = new DeclaredRunway[2];
+		this.defaultRunways= new DeclaredRunway[2];
+		double lTORA = largeAngledDistances[0];
+		double lStopway = largeAngledDistances[1];
+		double lClearway = largeAngledDistances[2];
+		double lDisThresh = largeAngledDistances[3];
+		
+		this.runways[1] = new DeclaredRunway(this, angleFromNorth+180, lTORA, lStopway, lClearway, lDisThresh);
+		this.defaultRunways[1] = new DeclaredRunway(this, angleFromNorth+180, lTORA, lStopway, lClearway, lDisThresh);
 	}
-	
-	//TODO this should be changed to a mutate method using the new ones me and shaka made
+
 	/**
 	 * We redeclare when there is an object added or removed
 	 * 
@@ -177,7 +190,6 @@ class Airfield implements AirfieldInterface, Savable {
 			String indentifier, double howFarIn) throws InvalidIdentifierException {
 		
 		//Figuring where dat ting is near bruv... 
-		
 		if(indentifier.equals(this.getSmallAngledRunway().getIdentifier())){
 			double otherhowFarIn = this.getRunwayLength()-howFarIn;
 			this.obstacle = new PositionedObstacle(obj,howFarIn, otherhowFarIn);
@@ -194,6 +206,8 @@ class Airfield implements AirfieldInterface, Savable {
 		
 		try {
 			this.redeclareRunways();
+			
+			
 		} catch (VariableDeclarationException | UnusableRunwayException e) {
 			System.err.println("Stefan Here: This really should not happen! ... me thinks");
 			e.printStackTrace();

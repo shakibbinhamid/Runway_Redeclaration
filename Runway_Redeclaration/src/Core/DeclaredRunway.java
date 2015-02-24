@@ -43,6 +43,7 @@ class DeclaredRunway implements DeclaredRunwayInterface{
 	
 	
 	//TODO Use these!
+	@Element
 	private double decLda, decAsda, decToda;
 	
 	@Element
