@@ -42,7 +42,6 @@ class DeclaredRunway implements DeclaredRunwayInterface{
 	public static final int DEFAULT_ASC_ANGLE = 50;
 	
 	
-	//TODO Use these!
 	@Element
 	private double decLda, decAsda, decToda;
 	
@@ -67,7 +66,7 @@ class DeclaredRunway implements DeclaredRunwayInterface{
 	protected DeclaredRunway(){
 
 	}
-	
+	/* @Deprecated
 	protected DeclaredRunway(AirfieldInterface runway ,int angleFromNorth) throws VariableDeclarationException{
 
 		setDisplacedThreshold(0);
@@ -91,6 +90,7 @@ class DeclaredRunway implements DeclaredRunwayInterface{
 		setAngle(angleFromNorth);
 		direction = ' ';
 	}
+	*/
 
 	//This is the new one
 	/**
