@@ -19,8 +19,7 @@ public class VariableDeclarationException extends Exception{
 	}
 	
 	public VariableDeclarationException(String distanceName, char value, String constraintInequality){
-		super("DistanceDeclarationException:\n"
-				+"The variable "+distanceName+" has the value: "+value
+		super("The variable "+distanceName+" has the value: "+value
 				+"Which does not follow: "+constraintInequality);
 		this.distanceName = distanceName;
 		this.incorrectValue = value;

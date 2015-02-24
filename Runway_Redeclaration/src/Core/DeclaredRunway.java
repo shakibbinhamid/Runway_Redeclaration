@@ -348,6 +348,14 @@ class DeclaredRunway implements DeclaredRunwayInterface{
 		double ALS = getAscentAngle()*parent.getObstacle().getHeight();
 		
 		double newTORA = distFromObs + getDisplacedThreshold() - ALS - parent.getStripEndSideLength();
+		System.out.println("-[ Calculations ]-");
+		System.out.println("distFromObs:"+distFromObs);
+		System.out.println("ALS:"+ALS);
+		System.out.println("disThres"+getDisplacedThreshold());
+		System.out.println("newTORA:"+newTORA+" = "+distFromObs+" + "+getDisplacedThreshold()+" - "+ALS+" - "+parent.getStripEndSideLength());
+		System.out.println("----------------------------");
+		
+		if(newTORA<0) throw new UnusableRunwayException(this.getIdentifier(), "The TORA is "+newTORA+" which is less 0 and totaly unuseable");
 		
 		setTORA(newTORA);
 		setASDA(newTORA); //Stopway blocked
