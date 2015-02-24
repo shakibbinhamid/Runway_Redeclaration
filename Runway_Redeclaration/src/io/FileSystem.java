@@ -77,7 +77,8 @@ public class FileSystem {
 	}
 
 	public ObstacleInterface loadObs(String fileName){
-		File obsFile = new File(fileName);
+		File obsFile = new File(wd + datDir + objDir + "/"+fileName);
+		
 		ObstacleInterface loadedObs = (ObstacleInterface) XMLSaver.deserialise(Obstacle.class, obsFile);
 		return loadedObs;
 	}
@@ -113,7 +114,7 @@ public class FileSystem {
 	public boolean checkObs(File chosen) {
 		try{
 			String name = chosen.getName();
-			if (name.split("\\.")[1].equals("obs")){
+			if (name.split("\\.")[1].equals("obj")){
 				return true;
 			}
 		}

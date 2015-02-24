@@ -51,8 +51,6 @@ public class TabbedPanel extends JTabbedPane{
 		int location = this.indexOfComponent(whichTab);
 		this.remove(whichTab);
 		this.add(newTab, location);
-		//whichTab.setField(field);
-	
 	}
 
 	public AirportInterface getAirport() {
