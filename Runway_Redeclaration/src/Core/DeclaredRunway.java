@@ -80,12 +80,10 @@ class DeclaredRunway implements DeclaredRunwayInterface{
 
 		}else{
 			//These are garuneteed to fail, as we have not handled the obstacle scenarios yet!
-			//TODO handle an obstacle
 			setTORA(-1);
 			setStopway(-1);
 			setClearway(-1);
 		}
-		//TODO include final check: TORA <= ASDA <= TODA 
 
 		setAngle(angleFromNorth);
 		direction = ' ';
@@ -115,8 +113,8 @@ class DeclaredRunway implements DeclaredRunwayInterface{
 		setDisplacedThreshold(displacedThreshold);
 		
 		setLDA(this.decTora - displacedThreshold);
-		setASDA(this.decTora + clearway);
-		setTODA(this.decTora + stopway);
+		setASDA(this.decTora + stopway);
+		setTODA(this.decTora + clearway);
 		
 		if(!(this.decTora <= this.decAsda)) //&& this.decAsda <= this.decToda)) 
 			throw new VariableDeclarationException("TORA, ASDA, TODA", new double[] {decTora,decAsda,decToda}, "TORA <= ASDA <= TODA");
@@ -350,6 +348,14 @@ class DeclaredRunway implements DeclaredRunwayInterface{
 		double ALS = getAscentAngle()*parent.getObstacle().getHeight();
 		
 		double newTORA = distFromObs + getDisplacedThreshold() - ALS - parent.getStripEndSideLength();
+		System.out.println("-[ Calculations ]-");
+		System.out.println("distFromObs:"+distFromObs);
+		System.out.println("ALS:"+ALS);
+		System.out.println("disThres"+getDisplacedThreshold());
+		System.out.println("newTORA:"+newTORA+" = "+distFromObs+" + "+getDisplacedThreshold()+" - "+ALS+" - "+parent.getStripEndSideLength());
+		System.out.println("----------------------------");
+		
+		if(newTORA<0) throw new UnusableRunwayException(this.getIdentifier(), "The TORA is "+newTORA+" which is less 0 and totaly unuseable");
 		
 		setTORA(newTORA);
 		setASDA(newTORA); //Stopway blocked

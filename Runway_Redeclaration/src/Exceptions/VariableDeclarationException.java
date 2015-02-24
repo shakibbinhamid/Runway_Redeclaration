@@ -1,5 +1,7 @@
 package Exceptions;
 
+import java.util.Arrays;
+
 public class VariableDeclarationException extends Exception{
 	/** @Version 18/02/2015 */
 	private static final long serialVersionUID = 179922121914261148L;
@@ -17,8 +19,7 @@ public class VariableDeclarationException extends Exception{
 	}
 	
 	public VariableDeclarationException(String distanceName, char value, String constraintInequality){
-		super("DistanceDeclarationException:\n"
-				+"The variable "+distanceName+" has the value: "+value
+		super("The variable "+distanceName+" has the value: "+value
 				+"Which does not follow: "+constraintInequality);
 		this.distanceName = distanceName;
 		this.incorrectValue = value;
@@ -26,7 +27,7 @@ public class VariableDeclarationException extends Exception{
 	
 	public VariableDeclarationException(String distanceName, double[] values, String constraintInequality) {
 		super("DistanceDeclarationException:\n"
-				+"The variable "+distanceName+" has the value: "+values
+				+"The variable "+distanceName+" has the value: "+Arrays.toString(values)
 				+"Which does not follow: "+constraintInequality);
 		this.distanceName = distanceName;
 		this.arr = values;
@@ -43,4 +44,5 @@ public class VariableDeclarationException extends Exception{
 	public String getDistanceName(){
 		return this.distanceName;
 	}
+	
 }
