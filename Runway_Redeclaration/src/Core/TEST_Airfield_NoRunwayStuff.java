@@ -9,7 +9,9 @@ import org.junit.Test;
 import Exceptions.InvalidIdentifierException;
 
 public class TEST_Airfield_NoRunwayStuff {
-	public static final double[] airfieldVars = {50,100,120,150,200,300,400,500};
+	public static final double[] airfieldVars = {100,3500,200,100,200,300,400,500};
+	public static final double[] smallVars = {3660,0,0,7};
+	public static final double[] largeVars = {3660,0,0,0};
 	public static final int angle = 340;
 	
 	public Airfield air;
@@ -17,7 +19,7 @@ public class TEST_Airfield_NoRunwayStuff {
 	
 	@Before
 	public void setUp() throws Exception {
-		this.air = new Airfield(angle, airfieldVars);
+		this.air = new Airfield(angle, airfieldVars,smallVars,largeVars);
 	}
 
 	@Test
