@@ -1,7 +1,11 @@
 package Core;
 
+import org.simpleframework.xml.Attribute;
+import org.simpleframework.xml.Element;
+
 import CoreInterfaces.ObstacleInterface;
 import CoreInterfaces.PositionedObstacleInterface;
+import CoreInterfaces.Savable;
 
 
 /**
@@ -13,9 +17,16 @@ import CoreInterfaces.PositionedObstacleInterface;
  * @Testor Stefan
  *
  */
-public class PositionedObstacle implements PositionedObstacleInterface{
+public class PositionedObstacle implements PositionedObstacleInterface, Savable{
+	@Element
 	private ObstacleInterface unpositionedObj;
+	@Attribute
 	private double distanceSmall, distanceLarge;
+	
+	//nullary
+	protected PositionedObstacle(){
+		
+	}
 	
 	public PositionedObstacle(ObstacleInterface obj, double howFarInFromSmallAngledSide, double howFarInFromLargeAngledSide){
 		this.unpositionedObj=  obj;

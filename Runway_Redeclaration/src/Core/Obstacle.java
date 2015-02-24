@@ -28,6 +28,11 @@ public class Obstacle implements ObstacleInterface, Savable {
 		this.height = height;
 	}
 	
+	//nullary constructor
+	protected Obstacle(){
+		
+	}
+	
 	@Override
 	public String getName() {
 		return this.name;
