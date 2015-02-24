@@ -56,9 +56,10 @@ class Airfield implements AirfieldInterface, Savable {
 		
 		this.obstacle = null;
 		
-		//small angled runway stuff
 		this.runways = new DeclaredRunway[2];
 		this.defaultRunways= new DeclaredRunway[2];
+		
+		//small angled runway stuff
 		double sTORA = smallAngledDistances[0];
 		double sStopway = smallAngledDistances[1];
 		double sClearway = smallAngledDistances[2];
@@ -70,8 +71,6 @@ class Airfield implements AirfieldInterface, Savable {
 		
 		
 		//large angled runway stuff
-		this.runways = new DeclaredRunway[2];
-		this.defaultRunways= new DeclaredRunway[2];
 		double lTORA = largeAngledDistances[0];
 		double lStopway = largeAngledDistances[1];
 		double lClearway = largeAngledDistances[2];

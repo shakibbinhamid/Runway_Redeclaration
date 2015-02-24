@@ -16,9 +16,9 @@ import Exceptions.VariableDeclarationException;
  */
 public class TEST_Airport {
 	public static final String name = "The super awesome airport";
-	public static final double[] airfieldVars = {50,100,100,100,200,300,400,500};
-	public static final double[] smallVars = {};
-	public static final double[] largeVars = {};
+	public static final double[] airfieldVars = {100,3500,200,100,200,300,400,500};
+	public static final double[] smallVars = {3660,0,0,7};
+	public static final double[] largeVars = {3660,0,0,0};
 
 	public Airport airport;
 
@@ -37,7 +37,7 @@ public class TEST_Airport {
 	@Test
 	public void testSingleAddingAirfield() {
 		try {
-			this.airport.addNewAirfield(45, airfieldVars);
+			this.airport.addNewAirfield(90, airfieldVars, smallVars, largeVars);
 
 
 		} catch (ParrallelRunwayException e) {
@@ -55,8 +55,8 @@ public class TEST_Airport {
 	@Test
 	public void testTwoNonParallelRunways() {
 		try {
-			this.airport.addNewAirfield(45, airfieldVars);
-			this.airport.addNewAirfield(76, airfieldVars);
+			this.airport.addNewAirfield(45, airfieldVars, smallVars, largeVars);
+			this.airport.addNewAirfield(76, airfieldVars, smallVars, largeVars);
 			assertEquals(2, this.airport.getAirfields().size());
 
 		} catch (ParrallelRunwayException e) {
@@ -74,8 +74,8 @@ public class TEST_Airport {
 	@Test
 	public void testTwoParallels_DoNothing() {
 		try {
-			this.airport.addNewAirfield(44, airfieldVars);
-			this.airport.addNewAirfield(40, airfieldVars);
+			this.airport.addNewAirfield(44, airfieldVars, smallVars, largeVars);
+			this.airport.addNewAirfield(40, airfieldVars, smallVars, largeVars);
 			fail("Exception not caught");
 
 		} catch (ParrallelRunwayException e) {
@@ -93,8 +93,8 @@ public class TEST_Airport {
 	@Test
 	public void testTwoParallels_UseException() throws VariableDeclarationException {
 		try {
-			this.airport.addNewAirfield(44, airfieldVars);
-			this.airport.addNewAirfield(40, airfieldVars);
+			this.airport.addNewAirfield(44, airfieldVars, smallVars, largeVars);
+			this.airport.addNewAirfield(40, airfieldVars, smallVars, largeVars);
 			fail("Exception not caught");
 
 		} catch (ParrallelRunwayException pe) {
@@ -114,8 +114,8 @@ public class TEST_Airport {
 	@Test
 	public void testThreeParallels_UseException() throws VariableDeclarationException {
 		try {
-			this.airport.addNewAirfield(44, airfieldVars);
-			this.airport.addNewAirfield(40, airfieldVars);
+			this.airport.addNewAirfield(44, airfieldVars, smallVars, largeVars);
+			this.airport.addNewAirfield(40, airfieldVars, smallVars, largeVars);
 			fail("Exception not caught");
 
 		} catch (ParrallelRunwayException pe) {
@@ -125,7 +125,7 @@ public class TEST_Airport {
 
 			//Time to make a third runway
 			try {
-				this.airport.addNewAirfield(41, airfieldVars);
+				this.airport.addNewAirfield(41, airfieldVars, smallVars, largeVars);
 				fail("Second Exception not caught");
 
 
@@ -154,8 +154,8 @@ public class TEST_Airport {
 	@Test
 	public void testThreeParallels_AddingAnother() throws VariableDeclarationException  {
 		try {
-			this.airport.addNewAirfield(44, airfieldVars);
-			this.airport.addNewAirfield(40, airfieldVars);
+			this.airport.addNewAirfield(44, airfieldVars, smallVars, largeVars);
+			this.airport.addNewAirfield(40, airfieldVars, smallVars, largeVars);
 			fail("Exception not caught");
 
 		} catch (ParrallelRunwayException pe) {
@@ -165,7 +165,7 @@ public class TEST_Airport {
 
 			//Time to make a third runway
 			try {
-				this.airport.addNewAirfield(41, airfieldVars);
+				this.airport.addNewAirfield(41, airfieldVars, smallVars, largeVars);
 				fail("Second Exception not caught");
 
 
@@ -176,7 +176,7 @@ public class TEST_Airport {
 				assertEquals("Ensure 3 runways via Exception", 3, this.airport.getAirfields().size());
 
 				try {
-					this.airport.addNewAirfield(40, airfieldVars);
+					this.airport.addNewAirfield(40, airfieldVars, smallVars, largeVars);
 				} catch (ParrallelRunwayException e) {
 					fail("ParrallelRunwayException");
 					e.printStackTrace();
@@ -207,8 +207,8 @@ public class TEST_Airport {
 	@Test
 	public void testTwoParallels_Add3rdNonParallel() throws VariableDeclarationException {
 		try {
-			this.airport.addNewAirfield(44, airfieldVars);
-			this.airport.addNewAirfield(40, airfieldVars);
+			this.airport.addNewAirfield(44, airfieldVars, smallVars, largeVars);
+			this.airport.addNewAirfield(40, airfieldVars, smallVars, largeVars);
 			fail("Exception not caught");
 
 		} catch (ParrallelRunwayException pe) {
@@ -217,7 +217,7 @@ public class TEST_Airport {
 			assertEquals("Ensure 2 runways via Exception", 2, this.airport.getAirfields().size());
 			
 			try{
-				this.airport.addNewAirfield(150, airfieldVars);
+				this.airport.addNewAirfield(150, airfieldVars, smallVars, largeVars);
 				assertEquals("Ensure 3 Runways", 3, this.airport.getAirfields().size());
 
 			}catch (ParrallelRunwayException e){
