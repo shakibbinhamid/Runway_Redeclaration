@@ -308,8 +308,9 @@ class DeclaredRunway implements DeclaredRunwayInterface{
 		System.out.println("resa: "+RESA);
 		System.out.println("ALS: "+ALS);
 		System.out.println("largestFactor: "+largestFactor);
-		System.out.println("LDA = original LDA - max(ALS,RESA,Blast Protection) - distFromObs");
-		System.out.println("LDA: "+newLDA+" = "+original.getLDA()+" - "+largestFactor+" - "+distFromObs);
+		
+		System.out.println("LDA = original LDA - distFromObs - max(ALS,RESA,Blast Protection) ");
+		System.out.println("LDA: "+newLDA+" = "+original.getLDA()+" - "+distFromObs+" - "+largestFactor);
 		System.out.println("----------------------------");
 
 	}
@@ -348,12 +349,15 @@ class DeclaredRunway implements DeclaredRunwayInterface{
 		System.out.println("-[ "+getIdentifier()+" Take Off Away: Calculations ]- ");
 		
 		double distFromObs = distanceFrom(parent.getPositionedObstacle()) + parent.getPositionedObstacle().getRadius()*2;
-		double newTORA = original.getTORA() - distFromObs - Airfield.BLAST_PROT;
+		double newTORA = original.getTORA() - Airfield.BLAST_PROT - distFromObs - getDisplacedThreshold() ;
 		
 		System.out.println("distFromObs: "+distFromObs);
-		System.out.println("TORA = origonal TORA - distFromObs - Blast Distance");
-		System.out.println("newTORA: "+newTORA+" = "+original.getTORA()+" - "+distFromObs+" - "+Airfield.BLAST_PROT);
+		System.out.println("TORA = origonal TORA - Blast Distance - distFromObs - displaced Threshold");
+		System.out.println("newTORA: "+newTORA+" = "+original.getTORA()+" - "+Airfield.BLAST_PROT+" - "+distFromObs+" - "+getDisplacedThreshold());
 		setTORA(newTORA);
+		setASDA(newTORA+getStopway());
+		setTODA(newTORA+getClearway());
+		
 		System.out.println("----------------------------");
 
 		//TODO check please

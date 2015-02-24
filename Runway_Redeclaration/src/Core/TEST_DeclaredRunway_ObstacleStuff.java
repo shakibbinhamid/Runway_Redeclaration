@@ -9,7 +9,10 @@ import Exceptions.InvalidIdentifierException;
 import Exceptions.UnusableRunwayException;
 
 public class TEST_DeclaredRunway_ObstacleStuff {
-	public static final double[] airfieldVars = {100,4000,200,100,200,300,400,500};//TODO check the size of the runway ?4000?
+	public static final double stipEnd = 50;
+	public static final double runwayLength = 4000;
+	public static final double[] airfieldDimensions = {100,runwayLength,200,stipEnd,200,300,400,500};//TODO check the size of the runway ?4000?
+	
 	public static final double[] smallVars = {3902,0,0,306};
 	public static final double[] LargeVars = {3884,0,78,0};
 	public static final int angle = 90;
@@ -18,13 +21,13 @@ public class TEST_DeclaredRunway_ObstacleStuff {
 	
 	@Before
 	public void setUp() throws Exception {
-		this.air = new Airfield(angle, airfieldVars, smallVars, LargeVars);
+		this.air = new Airfield(angle, airfieldDimensions, smallVars, LargeVars);
 	}
 
 	@Test
 	public void testAddingObstacleWithGoodID() throws UnusableRunwayException{
 		Obstacle obj = new Obstacle("Scenario 1 Obstacle", 0, 12);
-		double dist = 50;
+		double dist = -50;
 		try {
 			//===[ Check Pre-Obstacle values ]===================================
 			//--[ small angled ]------------
@@ -53,7 +56,7 @@ public class TEST_DeclaredRunway_ObstacleStuff {
 			this.air.addObstacle(obj,this.air.getSmallAngledRunway().getIdentifier(),dist);
 			assertNotEquals("Obstacle is actually added",this.air.getPositionedObstacle(), null);
 			assertEquals("MY maths calculating small side works",dist,this.air.getPositionedObstacle().distanceFromSmallEnd(),0);
-			assertEquals("My maths in calculating other side worked",airfieldVars[1]-dist,this.air.getPositionedObstacle().distanceFromLargeEnd(),0);
+			assertEquals("My maths in calculating other side worked",airfieldDimensions[1]-dist,this.air.getPositionedObstacle().distanceFromLargeEnd(),0);
 			//===< End add Obstacle >============================
 			
 			//===[ Check Post-Obstacle values ]===================================
