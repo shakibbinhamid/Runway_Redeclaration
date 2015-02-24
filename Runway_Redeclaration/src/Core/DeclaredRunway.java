@@ -80,12 +80,10 @@ class DeclaredRunway implements DeclaredRunwayInterface{
 
 		}else{
 			//These are garuneteed to fail, as we have not handled the obstacle scenarios yet!
-			//TODO handle an obstacle
 			setTORA(-1);
 			setStopway(-1);
 			setClearway(-1);
 		}
-		//TODO include final check: TORA <= ASDA <= TODA 
 
 		setAngle(angleFromNorth);
 		direction = ' ';
