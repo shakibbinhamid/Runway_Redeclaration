@@ -39,11 +39,14 @@ public class TEST_Airfield_NoRunwayStuff {
 	@Test
 	public void testAddingObstacleWithGoodID(){
 		Obstacle obj = new Obstacle("Spongebob", 2.3, 4.5);
+		double dist = 20;
 		try {
-			this.air.addObstacle(obj,this.air.getSmallAngledRunway().getIdentifier(), 20);
+			this.air.addObstacle(obj,this.air.getSmallAngledRunway().getIdentifier(),dist);
+			
 			assertNotEquals(this.air.getObstacle(), null);
-			assertEquals(,this.air.getObstacle().distanceFromSmallEnd());
-			System.out.println(this.air.getObstacle().distanceFromLargeEnd());
+			
+			assertEquals(dist,this.air.getObstacle().distanceFromSmallEnd(),0);
+			assertEquals(airfieldVars[1]-dist,this.air.getObstacle().distanceFromLargeEnd(),0);
 			
 		} catch (InvalidIdentifierException e) {
 			System.out.println(this.air.getSmallAngledRunway().getIdentifier());
