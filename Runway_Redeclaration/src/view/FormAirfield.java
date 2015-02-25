@@ -12,13 +12,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import Core.Airfield;
-import Core.ParrallelRunwayException;
-import CoreInterfaces.AirfieldInterface;
-import Exceptions.CannotMakeRunwayException;
-//import Exceptions.ParrallelRunwayException;
-import Exceptions.VariableDeclarationException;
-
 public class FormAirfield extends FormGeneral {
 	TopFrame topFrame;
 	ArrayList<JTextField> smallValueTextFields;

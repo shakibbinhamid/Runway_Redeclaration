@@ -3,12 +3,12 @@ package view;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import Core.Airfield;
 import Core.Obstacle;
 import Core.ParrallelRunwayException;
 import Core.PositionedObstacle;
@@ -76,20 +76,14 @@ public class TopFrame extends JFrame{
 	
 	public void loadOrCreateField(int parseInt, double[] physicalInputs,
 			double[] smallInputs, double[] bigInputs) {
-		AirfieldInterface field = null;
 		try {
-			field = new Airfield(parseInt, physicalInputs, smallInputs, bigInputs);
-		} catch (VariableDeclarationException e) {
+			airport.addNewAirfield(parseInt, physicalInputs, smallInputs, bigInputs);
+		} catch (VariableDeclarationException | ParrallelRunwayException | CannotMakeRunwayException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		try {
-			airport.addNewAirfield(parseInt, physicalInputs, smallInputs, bigInputs);
-			tabbedPanel.addTab(field);
-		} catch (ParrallelRunwayException | CannotMakeRunwayException
-				| VariableDeclarationException e) {
-			JOptionPane.showMessageDialog(this, e.getMessage(), "ERROR", ERROR);
-		}
+		List<AirfieldInterface> fields = airport.getAirfields();
+		tabbedPanel.addTab(fields.get(fields.size() - 1));
 	}
 	
 	public void loadOrCreateObstacle(ObstacleInterface obs, AirfieldInterface field, double distanceFromLeft){

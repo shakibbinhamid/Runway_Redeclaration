@@ -11,6 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 import Core.Obstacle;
+import CoreInterfaces.AirfieldInterface;
 import Exceptions.InvalidIdentifierException;
 import Exceptions.UnrecognisedAirfieldIntifierException;
 
@@ -47,15 +48,21 @@ public class FormObstacle extends FormGeneral {
 		distFromLeftTextBox = new JTextField();
 		
 		airfieldLabel = new JLabel("Pick airfield:");
-		airfieldComboBox = new JComboBox<String>();
+		
+		List<String> airports = topFrame.getAirport().getAirfieldNames();
+		String[] str = new String[airports.size()];
+		str = airports.toArray(str);
+		airfieldComboBox = new JComboBox<String>(str);
 		
 		setPreferredSize(new Dimension(230,250));
+		
+		init();
 	}
 	
 	private void populateAirfieldComboBox(){
-		List<String> temp = topFrame.getAirport().getAirfieldNames();
-		for(String s : temp){
-			airfieldComboBox.addItem(s);
+		List<AirfieldInterface> temp = topFrame.getAirport().getAirfields();
+		for(AirfieldInterface s : temp){
+			airfieldComboBox.addItem(s.getName());
 		}
 	}
 	
@@ -71,7 +78,7 @@ public class FormObstacle extends FormGeneral {
 		textFieldsPanel.add(distFromLeftLabel);
 		textFieldsPanel.add(distFromLeftTextBox);
 		
-		populateAirfieldComboBox();
+		//populateAirfieldComboBox();
 		
 		textFieldsPanel.add(airfieldLabel);
 		textFieldsPanel.add(airfieldComboBox);

@@ -78,6 +78,11 @@ public class TopMenu extends JMenuBar{
 			public void actionPerformed(ActionEvent e) {
 				new FormAirfield(frame);
 			}});
+		createObstacle.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new FormObstacle(frame);
+			}});
 		
 		create = getMenu("Create", icreate, new JMenuItem[]{createAirport, createRunway, createObstacle});
 		
