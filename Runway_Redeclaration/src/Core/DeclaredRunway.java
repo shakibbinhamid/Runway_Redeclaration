@@ -3,6 +3,7 @@ package Core;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;
 
+import view.Notification;
 import CoreInterfaces.AirfieldInterface;
 import CoreInterfaces.DeclaredRunwayInterface;
 import CoreInterfaces.PositionedObstacleInterface;
@@ -315,6 +316,7 @@ class DeclaredRunway implements DeclaredRunwayInterface{
 		this.addToLog("LDA: "+newLDA+" = "+original.getLDA()+" - "+distFromObs+" - "+largestFactor);
 		this.addToLog("----------------------------");
 
+		Notification.notify(log);
 	}
 
 	@Override
@@ -338,6 +340,7 @@ class DeclaredRunway implements DeclaredRunwayInterface{
 		this.addToLog("lda: "+newLDA+" = "+distFromObs+" - "+resa+" - "+parent.getStripEndSideLength());
 		this.addToLog("----------------------------");
 
+		Notification.notify(log);
 	}
 
 	@Override
@@ -364,6 +367,8 @@ class DeclaredRunway implements DeclaredRunwayInterface{
 
 		//TODO check please
 		setDisplacedThreshold(0);
+		
+		Notification.notify(log);
 	}
 
 	@Override

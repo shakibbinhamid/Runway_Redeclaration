@@ -124,7 +124,7 @@ public class InfoPanel extends JPanel{
 			radius = new String[]{"Radius", getObstaclePara(obs, "radius")};
 			distance = new String[]{"Distance from left side", getObstaclePara(obs, "distance")};
 		
-			updateObstacleTable(new String[][]{name, height, radius});
+			updateObstacleTable(new String[][]{name, height, radius, distance});
 		}
 	}
 	
