@@ -362,8 +362,6 @@ class DeclaredRunway implements DeclaredRunwayInterface{
 		
 		this.line();
 
-		//TODO check please
-		setDisplacedThreshold(0);
 		
 	}
 
@@ -393,6 +391,7 @@ class DeclaredRunway implements DeclaredRunwayInterface{
 		setTODA(newTORA);//clearway blocked
 		setStopway(0);
 		setClearway(0);
+		
 	}
 
 	private boolean isSmallEnd(){
@@ -426,7 +425,11 @@ class DeclaredRunway implements DeclaredRunwayInterface{
 	
 	public void addToLog(String text){
 		this.log += text+"\n";
-		Notification.notify(text);
+		try{
+			Notification.notify(text);
+		}catch (NullPointerException np){
+			//External Logger not initialised
+		}
 	}
 	
 	public String getLog(){

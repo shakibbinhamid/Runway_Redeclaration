@@ -11,16 +11,17 @@ public class LoadObstacleListener implements ActionListener{
 
 	private TopFrame frame;
 	private ObstacleFileFilter filter;
+	private String typeDir;
 	
 	public LoadObstacleListener(TopFrame frame){
 		this.frame = frame;
 		filter = new ObstacleFileFilter(); 
-		
+		typeDir = "obs/";
 
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		LoadListener lis = new LoadListener(frame, filter);
+		LoadListener lis = new LoadListener(frame, filter, typeDir);
 	}
 }
