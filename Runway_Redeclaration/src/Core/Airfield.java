@@ -1,18 +1,17 @@
-package core;
-
-import interfaces.AirfieldInterface;
-import interfaces.DeclaredRunwayInterface;
-import interfaces.ObstacleInterface;
-import interfaces.PositionedObstacleInterface;
-import interfaces.Savable;
+package Core;
 
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementArray;
 import org.simpleframework.xml.Root;
 
-import exceptions.InvalidIdentifierException;
-import exceptions.UnusableRunwayException;
-import exceptions.VariableDeclarationException;
+import CoreInterfaces.AirfieldInterface;
+import CoreInterfaces.DeclaredRunwayInterface;
+import CoreInterfaces.ObstacleInterface;
+import CoreInterfaces.PositionedObstacleInterface;
+import CoreInterfaces.Savable;
+import Exceptions.InvalidIdentifierException;
+import Exceptions.UnusableRunwayException;
+import Exceptions.VariableDeclarationException;
 
 @Root
 /**

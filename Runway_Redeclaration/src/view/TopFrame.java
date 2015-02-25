@@ -1,9 +1,5 @@
 package view;
 
-import interfaces.AirfieldInterface;
-import interfaces.AirportInterface;
-import interfaces.ObstacleInterface;
-
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.EventQueue;
@@ -12,11 +8,14 @@ import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import core.ParallelRunwayException;
-import exceptions.CannotMakeRunwayException;
-import exceptions.InvalidIdentifierException;
-import exceptions.UnusableRunwayException;
-import exceptions.VariableDeclarationException;
+import Core.ParallelRunwayException;
+import CoreInterfaces.AirfieldInterface;
+import CoreInterfaces.AirportInterface;
+import CoreInterfaces.ObstacleInterface;
+import Exceptions.CannotMakeRunwayException;
+import Exceptions.InvalidIdentifierException;
+import Exceptions.UnusableRunwayException;
+import Exceptions.VariableDeclarationException;
 
 /**
  * This is the entry point of our program

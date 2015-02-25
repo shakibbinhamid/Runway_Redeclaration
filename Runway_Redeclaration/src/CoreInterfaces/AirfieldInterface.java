@@ -1,8 +1,8 @@
-package interfaces;
+package CoreInterfaces;
 
-import exceptions.InvalidIdentifierException;
-import exceptions.UnusableRunwayException;
-import exceptions.VariableDeclarationException;
+import Exceptions.InvalidIdentifierException;
+import Exceptions.UnusableRunwayException;
+import Exceptions.VariableDeclarationException;
 
 
 /**

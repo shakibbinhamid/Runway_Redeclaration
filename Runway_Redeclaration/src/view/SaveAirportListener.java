@@ -1,6 +1,5 @@
 package view;
 
-import interfaces.Savable;
 import io.FileSystem;
 
 import java.awt.event.ActionEvent;
@@ -8,8 +7,9 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JOptionPane;
 
-import core.Airport;
-import exceptions.NothingToSaveException;
+import Core.Airport;
+import CoreInterfaces.Savable;
+import Exceptions.NothingToSaveException;
 
 public class SaveAirportListener implements ActionListener{
 	

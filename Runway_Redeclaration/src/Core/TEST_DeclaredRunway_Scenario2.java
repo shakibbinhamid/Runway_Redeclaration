@@ -1,4 +1,4 @@
-package core;
+package Core;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
@@ -7,8 +7,8 @@ import static org.junit.Assert.fail;
 import org.junit.Before;
 import org.junit.Test;
 
-import exceptions.InvalidIdentifierException;
-import exceptions.UnusableRunwayException;
+import Exceptions.InvalidIdentifierException;
+import Exceptions.UnusableRunwayException;
 
 public class TEST_DeclaredRunway_Scenario2 {
 	public static final double stipEnd = 60;

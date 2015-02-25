@@ -1,6 +1,6 @@
-package exceptions;
+package Exceptions;
 
-import interfaces.AirfieldInterface;
+import CoreInterfaces.AirfieldInterface;
 
 public class CannotMakeRunwayException extends Exception {
 	private static final long serialVersionUID = -953609051924922253L;

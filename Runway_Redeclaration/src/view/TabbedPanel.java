@@ -1,12 +1,12 @@
 package view;
 
-import interfaces.AirfieldInterface;
-import interfaces.AirportInterface;
-
 import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.swing.JTabbedPane;
+
+import CoreInterfaces.AirfieldInterface;
+import CoreInterfaces.AirportInterface;
 /**
  * This is just a holder class for all the tabs.
  * 

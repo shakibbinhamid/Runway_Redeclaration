@@ -1,11 +1,10 @@
-package core;
-
-import interfaces.AirfieldInterface;
+package Core;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import exceptions.VariableDeclarationException;
+import CoreInterfaces.AirfieldInterface;
+import Exceptions.VariableDeclarationException;
 
 public class ParallelRunwayException extends Exception {
 	private static final long serialVersionUID = 1L;

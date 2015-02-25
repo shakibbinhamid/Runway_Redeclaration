@@ -1,4 +1,4 @@
-package exceptions;
+package Exceptions;
 
 public class UnusableRunwayException extends Exception {
 	private static final long serialVersionUID = 3873902900361987631L;

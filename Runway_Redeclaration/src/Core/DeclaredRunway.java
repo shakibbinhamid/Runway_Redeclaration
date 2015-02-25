@@ -1,14 +1,13 @@
-package core;
-
-import interfaces.AirfieldInterface;
-import interfaces.DeclaredRunwayInterface;
-import interfaces.PositionedObstacleInterface;
+package Core;
 
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;
 
-import exceptions.UnusableRunwayException;
-import exceptions.VariableDeclarationException;
+import CoreInterfaces.AirfieldInterface;
+import CoreInterfaces.DeclaredRunwayInterface;
+import CoreInterfaces.PositionedObstacleInterface;
+import Exceptions.UnusableRunwayException;
+import Exceptions.VariableDeclarationException;
 import view.Notification;
 
 /**

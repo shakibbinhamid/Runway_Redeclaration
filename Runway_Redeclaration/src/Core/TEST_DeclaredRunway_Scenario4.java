@@ -1,12 +1,12 @@
-package core;
+package Core;
 
 import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import exceptions.InvalidIdentifierException;
-import exceptions.UnusableRunwayException;
+import Exceptions.InvalidIdentifierException;
+import Exceptions.UnusableRunwayException;
 
 public class TEST_DeclaredRunway_Scenario4 {
 	public static final double stipEnd = 60;

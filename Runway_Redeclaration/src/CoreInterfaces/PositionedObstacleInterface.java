@@ -1,4 +1,4 @@
-package interfaces;
+package CoreInterfaces;
 /**
  * 
  * This is an object that knows it's position in relation to a side of a runway

@@ -1,4 +1,4 @@
-package exceptions;
+package Exceptions;
 
 import java.util.Arrays;
 

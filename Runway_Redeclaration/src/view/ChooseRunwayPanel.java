@@ -1,7 +1,5 @@
 package view;
 
-import interfaces.DeclaredRunwayInterface;
-
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,6 +7,8 @@ import java.awt.event.ActionListener;
 import javax.swing.ButtonGroup;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+
+import CoreInterfaces.DeclaredRunwayInterface;
 
 /**
  * This class will be responsible to change between the runways and 

@@ -1,4 +1,4 @@
-package core;
+package Core;
 
 import static org.junit.Assert.*;
 
@@ -6,8 +6,8 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import exceptions.CannotMakeRunwayException;
-import exceptions.VariableDeclarationException;
+import Exceptions.CannotMakeRunwayException;
+import Exceptions.VariableDeclarationException;
 /**
  * Tests Airport and ParallelRunwayException
  * 

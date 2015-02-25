@@ -1,12 +1,12 @@
-package core;
+package Core;
 
 import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import exceptions.InvalidIdentifierException;
-import exceptions.UnusableRunwayException;
+import Exceptions.InvalidIdentifierException;
+import Exceptions.UnusableRunwayException;
 
 public class TEST_Airfield_NoRunwayStuff {
 	public static final double[] airfieldVars = {100,3000,200,100,200,300,400,500};

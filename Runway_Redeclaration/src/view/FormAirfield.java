@@ -12,9 +12,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import core.ParallelRunwayException;
-import exceptions.CannotMakeRunwayException;
-import exceptions.VariableDeclarationException;
+import Core.ParallelRunwayException;
+import Exceptions.CannotMakeRunwayException;
+import Exceptions.VariableDeclarationException;
 
 public class FormAirfield extends FormGeneral {
 	TopFrame topFrame;

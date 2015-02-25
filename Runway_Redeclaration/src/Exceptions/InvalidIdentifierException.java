@@ -1,6 +1,6 @@
-package exceptions;
+package Exceptions;
 
-import interfaces.AirfieldInterface;
+import CoreInterfaces.AirfieldInterface;
 
 public class InvalidIdentifierException extends Exception {
 	private static final long serialVersionUID = -5248193185884463841L;

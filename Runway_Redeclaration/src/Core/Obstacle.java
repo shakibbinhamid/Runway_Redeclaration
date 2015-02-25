@@ -1,11 +1,11 @@
-package core;
-
-import interfaces.ObstacleInterface;
-import interfaces.Savable;
+package Core;
 
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;
+
+import CoreInterfaces.ObstacleInterface;
+import CoreInterfaces.Savable;
 
 /**
  * 

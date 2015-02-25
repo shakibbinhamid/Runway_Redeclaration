@@ -1,6 +1,5 @@
 package view;
 
-import interfaces.Savable;
 import io.FileSystem;
 
 import java.awt.event.ActionEvent;
@@ -8,7 +7,8 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JOptionPane;
 
-import core.Obstacle;
+import Core.Obstacle;
+import CoreInterfaces.Savable;
 
 public class SaveObjectListener implements ActionListener{
 	

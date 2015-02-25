@@ -1,11 +1,11 @@
-package interfaces;
+package CoreInterfaces;
 
 import java.util.List;
 
-import core.ParallelRunwayException;
-import exceptions.CannotMakeRunwayException;
-import exceptions.UnrecognisedAirfieldIntifierException;
-import exceptions.VariableDeclarationException;
+import Core.ParallelRunwayException;
+import Exceptions.CannotMakeRunwayException;
+import Exceptions.UnrecognisedAirfieldIntifierException;
+import Exceptions.VariableDeclarationException;
 
 /**
  * This is what represents an Airport, airports can have multiple airfields.
