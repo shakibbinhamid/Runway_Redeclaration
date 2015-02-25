@@ -316,7 +316,6 @@ class DeclaredRunway implements DeclaredRunwayInterface{
 		this.addToLog("LDA: "+newLDA+" = "+original.getLDA()+" - "+distFromObs+" - "+largestFactor);
 		this.line();
 
-		//Notification.notify(log);
 	}
 
 	@Override
@@ -339,8 +338,6 @@ class DeclaredRunway implements DeclaredRunwayInterface{
 		this.addToLog("LDA = distFromObs - RESA - strip end");
 		this.addToLog("lda: "+newLDA+" = "+distFromObs+" - "+resa+" - "+parent.getStripEndSideLength());
 		this.line();
-
-		//Notification.notify(log);
 	}
 
 	@Override
@@ -366,7 +363,6 @@ class DeclaredRunway implements DeclaredRunwayInterface{
 		this.line();
 
 		
-		//Notification.notify(log);
 	}
 
 	@Override
@@ -396,7 +392,6 @@ class DeclaredRunway implements DeclaredRunwayInterface{
 		setStopway(0);
 		setClearway(0);
 		
-		//Notification.notify(log);
 	}
 
 	private boolean isSmallEnd(){

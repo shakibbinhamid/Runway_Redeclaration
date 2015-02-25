@@ -29,7 +29,7 @@ public class TopMenu extends JMenuBar{
 	private JMenuItem printCalculation;
 	private JMenuItem about, contact;
 	
-	private Icon icreate, iload, isave, iedit, iprint, iairport, iobstacle, iabout, icontact, iexit;
+	private Icon icreate, iload, isave, iedit, iprint, iairport, iairfield, iobstacle, iabout, icontact, iexit;
 	
 	private TopFrame frame; 
 	
@@ -54,8 +54,9 @@ public class TopMenu extends JMenuBar{
 		iload = getIcon("./icon/open.png");
 		isave = getIcon("./icon/save.png");
 		iprint = getIcon("./icon/print.jpg");
-		iairport = getIcon("./icon/AirplaneIcon.png");
-		iobstacle = getIcon("./icon/ObstacleIcon.png");
+		iairport = getIcon("./icon/airport.png");
+		iairfield = getIcon("./icon/airfield.png");
+		iobstacle = getIcon("./icon/obstacle.jpg");
 		iabout = getIcon("./icon/about.png");
 		icontact = getIcon("./icon/contact.png");
 		iexit = getIcon("./icon/exit.png");
@@ -67,7 +68,7 @@ public class TopMenu extends JMenuBar{
 		//================================CREATE MENU==============================================//
 		
 		createAirport = getItem("Create Airport", iairport, SwingConstants.CENTER);
-		createRunway = getItem("Create Airfield", iairport, SwingConstants.CENTER);//TODO: need to get an icon for runway
+		createRunway = getItem("Create Airfield", iairfield, SwingConstants.CENTER);//TODO: need to get an icon for runway
 		createObstacle = getItem("Create Obstacle", iobstacle, SwingConstants.CENTER);
 		
 		createAirport.addActionListener(new ActionListener(){

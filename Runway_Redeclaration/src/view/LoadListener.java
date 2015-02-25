@@ -45,16 +45,16 @@ public class LoadListener{
 					JOptionPane.showMessageDialog(null, "You cannot load an obstacle before loading an airport.", "Error",JOptionPane.ERROR_MESSAGE);
 				}
 				else{
-					ObstacleInterface obs = fs.loadObs(chosen.getName());
-					System.out.println(obs.getHeight());
+					ObstacleInterface obs = fs.loadObs(chosen);
 					frame.loadOrCreateObstacle(obs, ((Tab)frame.getTabbePanel().getSelectedComponent()).getField(), 3);
+					Notification.notify(obs.getName() + " loaded.", "file");
 				}
 			}
 			else{
 				if(fs.checkAir(chosen)){
-					AirportInterface airport = fs.loadAir(chosen.getName());
+					AirportInterface airport = fs.loadAir(chosen);
 					frame.loadOrCreateAirport(airport);
-					frame.getLogPanel().makeLog("Airport loaded.");
+					Notification.notify(airport.getName() +" loaded.");
 					frame.getLogPanel().repaint();
 				}
 			}

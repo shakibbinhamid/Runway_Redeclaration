@@ -1,0 +1,148 @@
+<airport name="My Airport">
+   <airfields class="java.util.ArrayList">
+      <airfieldInterface class="Core.Airfield">
+         <runways length="2" class="CoreInterfaces.DeclaredRunwayInterface">
+            <declaredRunwayInterface class="Core.DeclaredRunway">
+               <log>-[Log]-
+</log>
+               <decTora>2717.0</decTora>
+               <disThreshold>0.0</disThreshold>
+               <stopway>300.0</stopway>
+               <clearway>400.0</clearway>
+               <decLda>2723.0</decLda>
+               <decAsda>3017.0</decAsda>
+               <decToda>3117.0</decToda>
+               <angle>40</angle>
+               <direction> </direction>
+            </declaredRunwayInterface>
+            <declaredRunwayInterface class="Core.DeclaredRunway">
+               <log>-[Log]-
+</log>
+               <decTora>2694.0</decTora>
+               <disThreshold>35.0</disThreshold>
+               <stopway>0.0</stopway>
+               <clearway>0.0</clearway>
+               <decLda>2619.0</decLda>
+               <decAsda>2694.0</decAsda>
+               <decToda>2694.0</decToda>
+               <angle>220</angle>
+               <direction> </direction>
+            </declaredRunwayInterface>
+         </runways>
+         <defaultRunways length="2" class="CoreInterfaces.DeclaredRunwayInterface">
+            <declaredRunwayInterface class="Core.DeclaredRunway">
+               <log>-[Log]-
+</log>
+               <decTora>3000.0</decTora>
+               <disThreshold>30.0</disThreshold>
+               <stopway>300.0</stopway>
+               <clearway>400.0</clearway>
+               <decLda>2970.0</decLda>
+               <decAsda>3300.0</decAsda>
+               <decToda>3400.0</decToda>
+               <angle>40</angle>
+               <direction> </direction>
+            </declaredRunwayInterface>
+            <declaredRunwayInterface class="Core.DeclaredRunway">
+               <log>-[Log]-
+</log>
+               <decTora>3000.0</decTora>
+               <disThreshold>35.0</disThreshold>
+               <stopway>250.0</stopway>
+               <clearway>450.0</clearway>
+               <decLda>2965.0</decLda>
+               <decAsda>3250.0</decAsda>
+               <decToda>3450.0</decToda>
+               <angle>220</angle>
+               <direction> </direction>
+            </declaredRunwayInterface>
+         </defaultRunways>
+         <obstacle distanceSmall="-50.0" distanceLarge="2922.0">
+            <unpositionedObj class="Core.Obstacle" name="dff">
+               <radius>3.0</radius>
+               <height>4.0</height>
+            </unpositionedObj>
+         </obstacle>
+         <runWidth>80.0</runWidth>
+         <runLen>1500.0</runLen>
+         <initStop>150.0</initStop>
+         <stripEndL>60.0</stripEndL>
+         <dToLongSpace>300.0</dToLongSpace>
+         <shortClearWSpace>75.0</shortClearWSpace>
+         <longClearWSpace>105.0</longClearWSpace>
+         <fullWSpace>150.0</fullWSpace>
+      </airfieldInterface>
+      <airfieldInterface class="Core.Airfield">
+         <runways length="2" class="CoreInterfaces.DeclaredRunwayInterface">
+            <declaredRunwayInterface class="Core.DeclaredRunway">
+               <log>-[Log]-
+</log>
+               <decTora>3358.0</decTora>
+               <disThreshold>0.0</disThreshold>
+               <stopway>300.0</stopway>
+               <clearway>300.0</clearway>
+               <decLda>3362.0</decLda>
+               <decAsda>3658.0</decAsda>
+               <decToda>3658.0</decToda>
+               <angle>30</angle>
+               <direction> </direction>
+            </declaredRunwayInterface>
+            <declaredRunwayInterface class="Core.DeclaredRunway">
+               <log>-[Log]-
+</log>
+               <decTora>3028.0</decTora>
+               <disThreshold>40.0</disThreshold>
+               <stopway>0.0</stopway>
+               <clearway>0.0</clearway>
+               <decLda>2898.0</decLda>
+               <decAsda>3028.0</decAsda>
+               <decToda>3028.0</decToda>
+               <angle>210</angle>
+               <direction> </direction>
+            </declaredRunwayInterface>
+         </runways>
+         <defaultRunways length="2" class="CoreInterfaces.DeclaredRunwayInterface">
+            <declaredRunwayInterface class="Core.DeclaredRunway">
+               <log>-[Log]-
+</log>
+               <decTora>4000.0</decTora>
+               <disThreshold>40.0</disThreshold>
+               <stopway>300.0</stopway>
+               <clearway>300.0</clearway>
+               <decLda>3960.0</decLda>
+               <decAsda>4300.0</decAsda>
+               <decToda>4300.0</decToda>
+               <angle>30</angle>
+               <direction> </direction>
+            </declaredRunwayInterface>
+            <declaredRunwayInterface class="Core.DeclaredRunway">
+               <log>-[Log]-
+</log>
+               <decTora>3500.0</decTora>
+               <disThreshold>40.0</disThreshold>
+               <stopway>250.0</stopway>
+               <clearway>250.0</clearway>
+               <decLda>3460.0</decLda>
+               <decAsda>3750.0</decAsda>
+               <decToda>3750.0</decToda>
+               <angle>210</angle>
+               <direction> </direction>
+            </declaredRunwayInterface>
+         </defaultRunways>
+         <obstacle distanceSmall="300.0" distanceLarge="3200.0">
+            <unpositionedObj class="Core.Obstacle" name="My Obstacle">
+               <radius>2.0</radius>
+               <height>3.0</height>
+            </unpositionedObj>
+         </obstacle>
+         <runWidth>80.0</runWidth>
+         <runLen>1500.0</runLen>
+         <initStop>150.0</initStop>
+         <stripEndL>60.0</stripEndL>
+         <dToLongSpace>300.0</dToLongSpace>
+         <shortClearWSpace>75.0</shortClearWSpace>
+         <longClearWSpace>105.0</longClearWSpace>
+         <fullWSpace>150.0</fullWSpace>
+      </airfieldInterface>
+   </airfields>
+</airport>

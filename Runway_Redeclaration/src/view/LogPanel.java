@@ -40,7 +40,7 @@ public class LogPanel extends JPanel{
 		this.setLayout(new BorderLayout());
 		
 		airportLabel = new JLabel("Airport");
-		airportLabel.setPreferredSize(new Dimension(200,20));
+		airportLabel.setPreferredSize(new Dimension(300,20));
 		this.add(airportLabel, BorderLayout.NORTH);
 		
 		if(label != null)
