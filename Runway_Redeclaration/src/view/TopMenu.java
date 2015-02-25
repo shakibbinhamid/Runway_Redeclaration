@@ -11,6 +11,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 
+import CoreInterfaces.AirfieldInterface;
+
 public class TopMenu extends JMenuBar{
 
 	/**
@@ -26,7 +28,7 @@ public class TopMenu extends JMenuBar{
 	private JMenuItem saveAirport, saveObstacle;
 	
 	private JMenuItem exit;
-	private JMenuItem editRunway, editObstacle;
+	private JMenuItem editRunway, editObstacle, removeObs;
 	private JMenuItem printCalculation;
 	private JMenuItem about, contact;
 	
@@ -128,9 +130,20 @@ public class TopMenu extends JMenuBar{
 		editRunway = getItem("Edit Runway", iedit, SwingConstants.CENTER);
 		editObstacle = getItem("Edit Obstacles", iedit, SwingConstants.CENTER);
 		
-		edit = getMenu("Edit", null, new JMenuItem[]{editRunway, editObstacle});
+		removeObs = getItem("Remove Obstacle", null, SwingConstants.CENTER);
+		removeObs.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				TabbedPanel panel = frame.getTabbePanel();
+				AirfieldInterface field = panel.getActiveField();
+				field.removeObstacle();
+				panel.updateTab(field);
+			}
+			
+		});
 		
-		
+		edit = getMenu("Edit", null, new JMenuItem[]{editRunway, editObstacle, removeObs});
 	}
 	
 	private void createPrintMenu(){

@@ -235,7 +235,6 @@ public class Airfield implements AirfieldInterface, Savable {
 		this.obstacle = null;
 		try {
 			this.redeclareRunways();
-
 		} catch (VariableDeclarationException | UnusableRunwayException e) {
 			System.err.println("Stefan Again: Urm I don't think any of this should have happened...");
 			e.printStackTrace();

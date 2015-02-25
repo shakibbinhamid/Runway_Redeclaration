@@ -65,6 +65,7 @@ public class TopFrame extends JFrame{
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setMinimumSize(new Dimension(1200,800));
+		this.setResizable(false);
 		this.pack();
 		setVisible(true);
 	}
