@@ -62,7 +62,7 @@ public class ParrallelRunwayException extends Exception {
 		if(this.parrallels.size()==1){
 			if(sideOfNewRunway=='R'){
 				this.parrallels.get(0).setSmallestSideLetter('L');
-				
+
 			}else{//Must be 'L' then...
 				this.parrallels.get(0).setSmallestSideLetter('R');
 			}

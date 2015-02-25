@@ -108,7 +108,7 @@ class DeclaredRunway implements DeclaredRunwayInterface{
 	 */
 	protected DeclaredRunway(AirfieldInterface airfield, int angleFromNorth,
 			double tora, double stopway, double clearway, double displacedThreshold) throws VariableDeclarationException{
-		this.log = "-[Log]-";
+		this.log = "-[Log]-\n";
 
 		setTORA(tora);
 		setStopway(stopway);

@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import Exceptions.InvalidIdentifierException;
+import Exceptions.UnusableRunwayException;
 
 public class TEST_Airfield_NoRunwayStuff {
 	public static final double[] airfieldVars = {100,3000,200,100,200,300,400,500};
@@ -26,7 +27,7 @@ public class TEST_Airfield_NoRunwayStuff {
 	}
 	
 	@Test
-	public void testAddingObstacleWithBadID(){
+	public void testAddingObstacleWithBadID() throws UnusableRunwayException{
 		Obstacle obj = new Obstacle("Spongebob", 2.3, 4.5);
 		try {
 			this.air.addObstacle(obj, "jim", 20);
@@ -37,7 +38,7 @@ public class TEST_Airfield_NoRunwayStuff {
 	}
 	
 	@Test
-	public void testAddingObstacleWithGoodID(){
+	public void testAddingObstacleWithGoodID() throws UnusableRunwayException{
 		Obstacle obj = new Obstacle("Spongebob", 2.3, 4.5);
 		double dist = 20;
 		try {
@@ -55,7 +56,7 @@ public class TEST_Airfield_NoRunwayStuff {
 	}
 	
 	@Test
-	public void testRemovingObstacle(){
+	public void testRemovingObstacle() throws UnusableRunwayException{
 		Obstacle obj = new Obstacle("Spongebob", 2.3, 4.5);
 		double dist = 20;
 		try {
@@ -73,7 +74,7 @@ public class TEST_Airfield_NoRunwayStuff {
 	}
 	
 	@Test
-	public void testChangingObstacle(){
+	public void testChangingObstacle() throws UnusableRunwayException{
 		Obstacle obj = new Obstacle("Spongebob", 2.3, 4.5);
 		Obstacle obj2 = new Obstacle("Side Show Bob", 23, 8);
 		double dist = 20;
