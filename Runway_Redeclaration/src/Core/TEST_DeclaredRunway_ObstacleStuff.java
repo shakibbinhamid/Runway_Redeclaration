@@ -9,7 +9,7 @@ import Exceptions.InvalidIdentifierException;
 import Exceptions.UnusableRunwayException;
 
 public class TEST_DeclaredRunway_ObstacleStuff {
-	public static final double stipEnd = 50;
+	public static final double stipEnd = 60;
 	public static final double runwayLength = 4000;
 	public static final double[] airfieldDimensions = {100,runwayLength,200,stipEnd,200,300,400,500};//TODO check the size of the runway ?4000?
 	
@@ -64,7 +64,7 @@ public class TEST_DeclaredRunway_ObstacleStuff {
 			assertEquals("NEW Small TORA",3346,air.getSmallAngledRunway().getTORA(),0);
 			assertEquals("NEW Small ASDA",3346,air.getSmallAngledRunway().getASDA(),0);
 			assertEquals("NEW Small TODA",3346,air.getSmallAngledRunway().getTODA(),0);
-			assertEquals("NEW Small LDA",2985,air.getSmallAngledRunway().getLDA(),0);
+			assertEquals("NEW Small LDA",2986,air.getSmallAngledRunway().getLDA(),0);
 			
 			assertEquals("NEW Small Stopway",0,air.getSmallAngledRunway().getStopway(),0);
 			assertEquals("NEW Small Clearway",0,air.getSmallAngledRunway().getClearway(),0);
