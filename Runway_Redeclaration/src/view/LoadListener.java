@@ -46,15 +46,17 @@ public class LoadListener{
 				}
 				else{
 					ObstacleInterface obs = fs.loadObs(chosen);
-					frame.loadOrCreateObstacle(obs, ((Tab)frame.getTabbePanel().getSelectedComponent()).getField(), 3);
 					Notification.notify(obs.getName() + " loaded.", "file");
+					frame.loadOrCreateObstacle(obs, ((Tab)frame.getTabbePanel().getSelectedComponent()).getField(), 3);
+					
 				}
 			}
 			else{
 				if(fs.checkAir(chosen)){
 					AirportInterface airport = fs.loadAir(chosen);
-					frame.loadOrCreateAirport(airport);
 					Notification.notify(airport.getName() +" loaded.");
+					frame.loadOrCreateAirport(airport);
+					
 					frame.getLogPanel().repaint();
 				}
 			}
