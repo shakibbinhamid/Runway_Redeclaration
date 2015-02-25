@@ -105,11 +105,11 @@ class Airfield implements AirfieldInterface, Savable {
 			}else{
 				//closer to large angled end or equal hence IT DONT MATTER BRUV
 
-				getSmallAngledRunway().takeOffTowardsOver(getDefaultLargeAngledRunway(), this);
-				getSmallAngledRunway().landTowards(getDefaultLargeAngledRunway(), this);
+				getSmallAngledRunway().takeOffTowardsOver(getDefaultSmallAngledRunway(), this);
+				getSmallAngledRunway().landTowards(getDefaultSmallAngledRunway(), this);
 
-				getLargeAngledRunway().takeOffAwayFrom(getDefaultSmallAngledRunway(), this);
-				getLargeAngledRunway().landOver(getDefaultSmallAngledRunway(), this);
+				getLargeAngledRunway().takeOffAwayFrom(getDefaultLargeAngledRunway(), this);
+				getLargeAngledRunway().landOver(getDefaultLargeAngledRunway(), this);
 			}
 		}
 		//ALL DEM CHANGES IS MADE MUN, Go chill dem plane drivers sort da rest of it out mun ;)
@@ -204,13 +204,18 @@ class Airfield implements AirfieldInterface, Savable {
 		 ************************************************/
 		//Figuring where dat ting is near bruv... 
 		if(indentifier.equals(this.getSmallAngledRunway().getIdentifier())){
-			double otherhowFarIn = this.getSmallAngledRunway().getTORA()-this.getSmallAngledRunway().getDisplacedThreshold()-howFarIn;
+			double otherhowFarIn = this.getSmallAngledRunway().getTORA()-this.getSmallAngledRunway().getDisplacedThreshold()-this.getLargeAngledRunway().getDisplacedThreshold()-howFarIn;
 			this.obstacle = new PositionedObstacle(obj,howFarIn, otherhowFarIn);
 
 		}else if(indentifier.equals(this.getLargeAngledRunway().getIdentifier())){
-			double otherhowFarIn = this.getLargeAngledRunway().getTORA()-this.getLargeAngledRunway().getDisplacedThreshold()-howFarIn;
+			double otherhowFarIn = this.getSmallAngledRunway().getTORA()-this.getLargeAngledRunway().getDisplacedThreshold()-this.getSmallAngledRunway().getDisplacedThreshold()-howFarIn;
 			this.obstacle = new PositionedObstacle(obj,otherhowFarIn, howFarIn);
-
+			
+			System.out.println("~~~~~~~~~~~");
+			System.out.println("TORA: "+this.getLargeAngledRunway().getTORA());
+			System.out.println("DIS THRE: "+this.getLargeAngledRunway().getDisplacedThreshold());
+			System.out.println("Dist from SMall: "+otherhowFarIn);
+			System.out.println("~~~~~~~~~~~");
 
 		}else{
 			//Excuse me! I don't own one of those, how dare you suggest such a thing!
