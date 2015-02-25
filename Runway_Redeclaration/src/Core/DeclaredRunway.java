@@ -316,7 +316,6 @@ class DeclaredRunway implements DeclaredRunwayInterface{
 		this.addToLog("LDA: "+newLDA+" = "+original.getLDA()+" - "+distFromObs+" - "+largestFactor);
 		this.line();
 
-		Notification.notify(log);
 	}
 
 	@Override
@@ -339,8 +338,6 @@ class DeclaredRunway implements DeclaredRunwayInterface{
 		this.addToLog("LDA = distFromObs - RESA - strip end");
 		this.addToLog("lda: "+newLDA+" = "+distFromObs+" - "+resa+" - "+parent.getStripEndSideLength());
 		this.line();
-
-		Notification.notify(log);
 	}
 
 	@Override
@@ -368,7 +365,6 @@ class DeclaredRunway implements DeclaredRunwayInterface{
 		//TODO check please
 		setDisplacedThreshold(0);
 		
-		Notification.notify(log);
 	}
 
 	@Override

@@ -75,7 +75,6 @@ public class TopFrame extends JFrame{
 		try {
 			airport.addNewAirfield(parseInt, physicalInputs, smallInputs, bigInputs);
 		} catch (VariableDeclarationException | ParrallelRunwayException | CannotMakeRunwayException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		List<AirfieldInterface> fields = airport.getAirfields();
@@ -105,6 +104,5 @@ public class TopFrame extends JFrame{
 
 	public LogPanel getLogPanel() {
 		return logPanel;
-		
 	}
 }

@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 
 import javax.swing.BorderFactory;
@@ -33,6 +34,7 @@ public class InfoPanel extends JPanel{
 		this.setRunway(runways[1]);
 		this.setObs(obs);
 		
+		this.setPreferredSize(new Dimension(400,800));
 		init();
 		
 		updateAllTables(runways, obs);
