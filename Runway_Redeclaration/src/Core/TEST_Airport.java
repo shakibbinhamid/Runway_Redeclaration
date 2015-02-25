@@ -40,7 +40,7 @@ public class TEST_Airport {
 			this.airport.addNewAirfield(90, airfieldVars, smallVars, largeVars);
 
 
-		} catch (ParrallelRunwayException e) {
+		} catch (ParallelRunwayException e) {
 			fail("ParrallelRunwayException");
 			e.printStackTrace();
 		} catch (CannotMakeRunwayException e) {
@@ -59,7 +59,7 @@ public class TEST_Airport {
 			this.airport.addNewAirfield(76, airfieldVars, smallVars, largeVars);
 			assertEquals(2, this.airport.getAirfields().size());
 
-		} catch (ParrallelRunwayException e) {
+		} catch (ParallelRunwayException e) {
 			fail("ParrallelRunwayException");
 			e.printStackTrace();
 		} catch (CannotMakeRunwayException e) {
@@ -78,7 +78,7 @@ public class TEST_Airport {
 			this.airport.addNewAirfield(40, airfieldVars, smallVars, largeVars);
 			fail("Exception not caught");
 
-		} catch (ParrallelRunwayException e) {
+		} catch (ParallelRunwayException e) {
 			assertNotEquals("Ensure 2 runways",2, this.airport.getAirfields().size());
 
 		} catch (CannotMakeRunwayException e) {
@@ -97,7 +97,7 @@ public class TEST_Airport {
 			this.airport.addNewAirfield(40, airfieldVars, smallVars, largeVars);
 			fail("Exception not caught");
 
-		} catch (ParrallelRunwayException pe) {
+		} catch (ParallelRunwayException pe) {
 			char option = pe.getAvailableOptions().get(0);
 			pe.chooseOption(option);
 			assertEquals("Ensure 2 runways via Exception", 2, this.airport.getAirfields().size());
@@ -118,7 +118,7 @@ public class TEST_Airport {
 			this.airport.addNewAirfield(40, airfieldVars, smallVars, largeVars);
 			fail("Exception not caught");
 
-		} catch (ParrallelRunwayException pe) {
+		} catch (ParallelRunwayException pe) {
 			char option = pe.getAvailableOptions().get(0);
 			pe.chooseOption(option);
 			assertEquals("Ensure 2 runways via Exception", 2, this.airport.getAirfields().size());
@@ -129,7 +129,7 @@ public class TEST_Airport {
 				fail("Second Exception not caught");
 
 
-			} catch (ParrallelRunwayException pe2) {
+			} catch (ParallelRunwayException pe2) {
 				assertEquals("Ensure 2 runways after second exception", 2, this.airport.getAirfields().size());
 				char option2 = pe.getAvailableOptions().get(0);
 				pe.chooseOption(option2);
@@ -162,7 +162,7 @@ public class TEST_Airport {
 			this.airport.addNewAirfield(40, airfieldVars, smallVars, largeVars);
 			fail("Exception not caught");
 			
-		} catch (ParrallelRunwayException pe) {
+		} catch (ParallelRunwayException pe) {
 			char option = pe.getAvailableOptions().get(0);
 			System.out.println("Options"+pe.getAvailableOptions());
 			System.out.println("---Choosing---");
@@ -179,7 +179,7 @@ public class TEST_Airport {
 				fail("Second Exception not caught");
 
 
-			} catch (ParrallelRunwayException pe2) {
+			} catch (ParallelRunwayException pe2) {
 				assertEquals("Ensure 2 runways after second exception", 2, this.airport.getAirfields().size());
 				System.out.println("Options"+pe2.getAvailableOptions());
 				
@@ -199,7 +199,7 @@ public class TEST_Airport {
 					
 					
 					
-				} catch (ParrallelRunwayException e) {
+				} catch (ParallelRunwayException e) {
 					fail("ParrallelRunwayException");
 					e.printStackTrace();
 				} catch (CannotMakeRunwayException e) {
@@ -236,7 +236,7 @@ public class TEST_Airport {
 			this.airport.addNewAirfield(40, airfieldVars, smallVars, largeVars);
 			fail("Exception not caught");
 
-		} catch (ParrallelRunwayException pe) {
+		} catch (ParallelRunwayException pe) {
 			char option = pe.getAvailableOptions().get(0);
 			pe.chooseOption(option);
 			assertEquals("Ensure 2 runways via Exception", 2, this.airport.getAirfields().size());
@@ -246,7 +246,7 @@ public class TEST_Airport {
 				assertEquals("Ensure 3 Runways", 3, this.airport.getAirfields().size());
 
 				
-			}catch (ParrallelRunwayException e){
+			}catch (ParallelRunwayException e){
 				fail("ParrallelRunwayException");
 				e.printStackTrace();
 			} catch (CannotMakeRunwayException e) {

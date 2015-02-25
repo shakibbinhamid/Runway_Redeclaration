@@ -6,15 +6,15 @@ import java.util.List;
 import CoreInterfaces.AirfieldInterface;
 import Exceptions.VariableDeclarationException;
 
-public class ParrallelRunwayException extends Exception {
+public class ParallelRunwayException extends Exception {
 	private static final long serialVersionUID = 1L;
 	private List<AirfieldInterface> parrallels;
 	private AirfieldInterface newAirfield;
 	private Airport airport;
 
 
-	public ParrallelRunwayException(Airport airportWithIssue, List<AirfieldInterface> parrallels, AirfieldInterface newAirfield){
-		super("The new runway is parrallel to "+interpretStringSet(parrallels));
+	public ParallelRunwayException(Airport airportWithIssue, List<AirfieldInterface> parrallels, AirfieldInterface newAirfield){
+		super("The new runway is parrallel to "+parrallels);
 		this.parrallels = parrallels;
 		this.newAirfield = newAirfield;
 		this.airport = airportWithIssue;
@@ -30,17 +30,6 @@ public class ParrallelRunwayException extends Exception {
 		return this.airport;
 	}
 	
-
-	private static String interpretStringSet(List<AirfieldInterface> runways){
-		String out = "";
-		out += runways.get(0).getSmallAngledRunway().getIdentifier();
-		if(runways.size() >1){
-			for(int index = 1; index < runways.size(); index++){
-				out += " & "+runways.get(index).getSmallAngledRunway().getIdentifier();
-			}
-		}
-		return out;
-	}
 
 	public List<Character> getAvailableOptions(){
 		List<Character> options = new ArrayList<Character>();

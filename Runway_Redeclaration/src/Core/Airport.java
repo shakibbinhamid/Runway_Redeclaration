@@ -73,7 +73,7 @@ public class Airport implements AirportInterface, Savable {
 	}
 
 	@Override
-	public void addNewAirfield(int angleFromNorth, double[] dimensions, double[] smallAngledDistances, double[] largeAngledDistances) throws ParrallelRunwayException, CannotMakeRunwayException, VariableDeclarationException {
+	public void addNewAirfield(int angleFromNorth, double[] dimensions, double[] smallAngledDistances, double[] largeAngledDistances) throws ParallelRunwayException, CannotMakeRunwayException, VariableDeclarationException {
 		
 		AirfieldInterface newAirfield = new Airfield(angleFromNorth, dimensions, smallAngledDistances,largeAngledDistances);
 		
@@ -96,7 +96,7 @@ public class Airport implements AirportInterface, Savable {
 			if(parrallelRunways.size()>=3) {
 				throw new CannotMakeRunwayException(newAirfield);
 			}
-			throw new ParrallelRunwayException(this, parrallelRunways, newAirfield);
+			throw new ParallelRunwayException(this, parrallelRunways, newAirfield);
 		}
 		
 		this.airfields.add(newAirfield);

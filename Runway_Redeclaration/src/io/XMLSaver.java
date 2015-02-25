@@ -6,7 +6,7 @@ import org.simpleframework.xml.core.Persister;
 
 import Core.Airport;
 import Core.Obstacle;
-import Core.ParrallelRunwayException;
+import Core.ParallelRunwayException;
 import CoreInterfaces.Savable;
 import Exceptions.CannotMakeRunwayException;
 import Exceptions.VariableDeclarationException;
@@ -32,7 +32,7 @@ public class XMLSaver {
 		try {
 			a.addNewAirfield(65, dimensions, small, big);
 			a.addNewAirfield(30, dimensions2, small2, big2);
-		} catch (ParrallelRunwayException | CannotMakeRunwayException
+		} catch (ParallelRunwayException | CannotMakeRunwayException
 				| VariableDeclarationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
