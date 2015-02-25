@@ -62,9 +62,11 @@ public class ParrallelRunwayException extends Exception {
 		//		   That runway does not actually have a side letter
 		if(this.parrallels.size()==1){
 			if(sideOfNewRunway=='R'){
+				System.out.println("==[1R]== I CHANGED SOME SHIT");
 				this.parrallels.get(0).setSmallestSideLetter('L');
 
 			}else{//Must be 'L' then...
+				System.out.println("==[1L]== I CHANGED SOME SHIT");
 				this.parrallels.get(0).setSmallestSideLetter('R');
 			}
 		
@@ -83,6 +85,7 @@ public class ParrallelRunwayException extends Exception {
 					//If the this particular runway has the side letter that we want, we better change that old runway to 'C'
 					if(runway.getSmallAngledRunway().getSideLetter()==sideOfNewRunway){
 						//I pity the fool for loosing his side
+						System.out.println("==[2]== I CHANGED SOME SHIT");
 						runway.setSmallestSideLetter('C');
 					}
 				}

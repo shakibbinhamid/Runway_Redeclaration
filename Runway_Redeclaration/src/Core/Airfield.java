@@ -211,12 +211,6 @@ public class Airfield implements AirfieldInterface, Savable {
 			double otherhowFarIn = this.getSmallAngledRunway().getTORA()-this.getLargeAngledRunway().getDisplacedThreshold()-this.getSmallAngledRunway().getDisplacedThreshold()-howFarIn;
 			this.obstacle = new PositionedObstacle(obj,otherhowFarIn, howFarIn);
 			
-			System.out.println("~~~~~~~~~~~");
-			System.out.println("TORA: "+this.getLargeAngledRunway().getTORA());
-			System.out.println("DIS THRE: "+this.getLargeAngledRunway().getDisplacedThreshold());
-			System.out.println("Dist from SMall: "+otherhowFarIn);
-			System.out.println("~~~~~~~~~~~");
-
 		}else{
 			//Excuse me! I don't own one of those, how dare you suggest such a thing!
 			throw new InvalidIdentifierException(indentifier, this);

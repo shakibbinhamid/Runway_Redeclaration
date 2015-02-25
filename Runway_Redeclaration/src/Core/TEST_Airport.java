@@ -183,11 +183,11 @@ public class TEST_Airport {
 				assertEquals("Ensure 2 runways after second exception", 2, this.airport.getAirfields().size());
 				System.out.println("Options"+pe2.getAvailableOptions());
 				
-				char option2 = pe.getAvailableOptions().get(0);
+				char option2 = pe2.getAvailableOptions().get(0);
 				System.out.println("---Choosing---");
-				pe.chooseOption(option2);
+				pe2.chooseOption(option2);
 				assertEquals("Ensure 3 runways via Exception", 3, this.airport.getAirfields().size());
-				System.out.println(airport.getAirfieldNames());
+				System.out.println(airport);
 
 				
 				
