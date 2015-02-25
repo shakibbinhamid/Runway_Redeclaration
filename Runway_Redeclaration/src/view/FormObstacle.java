@@ -8,6 +8,7 @@ import java.util.List;
 import javax.swing.BoxLayout;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import Core.Obstacle;
@@ -91,24 +92,22 @@ public class FormObstacle extends FormGeneral {
 		button.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
+				
+				
 				String name = nameTextBox.getText();
 				
-				if(!name.equals("")){					
+				if(!name.equals("")){		
+					try {
 					double radius = Double.parseDouble(radiusTextBox.getText());
 					double heigth = Double.parseDouble(heigthTextBox.getText());
+					if(radius < 0 || heigth < 0){
+						throw new NumberFormatException();
+					}
 					Obstacle obstacle = new Obstacle(name, radius, heigth);
 					String s = (String) airfieldComboBox.getSelectedItem();
-					System.out.println(airfieldComboBox.getSelectedItem().equals(topFrame.getAirport().getAirfieldNames().get(0)));
 					
-					
-					try {
 						// I don't get this method signature
-						try {
-							topFrame.getAirport().getAirfield(s).addObstacle(obstacle, s.split("/")[0], Double.parseDouble(distFromLeftTextBox.getText()));
-						} catch (UnusableRunwayException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
+						topFrame.getAirport().getAirfield(s).addObstacle(obstacle, s.split("/")[0], Double.parseDouble(distFromLeftTextBox.getText()));
 						dispose();
 						
 						//after adding the new obstacle, reload the airport to update the GUI
@@ -117,16 +116,20 @@ public class FormObstacle extends FormGeneral {
 						System.err.println("Invalid airfield identifier!");
 						e1.printStackTrace();
 					} catch (NumberFormatException e1) {
-						// TODO Auto-generated catch block
+						JOptionPane.showMessageDialog(null, "Insert valid inputs!", "Invalid input!", JOptionPane.ERROR_MESSAGE);
 						e1.printStackTrace();
 					} catch (InvalidIdentifierException e1) {
-						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (UnusableRunwayException e1) {
 						e1.printStackTrace();
 					}
+				}
+				else{
+					JOptionPane.showMessageDialog(null, "Insert a name!", "Invalid input!", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});
 	}
 	
-
-}
+	}
+	

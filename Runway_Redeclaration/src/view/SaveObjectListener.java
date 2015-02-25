@@ -1,6 +1,7 @@
 package view;
 
 import io.FileSystem;
+import io.NothingToSaveException;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -29,7 +30,12 @@ public class SaveObjectListener implements ActionListener{
 			fs.saveObs((Obstacle)saveItem);
 		}
 		else{
-			fs.saveAir((Airport)saveItem);
+			try {
+				fs.saveAir((Airport)saveItem);
+			} catch (NothingToSaveException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 	

@@ -12,6 +12,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import Core.ParallelRunwayException;
+import Exceptions.CannotMakeRunwayException;
+import Exceptions.VariableDeclarationException;
+
 public class FormAirfield extends FormGeneral {
 	TopFrame topFrame;
 	ArrayList<JTextField> smallValueTextFields;
@@ -197,26 +201,57 @@ public class FormAirfield extends FormGeneral {
 		this.setVisible(true);
 	}
 	
-	//TODO Make a sanitizing class to make this listener shorter
 	public void setListener(){
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if(angleTextBox.getText().equals("") || Integer.parseInt(angleTextBox.getText()) < 0){
+				try{
+					if(angleTextBox.getText().equals("") || Integer.parseInt(angleTextBox.getText()) < 0){
+						JOptionPane.showMessageDialog(null, "Insert a valid angle value!", "Error!", JOptionPane.ERROR_MESSAGE);
+					}
+				} catch (NumberFormatException n) {
 					JOptionPane.showMessageDialog(null, "Insert a valid angle value!", "Error!", JOptionPane.ERROR_MESSAGE);
 				}
-				else{
-					double[] physicalInputs = {80, 1500, 150, 60, 300, 75, 105, 150};
-					double[] smallInputs = new double[4];
-					double[] bigInputs = new double[4];
-					
-					for(int i = 0; i < 4; i++){
-							smallInputs[i] = Integer.parseInt( smallValueTextFields.get(i).getText());
-							bigInputs[i] = Integer.parseInt( bigValueTextFields.get(i).getText());
-					}
+				
+				double[] physicalInputs = { 80, 1500, 150, 60, 300, 75, 105, 150 };
+				double[] smallInputs = new double[4];
+				double[] bigInputs = new double[4];
+				
+				if(Integer.parseInt(angleTextBox.getText()) > 0){
+					for (int i = 0; i < 4; i++) {
 						try {
-							topFrame.loadOrCreateField(Integer.parseInt(angleTextBox.getText()), physicalInputs, smallInputs, bigInputs);
-							dispose();
+							if (Integer.parseInt(smallValueTextFields.get(i).getText()) < 0
+									|| Integer.parseInt(bigValueTextFields.get(i).getText()) < 0
+									|| smallValueTextFields.get(i).getText().equals("")
+									|| bigValueTextFields.get(i).getText().equals("")) {
+								System.err.println("Invalid inputs!");
+								JOptionPane.showMessageDialog(null,
+										"Please input only integers!",
+										"Invalid Input!",
+										JOptionPane.ERROR_MESSAGE);
+								break;
+							} else {
+								smallInputs[i] = Integer
+										.parseInt(smallValueTextFields.get(i)
+												.getText());
+								bigInputs[i] = Integer.parseInt(bigValueTextFields
+										.get(i).getText());
+							}
 						} catch (NumberFormatException e) {
-							e.printStackTrace();
-						}											
-				}}});}}
+							JOptionPane.showMessageDialog(null,
+									"Please input only integers!",
+									"Invalid Input!", JOptionPane.ERROR_MESSAGE);
+							break;
+						}
+					}
+					try {
+						topFrame.loadOrCreateField(Integer.parseInt(angleTextBox.getText()), physicalInputs, smallInputs, bigInputs);
+						dispose();
+					} catch (NumberFormatException e) {
+						e.printStackTrace();
+					}
+				}
+				}
+			});
+	}
+	
+}
