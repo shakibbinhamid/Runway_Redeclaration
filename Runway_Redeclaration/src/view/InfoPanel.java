@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
 
 import CoreInterfaces.DeclaredRunwayInterface;
 import CoreInterfaces.ObstacleInterface;
@@ -34,7 +35,7 @@ public class InfoPanel extends JPanel{
 		this.setRunway(runways[1]);
 		this.setObs(obs);
 		
-		this.setPreferredSize(new Dimension(400,800));
+		this.setPreferredSize(new Dimension(300,800));
 		init();
 		
 		updateAllTables(runways, obs);
@@ -137,7 +138,7 @@ public class InfoPanel extends JPanel{
 		toda = new String[]{"TODA", getRunwayPara(def, "toda"), getRunwayPara(run, "toda")};
 		asda = new String[]{"ASDA", getRunwayPara(def, "asda"), getRunwayPara(run, "asda")};
 		lda = new String[]{"LDA", getRunwayPara(def, "lda"), getRunwayPara(run, "lda")};
-		dt = new String[]{"Displaced Threshold", getRunwayPara(def, "dt"), getRunwayPara(run, "dt")};
+		dt = new String[]{"DT", getRunwayPara(def, "dt"), getRunwayPara(run, "dt")};
 		
 		updateRunwayTable(new String[][]{tora, toda, asda, lda, dt});
 	}
@@ -149,8 +150,8 @@ public class InfoPanel extends JPanel{
 		clear = new String[]{"Clearway",getRunwayPara(def, "clear"), getRunwayPara(run, "clear")};
 		blast= new String[]{"Blast Protection", getRunwayPara(def, "blast"), getRunwayPara(run, "blast")};
 		resa = new String[]{"RESA", getRunwayPara(def, "resa"), getRunwayPara(run, "resa")};
-		angleA = new String[]{"Angle of Ascent", getRunwayPara(def, "ascent"), getRunwayPara(run, "ascent")};
-		angleD = new String[]{"Angle of Descent", getRunwayPara(def, "descent"), getRunwayPara(run, "descent")};
+		angleA = new String[]{"Ascent Angle", getRunwayPara(def, "ascent"), getRunwayPara(run, "ascent")};
+		angleD = new String[]{"Descent Angle", getRunwayPara(def, "descent"), getRunwayPara(run, "descent")};
 		
 		updateAdvancedTable(new String[][]{stop, clear, blast, resa, angleA, angleD});
 	}
@@ -233,6 +234,8 @@ public class InfoPanel extends JPanel{
 			for(int i=0; i<columnNames.length; i++){
 				tableModel.addColumn(columnNames[i]);
 			}
+			
+			table.getTableHeader().setReorderingAllowed(false);
 			
 			table.setFocusable(false);
 			table.setRowSelectionAllowed(false);

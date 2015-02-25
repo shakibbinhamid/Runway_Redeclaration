@@ -17,6 +17,11 @@ import Exceptions.InvalidIdentifierException;
 import Exceptions.UnusableRunwayException;
 import Exceptions.VariableDeclarationException;
 
+/**
+ * This is the entry point of our program
+ * @author shakib-binhamid
+ *
+ */
 public class TopFrame extends JFrame{
 	
 	private JPanel topPanel;
@@ -64,12 +69,23 @@ public class TopFrame extends JFrame{
 		setVisible(true);
 	}
 	
+	/**
+	 * To be used by the airport loader or creator
+	 * @param airport the airport to be loaded or created
+	 */
 	public void loadOrCreateAirport(AirportInterface airport){
 		setAirport(airport);
 		logPanel.updateLabelText(airport.getName());
 		tabbedPanel.updateTabs(airport);
 	}
 	
+	/**
+	 * To be used by the airfield loader or creator
+	 * @param parseInt the angle from north
+	 * @param physicalInputs physical dimensions of the runway
+	 * @param smallInputs parameters of small angled runway
+	 * @param bigInputs parameters of big angled runway
+	 */
 	public void loadOrCreateField(int parseInt, double[] physicalInputs,
 			double[] smallInputs, double[] bigInputs) {
 		try {
@@ -81,6 +97,12 @@ public class TopFrame extends JFrame{
 		tabbedPanel.addTab(fields.get(fields.size() - 1));
 	}
 	
+	/**
+	 * To be used by the airfield loader or creator
+	 * @param obs the obstacle to be loaded
+	 * @param field the airfield to be added to
+	 * @param distanceFromLeft distance from the left hand side
+	 */
 	public void loadOrCreateObstacle(ObstacleInterface obs, AirfieldInterface field, double distanceFromLeft){
 		try {
 			field.addObstacle(obs, field.getSmallAngledRunway().getIdentifier(), distanceFromLeft);	
@@ -90,18 +112,34 @@ public class TopFrame extends JFrame{
 		tabbedPanel.updateTab(field);
 	}
 
+	/**
+	 * Return the airport
+	 * @return the current active airport
+	 */
 	public AirportInterface getAirport() {
 		return airport;
 	}
 
+	/**
+	 * Set the airport
+	 * @param airport change the airport
+	 */
 	public void setAirport(AirportInterface airport) {
 		this.airport = airport;
 	}
 	
+	/**
+	 * Return the current tabbedpanel to call methods on it
+	 * @return the tabbedpanel
+	 */
 	public TabbedPanel getTabbePanel(){
 		return this.tabbedPanel;
 	}
 
+	/**
+	 * Return the current logpanel to call methods on it
+	 * @return the logpanel
+	 */
 	public LogPanel getLogPanel() {
 		return logPanel;
 	}
