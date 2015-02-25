@@ -87,6 +87,7 @@ public class Airport implements AirportInterface, Savable {
 		
 		for(AirfieldInterface runway : getAirfields()){
 			String id_angle =  runway.getSmallAngledRunway().getIdentifier().substring(0, 2);
+			System.out.println(runway.getName()+"=>"+id_angle+" =?= "+id_newAngle+" : "+id_angle.equals(id_newAngle));
 			//parallel runways would have the same angle part of the identifier
 			if(id_angle.equals(id_newAngle)){
 				parrallelRunways.add(runway);
@@ -106,6 +107,15 @@ public class Airport implements AirportInterface, Savable {
 		this.airfields.add(newAirfield);
 	}
 
+	
+	public String toString(){
+		String out = getName()+": [";
+		for(int i = 0; i < getAirfieldNames().size()-1; i++){
+			out += getAirfields().get(i).getName()+", ";
+		}
+		out += getAirfields().get(getAirfields().size()-1).getName();
+		return out+"]";
+	}
 
 
 }

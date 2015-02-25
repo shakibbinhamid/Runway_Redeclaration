@@ -56,7 +56,8 @@ public class ParrallelRunwayException extends Exception {
 
 	public void chooseOption(char sideOfNewRunway) throws VariableDeclarationException{
 		getNewAirway().setSmallestSideLetter(sideOfNewRunway);
-
+		
+		System.out.println("Parallels: "+getParallel());
 		//Case 1: There is one other parrallel so we must give that parrallel the other side for the smallest runway
 		//		   That runway does not actually have a side letter
 		if(this.parrallels.size()==1){

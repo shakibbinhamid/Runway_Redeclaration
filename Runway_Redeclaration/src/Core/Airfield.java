@@ -20,7 +20,7 @@ import Exceptions.VariableDeclarationException;
  * @Editor Stefan Shakib
  * @Testor Stefan
  */
-class Airfield implements AirfieldInterface, Savable {
+public class Airfield implements AirfieldInterface, Savable {
 	@ElementArray
 	private DeclaredRunwayInterface[] runways,defaultRunways;
 	@Element (required = false)
@@ -282,5 +282,10 @@ class Airfield implements AirfieldInterface, Savable {
 	@Override
 	public DeclaredRunwayInterface getDefaultLargeAngledRunway(){
 		return this.defaultRunways[1];
+	}
+	
+	public String toString(){
+		return "Airfield: "+getName();
+		
 	}
 }
