@@ -29,7 +29,7 @@ public class TopMenu extends JMenuBar{
 	private JMenuItem printCalculation;
 	private JMenuItem about, contact;
 	
-	private Icon icreate, iload, isave, iprint, ihelp, iairport, iobstacle, iabout, icontact;
+	private Icon icreate, iload, isave, iedit, iprint, iairport, iobstacle, iabout, icontact, iexit;
 	
 	private TopFrame frame; 
 	
@@ -51,13 +51,15 @@ public class TopMenu extends JMenuBar{
 		//================================ICONS==============================================//
 		
 		icreate = getIcon("./icon/NewIcon.png");
-		iload = getIcon("./icon/OpenIcon.png");
-		isave = getIcon("./icon/SaveIcon.png");
-		iprint = getIcon("./icon/PrintIcon.png");
-		ihelp = getIcon("./icon/HelpIcon.png");
+		iload = getIcon("./icon/open.png");
+		isave = getIcon("./icon/save.png");
+		iprint = getIcon("./icon/print.jpg");
 		iairport = getIcon("./icon/AirplaneIcon.png");
 		iobstacle = getIcon("./icon/ObstacleIcon.png");
-		icontact = getIcon("./icon/AddressBookIcon.png");
+		iabout = getIcon("./icon/about.png");
+		icontact = getIcon("./icon/contact.png");
+		iexit = getIcon("./icon/exit.png");
+		iedit = getIcon("./icon/edit.png");
 		
 	}
 	
@@ -65,7 +67,7 @@ public class TopMenu extends JMenuBar{
 		//================================CREATE MENU==============================================//
 		
 		createAirport = getItem("Create Airport", iairport, SwingConstants.CENTER);
-		createRunway = getItem("Create Runway", iairport, SwingConstants.CENTER);//TODO: need to get an icon for runway
+		createRunway = getItem("Create Airfield", iairport, SwingConstants.CENTER);//TODO: need to get an icon for runway
 		createObstacle = getItem("Create Obstacle", iobstacle, SwingConstants.CENTER);
 		
 		createAirport.addActionListener(new ActionListener(){
@@ -102,7 +104,7 @@ public class TopMenu extends JMenuBar{
 		saveAirport.addActionListener(new SaveAirportListener(frame));
 		saveObstacle.addActionListener(new SaveObjectListener(frame));
 
-		exit = getItem("Exit", getIcon("./icon/ExitIcon.png"), SwingConstants.CENTER);
+		exit = getItem("Exit", iexit, SwingConstants.CENTER);
 		exit.addActionListener(new ActionListener(){
 
 			@Override
@@ -117,23 +119,23 @@ public class TopMenu extends JMenuBar{
 	
 	private void createEditMenu(){
 		//================================EDIT MENU==============================================//
-		editRunway = getItem("Edit Runway", getIcon("./icon/OpenIcon.png"), SwingConstants.CENTER);
-		editObstacle = getItem("Edit Obstacles", getIcon("./icon/OpenIcon.png"), SwingConstants.CENTER);
+		editRunway = getItem("Edit Runway", iedit, SwingConstants.CENTER);
+		editObstacle = getItem("Edit Obstacles", iedit, SwingConstants.CENTER);
 		
 		edit = getMenu("Edit", null, new JMenuItem[]{editRunway, editObstacle});
 	}
 	
 	private void createPrintMenu(){
 		//================================PRINT MENU==============================================//
-		printCalculation = getItem("Print Calculation", getIcon("./icon/PrintIcon.png"), SwingConstants.CENTER);
+		printCalculation = getItem("Print Calculation", iprint, SwingConstants.CENTER);
 		
 		print = getMenu("Print", null, new JMenuItem[]{printCalculation});
 	}
 	
 	private void createHelpMenu(){
 		//================================HELP MENU==============================================//
-		about = getItem("About", getIcon("./icon/PrintIcon.png"), SwingConstants.CENTER);
-		contact = getItem("Contact", getIcon("./icon/AddressBookIcon.png"), SwingConstants.CENTER);
+		about = getItem("About", iabout, SwingConstants.CENTER);
+		contact = getItem("Contact", icontact, SwingConstants.CENTER);
 		
 		help = getMenu("Help", null, new JMenuItem[]{about, contact});
 	}

@@ -50,12 +50,9 @@ public class FormObstacle extends FormGeneral {
 		
 		airfieldLabel = new JLabel("Pick airfield:");
 		
-		List<String> airports = topFrame.getAirport().getAirfieldNames();
-		String[] str = new String[airports.size()];
-		str = airports.toArray(str);
-		airfieldComboBox = new JComboBox<String>(str);
+		airfieldComboBox = new JComboBox<String>();
 		
-		setPreferredSize(new Dimension(230,250));
+		setPreferredSize(new Dimension(300,300));
 		
 		init();
 	}
@@ -79,7 +76,7 @@ public class FormObstacle extends FormGeneral {
 		textFieldsPanel.add(distFromLeftLabel);
 		textFieldsPanel.add(distFromLeftTextBox);
 		
-		//populateAirfieldComboBox();
+		populateAirfieldComboBox();
 		
 		textFieldsPanel.add(airfieldLabel);
 		textFieldsPanel.add(airfieldComboBox);

@@ -6,19 +6,14 @@ import java.awt.EventQueue;
 import java.util.List;
 
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import Core.Obstacle;
 import Core.ParrallelRunwayException;
-import Core.PositionedObstacle;
 import CoreInterfaces.AirfieldInterface;
 import CoreInterfaces.AirportInterface;
 import CoreInterfaces.ObstacleInterface;
-import CoreInterfaces.PositionedObstacleInterface;
 import Exceptions.CannotMakeRunwayException;
 import Exceptions.InvalidIdentifierException;
-import Exceptions.UnrecognisedAirfieldIntifierException;
 import Exceptions.UnusableRunwayException;
 import Exceptions.VariableDeclarationException;
 
