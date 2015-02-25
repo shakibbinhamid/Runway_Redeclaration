@@ -8,7 +8,7 @@ import org.junit.Test;
 import Exceptions.InvalidIdentifierException;
 import Exceptions.UnusableRunwayException;
 
-public class TEST_DeclaredRunway_ObstacleStuff {
+public class TEST_DeclaredRunway_Scenario1 {
 	public static final double stipEnd = 60;
 	public static final double runwayLength = 4000;
 	public static final double[] airfieldDimensions = {100,runwayLength,200,stipEnd,200,300,400,500};//TODO check the size of the runway ?4000?
@@ -56,7 +56,7 @@ public class TEST_DeclaredRunway_ObstacleStuff {
 			this.air.addObstacle(obj,this.air.getSmallAngledRunway().getIdentifier(),dist);
 			assertNotEquals("Obstacle is actually added",this.air.getPositionedObstacle(), null);
 			assertEquals("MY maths calculating small side works",dist,this.air.getPositionedObstacle().distanceFromSmallEnd(),0);
-			assertEquals("My maths in calculating other side worked",airfieldDimensions[1]-dist,this.air.getPositionedObstacle().distanceFromLargeEnd(),0);
+			assertEquals("My maths in calculating other side worked",3464,this.air.getPositionedObstacle().distanceFromLargeEnd(),0);
 			//===< End add Obstacle >============================
 			
 			//===[ Check Post-Obstacle values ]===================================
