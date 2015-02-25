@@ -93,7 +93,6 @@ public class FormObstacle extends FormGeneral {
 			
 			public void actionPerformed(ActionEvent e) {
 				
-				
 				String name = nameTextBox.getText();
 				
 				if(!name.equals("")){		
@@ -107,20 +106,15 @@ public class FormObstacle extends FormGeneral {
 					String s = (String) airfieldComboBox.getSelectedItem();
 					
 						// I don't get this method signature
-						topFrame.getAirport().getAirfield(s).addObstacle(obstacle, s.split("/")[0], Double.parseDouble(distFromLeftTextBox.getText()));
-						dispose();
-						
+						AirfieldInterface field = topFrame.getAirport().getAirfield(s);
 						//after adding the new obstacle, reload the airport to update the GUI
-						topFrame.loadOrCreateAirport(topFrame.getAirport());
+						topFrame.loadOrCreateObstacle(obstacle, field, Double.parseDouble(distFromLeftTextBox.getText()));
+						dispose();
 					} catch (UnrecognisedAirfieldIntifierException e1) {
 						System.err.println("Invalid airfield identifier!");
 						e1.printStackTrace();
 					} catch (NumberFormatException e1) {
 						JOptionPane.showMessageDialog(null, "Insert valid inputs!", "Invalid input!", JOptionPane.ERROR_MESSAGE);
-						e1.printStackTrace();
-					} catch (InvalidIdentifierException e1) {
-						e1.printStackTrace();
-					} catch (UnusableRunwayException e1) {
 						e1.printStackTrace();
 					}
 				}

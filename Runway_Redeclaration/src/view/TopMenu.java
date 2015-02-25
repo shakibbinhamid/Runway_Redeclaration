@@ -30,7 +30,7 @@ public class TopMenu extends JMenuBar{
 	private JMenuItem printCalculation;
 	private JMenuItem about, contact;
 	
-	private Icon icreate, iload, isave, iedit, iprint, iairport, iairfield, iobstacle, iabout, icontact, iexit;
+	private ImageIcon icreate, iload, isave, iedit, iprint, iairport, iairfield, iobstacle, iabout, icontact, iexit;
 	
 	private TopFrame frame; 
 	
@@ -48,20 +48,20 @@ public class TopMenu extends JMenuBar{
 		
 	}
 	
-	private void loadIcons(){		
+	private void loadIcons(){	
 		//================================ICONS==============================================//
 		
-		icreate = getIcon("./icon/NewIcon.png");
-		iload = getIcon("./icon/open.png");
-		isave = getIcon("./icon/save.png");
-		iprint = getIcon("./icon/print.jpg");
-		iairport = getIcon("./icon/airport.png");
-		iairfield = getIcon("./icon/airfield.png");
-		iobstacle = getIcon("./icon/obstacle.jpg");
-		iabout = getIcon("./icon/about.png");
-		icontact = getIcon("./icon/contact.png");
-		iexit = getIcon("./icon/exit.png");
-		iedit = getIcon("./icon/edit.png");
+		icreate = getIcon("/NewIcon.png");
+		iload = getIcon("/open.png");
+		isave = getIcon("/save.png");
+		iprint = getIcon("/print.jpg");
+		iairport = getIcon("/airport.png");
+		iairfield = getIcon("/airfield.png");
+		iobstacle = getIcon("/obstacle.jpg");
+		iabout = getIcon("/about.png");
+		icontact = getIcon("/contact.png");
+		iexit = getIcon("/exit.png");
+		iedit = getIcon("/edit.png");
 		
 	}
 	
@@ -129,6 +129,8 @@ public class TopMenu extends JMenuBar{
 		editObstacle = getItem("Edit Obstacles", iedit, SwingConstants.CENTER);
 		
 		edit = getMenu("Edit", null, new JMenuItem[]{editRunway, editObstacle});
+		
+		
 	}
 	
 	private void createPrintMenu(){
@@ -167,9 +169,9 @@ public class TopMenu extends JMenuBar{
 	 * @param location file location of the icon
 	 * @return an icon object based on the file
 	 */
-	private Icon getIcon(String location){
+	private ImageIcon getIcon(String location){
 		
-		return new ImageIcon(location);
+		return new ImageIcon(TopFrame.class.getResource(location));
 	}
 	
 	/**
