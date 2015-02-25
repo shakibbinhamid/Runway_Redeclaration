@@ -66,7 +66,6 @@ public class LogPanel extends JPanel{
 		switch(c){
 		case "file":
 		{
-			System.out.println("File colour...");
 			notify(s, file);
 			
 			break;
