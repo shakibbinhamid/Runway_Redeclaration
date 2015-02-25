@@ -19,11 +19,12 @@ public class LoadListener{
 
 	private TopFrame frame;
 	private javax.swing.filechooser.FileFilter filter;
+	private String typeDir;
 	
-	public LoadListener(TopFrame frame, javax.swing.filechooser.FileFilter filter){
+	public LoadListener(TopFrame frame, javax.swing.filechooser.FileFilter filter, String typeDir){
 		this.frame = frame;
 		this.filter = filter;
-		
+		this.typeDir = typeDir;
 		load();
 	}
 
@@ -32,7 +33,7 @@ public class LoadListener{
 		JFileChooser fc = new JFileChooser();
 		fc.setFileFilter(filter);
 		fc.setAcceptAllFileFilterUsed(false);
-		fc.setCurrentDirectory(new File(System.getProperty("user.dir") + "/dat/"));
+		fc.setCurrentDirectory(new File(System.getProperty("user.dir") + "/dat/" + typeDir));
 
 		int result = fc.showOpenDialog(frame);
 		File chosen = null;

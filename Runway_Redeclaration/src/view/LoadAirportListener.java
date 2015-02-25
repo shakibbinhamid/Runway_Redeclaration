@@ -12,16 +12,17 @@ public class LoadAirportListener implements ActionListener{
 
 	private TopFrame frame;
 	private AirportFileFilter filter;
+	private String typeDir;
 	
 	public LoadAirportListener(TopFrame frame){
 		this.frame = frame;
 		filter = new AirportFileFilter(); 
-		
+		typeDir = "airports/";
 
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		LoadListener lis = new LoadListener(frame, filter);
+		LoadListener lis = new LoadListener(frame, filter, typeDir);
 	}
 }
