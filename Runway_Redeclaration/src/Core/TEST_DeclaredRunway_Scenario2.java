@@ -8,7 +8,7 @@ import org.junit.Test;
 import Exceptions.InvalidIdentifierException;
 import Exceptions.UnusableRunwayException;
 
-public class TEST_DeclaredRunway_Scenario1 {
+public class TEST_DeclaredRunway_Scenario2 {
 	public static final double stipEnd = 60;
 	public static final double runwayLength = 4000;
 	public static final double[] airfieldDimensions = {100,runwayLength,200,stipEnd,200,300,400,500};//TODO check the size of the runway ?4000?
