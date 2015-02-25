@@ -82,6 +82,11 @@ public class FileSystem {
 		ObstacleInterface loadedObs = (ObstacleInterface) XMLSaver.deserialise(Obstacle.class, obsFile);
 		return loadedObs;
 	}
+	
+	public ObstacleInterface loadObs(File obsFile){
+		ObstacleInterface loadedObs = (ObstacleInterface) XMLSaver.deserialise(Obstacle.class, obsFile);
+		return loadedObs;
+	}
 
 	public boolean saveAir(Airport a){
 		String dir = wd + datDir + airDir + "/" + a.getName()+airext + xmlext;
@@ -91,9 +96,19 @@ public class FileSystem {
 
 	public AirportInterface loadAir(String fileName){
 		File airFile = new File(wd + datDir + airDir + "/" + fileName);
-		Notification.notify("Loading airport from " + airFile.getAbsolutePath() + "...");
+		loadingNotification(fileName);
 		AirportInterface a = (AirportInterface) XMLSaver.deserialise(Airport.class, airFile);
 		return a;
+	}
+	
+	public AirportInterface loadAir(File airFile){
+		loadingNotification(airFile.getName());
+		AirportInterface a = (AirportInterface) XMLSaver.deserialise(Airport.class, airFile);
+		return a;
+	}
+	
+	private void loadingNotification(String name){
+		Notification.notify("Loading " + name + "...");
 	}
 
 	//Returns true if chosen file is an airport file
