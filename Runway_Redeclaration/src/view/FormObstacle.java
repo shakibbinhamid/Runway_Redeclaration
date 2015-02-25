@@ -14,6 +14,7 @@ import Core.Obstacle;
 import CoreInterfaces.AirfieldInterface;
 import Exceptions.InvalidIdentifierException;
 import Exceptions.UnrecognisedAirfieldIntifierException;
+import Exceptions.UnusableRunwayException;
 
 // TODO Sanitize listeners when pressing menu buttons
 //   	should not be able to create an obstacle if there
@@ -105,7 +106,12 @@ public class FormObstacle extends FormGeneral {
 					
 					try {
 						// I don't get this method signature
-						topFrame.getAirport().getAirfield(s).addObstacle(obstacle, s.split("/")[0], Double.parseDouble(distFromLeftTextBox.getText()));
+						try {
+							topFrame.getAirport().getAirfield(s).addObstacle(obstacle, s.split("/")[0], Double.parseDouble(distFromLeftTextBox.getText()));
+						} catch (UnusableRunwayException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
 						dispose();
 						
 						//after adding the new obstacle, reload the airport to update the GUI

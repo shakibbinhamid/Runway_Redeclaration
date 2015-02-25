@@ -1,0 +1,62 @@
+<airport name="Heathrow">
+   <airfields class="java.util.ArrayList">
+      <airfieldInterface class="Core.Airfield">
+         <runways length="2" class="CoreInterfaces.DeclaredRunwayInterface">
+            <declaredRunwayInterface class="Core.DeclaredRunway">
+               <decTora>3000.0</decTora>
+               <disThreshold>0.0</disThreshold>
+               <stopway>20.0</stopway>
+               <clearway>30.0</clearway>
+               <decLda>3000.0</decLda>
+               <decAsda>3020.0</decAsda>
+               <decToda>3030.0</decToda>
+               <angle>50</angle>
+               <direction> </direction>
+            </declaredRunwayInterface>
+            <declaredRunwayInterface class="Core.DeclaredRunway">
+               <decTora>3000.0</decTora>
+               <disThreshold>306.0</disThreshold>
+               <stopway>20.0</stopway>
+               <clearway>45.0</clearway>
+               <decLda>2694.0</decLda>
+               <decAsda>3020.0</decAsda>
+               <decToda>3045.0</decToda>
+               <angle>230</angle>
+               <direction> </direction>
+            </declaredRunwayInterface>
+         </runways>
+         <defaultRunways length="2" class="CoreInterfaces.DeclaredRunwayInterface">
+            <declaredRunwayInterface class="Core.DeclaredRunway">
+               <decTora>3000.0</decTora>
+               <disThreshold>0.0</disThreshold>
+               <stopway>20.0</stopway>
+               <clearway>30.0</clearway>
+               <decLda>3000.0</decLda>
+               <decAsda>3020.0</decAsda>
+               <decToda>3030.0</decToda>
+               <angle>50</angle>
+               <direction> </direction>
+            </declaredRunwayInterface>
+            <declaredRunwayInterface class="Core.DeclaredRunway">
+               <decTora>3000.0</decTora>
+               <disThreshold>306.0</disThreshold>
+               <stopway>20.0</stopway>
+               <clearway>45.0</clearway>
+               <decLda>2694.0</decLda>
+               <decAsda>3020.0</decAsda>
+               <decToda>3045.0</decToda>
+               <angle>230</angle>
+               <direction> </direction>
+            </declaredRunwayInterface>
+         </defaultRunways>
+         <runWidth>80.0</runWidth>
+         <runLen>1500.0</runLen>
+         <initStop>150.0</initStop>
+         <stripEndL>60.0</stripEndL>
+         <dToLongSpace>300.0</dToLongSpace>
+         <shortClearWSpace>75.0</shortClearWSpace>
+         <longClearWSpace>105.0</longClearWSpace>
+         <fullWSpace>150.0</fullWSpace>
+      </airfieldInterface>
+   </airfields>
+</airport>

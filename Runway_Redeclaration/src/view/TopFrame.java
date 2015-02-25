@@ -19,6 +19,7 @@ import CoreInterfaces.PositionedObstacleInterface;
 import Exceptions.CannotMakeRunwayException;
 import Exceptions.InvalidIdentifierException;
 import Exceptions.UnrecognisedAirfieldIntifierException;
+import Exceptions.UnusableRunwayException;
 import Exceptions.VariableDeclarationException;
 
 public class TopFrame extends JFrame{
@@ -89,7 +90,7 @@ public class TopFrame extends JFrame{
 	public void loadOrCreateObstacle(ObstacleInterface obs, AirfieldInterface field, double distanceFromLeft){
 		try {
 			field.addObstacle(obs, field.getSmallAngledRunway().getIdentifier(), distanceFromLeft);	
-		} catch (InvalidIdentifierException e) {
+		} catch (InvalidIdentifierException | UnusableRunwayException e) {
 			e.printStackTrace();
 		}
 		tabbedPanel.updateTab(field);
