@@ -20,7 +20,7 @@ import Exceptions.VariableDeclarationException;
  * @Editor Stefan Shakib
  * @Testor Stefan
  */
-class Airfield implements AirfieldInterface, Savable {
+public class Airfield implements AirfieldInterface, Savable {
 	@ElementArray
 	private DeclaredRunwayInterface[] runways,defaultRunways;
 	@Element (required = false)
@@ -211,12 +211,6 @@ class Airfield implements AirfieldInterface, Savable {
 			double otherhowFarIn = this.getSmallAngledRunway().getTORA()-this.getLargeAngledRunway().getDisplacedThreshold()-this.getSmallAngledRunway().getDisplacedThreshold()-howFarIn;
 			this.obstacle = new PositionedObstacle(obj,otherhowFarIn, howFarIn);
 			
-			System.out.println("~~~~~~~~~~~");
-			System.out.println("TORA: "+this.getLargeAngledRunway().getTORA());
-			System.out.println("DIS THRE: "+this.getLargeAngledRunway().getDisplacedThreshold());
-			System.out.println("Dist from SMall: "+otherhowFarIn);
-			System.out.println("~~~~~~~~~~~");
-
 		}else{
 			//Excuse me! I don't own one of those, how dare you suggest such a thing!
 			throw new InvalidIdentifierException(indentifier, this);
@@ -282,5 +276,10 @@ class Airfield implements AirfieldInterface, Savable {
 	@Override
 	public DeclaredRunwayInterface getDefaultLargeAngledRunway(){
 		return this.defaultRunways[1];
+	}
+	
+	public String toString(){
+		return "Airfield: "+getName();
+		
 	}
 }

@@ -8,9 +8,9 @@ public class InvalidIdentifierException extends Exception {
 	private AirfieldInterface airfield;
 	
 	
-	public InvalidIdentifierException(String attemptedIdentifer, AirfieldInterface airfield){
-		super("There is no runway with the identifeir "+attemptedIdentifer+" in the airfield"+airfield.getName());
-		this.id = attemptedIdentifer;
+	public InvalidIdentifierException(String attemptedIdentifier, AirfieldInterface airfield){
+		super("There is no runway with the identifier "+attemptedIdentifier+" in the airfield"+airfield.getName());
+		this.id = attemptedIdentifier;
 		this.airfield = airfield;
 	}
 	

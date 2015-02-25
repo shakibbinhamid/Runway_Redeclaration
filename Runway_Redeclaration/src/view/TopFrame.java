@@ -8,7 +8,7 @@ import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import Core.ParrallelRunwayException;
+import Core.ParallelRunwayException;
 import CoreInterfaces.AirfieldInterface;
 import CoreInterfaces.AirportInterface;
 import CoreInterfaces.ObstacleInterface;
@@ -90,7 +90,7 @@ public class TopFrame extends JFrame{
 			double[] smallInputs, double[] bigInputs) {
 		try {
 			airport.addNewAirfield(parseInt, physicalInputs, smallInputs, bigInputs);
-		} catch (VariableDeclarationException | ParrallelRunwayException | CannotMakeRunwayException e) {
+		} catch (VariableDeclarationException | ParallelRunwayException | CannotMakeRunwayException e) {
 			e.printStackTrace();
 		}
 		List<AirfieldInterface> fields = airport.getAirfields();
