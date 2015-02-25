@@ -34,7 +34,7 @@ public class TEST_Airport {
 		assertEquals(name,this.airport.getName());
 	}
 
-	@Test
+	@Test @Ignore
 	public void testSingleAddingAirfield() {
 		try {
 			this.airport.addNewAirfield(90, airfieldVars, smallVars, largeVars);
@@ -52,7 +52,7 @@ public class TEST_Airport {
 		}
 	}
 
-	@Test
+	@Test @Ignore
 	public void testTwoNonParallelRunways() {
 		try {
 			this.airport.addNewAirfield(45, airfieldVars, smallVars, largeVars);
@@ -71,7 +71,7 @@ public class TEST_Airport {
 		}
 	}
 
-	@Test
+	@Test @Ignore
 	public void testTwoParallels_DoNothing() {
 		try {
 			this.airport.addNewAirfield(44, airfieldVars, smallVars, largeVars);
@@ -90,7 +90,7 @@ public class TEST_Airport {
 		}
 	}
 
-	@Test
+	@Test @Ignore
 	public void testTwoParallels_UseException() throws VariableDeclarationException {
 		try {
 			this.airport.addNewAirfield(44, airfieldVars, smallVars, largeVars);
@@ -111,7 +111,7 @@ public class TEST_Airport {
 		}
 	}
 
-	@Test
+	@Test @Ignore
 	public void testThreeParallels_UseException() throws VariableDeclarationException {
 		try {
 			this.airport.addNewAirfield(44, airfieldVars, smallVars, largeVars);
@@ -141,7 +141,6 @@ public class TEST_Airport {
 			}
 
 
-
 		} catch (CannotMakeRunwayException e) {
 			fail("CannotMakeRunwayException");
 			e.printStackTrace();
@@ -151,36 +150,60 @@ public class TEST_Airport {
 		}
 	}
 
-	@Test
+	@Test 
 	public void testThreeParallels_AddingAnother() throws VariableDeclarationException  {
+		System.out.println("Start!");
 		try {
+			System.out.println("---Adding---");
 			this.airport.addNewAirfield(44, airfieldVars, smallVars, largeVars);
+			System.out.println(airport);
+			System.out.println("---Adding---");
+
 			this.airport.addNewAirfield(40, airfieldVars, smallVars, largeVars);
 			fail("Exception not caught");
-
+			
 		} catch (ParrallelRunwayException pe) {
 			char option = pe.getAvailableOptions().get(0);
+			System.out.println("Options"+pe.getAvailableOptions());
+			System.out.println("---Choosing---");
 			pe.chooseOption(option);
+			
 			assertEquals("Ensure 2 runways via Exception", 2, this.airport.getAirfields().size());
-
+			System.out.println(airport);
+			
+			
 			//Time to make a third runway
 			try {
+				System.out.println("---Adding---");
 				this.airport.addNewAirfield(41, airfieldVars, smallVars, largeVars);
 				fail("Second Exception not caught");
 
 
 			} catch (ParrallelRunwayException pe2) {
 				assertEquals("Ensure 2 runways after second exception", 2, this.airport.getAirfields().size());
+				System.out.println("Options"+pe2.getAvailableOptions());
+				
 				char option2 = pe.getAvailableOptions().get(0);
+				System.out.println("---Choosing---");
 				pe.chooseOption(option2);
 				assertEquals("Ensure 3 runways via Exception", 3, this.airport.getAirfields().size());
+				System.out.println(airport.getAirfieldNames());
 
+				
+				
 				try {
+					System.out.println("---Adding---");
 					this.airport.addNewAirfield(40, airfieldVars, smallVars, largeVars);
+					System.out.println(airport);
+					fail("Should not allow this");
+					
+					
+					
 				} catch (ParrallelRunwayException e) {
 					fail("ParrallelRunwayException");
 					e.printStackTrace();
 				} catch (CannotMakeRunwayException e) {
+					System.out.println("Adding not allowed");
 					assertEquals("Ensure 3 runways 4th Parallel not allowed", 3, this.airport.getAirfields().size());
 						
 				} catch (VariableDeclarationException e) {
@@ -202,9 +225,11 @@ public class TEST_Airport {
 			fail("VariableDeclarationException \n"+e.getMessage());
 			e.printStackTrace();
 		}
+		
+		System.out.println("End!");
 	}
 
-	@Test
+	@Test  @Ignore
 	public void testTwoParallels_Add3rdNonParallel() throws VariableDeclarationException {
 		try {
 			this.airport.addNewAirfield(44, airfieldVars, smallVars, largeVars);
@@ -220,6 +245,7 @@ public class TEST_Airport {
 				this.airport.addNewAirfield(150, airfieldVars, smallVars, largeVars);
 				assertEquals("Ensure 3 Runways", 3, this.airport.getAirfields().size());
 
+				
 			}catch (ParrallelRunwayException e){
 				fail("ParrallelRunwayException");
 				e.printStackTrace();
@@ -235,15 +261,6 @@ public class TEST_Airport {
 			fail("VariableDeclarationException \n"+e.getMessage());
 			e.printStackTrace();
 		}
-	}
-
-	@Test @Ignore
-	public void test2() {
-		fail("Not yet implemented");
-	}
-	@Test @Ignore
-	public void test3() {
-		fail("Not yet implemented");
 	}
 
 
