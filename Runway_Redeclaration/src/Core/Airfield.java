@@ -204,11 +204,11 @@ class Airfield implements AirfieldInterface, Savable {
 		 ************************************************/
 		//Figuring where dat ting is near bruv... 
 		if(indentifier.equals(this.getSmallAngledRunway().getIdentifier())){
-			double otherhowFarIn = this.getLargeAngledRunway().getTORA()-howFarIn;
+			double otherhowFarIn = this.getSmallAngledRunway().getTORA()-this.getSmallAngledRunway().getDisplacedThreshold()-howFarIn;
 			this.obstacle = new PositionedObstacle(obj,howFarIn, otherhowFarIn);
 
 		}else if(indentifier.equals(this.getLargeAngledRunway().getIdentifier())){
-			double otherhowFarIn = this.getSmallAngledRunway().getTORA()-howFarIn;
+			double otherhowFarIn = this.getLargeAngledRunway().getTORA()-this.getLargeAngledRunway().getDisplacedThreshold()-howFarIn;
 			this.obstacle = new PositionedObstacle(obj,otherhowFarIn, howFarIn);
 
 

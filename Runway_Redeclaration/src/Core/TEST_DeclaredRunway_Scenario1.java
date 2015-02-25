@@ -56,8 +56,10 @@ public class TEST_DeclaredRunway_Scenario1 {
 			this.air.addObstacle(obj,this.air.getSmallAngledRunway().getIdentifier(),dist);
 			assertNotEquals("Obstacle is actually added",this.air.getPositionedObstacle(), null);
 			assertEquals("MY maths calculating small side works",dist,this.air.getPositionedObstacle().distanceFromSmallEnd(),0);
-			assertEquals("My maths in calculating other side worked",3464,this.air.getPositionedObstacle().distanceFromLargeEnd(),0);
+			assertEquals("My maths in calculating other side worked",3646,this.air.getPositionedObstacle().distanceFromLargeEnd(),0);
 			//===< End add Obstacle >============================
+			
+			
 			
 			//===[ Check Post-Obstacle values ]===================================
 			//--[ small angled ]------------
@@ -68,7 +70,7 @@ public class TEST_DeclaredRunway_Scenario1 {
 			
 			assertEquals("NEW Small Stopway",0,air.getSmallAngledRunway().getStopway(),0);
 			assertEquals("NEW Small Clearway",0,air.getSmallAngledRunway().getClearway(),0);
-			//assertEquals("NEW Displaced Threshold",306,air.getSmallAngledRunway().getDisplacedThreshold(),0);
+			assertEquals("NEW Displaced Threshold",306,air.getSmallAngledRunway().getDisplacedThreshold(),0);
 			//TODO figure out the displaced Threshold
 			
 			//--[ Large angled ]------------

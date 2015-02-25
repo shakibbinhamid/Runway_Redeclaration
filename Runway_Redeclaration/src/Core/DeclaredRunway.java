@@ -3,6 +3,7 @@ package Core;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;
 
+import view.Notification;
 import CoreInterfaces.AirfieldInterface;
 import CoreInterfaces.DeclaredRunwayInterface;
 import CoreInterfaces.PositionedObstacleInterface;
@@ -313,7 +314,7 @@ class DeclaredRunway implements DeclaredRunwayInterface{
 		
 		this.addToLog("LDA = original LDA - distFromObs - max(ALS,RESA,Blast Protection) ");
 		this.addToLog("LDA: "+newLDA+" = "+original.getLDA()+" - "+distFromObs+" - "+largestFactor);
-		this.addToLog("----------------------------");
+		this.line();
 
 	}
 
@@ -336,7 +337,7 @@ class DeclaredRunway implements DeclaredRunwayInterface{
 		this.addToLog("resa: "+resa);
 		this.addToLog("LDA = distFromObs - RESA - strip end");
 		this.addToLog("lda: "+newLDA+" = "+distFromObs+" - "+resa+" - "+parent.getStripEndSideLength());
-		this.addToLog("----------------------------");
+		this.line();
 
 	}
 
@@ -360,10 +361,8 @@ class DeclaredRunway implements DeclaredRunwayInterface{
 		setASDA(newTORA+getStopway());
 		setTODA(newTORA+getClearway());
 		
-		this.addToLog("----------------------------");
+		this.line();
 
-		//TODO check please
-		setDisplacedThreshold(0);
 	}
 
 	@Override
@@ -383,7 +382,7 @@ class DeclaredRunway implements DeclaredRunwayInterface{
 		this.addToLog("disThres: "+getDisplacedThreshold());
 		this.addToLog("TORA = distFromObs + displaced Threshold - ALS - strip end");
 		this.addToLog("newTORA: "+newTORA+" = "+distFromObs+" + "+getDisplacedThreshold()+" - "+ALS+" - "+parent.getStripEndSideLength());
-		this.addToLog("----------------------------");
+		this.line();
 		
 		if(newTORA<0) throw new UnusableRunwayException(this.getIdentifier(), "The TORA is "+newTORA+" which is less 0 and totaly unuseable");
 		
@@ -419,8 +418,13 @@ class DeclaredRunway implements DeclaredRunwayInterface{
 		return DEFAULT_ASC_ANGLE;
 	}
 	
+	private void line(){
+		this.addToLog("--------~~----------");
+	}
+	
 	public void addToLog(String text){
-		log += text+"\n";
+		this.log += text+"\n";
+		Notification.notify(text);
 	}
 	
 	public String getLog(){
