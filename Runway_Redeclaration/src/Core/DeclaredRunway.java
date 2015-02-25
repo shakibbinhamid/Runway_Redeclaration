@@ -316,7 +316,7 @@ class DeclaredRunway implements DeclaredRunwayInterface{
 		this.addToLog("LDA: "+newLDA+" = "+original.getLDA()+" - "+distFromObs+" - "+largestFactor);
 		this.line();
 
-		Notification.notify(log);
+		//Notification.notify(log);
 	}
 
 	@Override
@@ -340,7 +340,7 @@ class DeclaredRunway implements DeclaredRunwayInterface{
 		this.addToLog("lda: "+newLDA+" = "+distFromObs+" - "+resa+" - "+parent.getStripEndSideLength());
 		this.line();
 
-		Notification.notify(log);
+		//Notification.notify(log);
 	}
 
 	@Override
@@ -365,10 +365,8 @@ class DeclaredRunway implements DeclaredRunwayInterface{
 		
 		this.line();
 
-		//TODO check please
-		setDisplacedThreshold(0);
 		
-		Notification.notify(log);
+		//Notification.notify(log);
 	}
 
 	@Override
@@ -397,6 +395,8 @@ class DeclaredRunway implements DeclaredRunwayInterface{
 		setTODA(newTORA);//clearway blocked
 		setStopway(0);
 		setClearway(0);
+		
+		//Notification.notify(log);
 	}
 
 	private boolean isSmallEnd(){
@@ -430,7 +430,7 @@ class DeclaredRunway implements DeclaredRunwayInterface{
 	
 	public void addToLog(String text){
 		this.log += text+"\n";
-		Notification.notify(text);
+		//Notification.notify(text);
 	}
 	
 	public String getLog(){
