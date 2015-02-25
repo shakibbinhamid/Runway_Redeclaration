@@ -61,6 +61,21 @@ public class TabbedPanel extends JTabbedPane{
 		
 		this.setSelectedIndex(index);
 	}
+	
+	public void addTab(AirfieldInterface field){
+		int index = this.getSelectedIndex();
+		
+		Tab add = new Tab(field);
+		
+		this.removeAll();
+		tabs.add(add);
+		
+		for(Tab tab: tabs){
+			this.addTab(tab.getField().getName(), tab);
+		}
+		
+		this.setSelectedIndex(index);
+	}
 
 	public AirportInterface getAirport() {
 		this.getSelectedComponent();

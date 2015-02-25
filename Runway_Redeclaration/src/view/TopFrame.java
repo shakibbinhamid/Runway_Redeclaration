@@ -5,16 +5,21 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import Core.Airfield;
 import Core.Obstacle;
+import Core.ParrallelRunwayException;
 import Core.PositionedObstacle;
 import CoreInterfaces.AirfieldInterface;
 import CoreInterfaces.AirportInterface;
 import CoreInterfaces.ObstacleInterface;
 import CoreInterfaces.PositionedObstacleInterface;
+import Exceptions.CannotMakeRunwayException;
 import Exceptions.InvalidIdentifierException;
 import Exceptions.UnrecognisedAirfieldIntifierException;
+import Exceptions.VariableDeclarationException;
 
 public class TopFrame extends JFrame{
 	
@@ -67,6 +72,24 @@ public class TopFrame extends JFrame{
 		setAirport(airport);
 		logPanel.updateLabelText(airport.getName());
 		tabbedPanel.updateTabs(airport);
+	}
+	
+	public void loadOrCreateField(int parseInt, double[] physicalInputs,
+			double[] smallInputs, double[] bigInputs) {
+		AirfieldInterface field = null;
+		try {
+			field = new Airfield(parseInt, physicalInputs, smallInputs, bigInputs);
+		} catch (VariableDeclarationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			airport.addNewAirfield(parseInt, physicalInputs, smallInputs, bigInputs);
+			tabbedPanel.addTab(field);
+		} catch (ParrallelRunwayException | CannotMakeRunwayException
+				| VariableDeclarationException e) {
+			JOptionPane.showMessageDialog(this, e.getMessage(), "ERROR", ERROR);
+		}
 	}
 	
 	public void loadOrCreateObstacle(ObstacleInterface obs, AirfieldInterface field, double distanceFromLeft){

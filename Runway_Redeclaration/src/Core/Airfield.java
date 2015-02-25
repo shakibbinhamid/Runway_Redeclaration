@@ -20,7 +20,7 @@ import Exceptions.VariableDeclarationException;
  * @Editor Stefan Shakib
  * @Testor Stefan
  */
-class Airfield implements AirfieldInterface, Savable {
+public class Airfield implements AirfieldInterface, Savable {
 	@ElementArray
 	private DeclaredRunwayInterface[] runways,defaultRunways;
 	@Element (required = false)
@@ -37,7 +37,7 @@ class Airfield implements AirfieldInterface, Savable {
 	}
 
 	//TODO change the dimensions to hanlde asymetric runways (Yeh that shite)
-	protected Airfield(int angleFromNorth, double[] dimensions, double[] smallAngledDistances, double[] largeAngledDistances) throws VariableDeclarationException{
+	public Airfield(int angleFromNorth, double[] dimensions, double[] smallAngledDistances, double[] largeAngledDistances) throws VariableDeclarationException{
 		//Checks
 		if(dimensions.length != 8) throw new VariableDeclarationException("lengths", dimensions, "Needs to be 8 cells");
 		if(smallAngledDistances.length != 4)throw new VariableDeclarationException("smallAngledDistances", smallAngledDistances, "Needs to be 4 cells");

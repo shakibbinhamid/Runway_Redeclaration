@@ -68,6 +68,17 @@ public class TopMenu extends JMenuBar{
 		createRunway = getItem("Create Runway", iairport, SwingConstants.CENTER);//TODO: need to get an icon for runway
 		createObstacle = getItem("Create Obstacle", iobstacle, SwingConstants.CENTER);
 		
+		createAirport.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new FormAirport(frame);
+			}});
+		createRunway.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new FormAirfield(frame);
+			}});
+		
 		create = getMenu("Create", icreate, new JMenuItem[]{createAirport, createRunway, createObstacle});
 		
 		//================================LOAD MENU==============================================//
