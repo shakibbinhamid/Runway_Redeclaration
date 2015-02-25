@@ -114,6 +114,9 @@ class Airfield implements AirfieldInterface, Savable {
 		}
 		//ALL DEM CHANGES IS MADE MUN, Go chill dem plane drivers sort da rest of it out mun ;)
 		//Wait for the stewardesses, it's safe ;*
+		System.out.println( ((DeclaredRunway)getSmallAngledRunway()).getLog() );
+		System.out.println( ((DeclaredRunway)getLargeAngledRunway()).getLog() );
+
 	}
 
 
@@ -194,11 +197,11 @@ class Airfield implements AirfieldInterface, Savable {
 	public void addObstacle(ObstacleInterface obj,
 			double distanceFromSmall, double distanceFromLarge) throws InvalidIdentifierException {*/
 
-@Override
-public void addObstacle(ObstacleInterface obj, String indentifier, double howFarIn) throws InvalidIdentifierException, UnusableRunwayException {
+	@Override
+	public void addObstacle(ObstacleInterface obj, String indentifier, double howFarIn) throws InvalidIdentifierException, UnusableRunwayException {
 
-	/* 
-	 ************************************************/
+		/* 
+		 ************************************************/
 		//Figuring where dat ting is near bruv... 
 		if(indentifier.equals(this.getSmallAngledRunway().getIdentifier())){
 			double otherhowFarIn = this.getLargeAngledRunway().getTORA()-howFarIn;
@@ -213,11 +216,10 @@ public void addObstacle(ObstacleInterface obj, String indentifier, double howFar
 			//Excuse me! I don't own one of those, how dare you suggest such a thing!
 			throw new InvalidIdentifierException(indentifier, this);
 		}
-	/* *************************************************
-	*
+		/* *************************************************
+		 *
 		this.obstacle = new PositionedObstacle(obj, distanceFromSmall, distanceFromLarge);
-		*/
-		
+		 */		
 		try {
 			this.redeclareRunways();
 
