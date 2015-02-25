@@ -56,17 +56,17 @@ public class TEST_DeclaredRunway_Scenario4 {
 			this.air.addObstacle(obj,this.air.getSmallAngledRunway().getIdentifier(),dist);
 			assertNotEquals("Obstacle is actually added",this.air.getPositionedObstacle(), null);
 			assertEquals("MY maths calculating small side works",dist,this.air.getPositionedObstacle().distanceFromSmallEnd(),0);
-			assertEquals("My maths in calculating other side worked",3646,this.air.getPositionedObstacle().distanceFromLargeEnd(),0);
+			assertEquals("My maths in calculating other side worked",50,this.air.getPositionedObstacle().distanceFromLargeEnd(),0);
 			//===< End add Obstacle >============================
 			
 			
 			
 			//===[ Check Post-Obstacle values ]===================================
 			//--[ small angled ]------------
-			assertEquals("NEW Small TORA",3346,air.getSmallAngledRunway().getTORA(),0);
-			assertEquals("NEW Small ASDA",3346,air.getSmallAngledRunway().getASDA(),0);
-			assertEquals("NEW Small TODA",3346,air.getSmallAngledRunway().getTODA(),0);
-			assertEquals("NEW Small LDA",2986,air.getSmallAngledRunway().getLDA(),0);
+			assertEquals("NEW Small TORA",2792,air.getSmallAngledRunway().getTORA(),0);
+			assertEquals("NEW Small ASDA",2792,air.getSmallAngledRunway().getASDA(),0);
+			assertEquals("NEW Small TODA",2792,air.getSmallAngledRunway().getTODA(),0);
+			assertEquals("NEW Small LDA",3246,air.getSmallAngledRunway().getLDA(),0);
 			
 			assertEquals("NEW Small Stopway",0,air.getSmallAngledRunway().getStopway(),0);
 			assertEquals("NEW Small Clearway",0,air.getSmallAngledRunway().getClearway(),0);
@@ -74,13 +74,13 @@ public class TEST_DeclaredRunway_Scenario4 {
 			//TODO figure out the displaced Threshold
 			
 			//--[ Large angled ]------------
-			assertEquals("NEW Large TORA",2986,air.getLargeAngledRunway().getTORA(),0);
-			assertEquals("NEW Large ASDA",2986,air.getLargeAngledRunway().getASDA(),0);
-			assertEquals("NEW Large TODA",2986,air.getLargeAngledRunway().getTODA(),0);
-			assertEquals("NEW Large LDA",3346,air.getLargeAngledRunway().getLDA(),0);
+			assertEquals("NEW Large TORA",3534,air.getLargeAngledRunway().getTORA(),0);
+			assertEquals("NEW Large ASDA",3534,air.getLargeAngledRunway().getASDA(),0);
+			assertEquals("NEW Large TODA",3612,air.getLargeAngledRunway().getTODA(),0);
+			assertEquals("NEW Large LDA",2774,air.getLargeAngledRunway().getLDA(),0);
 			
 			assertEquals("NEW Large Stopway",0,air.getLargeAngledRunway().getStopway(),0);
-			assertEquals("NEW Large Clearway",0,air.getLargeAngledRunway().getClearway(),0);
+			assertEquals("NEW Large Clearway",78,air.getLargeAngledRunway().getClearway(),0);
 			assertEquals("NEW Displaced Threshold",0,air.getLargeAngledRunway().getDisplacedThreshold(),0);
 			//===< END Post checks >========================
 			
@@ -93,9 +93,9 @@ public class TEST_DeclaredRunway_Scenario4 {
 	}
 	
 	@Test
-	public void testAddingObstacleWithGoodID_On_LARGE() throws UnusableRunwayException{
-		Obstacle obj = new Obstacle("Scenario 1 Obstacle", 0, 12);
-		double dist = 3646;
+	public void testAddingObstacleWithGoodID_On_Large() throws UnusableRunwayException{
+		Obstacle obj = new Obstacle("Scenario 1 Obstacle", 0, 20);
+		double dist = 50;
 		try {
 			//===[ Check Pre-Obstacle values ]===================================
 			//--[ small angled ]------------
@@ -123,18 +123,18 @@ public class TEST_DeclaredRunway_Scenario4 {
 			//===[ Add Obstacle ]==============================================================
 			this.air.addObstacle(obj,this.air.getLargeAngledRunway().getIdentifier(),dist);
 			assertNotEquals("Obstacle is actually added",this.air.getPositionedObstacle(), null);
-			assertEquals("MY maths calculating small ",-50,this.air.getPositionedObstacle().distanceFromSmallEnd(),0);
-			assertEquals("My maths calculating large",3646,this.air.getPositionedObstacle().distanceFromLargeEnd(),0);
+			assertEquals("MY maths calculating small side works",3546,this.air.getPositionedObstacle().distanceFromSmallEnd(),0);
+			assertEquals("My maths in calculating other side worked",50,this.air.getPositionedObstacle().distanceFromLargeEnd(),0);
 			//===< End add Obstacle >============================
 			
 			
 			
 			//===[ Check Post-Obstacle values ]===================================
 			//--[ small angled ]------------
-			assertEquals("NEW Small TORA",3346,air.getSmallAngledRunway().getTORA(),0);
-			assertEquals("NEW Small ASDA",3346,air.getSmallAngledRunway().getASDA(),0);
-			assertEquals("NEW Small TODA",3346,air.getSmallAngledRunway().getTODA(),0);
-			assertEquals("NEW Small LDA",2986,air.getSmallAngledRunway().getLDA(),0);
+			assertEquals("NEW Small TORA",2792,air.getSmallAngledRunway().getTORA(),0);
+			assertEquals("NEW Small ASDA",2792,air.getSmallAngledRunway().getASDA(),0);
+			assertEquals("NEW Small TODA",2792,air.getSmallAngledRunway().getTODA(),0);
+			assertEquals("NEW Small LDA",3246,air.getSmallAngledRunway().getLDA(),0);
 			
 			assertEquals("NEW Small Stopway",0,air.getSmallAngledRunway().getStopway(),0);
 			assertEquals("NEW Small Clearway",0,air.getSmallAngledRunway().getClearway(),0);
@@ -142,13 +142,13 @@ public class TEST_DeclaredRunway_Scenario4 {
 			//TODO figure out the displaced Threshold
 			
 			//--[ Large angled ]------------
-			assertEquals("NEW Large TORA",2986,air.getLargeAngledRunway().getTORA(),0);
-			assertEquals("NEW Large ASDA",2986,air.getLargeAngledRunway().getASDA(),0);
-			assertEquals("NEW Large TODA",2986,air.getLargeAngledRunway().getTODA(),0);
-			assertEquals("NEW Large LDA",3346,air.getLargeAngledRunway().getLDA(),0);
+			assertEquals("NEW Large TORA",3534,air.getLargeAngledRunway().getTORA(),0);
+			assertEquals("NEW Large ASDA",3534,air.getLargeAngledRunway().getASDA(),0);
+			assertEquals("NEW Large TODA",3612,air.getLargeAngledRunway().getTODA(),0);
+			assertEquals("NEW Large LDA",2774,air.getLargeAngledRunway().getLDA(),0);
 			
 			assertEquals("NEW Large Stopway",0,air.getLargeAngledRunway().getStopway(),0);
-			assertEquals("NEW Large Clearway",0,air.getLargeAngledRunway().getClearway(),0);
+			assertEquals("NEW Large Clearway",78,air.getLargeAngledRunway().getClearway(),0);
 			assertEquals("NEW Displaced Threshold",0,air.getLargeAngledRunway().getDisplacedThreshold(),0);
 			//===< END Post checks >========================
 			
@@ -159,7 +159,5 @@ public class TEST_DeclaredRunway_Scenario4 {
 			fail("We used a valid id");
 		}
 	}
-	
-	
 
 }
