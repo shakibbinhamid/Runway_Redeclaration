@@ -429,7 +429,6 @@ class DeclaredRunway implements DeclaredRunwayInterface{
 	}
 	
 	public void addToLog(String text){
-		this.log += text+"\n";
 		Notification.notify(text);
 	}
 	
