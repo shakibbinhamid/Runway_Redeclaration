@@ -1,16 +1,12 @@
 package view;
 
-import java.awt.Component;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 
 import javax.swing.JTabbedPane;
 
 import CoreInterfaces.AirfieldInterface;
 import CoreInterfaces.AirportInterface;
-import CoreInterfaces.DeclaredRunwayInterface;
-import CoreInterfaces.PositionedObstacleInterface;
 /**
  * This is just a holder class for all the tabs.
  * 
@@ -44,9 +40,21 @@ public class TabbedPanel extends JTabbedPane{
 			tabs.add(new Tab(airfield));
 			this.addTab(airfield.getName(), new Tab(airfield));
 		}
-		
 	}
 	
+	/**
+	 * Return the current active airfield
+	 * @return the active airfield
+	 */
+	public AirfieldInterface getActiveField(){
+		return ((Tab) this.getSelectedComponent()).getField();
+	}
+	
+	/**
+	 * Given an existing airfield, it will update that field (mutated).
+	 * Used to update an redeclare airfield runways.
+	 * @param field the airfield to update
+	 */
 	public void updateTab(AirfieldInterface field){
 		int index = this.indexOfTab(field.getName());
 		
@@ -62,6 +70,11 @@ public class TabbedPanel extends JTabbedPane{
 		this.setSelectedIndex(index);
 	}
 	
+	/**
+	 * Add a new tab for a field.
+	 * Used to create airfields.
+	 * @param field the airfield to add
+	 */
 	public void addTab(AirfieldInterface field){
 		int index = this.getSelectedIndex();
 		
@@ -77,11 +90,19 @@ public class TabbedPanel extends JTabbedPane{
 		this.setSelectedIndex(index);
 	}
 
+	/**
+	 * The airport this tabbedpanel is serving
+	 * @return the active airport
+	 */
 	public AirportInterface getAirport() {
 		this.getSelectedComponent();
 		return airport;
 	}
 
+	/**
+	 * The airport this tabbedpanel is serving is set to the new one
+	 * @param airport a new airport
+	 */
 	public void setAirport(AirportInterface airport) {
 		this.airport = airport;
 	}

@@ -32,5 +32,4 @@ public class SaveAirportListener implements ActionListener{
 			fs.saveAir((Airport)saveItem);
 		}
 	}
-	
 }

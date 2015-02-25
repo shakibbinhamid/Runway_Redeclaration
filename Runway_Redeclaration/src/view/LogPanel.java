@@ -4,19 +4,20 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 
-import javax.swing.JEditorPane;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.JTextPane;
-import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
-import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.StyleConstants;
-import javax.swing.text.StyleContext;
 
+/**
+ * 
+ * This panel shows the central log and the current airport name
+ * 
+ * @author shakib-binhamid
+ * @editor Jonathon
+ */
 public class LogPanel extends JPanel{
 	
 	private String label;
@@ -50,12 +51,12 @@ public class LogPanel extends JPanel{
 		this.add(logPanel, BorderLayout.CENTER);
 	}
 	
-	public void updateLabelText(String airport){
-		airportLabel.setText(airport);
-	}
-	
-	public void makeLog(String s){
-		logPanel.addLog(s);
+	/**
+	 * Update the airport label to the specified name
+	 * @param airportName the name of an airport
+	 */
+	public void updateLabelText(String airportName){
+		airportLabel.setText(airportName);
 	}
 	
 	public void notify(String s){
@@ -86,6 +87,11 @@ public class LogPanel extends JPanel{
 		logPanel.addLog(s, c);
 	}
 
+	/**
+	 * The log text area is contained here
+	 * @author shakib-binhamid
+	 * @editor Jonathon
+	 */
 	private class Log extends JPanel{
 		private JScrollPane scroll;
 		private JTextArea text;
@@ -108,6 +114,10 @@ public class LogPanel extends JPanel{
 			
 			this.add(scroll, BorderLayout.CENTER);
 		}
+		
+		/*
+		 * adds a log to the text area
+		 */
 		private void addLog(String s){
 			addLog(s, defaultc);
 		}

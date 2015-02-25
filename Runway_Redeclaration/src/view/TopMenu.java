@@ -8,6 +8,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 
 public class TopMenu extends JMenuBar{
@@ -79,12 +80,18 @@ public class TopMenu extends JMenuBar{
 		createRunway.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new FormAirfield(frame);
+				if (frame.getAirport() != null)
+					new FormAirfield(frame);
+				else 
+					JOptionPane.showMessageDialog(frame, "Please load or create an airport first!", "ERROR: Cannot make an airfield", JOptionPane.ERROR_MESSAGE);
 			}});
 		createObstacle.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new FormObstacle(frame);
+				if (frame.getAirport() != null)
+					new FormObstacle(frame);
+				else 
+					JOptionPane.showMessageDialog(frame, "Please load or create an airport first!", "ERROR: Cannot place an object", JOptionPane.ERROR_MESSAGE);
 			}});
 		
 		create = getMenu("Create", icreate, new JMenuItem[]{createAirport, createRunway, createObstacle});
@@ -111,9 +118,7 @@ public class TopMenu extends JMenuBar{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				frame.dispose();
-			}
-			
-		});
+			}});
 		
 		file = getMenu("File", null, new JMenuItem[]{create, load, save, exit});
 	}
