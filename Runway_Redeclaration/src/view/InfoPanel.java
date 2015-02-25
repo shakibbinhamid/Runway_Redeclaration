@@ -150,7 +150,7 @@ public class InfoPanel extends JPanel{
 		angleA = new String[]{"Angle of Ascent", getRunwayPara(def, "ascent"), getRunwayPara(run, "ascent")};
 		angleD = new String[]{"Angle of Descent", getRunwayPara(def, "descent"), getRunwayPara(run, "descent")};
 		
-		updateAdvancedTable(new String[][]{stop, clear, angleA, angleD});
+		updateAdvancedTable(new String[][]{stop, clear, blast, resa, angleA, angleD});
 	}
 	
 	private String getRunwayPara(DeclaredRunwayInterface runway, String para) throws UnusableRunwayException{

@@ -21,7 +21,7 @@ import CoreInterfaces.PositionedObstacleInterface;
 public class Tab extends JPanel{
 	
 	private AirfieldInterface field;
-	private ObstacleInterface obs;
+	private PositionedObstacleInterface obs;
 	
 	private JPanel dataPanel;
 		private ChooseRunwayPanel selectDirectionPanel;
@@ -30,6 +30,7 @@ public class Tab extends JPanel{
 	
 	public Tab(AirfieldInterface field){
 		this.field = field;
+		this.obs = field.getPositionedObstacle();
 		init();
 	}
 	
@@ -43,7 +44,7 @@ public class Tab extends JPanel{
 		selectDirectionPanel = new ChooseRunwayPanel(this);
 		dataPanel.add(selectDirectionPanel, BorderLayout.NORTH);
 		
-		info = new InfoPanel(new DeclaredRunwayInterface[]{field.getDefaultRunways()[0], field.getRunways()[0]},null);
+		info = new InfoPanel(new DeclaredRunwayInterface[]{field.getDefaultRunways()[0], field.getRunways()[0]},obs);
 		dataPanel.add(info, BorderLayout.CENTER);
 		
 		views = new ViewPanel(field.getSmallAngledRunway());
@@ -64,12 +65,16 @@ public class Tab extends JPanel{
 		return field;
 	}
 
-	public ObstacleInterface getObs() {
+	public PositionedObstacleInterface getObs() {
 		return obs;
 	}
 
 	public void setField(AirfieldInterface field) {
 		this.field = field;
+	}
+	
+	public void updateInfo(AirfieldInterface field){
+		
 	}
 	
 	/**

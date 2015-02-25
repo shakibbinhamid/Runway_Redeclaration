@@ -1,5 +1,7 @@
 package view;
 
+import java.awt.Component;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
@@ -19,10 +21,10 @@ import CoreInterfaces.PositionedObstacleInterface;
 public class TabbedPanel extends JTabbedPane{
 
 	private AirportInterface airport;
-	private HashMap<String, Tab> tabs;
+	private ArrayList<Tab> tabs;
 	
 	public TabbedPanel(){
-		tabs = new HashMap<>();
+		tabs = new ArrayList<>();
 	}
 	
 	/**
@@ -39,18 +41,25 @@ public class TabbedPanel extends JTabbedPane{
 		Collection<AirfieldInterface> airfields = airport.getAirfields();
 		
 		for(AirfieldInterface airfield: airfields){
-			tabs.put(airfield.getName(), new Tab(airfield));
+			tabs.add(new Tab(airfield));
 			this.addTab(airfield.getName(), new Tab(airfield));
 		}
 		
 	}
 	
 	public void updateTab(AirfieldInterface field){
-		Tab whichTab = getTab(field.getName());
-		Tab newTab = new Tab(field);
-		int location = this.indexOfComponent(whichTab);
-		this.remove(whichTab);
-		this.add(newTab, location);
+		int index = this.indexOfTab(field.getName());
+		
+		Tab add = new Tab(field);
+		
+		this.removeAll();
+		tabs.set(index, add);
+		
+		for(Tab tab: tabs){
+			this.addTab(tab.getField().getName(), tab);
+		}
+		
+		this.setSelectedIndex(index);
 	}
 
 	public AirportInterface getAirport() {
@@ -63,6 +72,10 @@ public class TabbedPanel extends JTabbedPane{
 	}
 	
 	public Tab getTab(String airfieldId){
-		return tabs.get(airfieldId);
+		for(Tab tab: tabs){
+			if (tab.getField().getName().equals(airfieldId))
+				return tab;
+		}
+		return null;
 	}
 }

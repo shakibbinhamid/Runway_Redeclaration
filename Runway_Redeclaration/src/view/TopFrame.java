@@ -75,7 +75,7 @@ public class TopFrame extends JFrame{
 		} catch (InvalidIdentifierException e) {
 			e.printStackTrace();
 		}
-		tabbedPanel.updateTabs(this.airport);
+		tabbedPanel.updateTab(field);
 	}
 
 	public AirportInterface getAirport() {

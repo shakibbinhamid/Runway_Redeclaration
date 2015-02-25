@@ -4,15 +4,9 @@ import java.io.File;
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
 
-
-
-
-
-
 import Core.Airport;
 import Core.Obstacle;
 import Core.ParrallelRunwayException;
-import Core.PositionedObstacle;
 import CoreInterfaces.Savable;
 import Exceptions.CannotMakeRunwayException;
 import Exceptions.VariableDeclarationException;
