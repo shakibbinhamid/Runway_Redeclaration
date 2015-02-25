@@ -1,13 +1,12 @@
 package view;
 
+import interfaces.AirfieldInterface;
+import interfaces.DeclaredRunwayInterface;
+import interfaces.PositionedObstacleInterface;
+
 import java.awt.BorderLayout;
 
 import javax.swing.JPanel;
-
-import CoreInterfaces.AirfieldInterface;
-import CoreInterfaces.DeclaredRunwayInterface;
-import CoreInterfaces.ObstacleInterface;
-import CoreInterfaces.PositionedObstacleInterface;
 
 /**
  * This is a Tab. A Tab holds is responsible for viewing all data and views of an airfield.

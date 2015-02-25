@@ -13,7 +13,7 @@ public class AirportFileFilter extends javax.swing.filechooser.FileFilter {
 
 	@Override
 	public String getDescription() {
-		return "Airports";
+		return "Airports (*.air.xml)";
 	}
 
 }

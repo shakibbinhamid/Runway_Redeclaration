@@ -1,5 +1,9 @@
 package view;
 
+import interfaces.DeclaredRunwayInterface;
+import interfaces.ObstacleInterface;
+import interfaces.PositionedObstacleInterface;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -10,10 +14,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-import CoreInterfaces.DeclaredRunwayInterface;
-import CoreInterfaces.ObstacleInterface;
-import CoreInterfaces.PositionedObstacleInterface;
-import Exceptions.UnusableRunwayException;
+import exceptions.UnusableRunwayException;
 
 public class InfoPanel extends JPanel{
 	

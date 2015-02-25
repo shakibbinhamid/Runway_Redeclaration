@@ -1,12 +1,14 @@
 package io;
+import interfaces.AirportInterface;
+import interfaces.ObstacleInterface;
+
 import java.io.File;
 import java.util.ArrayList;
 
+import core.Airport;
+import core.Obstacle;
+import exceptions.NothingToSaveException;
 import view.Notification;
-import Core.Airport;
-import Core.Obstacle;
-import CoreInterfaces.AirportInterface;
-import CoreInterfaces.ObstacleInterface;
 
 /**
  * Handles the saving and loading of objects

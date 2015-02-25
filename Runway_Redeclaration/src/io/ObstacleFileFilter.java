@@ -12,7 +12,7 @@ public class ObstacleFileFilter extends javax.swing.filechooser.FileFilter{
 
 	@Override
 	public String getDescription() {
-		return "Obstacles";
+		return "Obstacles (*.obs.xml)";
 	}
 
 }

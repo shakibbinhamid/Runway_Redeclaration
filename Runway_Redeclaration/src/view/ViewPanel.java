@@ -1,10 +1,10 @@
 package view;
 
+import interfaces.DeclaredRunwayInterface;
+
 import java.awt.GridLayout;
 
 import javax.swing.JPanel;
-
-import CoreInterfaces.DeclaredRunwayInterface;
 
 public class ViewPanel extends JPanel{
 	

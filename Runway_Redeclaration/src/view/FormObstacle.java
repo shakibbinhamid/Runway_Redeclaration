@@ -1,5 +1,7 @@
 package view;
 
+import interfaces.AirfieldInterface;
+
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,11 +13,10 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
-import Core.Obstacle;
-import CoreInterfaces.AirfieldInterface;
-import Exceptions.InvalidIdentifierException;
-import Exceptions.UnrecognisedAirfieldIntifierException;
-import Exceptions.UnusableRunwayException;
+import core.Obstacle;
+import exceptions.InvalidIdentifierException;
+import exceptions.UnrecognisedAirfieldIntifierException;
+import exceptions.UnusableRunwayException;
 
 // TODO Sanitize listeners when pressing menu buttons
 //   	should not be able to create an obstacle if there

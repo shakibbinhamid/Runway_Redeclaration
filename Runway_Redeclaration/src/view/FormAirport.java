@@ -9,7 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
-import Core.Airport;
+import core.Airport;
 
 public class FormAirport extends FormGeneral {
 	JLabel nameLabel;

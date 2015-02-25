@@ -5,6 +5,7 @@ import io.ObstacleFileFilter;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class LoadObstacleListener implements ActionListener{
@@ -12,7 +13,7 @@ public class LoadObstacleListener implements ActionListener{
 	private TopFrame frame;
 	private ObstacleFileFilter filter;
 	private String typeDir;
-	
+
 	public LoadObstacleListener(TopFrame frame){
 		this.frame = frame;
 		filter = new ObstacleFileFilter(); 
@@ -22,6 +23,12 @@ public class LoadObstacleListener implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		LoadListener lis = new LoadListener(frame, filter, typeDir);
+		if(frame.getAirport() != null){
+			LoadListener lis = new LoadListener(frame, filter, typeDir);
+		}
+		else{
+			JOptionPane.showMessageDialog(null, "You cannot load an object while there is no airport to load it to.", "No Airport Error", JOptionPane.ERROR_MESSAGE);
+
+		}
 	}
 }

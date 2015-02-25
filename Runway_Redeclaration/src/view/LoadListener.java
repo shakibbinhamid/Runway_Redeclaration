@@ -1,5 +1,8 @@
 package view;
 
+import interfaces.AirportInterface;
+import interfaces.ObstacleInterface;
+import interfaces.PositionedObstacleInterface;
 import io.FileSystem;
 
 import java.awt.event.ActionEvent;
@@ -10,10 +13,6 @@ import java.io.FileFilter;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
-
-import CoreInterfaces.AirportInterface;
-import CoreInterfaces.ObstacleInterface;
-import CoreInterfaces.PositionedObstacleInterface;
 
 public class LoadListener{
 
