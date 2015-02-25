@@ -219,8 +219,4 @@ public class FormAirfield extends FormGeneral {
 						} catch (NumberFormatException e) {
 							e.printStackTrace();
 						}											
-				}				
-			}
-		});
-	}
-}
+				}}});}}

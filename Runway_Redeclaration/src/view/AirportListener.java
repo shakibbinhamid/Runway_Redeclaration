@@ -6,13 +6,6 @@ import java.awt.event.ActionListener;
 public class AirportListener implements ActionListener{
 	private TopFrame topFrame;
 	
-	// test
-	public static void main(String[] args) {
-		TopFrame tf = new TopFrame();
-		FormAirport fa = new FormAirport(tf);
-		fa.init();
-	}
-	
 	public AirportListener(TopFrame topFrame){
 		this.topFrame = topFrame;
 	}
