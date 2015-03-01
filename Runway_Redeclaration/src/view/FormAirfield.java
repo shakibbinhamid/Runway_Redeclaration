@@ -12,10 +12,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import Core.ParallelRunwayException;
-import Exceptions.CannotMakeRunwayException;
-import Exceptions.VariableDeclarationException;
-
 public class FormAirfield extends FormGeneral {
 	TopFrame topFrame;
 	ArrayList<JTextField> smallValueTextFields;
@@ -85,28 +81,28 @@ public class FormAirfield extends FormGeneral {
 		bottomPanel = new JPanel();
 		smallAndLargeInputsPanel = new JPanel();
 		
-		smallValuesLabel = new JLabel("Small values:");
-		largeValuesLabel = new JLabel("Large values:");
+		smallValuesLabel = new JLabel("Left Starting Runway values:");
+		largeValuesLabel = new JLabel("Right Starting Runway values:");
 		
-		bigTORALabel = new JLabel("Insert big TORA:");
+		bigTORALabel = new JLabel("Insert Large Angled TORA:");
 		bigTORATextBox = new JTextField();
-		bigStopwayLabel = new JLabel("Insert big Stopway");
+		bigStopwayLabel = new JLabel("Insert Large Angled Stopway");
 		bigStopwayTextBox = new JTextField();
-		bigClearwayLabel = new JLabel("Insert big Clearway");
+		bigClearwayLabel = new JLabel("Insert Large Angled Clearway");
 		bigClearwayTextBox = new JTextField();
-		bigDisplacedLabel = new JLabel("Insert big Displaced Threshold:");
+		bigDisplacedLabel = new JLabel("Insert Large Angled Displaced Threshold:");
 		bigDisplacedTextBox = new JTextField();
 		
-		smallTORALabel = new JLabel("Insert small TORA:");
+		smallTORALabel = new JLabel("Insert Small Angled TORA:");
 		smallTORATextBox = new JTextField();
-		smallStopwayLabel = new JLabel("Insert small Stopway:");
+		smallStopwayLabel = new JLabel("Insert Small Angled Stopway:");
 		smallStopwayTextBox = new JTextField();
-		smallClearwayLabel = new JLabel("Insert small Clearway:");
+		smallClearwayLabel = new JLabel("Insert Small Angled Clearway:");
 		smallClearwayTextBox = new JTextField();
-		smallDisplacedLabel = new JLabel("Insert small Displaced Threshold:");
+		smallDisplacedLabel = new JLabel("Insert Small Angled Displaced Threshold:");
 		smallDisplacedTextBox = new JTextField();
 		
-		angleLabel = new JLabel("Insert airfield angle to the north :");
+		angleLabel = new JLabel("Insert Airfield Angle to the North :");
 		angleTextBox = new JTextField();
 		
 //		runwayWidthLabel = new JLabel("Insert airfield width:");

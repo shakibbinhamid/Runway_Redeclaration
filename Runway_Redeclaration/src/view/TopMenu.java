@@ -46,7 +46,7 @@ public class TopMenu extends JMenuBar{
 		createHelpMenu();
 		
 		//================================Adding menus========================================//
-		addMenus(new JMenu[] {file, edit, print, help});
+		addMenus(new JMenu[] {file, edit}); //print, help});
 		
 	}
 	
@@ -143,7 +143,7 @@ public class TopMenu extends JMenuBar{
 			
 		});
 		
-		edit = getMenu("Edit", null, new JMenuItem[]{editRunway, editObstacle, removeObs});
+		edit = getMenu("Edit", null, new JMenuItem[]{ removeObs});
 	}
 	
 	private void createPrintMenu(){

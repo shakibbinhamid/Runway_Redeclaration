@@ -64,7 +64,8 @@ public class TopFrame extends JFrame{
 		Notification.setFrame(this);
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setMinimumSize(new Dimension(1200,800));
+		this.setTitle("Runway Redeclaration Tool v.0.61");
+		this.setMinimumSize(new Dimension(1200,600));
 		this.setResizable(false);
 		this.pack();
 		setVisible(true);

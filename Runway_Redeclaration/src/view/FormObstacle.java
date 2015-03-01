@@ -13,13 +13,7 @@ import javax.swing.JTextField;
 
 import Core.Obstacle;
 import CoreInterfaces.AirfieldInterface;
-import Exceptions.InvalidIdentifierException;
 import Exceptions.UnrecognisedAirfieldIntifierException;
-import Exceptions.UnusableRunwayException;
-
-// TODO Sanitize listeners when pressing menu buttons
-//   	should not be able to create an obstacle if there
-//		are no airfields.
 
 public class FormObstacle extends FormGeneral {
 	TopFrame topFrame;
@@ -40,16 +34,16 @@ public class FormObstacle extends FormGeneral {
 		super(topFrame, "Create Obstacle", true);
 		this.topFrame = topFrame;
 		
-		nameLabel = new JLabel("Insert name:");
+		nameLabel = new JLabel("Insert Name:");
 		nameTextBox = new JTextField();
-		radiusLabel = new JLabel("Insert radius:");
+		radiusLabel = new JLabel("Insert Radius:");
 		radiusTextBox = new JTextField();
-		heigthLabel = new JLabel("Insert heigth:");
+		heigthLabel = new JLabel("Insert Height:");
 		heigthTextBox = new JTextField();
-		distFromLeftLabel = new JLabel("Insert distance from left:");
+		distFromLeftLabel = new JLabel("Insert Distance From Left:");
 		distFromLeftTextBox = new JTextField();
 		
-		airfieldLabel = new JLabel("Pick airfield:");
+		airfieldLabel = new JLabel("Pick Airfield:");
 		
 		airfieldComboBox = new JComboBox<String>();
 		
