@@ -199,6 +199,48 @@ public class Airfield implements AirfieldInterface, Savable {
 
 	}
 
+	
+	/**
+	 * We redeclare when there is an object added or removed, 
+	 * without allowing the user to choose which side does what
+	 * 
+	 * @throws VariableDeclarationException
+	 * @throws  
+	 */
+	public void redeclareRunways(boolean smallLandTowards, boolean smallTakeOffTowards, 
+			boolean largeLandTowards, boolean largeTakeOffTowards) 
+					throws VariableDeclarationException{
+		getSmallAngledRunway().resetToNoObstacle(getDefaultSmallAngledRunway());
+		getLargeAngledRunway().resetToNoObstacle(getDefaultLargeAngledRunway());
+
+		//Excuse me sir we seem to have a collision imminent, CHANGE YOUR JAM! SORT DAT SHEET OUT MUN!
+		if(hasObstacle()){
+			//OK MUN, WE GOTS TO DECIDE IF DEM PROBLEMS IS NEAREREST TO WHAT SIDE OF DEM AIRPORT ROAD TINGS
+			if(getPositionedObstacle().distanceFromSmallEnd() < getPositionedObstacle().distanceFromLargeEnd()){
+				//closer to small angled end
+
+				getSmallAngledRunway().takeOffAwayFrom(getDefaultSmallAngledRunway(), this);
+				getSmallAngledRunway().landOver(getDefaultSmallAngledRunway(), this);
+
+				getLargeAngledRunway().takeOffTowardsOver(getDefaultLargeAngledRunway(), this);
+				getLargeAngledRunway().landTowards(getDefaultLargeAngledRunway(), this);
+
+			}else{
+				//closer to large angled end or equal hence IT DONT MATTER BRUV
+
+				getSmallAngledRunway().takeOffTowardsOver(getDefaultSmallAngledRunway(), this);
+				getSmallAngledRunway().landTowards(getDefaultSmallAngledRunway(), this);
+
+				getLargeAngledRunway().takeOffAwayFrom(getDefaultLargeAngledRunway(), this);
+				getLargeAngledRunway().landOver(getDefaultLargeAngledRunway(), this);
+			}
+		}
+		//ALL DEM CHANGES IS MADE MUN, Go chill dem plane drivers sort da rest of it out mun ;)
+		//Wait for the stewardesses, it's safe ;*
+		System.out.println( ((DeclaredRunway)getSmallAngledRunway()).getLog() );
+		System.out.println( ((DeclaredRunway)getLargeAngledRunway()).getLog() );
+
+	}
 
 	@Override
 	public String getName(){
@@ -228,16 +270,26 @@ public class Airfield implements AirfieldInterface, Savable {
 		return this.obstacle;
 	}
 
-	/*@Override
+	/**/@Override
 	public void addObstacle(ObstacleInterface obj,
-			double distanceFromSmall, double distanceFromLarge) throws InvalidIdentifierException {*/
+			double distanceFromSmall, double distanceFromLarge) throws InvalidIdentifierException {/**/
 
-	@Override
+		this.obstacle = new PositionedObstacle(obj, distanceFromSmall, distanceFromLarge);
+		try {
+			this.redeclareRunways();
+
+
+		} catch (VariableDeclarationException  e) {
+			System.err.println("Stefan Here: This really should not happen! ... me thinks");
+			e.printStackTrace();
+		}
+	}
+	
+	/*@Override
+	 @Deprecated
 	public void addObstacle(ObstacleInterface obj, String indentifier, double howFarIn) 
 			throws InvalidIdentifierException  {
 
-		/* 
-		 ************************************************/
 		//Figuring where dat ting is near bruv... 
 		if(indentifier.equals(this.getSmallAngledRunway().getIdentifier())){
 			double otherhowFarIn = this.getSmallAngledRunway().getTORA()-this.getSmallAngledRunway().getDisplacedThreshold()-this.getLargeAngledRunway().getDisplacedThreshold()-howFarIn;
@@ -250,11 +302,7 @@ public class Airfield implements AirfieldInterface, Savable {
 		}else{
 			//Excuse me! I don't own one of those, how dare you suggest such a thing!
 			throw new InvalidIdentifierException(indentifier, this);
-		}
-		/* *************************************************
-		 *
-		this.obstacle = new PositionedObstacle(obj, distanceFromSmall, distanceFromLarge);
-		 */		
+		} 
 		try {
 			this.redeclareRunways();
 
@@ -263,13 +311,16 @@ public class Airfield implements AirfieldInterface, Savable {
 			System.err.println("Stefan Here: This really should not happen! ... me thinks");
 			e.printStackTrace();
 		}
-	}
+		*/
+		 
 
 	@Override
 	public void removeObstacle() {
 		this.obstacle = null;
 		try {
-			this.redeclareRunways();
+			this.getSmallAngledRunway().resetToNoObstacle(getDefaultSmallAngledRunway());
+			this.getLargeAngledRunway().resetToNoObstacle(getDefaultLargeAngledRunway());
+			
 		} catch (VariableDeclarationException e) {
 			System.err.println("Stefan Again: Urm I don't think any of this should have happened...");
 			e.printStackTrace();
@@ -320,5 +371,41 @@ public class Airfield implements AirfieldInterface, Savable {
 	@Override
 	public double[] getDimensionsToArray() {
 		return new double[] {runGirth, lStripEnd, rStripEnd, longSpacer, shortSpacer, mediumSpacer, shortLength, longLength};
+	}
+
+	@Override
+	public void addObstacle(ObstacleInterface obj, double distanceFromSmall, double distanceFromLarge, 
+			boolean smallLandTowards,boolean smallTakeOffTowards, 
+			boolean largeLandTowards,boolean largeTakeOffTowards) 
+					throws InvalidIdentifierException, VariableDeclarationException {
+		
+		this.obstacle = new PositionedObstacle(obj, distanceFromSmall, distanceFromLarge);
+		
+		this.getSmallAngledRunway().resetToNoObstacle(getDefaultSmallAngledRunway());
+		this.getLargeAngledRunway().resetToNoObstacle(getDefaultLargeAngledRunway());
+		
+		if(smallTakeOffTowards){
+			this.getSmallAngledRunway().takeOffTowardsOver(getDefaultSmallAngledRunway(), this);
+		}else{
+			this.getSmallAngledRunway().takeOffAwayFrom(getDefaultSmallAngledRunway(), this);
+		}
+		if(smallLandTowards){
+			this.getSmallAngledRunway().landTowards(getSmallAngledRunway(), this);
+		}else{
+			this.getSmallAngledRunway().landOver(getDefaultSmallAngledRunway(), this);
+		}
+		
+		
+		if(largeTakeOffTowards){
+			this.getLargeAngledRunway().takeOffTowardsOver(getDefaultLargeAngledRunway(), this);
+		}else{
+			this.getLargeAngledRunway().takeOffAwayFrom(getDefaultLargeAngledRunway(), this);
+		}
+		if(largeLandTowards){
+			this.getLargeAngledRunway().landTowards(getDefaultLargeAngledRunway(), this);
+		}else{
+			this.getLargeAngledRunway().landOver(getDefaultLargeAngledRunway(), this);
+		}
+		
 	}
 }
