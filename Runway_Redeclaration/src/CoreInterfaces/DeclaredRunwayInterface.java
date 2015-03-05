@@ -1,6 +1,5 @@
 package CoreInterfaces;
 
-import Exceptions.UnusableRunwayException;
 import Exceptions.VariableDeclarationException;
 
 /**
@@ -39,45 +38,41 @@ public interface DeclaredRunwayInterface {
 	/**
 	 * Take-Off-Runway-Available
 	 */
-	double getTORA() throws UnusableRunwayException;
+	double getTORA();
+	void setTORA(double tora) throws VariableDeclarationException;
 	
-	double getClearway() throws UnusableRunwayException;
+	double getASDA();
+	void setASDA(double asda) throws VariableDeclarationException;
 	
-	double getStopway() throws UnusableRunwayException;
+	double getTODA();
+	void setTODA(double toda) throws VariableDeclarationException;
 	
-	double getDisplacedThreshold() throws UnusableRunwayException;
+	double getLDA();
+	void setLDA(double lda) throws VariableDeclarationException;
 	
-	/**
-	 * ASDA = TORA + Stopway
-	 */
-	double getASDA() throws UnusableRunwayException;
+	double getClearway();
 	
-	/**
-	 * TODA = TORA + Clearway
-	 */
-	double getTODA() throws UnusableRunwayException;
+	double getStopway();
 	
-	/**
-	 * LDA = TORA - Displaced Threshold
-	 */
-	double getLDA() throws UnusableRunwayException;
+	double getDisplacedThreshold();
 	
-	double getRESA() throws UnusableRunwayException;
+	double getRESA();
+	void setRESA(double resa) throws VariableDeclarationException;
 	
 //=====[ Mutators ]=================================================
-	void resetToNoObstacle(DeclaredRunwayInterface original) throws UnusableRunwayException, VariableDeclarationException;
+	void resetToNoObstacle(DeclaredRunwayInterface original) throws VariableDeclarationException;
 
-	void landOver(DeclaredRunwayInterface original, AirfieldInterface parent) throws UnusableRunwayException, VariableDeclarationException;
+	void landOver(DeclaredRunwayInterface original, AirfieldInterface parent) throws VariableDeclarationException;
 	
 	void landTowards(DeclaredRunwayInterface original, AirfieldInterface parent) throws VariableDeclarationException;
 	
-	void takeOffAwayFrom(DeclaredRunwayInterface original, AirfieldInterface parent) throws UnusableRunwayException, VariableDeclarationException;
+	void takeOffAwayFrom(DeclaredRunwayInterface original, AirfieldInterface parent) throws VariableDeclarationException;
 	
-	void takeOffTowardsOver(DeclaredRunwayInterface original, AirfieldInterface parent) throws UnusableRunwayException, VariableDeclarationException;
+	void takeOffTowardsOver(DeclaredRunwayInterface original, AirfieldInterface parent) throws VariableDeclarationException;
 	
 //=====[ Angles ]====================================================
-	int getDescentAngle();
+	double getDescentAngle();
 	
-	int getAscentAngle();
+	double getAscentAngle();
 
 }

@@ -54,7 +54,6 @@ public class Airport implements AirportInterface, Savable {
 				return af;
 			}
 		}
-		System.out.println("FUCK ME SILLY");
 		throw new UnrecognisedAirfieldIntifierException(this, name);
 	}
 
@@ -73,7 +72,9 @@ public class Airport implements AirportInterface, Savable {
 	}
 
 	@Override
-	public void addNewAirfield(int angleFromNorth, double[] dimensions, double[] smallAngledDistances, double[] largeAngledDistances) throws ParallelRunwayException, CannotMakeRunwayException, VariableDeclarationException {
+	public void addNewAirfield(int angleFromNorth, double[] dimensions, 
+			double[] smallAngledDistances, double[] largeAngledDistances) 
+					throws CannotMakeRunwayException, VariableDeclarationException, ParallelRunwayException {
 		
 		AirfieldInterface newAirfield = new Airfield(angleFromNorth, dimensions, smallAngledDistances,largeAngledDistances);
 		

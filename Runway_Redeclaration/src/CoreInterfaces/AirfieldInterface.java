@@ -1,7 +1,6 @@
 package CoreInterfaces;
 
 import Exceptions.InvalidIdentifierException;
-import Exceptions.UnusableRunwayException;
 import Exceptions.VariableDeclarationException;
 
 
@@ -27,54 +26,79 @@ public interface AirfieldInterface {
 
 //====[ Inert Distance Values ]==================================
 	/**
-	 * The width or girth of the tarmac runway
+	 * The girth of the tarmac runway
 	 */
-	double getRunwayWidth();
+	double getRunwayGirth();
+	
+	void setRunwayGirth(double girth);
 	
 	/**
-	 * The length of the tarmac runway (the initial TORA)
-	 */
-	double getRunwayLength();
-	
-	/**
-	 * (150m horiz on diagram)
-	 */
-	double getInitialStopway();
-	
-	/**
-	 * The extra distance either side (behind) the length of the runway 
+	 * The extra distance on the left side (behind) the left tora of the runway 
 	 * that make up longest reach of the cleared and graded Area
 	 * 
 	 * (60m horizontal on the diagram)
 	 */
-	double getStripEndSideLength();
+	double getLeftStripEnd();
 	
-	
-	/**
-	 * The distance between the start of the runway and the
-	 * long cleared spacer
-	 *
-	 * (300m horiz on the diagram)
-	 */
-	double distanceToLongSpacer();
-	
+	void setLeftStripEnd(double lStrpEnd);
+
 	
 	/**
-	 * (75m vertical in diagram)
+	 * The extra distance on the right side (behind) the right tora of the runway 
+	 * that make up longest reach of the cleared and graded Area
+	 * 
+	 * (60m horizontal on the diagram)
 	 */
-	double getShortClearedWidthSpacer();
+	double getRightStripEnd();
+	
+	void setRightStripEnd(double rStrpEnd);
 	
 	/**
-	 * (105m vertical in diagram)
+	 * (150m vert on diagram)
 	 */
-	double getLongClearedWidthSpacer();
+	double getLongSpacer();
+	
+	void setLongSpacer(double lSpacer);
 	
 	/**
-	 * (150m vertical in diagram)
+	 * (105m vert on diagram)
 	 */
-	double getFullWidthSpacer();
+	double getMediumSpacer();
 	
-	double getBlastAllowanceDistance();
+	void setMediumSpacer(double mSpacer);
+
+	/**
+	 * (75m vert on diagram)
+	 */
+	double getShortSpacer();
+	
+	void setShortSpacer(double sSpacer);
+	
+	/**
+	 * (150m horiz on diagram)
+	 */
+	double getShortLength();
+	
+	void setShortLength(double sLength);
+	
+	/**
+	 * (3000m horiz on diagram)
+	 */
+	double getLongLength();
+	
+	void setLongLength(double lLength);
+	
+	double getBlastAllowance();
+	
+	void setBlastAllowance(double blast);
+	
+	double[] getDimensionsToArray();
+	
+	double getTotalWidth();
+	
+	double getTotalHeight();
+	
+	
 //=====================================================	
 
 //====[ Obstacles ]====================================
@@ -93,7 +117,7 @@ public interface AirfieldInterface {
 	 */
 	//void addObstacle(ObstacleInterface obj, double distanceFromSmall, double distanceFromLarge) throws InvalidIdentifierException;
 	
-	void addObstacle(ObstacleInterface obj, String indentifier, double howFarIn) throws InvalidIdentifierException, UnusableRunwayException;
+	void addObstacle(ObstacleInterface obj, String indentifier, double howFarIn) throws InvalidIdentifierException;
 	
 	
 	/** 

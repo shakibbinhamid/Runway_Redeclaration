@@ -10,7 +10,6 @@ import CoreInterfaces.ObstacleInterface;
 import CoreInterfaces.PositionedObstacleInterface;
 import CoreInterfaces.Savable;
 import Exceptions.InvalidIdentifierException;
-import Exceptions.UnusableRunwayException;
 import Exceptions.VariableDeclarationException;
 
 @Root
@@ -21,72 +20,153 @@ import Exceptions.VariableDeclarationException;
  * @Testor Stefan
  */
 public class Airfield implements AirfieldInterface, Savable {
+	public static final double BLAST_PROT_RADIUS = 300;
+
 	@ElementArray
-	private DeclaredRunwayInterface[] runways,defaultRunways;
+	private DeclaredRunwayInterface[] runways, defaultRunways;
 	@Element (required = false)
 	private PositionedObstacle obstacle;
+	
 	@Element
-	private double runWidth,runLen,initStop,stripEndL,dToLongSpace,shortClearWSpace,longClearWSpace,fullWSpace;
-
-	public static final double BLAST_PROT = 300;
-
-
+	private double runGirth, lStripEnd, rStripEnd, longSpacer, shortSpacer, mediumSpacer, shortLength, longLength;
+	@Element 
+	private double blastProt;
+	
 	//nullary constructor
-	protected Airfield(){
+	protected Airfield(){}
 
-	}
-
-	//TODO change the dimensions to hanlde asymetric runways (Yeh that shite)
-	Airfield(int angleFromNorth, double[] dimensions, double[] smallAngledDistances, double[] largeAngledDistances) throws VariableDeclarationException{
+	protected Airfield(int angleFromNorth, double[] dimensions, double[] smallAngledDistances, double[] largeAngledDistances) throws VariableDeclarationException{
 		//Checks
 		if(dimensions.length != 8) throw new VariableDeclarationException("lengths", dimensions, "Needs to be 8 cells");
-		if(smallAngledDistances.length != 4)throw new VariableDeclarationException("smallAngledDistances", smallAngledDistances, "Needs to be 4 cells");
-		if(largeAngledDistances.length != 4)throw new VariableDeclarationException("largeAngledDistances", largeAngledDistances, "Needs to be 4 cells");
+		if(smallAngledDistances.length != 5)throw new VariableDeclarationException("smallAngledDistances", smallAngledDistances, "Needs to be 4 cells");
+		if(largeAngledDistances.length != 5)throw new VariableDeclarationException("largeAngledDistances", largeAngledDistances, "Needs to be 4 cells");
 
 		//Dimensions
-		this.runWidth = dimensions[0];
-		this.runLen = dimensions[1];
-		this.initStop = dimensions[2];
-		this.stripEndL = dimensions[3];
-		this.dToLongSpace = dimensions[4];
-		this.shortClearWSpace = dimensions[5];
-		this.longClearWSpace = dimensions[6];
-		this.fullWSpace = dimensions[7];
+		setRunwayGirth  (dimensions[0]);
+		setLeftStripEnd (dimensions[1]);
+		setRightStripEnd(dimensions[2]);
+		setLongSpacer   (dimensions[3]);
+		setShortSpacer  (dimensions[4]);
+		setMediumSpacer (dimensions[5]);
+		setShortLength  (dimensions[6]);
+		setLongLength   (dimensions[7]);
 		//TODO Check these values against CAA stuff in INCREMENT 2
 
+		setBlastAllowance(BLAST_PROT_RADIUS);
+		
 		this.obstacle = null;
 
-		this.runways = new DeclaredRunway[2];
-		this.defaultRunways= new DeclaredRunway[2];
+		
+		//--[ Handle Runways ]-----
+		this.runways = new DeclaredRunwayInterface[2];
+		this.defaultRunways= new DeclaredRunwayInterface[2];
 
 		//small angled runway stuff
-		double sTORA = smallAngledDistances[0];
-		double sStopway = smallAngledDistances[1];
-		double sClearway = smallAngledDistances[2];
-		double sDisThresh = smallAngledDistances[3];
+		double lTORA = smallAngledDistances[0];
+		double lASDA = smallAngledDistances[1];
+		double lTODA = smallAngledDistances[2];
+		double lLDA =  smallAngledDistances[3];
 
 		angleFromNorth %= 180;
-		this.runways[0] = new DeclaredRunway(this, angleFromNorth, sTORA, sStopway, sClearway, sDisThresh);
-		this.defaultRunways[0] = new DeclaredRunway(this, angleFromNorth, sTORA, sStopway, sClearway, sDisThresh);
+		this.runways[0] = new DeclaredRunway(this, angleFromNorth, lTORA, lASDA, lTODA, lLDA);
+		this.defaultRunways[0] = new DeclaredRunway(this, angleFromNorth, lTORA, lASDA, lTODA, lLDA);
 
-
+		
 		//large angled runway stuff
-		double lTORA = largeAngledDistances[0];
-		double lStopway = largeAngledDistances[1];
-		double lClearway = largeAngledDistances[2];
-		double lDisThresh = largeAngledDistances[3];
+		double rTORA = largeAngledDistances[0];
+		double rASDA = largeAngledDistances[1];
+		double rTODA = largeAngledDistances[2];
+		double rLDA =  largeAngledDistances[3];
 
-		this.runways[1] = new DeclaredRunway(this, angleFromNorth+180, lTORA, lStopway, lClearway, lDisThresh);
-		this.defaultRunways[1] = new DeclaredRunway(this, angleFromNorth+180, lTORA, lStopway, lClearway, lDisThresh);
+		this.runways[1] = new DeclaredRunway(this, angleFromNorth+180, rTORA, rASDA, rTODA, rLDA);
+		this.defaultRunways[1] = new DeclaredRunway(this, angleFromNorth+180, rTORA, rASDA, rTODA, rLDA);
+	}
+	
+	public static final double DEFAULT_GIRTH = 100;
+	public static final double DEFAULT_LEFT_STRIP_END = 60;
+	public static final double  DEFAULT_RIGHT_STRIP_END = 60;
+	public static final double DEFAULT_LONG_SPACER = 150;
+	public static final double DEFAULT_SHORT_SPACER = 75;
+	public static final double DEFAULT_MEDIUM_SPACER = 105;
+	public static final double DEFAULT_SHORT_LENGTH = 150;
+	public static final double DEFAULT_LONG_LENGTH = 300;
+
+	/**
+	 * Default value constructor
+	 */
+	protected Airfield(int angleFromNorth, double[] smallAngledDistances, double[] largeAngledDistances) throws VariableDeclarationException{
+		this(angleFromNorth, new double[] { DEFAULT_GIRTH, DEFAULT_LEFT_STRIP_END, 
+											DEFAULT_RIGHT_STRIP_END, DEFAULT_LONG_SPACER, 
+											DEFAULT_SHORT_SPACER, DEFAULT_MEDIUM_SPACER, 
+											DEFAULT_SHORT_LENGTH, DEFAULT_LONG_LENGTH}, 
+			 smallAngledDistances,largeAngledDistances);
+	}
+	
+	@Override
+	public double getRunwayGirth() { return this.runGirth; }
+	@Override
+	public double getLeftStripEnd() { return this.lStripEnd; }
+	@Override
+	public double getRightStripEnd() { return this.rStripEnd; }
+	@Override
+	public double getLongSpacer() { return this.longSpacer; }
+	@Override
+	public double getMediumSpacer() { return this.mediumSpacer; }
+	@Override
+	public double getShortSpacer() { return this.shortSpacer; }
+	@Override
+	public double getShortLength() { return this.shortLength; }
+	@Override
+	public double getLongLength() { return longLength; }
+	@Override
+	public double getBlastAllowance() { return this.blastProt; }
+	
+	
+	@Override
+	public void setRunwayGirth(double rGirth) { this.runGirth = rGirth; }
+	@Override
+	public void setLeftStripEnd(double lStrip) { this.lStripEnd = lStrip; }
+	@Override
+	public void setRightStripEnd(double rStrip) { this.rStripEnd = rStrip; }
+	@Override
+	public void setLongSpacer(double lSpacer) { this.longSpacer = lSpacer; }
+	@Override
+	public void setMediumSpacer(double medSpacer) { this.mediumSpacer = medSpacer; }
+	@Override
+	public void setShortSpacer(double sSpacer) { this.shortSpacer = sSpacer; }
+	@Override
+	public void setShortLength(double sLength) { this.shortLength = sLength; }
+	@Override
+	public void setLongLength(double lLength) { this.longLength = lLength; }
+	@Override
+	public void setBlastAllowance(double blast) { this.blastProt = blast; }
+	
+	@Override
+	public double getTotalWidth() {
+		return getLeftStripEnd()+longestTORA()+getRightStripEnd();
+	}
+	
+	private double longestTORA(){ 
+		if (getSmallAngledRunway().getTORA() > getLargeAngledRunway().getTORA()){
+			return getSmallAngledRunway().getTORA();
+		}else{
+			return getLargeAngledRunway().getTORA();
+		}
+	}
+
+	@Override
+	public double getTotalHeight() {
+		return getLongSpacer()*2;
 	}
 
 	/**
-	 * We redeclare when there is an object added or removed
+	 * We redeclare when there is an object added or removed, 
+	 * without allowing the user to choose which side does what
 	 * 
 	 * @throws VariableDeclarationException
-	 * @throws UnusableRunwayException 
+	 * @throws  
 	 */
-	private void redeclareRunways() throws VariableDeclarationException, UnusableRunwayException{
+	private void redeclareRunways() throws VariableDeclarationException{
 		getSmallAngledRunway().resetToNoObstacle(getDefaultSmallAngledRunway());
 		getLargeAngledRunway().resetToNoObstacle(getDefaultLargeAngledRunway());
 
@@ -144,51 +224,6 @@ public class Airfield implements AirfieldInterface, Savable {
 
 
 	@Override
-	public double getRunwayWidth() {
-		return runWidth;
-	}
-
-	@Override
-	public double getRunwayLength() {
-		return runLen;
-	}
-
-	@Override
-	public double getInitialStopway() {
-		return initStop;
-	}
-
-	@Override
-	public double getStripEndSideLength() {
-		return stripEndL;
-	}
-
-	@Override
-	public double distanceToLongSpacer() {
-		return dToLongSpace;
-	}
-
-	@Override
-	public double getShortClearedWidthSpacer() {
-		return shortClearWSpace;
-	}
-
-	@Override
-	public double getLongClearedWidthSpacer() {
-		return longClearWSpace;
-	}
-
-	@Override
-	public double getFullWidthSpacer() {
-		return fullWSpace;
-	}
-
-	@Override
-	public double getBlastAllowanceDistance() {
-		return Airfield.BLAST_PROT;
-	}
-
-	@Override
 	public PositionedObstacleInterface getPositionedObstacle() {
 		return this.obstacle;
 	}
@@ -198,7 +233,8 @@ public class Airfield implements AirfieldInterface, Savable {
 			double distanceFromSmall, double distanceFromLarge) throws InvalidIdentifierException {*/
 
 	@Override
-	public void addObstacle(ObstacleInterface obj, String indentifier, double howFarIn) throws InvalidIdentifierException, UnusableRunwayException {
+	public void addObstacle(ObstacleInterface obj, String indentifier, double howFarIn) 
+			throws InvalidIdentifierException  {
 
 		/* 
 		 ************************************************/
@@ -223,11 +259,10 @@ public class Airfield implements AirfieldInterface, Savable {
 			this.redeclareRunways();
 
 
-		} catch (VariableDeclarationException | UnusableRunwayException e) {
+		} catch (VariableDeclarationException  e) {
 			System.err.println("Stefan Here: This really should not happen! ... me thinks");
 			e.printStackTrace();
 		}
-
 	}
 
 	@Override
@@ -235,7 +270,7 @@ public class Airfield implements AirfieldInterface, Savable {
 		this.obstacle = null;
 		try {
 			this.redeclareRunways();
-		} catch (VariableDeclarationException | UnusableRunwayException e) {
+		} catch (VariableDeclarationException e) {
 			System.err.println("Stefan Again: Urm I don't think any of this should have happened...");
 			e.printStackTrace();
 		}
@@ -280,5 +315,10 @@ public class Airfield implements AirfieldInterface, Savable {
 	public String toString(){
 		return "Airfield: "+getName();
 		
+	}
+
+	@Override
+	public double[] getDimensionsToArray() {
+		return new double[] {runGirth, lStripEnd, rStripEnd, longSpacer, shortSpacer, mediumSpacer, shortLength, longLength};
 	}
 }
