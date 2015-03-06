@@ -2,7 +2,6 @@ package Core;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -272,7 +271,8 @@ public class TEST_DeclaredRunway_GenericScenario {
 		String res = getInput();
 		if (res.toLowerCase().equals("n")){
 			failed = true;
-			reasons.add(name+"="+val+" not "+exp);
+			String realVal = getInput();
+			reasons.add(name+"="+val+" not "+realVal+"   Hard coded("+exp+")");
 		}
 	}
 	private static void printFailures(){
