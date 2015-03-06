@@ -33,26 +33,15 @@ public interface AirfieldInterface {
 	void setRunwayGirth(double girth);
 	
 	/**
-	 * The extra distance on the left side (behind) the left tora of the runway 
+	 * The extra distance on either side (behind) if the tora of the runway 
 	 * that make up longest reach of the cleared and graded Area
 	 * 
 	 * (60m horizontal on the diagram)
 	 */
-	double getLeftStripEnd();
+	double getStripEnd();
 	
-	void setLeftStripEnd(double lStrpEnd);
+	void setStripEnd(double strpEnd);
 
-	
-	/**
-	 * The extra distance on the right side (behind) the right tora of the runway 
-	 * that make up longest reach of the cleared and graded Area
-	 * 
-	 * (60m horizontal on the diagram)
-	 */
-	double getRightStripEnd();
-	
-	void setRightStripEnd(double rStrpEnd);
-	
 	/**
 	 * (150m vert on diagram)
 	 */

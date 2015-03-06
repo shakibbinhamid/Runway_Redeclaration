@@ -48,7 +48,7 @@ public class DeclaredRunway implements DeclaredRunwayInterface{
 	//nullary constructor for xml
 	protected DeclaredRunway(){}
 	
-	protected DeclaredRunway(AirfieldInterface airfield, int angleFromNorth,
+	protected DeclaredRunway(AirfieldInterface airfield, int angleFromNorth, char side,
 			double tora, double asda, double toda, double lda) throws VariableDeclarationException{
 		this.log = "-[Log]-\n";
 
@@ -65,7 +65,7 @@ public class DeclaredRunway implements DeclaredRunwayInterface{
 		
 
 		setAngle(angleFromNorth);
-		this.direction = ' ';
+		setSideLetter(side);
 
 	}
 	//====[ Direction Methods  ]=====================================
@@ -226,7 +226,7 @@ public class DeclaredRunway implements DeclaredRunwayInterface{
 			double RESA = getRESA();
 			double ALS = parent.getPositionedObstacle().getHeight() * getDescentAngle();
 			
-			double largestFactor = Math.max(Math.max(RESA,ALS)+ correctStripEnd(parent), parent.getBlastAllowance());
+			double largestFactor = Math.max(Math.max(RESA,ALS)+ parent.getStripEnd(), parent.getBlastAllowance());
 			double newLDA = original.getLDA() - largestFactor -  distFromObs;
 			
 			if(newLDA > original.getLDA()){
@@ -236,7 +236,7 @@ public class DeclaredRunway implements DeclaredRunwayInterface{
 			this.addToLog("distFromObs: "+distFromObs);
 			this.addToLog("resa: "+RESA);
 			this.addToLog("ALS: "+ALS);
-			this.addToLog("Strip End: "+correctStripEnd(parent));
+			this.addToLog("Strip End: "+parent.getStripEnd());
 			this.addToLog("largestFactor: "+largestFactor);
 			
 			this.addToLog("LDA = original LDA - distFromObs - max(ALS,RESA,Blast Protection) ");
@@ -258,7 +258,7 @@ public class DeclaredRunway implements DeclaredRunwayInterface{
 			double distFromObs = distanceFrom(parent.getPositionedObstacle());
 			double resa = getRESA();
 			
-			double newLDA = distFromObs - resa - oppositeStripEnd(parent);
+			double newLDA = distFromObs - resa - parent.getStripEnd();
 			if(newLDA > original.getLDA()){
 				newLDA = original.getLDA();
 			}
@@ -266,7 +266,7 @@ public class DeclaredRunway implements DeclaredRunwayInterface{
 			this.addToLog("distFromObs: "+distFromObs);
 			this.addToLog("resa: "+resa);
 			this.addToLog("LDA = distFromObs - RESA - strip end");
-			this.addToLog("lda: "+newLDA+" = "+distFromObs+" - "+resa+" - "+oppositeStripEnd(parent));
+			this.addToLog("lda: "+newLDA+" = "+distFromObs+" - "+resa+" - "+parent.getStripEnd());
 			this.line();
 			
 			setLDA(newLDA);
@@ -309,14 +309,14 @@ public class DeclaredRunway implements DeclaredRunwayInterface{
 			double distFromObs = distanceFrom(parent.getPositionedObstacle());
 			double ALS = getAscentAngle()*parent.getPositionedObstacle().getHeight();
 			
-			double newTORA = distFromObs + original.getDisplacedThreshold() - ALS - oppositeStripEnd(parent);
+			double newTORA = distFromObs + original.getDisplacedThreshold() - ALS - parent.getStripEnd();
 			
 			this.addToLog("-[ "+getIdentifier()+" Take Off Towards: Calculations ]-");
 			this.addToLog("distFromObs: "+distFromObs);
 			this.addToLog("ALS: "+ALS);
 			this.addToLog("disThres: "+original.getDisplacedThreshold());
 			this.addToLog("TORA = distFromObs + displaced Threshold - ALS - strip end");
-			this.addToLog("newTORA: "+newTORA+" = "+distFromObs+" + "+original.getDisplacedThreshold()+" - "+ALS+" - "+oppositeStripEnd(parent));
+			this.addToLog("newTORA: "+newTORA+" = "+distFromObs+" + "+original.getDisplacedThreshold()+" - "+ALS+" - "+parent.getStripEnd());
 			this.line();
 			
 			setTORA(newTORA);
@@ -340,27 +340,6 @@ public class DeclaredRunway implements DeclaredRunwayInterface{
 				return obs.distanceFromSmallEnd()-obs.getRadius();
 			}else{
 				return obs.distanceFromLargeEnd()-obs.getRadius();
-			}
-		}
-		
-		/**
-		 * Returns the strip end relevant to the current Declared Runway
-		 */
-		private double correctStripEnd(AirfieldInterface airfield){
-			if(this.isSmallEnd()){
-				return airfield.getLeftStripEnd();
-			}else{
-				return airfield.getRightStripEnd();
-			}
-		}
-		/**
-		 * Returns the strip end relevant to the current Declared Runway
-		 */
-		private double oppositeStripEnd(AirfieldInterface airfield){
-			if(this.isSmallEnd()){
-				return airfield.getRightStripEnd();
-			}else{
-				return airfield.getLeftStripEnd();
 			}
 		}
 		
@@ -389,6 +368,16 @@ public class DeclaredRunway implements DeclaredRunwayInterface{
 		
 		public String getLog(){
 			return this.log;
+		}
+		
+		public static char oppositeSide(char side){
+			if(side == 'C'){
+				return side;
+			}else if(side == 'L'){
+				return 'R';
+			}else{
+				return 'L';
+			}
 		}
 		
 

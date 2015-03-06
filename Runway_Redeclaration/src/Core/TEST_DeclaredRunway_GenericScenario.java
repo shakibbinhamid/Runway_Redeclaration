@@ -21,28 +21,28 @@ public class TEST_DeclaredRunway_GenericScenario {
 	
 	public static void Setup1() throws VariableDeclarationException, InvalidIdentifierException{
 		//  09L/27R
-		make(_09L, _027R,
+		make(_09L, _027R,'L',
 				90,  12,
 				new double[] {3346,3346,3346,2986}, new double[] {2986,2986,2986,3346},
 				-50, 3646);
 	}
 	public static void Setup2() throws VariableDeclarationException, InvalidIdentifierException{
 		//  09R/27L
-		make(_09R, _027L,
+		make(_09R, _027L,'R',
 				90, 25,
 				new double[] {1850,1850,1850,2553}, new double[] {2860,2860,2860,1850},
 				2853, 500);
 	}
 	public static void Setup3() throws VariableDeclarationException, InvalidIdentifierException{
 		//  09R/27L
-		make(_09R, _027L,
+		make(_09R, _027L,'R',
 				90, 15,
 				new double[] {2903,2903,2903,2393}, new double[] {2393,2393,2393,2903},
 				150, 3203);
 	}
 	public static void Setup4() throws VariableDeclarationException, InvalidIdentifierException{
 		//  09L/27R
-		make(_09L, _027R,
+		make(_09L, _027R,'L',
 				90, 20,
 				new double[] {2792,2792,2792,3246}, new double[] {3534,3534,3612,2774},
 				3546, 50);
@@ -107,7 +107,7 @@ public class TEST_DeclaredRunway_GenericScenario {
 	public static Airfield air;
 	public static Obstacle obj;
 	
-	private static void make(double[] sVars,double[] lVars, 
+	private static void make(double[] sVars,double[] lVars, char side,
 			int ang, double height,
 			double[] expSVars,double[] expLVars, 
 			double lDis, double rDis) 
@@ -123,7 +123,7 @@ public class TEST_DeclaredRunway_GenericScenario {
 
 		angle = ang;
 
-		air = new Airfield(angle, iniSmallVars, iniLargeVars);
+		air = new Airfield(angle, side ,iniSmallVars, iniLargeVars);
 		obj = new Obstacle("Scenario Obstacle", 0, height);
 		
 		if(verboseMode){
@@ -244,9 +244,9 @@ public class TEST_DeclaredRunway_GenericScenario {
 			
 			
 		} catch (InvalidIdentifierException e) {
-			System.out.println("-[ Failed ]-");
-			System.out.println(air.getSmallAngledRunway().getIdentifier());
-			System.out.println("-------------");
+			System.err.println("-[ Failed ]-");
+			System.err.println(air.getSmallAngledRunway().getIdentifier());
+			System.err.println("-------------");
 			failed = true;
 			reasons.add("InvalidIntetifierException thrown");
 

@@ -28,28 +28,28 @@ public class Airfield implements AirfieldInterface, Savable {
 	private PositionedObstacle obstacle;
 	
 	@Element
-	private double runGirth, lStripEnd, rStripEnd, longSpacer, shortSpacer, mediumSpacer, shortLength, longLength;
-	@Element 
+	private double runGirth, stripEnd, longSpacer, shortSpacer, mediumSpacer, shortLength, longLength;
+	@Element
 	private double blastProt;
 	
 	//nullary constructor
-	protected Airfield(){}
+	protected Airfield() {}
 
-	protected Airfield(int angleFromNorth, double[] dimensions, double[] smallAngledDistances, double[] largeAngledDistances) throws VariableDeclarationException{
+	protected Airfield(int angleFromNorth, double[] dimensions, char side,
+			double[] smallAngledDistances, double[] largeAngledDistances) throws VariableDeclarationException{
 		//Checks
-		if(dimensions.length != 8) throw new VariableDeclarationException("lengths", dimensions, "Needs to be 8 cells");
+		if(dimensions.length != 7) throw new VariableDeclarationException("lengths", dimensions, "Needs to be 7 cells");
 		if(smallAngledDistances.length != 4)throw new VariableDeclarationException("smallAngledDistances", smallAngledDistances, "Needs to be 4 cells");
 		if(largeAngledDistances.length != 4)throw new VariableDeclarationException("largeAngledDistances", largeAngledDistances, "Needs to be 4 cells");
 
 		//Dimensions
 		setRunwayGirth  (dimensions[0]);
-		setLeftStripEnd (dimensions[1]);
-		setRightStripEnd(dimensions[2]);
-		setLongSpacer   (dimensions[3]);
-		setShortSpacer  (dimensions[4]);
-		setMediumSpacer (dimensions[5]);
-		setShortLength  (dimensions[6]);
-		setLongLength   (dimensions[7]);
+		setStripEnd     (dimensions[1]);
+		setLongSpacer   (dimensions[2]);
+		setShortSpacer  (dimensions[3]);
+		setMediumSpacer (dimensions[4]);
+		setShortLength  (dimensions[5]);
+		setLongLength   (dimensions[6]);
 		//TODO Check these values against CAA stuff in INCREMENT 2
 
 		setBlastAllowance(BLAST_PROT_RADIUS);
@@ -68,8 +68,8 @@ public class Airfield implements AirfieldInterface, Savable {
 		double lLDA =  smallAngledDistances[3];
 
 		angleFromNorth %= 180;
-		this.runways[0] = new DeclaredRunway(this, angleFromNorth, lTORA, lASDA, lTODA, lLDA);
-		this.defaultRunways[0] = new DeclaredRunway(this, angleFromNorth, lTORA, lASDA, lTODA, lLDA);
+		this.runways[0] = new DeclaredRunway(this, angleFromNorth, side, lTORA, lASDA, lTODA, lLDA);
+		this.defaultRunways[0] = new DeclaredRunway(this, angleFromNorth, side, lTORA, lASDA, lTODA, lLDA);
 
 		
 		//large angled runway stuff
@@ -77,9 +77,10 @@ public class Airfield implements AirfieldInterface, Savable {
 		double rASDA = largeAngledDistances[1];
 		double rTODA = largeAngledDistances[2];
 		double rLDA =  largeAngledDistances[3];
-
-		this.runways[1] = new DeclaredRunway(this, angleFromNorth+180, rTORA, rASDA, rTODA, rLDA);
-		this.defaultRunways[1] = new DeclaredRunway(this, angleFromNorth+180, rTORA, rASDA, rTODA, rLDA);
+		char opSide = DeclaredRunway.oppositeSide(side);
+		
+		this.runways[1] = new DeclaredRunway(this, angleFromNorth+180, opSide, rTORA, rASDA, rTODA, rLDA);
+		this.defaultRunways[1] = new DeclaredRunway(this, angleFromNorth+180, opSide, rTORA, rASDA, rTODA, rLDA);
 	}
 	
 	public static final double DEFAULT_GIRTH = 100;
@@ -94,20 +95,18 @@ public class Airfield implements AirfieldInterface, Savable {
 	/**
 	 * Default value constructor
 	 */
-	protected Airfield(int angleFromNorth, double[] smallAngledDistances, double[] largeAngledDistances) throws VariableDeclarationException{
+	protected Airfield(int angleFromNorth, char side ,double[] smallAngledDistances, double[] largeAngledDistances) throws VariableDeclarationException{
 		this(angleFromNorth, new double[] { DEFAULT_GIRTH, DEFAULT_LEFT_STRIP_END, 
 											DEFAULT_RIGHT_STRIP_END, DEFAULT_LONG_SPACER, 
 											DEFAULT_SHORT_SPACER, DEFAULT_MEDIUM_SPACER, 
 											DEFAULT_SHORT_LENGTH, DEFAULT_LONG_LENGTH}, 
-			 smallAngledDistances,largeAngledDistances);
+			 side, smallAngledDistances, largeAngledDistances);
 	}
 	
 	@Override
 	public double getRunwayGirth() { return this.runGirth; }
 	@Override
-	public double getLeftStripEnd() { return this.lStripEnd; }
-	@Override
-	public double getRightStripEnd() { return this.rStripEnd; }
+	public double getStripEnd() { return this.stripEnd; }
 	@Override
 	public double getLongSpacer() { return this.longSpacer; }
 	@Override
@@ -125,9 +124,7 @@ public class Airfield implements AirfieldInterface, Savable {
 	@Override
 	public void setRunwayGirth(double rGirth) { this.runGirth = rGirth; }
 	@Override
-	public void setLeftStripEnd(double lStrip) { this.lStripEnd = lStrip; }
-	@Override
-	public void setRightStripEnd(double rStrip) { this.rStripEnd = rStrip; }
+	public void setStripEnd(double strip) { this.stripEnd = strip; }
 	@Override
 	public void setLongSpacer(double lSpacer) { this.longSpacer = lSpacer; }
 	@Override
@@ -143,7 +140,7 @@ public class Airfield implements AirfieldInterface, Savable {
 	
 	@Override
 	public double getTotalWidth() {
-		return getLeftStripEnd()+longestTORA()+getRightStripEnd();
+		return getStripEnd()+longestTORA()+getStripEnd();
 	}
 	
 	private double longestTORA(){ 
@@ -407,7 +404,7 @@ public class Airfield implements AirfieldInterface, Savable {
 
 	@Override
 	public double[] getDimensionsToArray() {
-		return new double[] {runGirth, lStripEnd, rStripEnd, longSpacer, shortSpacer, mediumSpacer, shortLength, longLength};
+		return new double[] {runGirth, stripEnd, longSpacer, shortSpacer, mediumSpacer, shortLength, longLength};
 	}
 
 }

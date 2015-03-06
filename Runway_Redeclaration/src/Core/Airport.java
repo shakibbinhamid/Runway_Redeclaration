@@ -18,7 +18,7 @@ import Exceptions.VariableDeclarationException;
 /**
  * This is what represents an Airport, airports can have multiple airfields.
  * Please note that an airfield cannot handle more than 3 parallel runways.
- * 
+ *  
  * This class discourages the use of constructing new AirfieldInterface implementations 
  * and parsing them as arguments to be stored in this object. This is to prevent 
  * two or more airports having the same airfield.
@@ -72,11 +72,11 @@ public class Airport implements AirportInterface, Savable {
 	}
 
 	@Override
-	public void addNewAirfield(int angleFromNorth, double[] dimensions, 
+	public void addNewAirfield(int angleFromNorth, double[] dimensions, char side,
 			double[] smallAngledDistances, double[] largeAngledDistances) 
 					throws CannotMakeRunwayException, VariableDeclarationException, ParallelRunwayException {
 		
-		AirfieldInterface newAirfield = new Airfield(angleFromNorth, dimensions, smallAngledDistances,largeAngledDistances);
+		AirfieldInterface newAirfield = new Airfield(angleFromNorth, dimensions, side, smallAngledDistances,largeAngledDistances);
 		
 		/*---[ Identify parallel runways ]----
 		 * Note: Having one previous runway at the same angle is handled differently 
