@@ -3,6 +3,7 @@ package view;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -26,8 +27,12 @@ public class View extends JPanel{
 
 	private static int SPACE_ON_BOTH_SIDES = 20;
 	private static int DT_TO_BARCODE_LENGTH_RATIO_TO_TORA = 100;
+	private static int TORA_TO_DASH_RATIO = 100;
 	private static int GIRTH_TO_FONT_RATIO = 2;
 	private static int TORA_TO_BAR_CODE_RATIO = 20;
+	private static int TORA_TO_CLEARWAY_RATIO = 10;
+	
+	private static final int ARR_SIZE = 4;
 
 	public View(AirfieldInterface field, DeclaredRunwayInterface run){
 		//this.setField(field);
@@ -65,6 +70,9 @@ public class View extends JPanel{
 	}
 	
 	public static void main(String[] s){
+		
+		//AirfieldInterface field = new Airfield();
+		
 		SwingUtilities.invokeLater(new Runnable(){
 
 			@Override
@@ -72,7 +80,7 @@ public class View extends JPanel{
 				JPanel pane = new View(null, null);
 				
 				JFrame frame = new JFrame();
-				frame.setMinimumSize(new Dimension (600,300));
+				frame.setMinimumSize(new Dimension (500,300));
 				frame.setContentPane(pane);
 				
 				frame.pack();
@@ -86,7 +94,7 @@ public class View extends JPanel{
 	public void paint(Graphics g){
 		int x = this.getWidth();
 		
-		doDrawing(g, 3400, x, "09L" , "27R", 3200, 110, 60, 90, 60, 150, 75, 105, 150, 300);
+		doDrawing(g, 3800, x, "09L" , "27R", 3200, 110, 3300, 3250, 3200, 60, 90, 60, 150, 75, 105, 150, 300);
 	}
 
 	private Graphics getGraphicsComp(Graphics g, Color c){
@@ -104,7 +112,7 @@ public class View extends JPanel{
 		return g2d;
 	}
 
-	private void doDrawing(Graphics g, int x1, int x2, String s, String ss, int tora, int girth, int smalldt, int largedt, int s1, int s3, int s4, int s5, int s6, int s7) {
+	private void doDrawing(Graphics g, int x1, int x2, String s, String ss, int tora, int girth, int toda, int asda, int lda, int smalldt, int largedt, int s1, int s3, int s4, int s5, int s6, int s7) {
 
 		tora = scaleToPixels(x1, x2, tora);
 		girth = scaleToPixels(x1, x2, girth);
@@ -116,6 +124,10 @@ public class View extends JPanel{
 		s5 = scaleToPixels(x1, x2, s5);
 		s6 = scaleToPixels(x1, x2, s6);
 		s7 = scaleToPixels(x1, x2, s7);
+		
+		toda = scaleToPixels(x1, x2, toda);
+		asda = scaleToPixels(x1, x2, asda);
+		lda = scaleToPixels(x1, x2, lda);
 
 		colorFrame(getGraphicsComp(g, Color.green));
 		drawWholeArea(getGraphicsComp(g, Color.cyan), tora, s1, s3);
@@ -125,6 +137,8 @@ public class View extends JPanel{
 		drawBarCode(getGraphicsComp(g, Color.BLACK), tora, girth, smalldt, largedt);
 		drawCenterLine(getGraphicsComp(g, Color.blue), tora, girth, smalldt, largedt);
 		drawIdentifier(getGraphicsComp(g, Color.black), s, ss, tora, girth, smalldt, largedt);
+		
+		drawAllDim(getGraphicsComp(g, Color.black), tora, girth, toda, asda, lda, smalldt);
 	}
 
 	private int scaleToPixels (int howMuchWantToFit, int inHowMuch, int whatYouAreScaling){
@@ -195,7 +209,7 @@ public class View extends JPanel{
 	private void drawBarCode(Graphics g, int tora, int girth, int smalldt, int largedt){
 		Graphics2D g2 = (Graphics2D) g;
 		final BasicStroke thick =
-				new BasicStroke(2);
+				new BasicStroke(girth/20f);
 		g2.setStroke(thick);
 
 		int dtToBar = tora/DT_TO_BARCODE_LENGTH_RATIO_TO_TORA;
@@ -222,9 +236,9 @@ public class View extends JPanel{
 
 	private void drawCenterLine(Graphics g, int tora, int girth, int smalldt, int largedt){
 		Graphics2D g2 = (Graphics2D) g;
-		final float dash1[] = {10.0f};
+		final float dash1[] = {tora/TORA_TO_DASH_RATIO};
 		final BasicStroke dashed =
-				new BasicStroke(3.0f,
+				new BasicStroke(girth/25f,
 						BasicStroke.CAP_BUTT,
 						BasicStroke.JOIN_MITER,
 						10.0f, dash1, 0.0f);
@@ -246,11 +260,14 @@ public class View extends JPanel{
 		final BasicStroke thick =
 				new BasicStroke(2);
 		g2.setStroke(thick);
+		
+		g2.setFont(new Font("verdana", girth/2, girth/2));
 
 		int dtToBar = tora/DT_TO_BARCODE_LENGTH_RATIO_TO_TORA;
 		int bar = tora/TORA_TO_BAR_CODE_RATIO;
 
 		AffineTransform at = new AffineTransform();
+		AffineTransform old = g2.getTransform();
 		at.setToRotation(Math.PI / 2.0);
 		g2.setTransform(at);
 		g2.setColor(Color.BLACK);
@@ -260,6 +277,55 @@ public class View extends JPanel{
 		at2.setToRotation(-Math.PI / 2.0);
 		g2.setTransform(at2);
 		g2.drawString(s2, -getHeight()/2 - girth/2, (getWidth()/2 + tora/2 - dt2 - dtToBar - bar - 5) );
+		g2.setTransform(old);
 	}
+	
+	private void drawStopandClear(Graphics g, int tora){
+		
+	}
+	
+	private void drawAllDim(Graphics g, int tora, int girth, int toda, int asda, int lda, int dt){
+		int height = girth/2;
+		drawdim(g, tora, girth, "TORA", 0, tora, height);
+		drawdim(g, tora, girth, "TODA", 0, toda, height + 20);
+		drawdim(g, tora, girth, "ASDA", 0, asda, height + 40);
+		drawdim(g, tora, girth, "LDA", dt, lda, height + 60);
+	}
+
+	private void drawdim(Graphics g, int tora, int girth, String what, int startWhere, int howlong, int howhighUp){
+		int bitLessThanHalf = new BigDecimal(howlong/2-howlong/16).intValue();
+		
+		int endX = getWidth()/2 - tora/2 + startWhere;
+		int startX = endX + bitLessThanHalf;
+		int endY = getHeight()/2 - girth/2 - howhighUp;
+		int startY = endY;
+		
+		g.setFont(new Font("verdana", 10, 10));
+		
+		drawArrow(g, startX, startY, endX, endY);
+		
+		g.drawString(what, startX + startX/50, startY);
+		
+		endX = endX + howlong;
+		startX = startX + howlong/16;
+		
+		drawArrow(g, startX, startY, endX, endY);
+	}
+	
+    private void drawArrow(Graphics g1, int x1, int y1, int x2, int y2) {
+        Graphics2D g = (Graphics2D) g1.create();
+
+        double dx = x2 - x1, dy = y2 - y1;
+        double angle = Math.atan2(dy, dx);
+        int len = (int) Math.sqrt(dx*dx + dy*dy);
+        AffineTransform at = AffineTransform.getTranslateInstance(x1, y1);
+        at.concatenate(AffineTransform.getRotateInstance(angle));
+        g.transform(at);
+
+        // Draw horizontal arrow starting in (0, 0)
+        g.drawLine(0, 0, len, 0);
+        g.fillPolygon(new int[] {len, len-ARR_SIZE, len-ARR_SIZE, len},
+                      new int[] {0, -ARR_SIZE, ARR_SIZE, 0}, 4);
+    }
 
 }

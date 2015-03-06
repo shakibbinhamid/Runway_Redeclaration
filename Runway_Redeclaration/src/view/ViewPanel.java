@@ -13,8 +13,8 @@ public class ViewPanel extends JPanel{
 
 	public ViewPanel(DeclaredRunwayInterface runway){
 		this.runway = runway;
-		view1 = new View();
-		view2 = new View();
+		view1 = new View(null, null);
+		view2 = new View(null, null);
 		init();
 	}
 	

@@ -14,7 +14,6 @@ import CoreInterfaces.AirportInterface;
 import CoreInterfaces.ObstacleInterface;
 import Exceptions.CannotMakeRunwayException;
 import Exceptions.InvalidIdentifierException;
-import Exceptions.UnusableRunwayException;
 import Exceptions.VariableDeclarationException;
 
 /**
@@ -106,12 +105,12 @@ public class TopFrame extends JFrame{
 	 * @param distanceFromLeft distance from the left hand side
 	 */
 	public void loadOrCreateObstacle(ObstacleInterface obs, AirfieldInterface field, double distanceFromLeft){
-		try {
+		/*try {
 			field.addObstacle(obs, field.getSmallAngledRunway().getIdentifier(), distanceFromLeft);	
-		} catch (InvalidIdentifierException | UnusableRunwayException e) {
+		} catch (InvalidIdentifierException  e) {
 			e.printStackTrace();
 		}
-		tabbedPanel.updateTab(field);
+		tabbedPanel.updateTab(field);*/
 	}
 
 	/**
