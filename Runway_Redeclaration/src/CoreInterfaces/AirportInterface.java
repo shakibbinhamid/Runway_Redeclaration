@@ -2,7 +2,6 @@ package CoreInterfaces;
 
 import java.util.List;
 
-import Core.ParallelRunwayException;
 import Exceptions.CannotMakeRunwayException;
 import Exceptions.UnrecognisedAirfieldIntifierException;
 import Exceptions.VariableDeclarationException;
@@ -58,7 +57,7 @@ public interface AirportInterface {
 	 */
 	void addNewAirfield(int angleFromNorth, double[] dimensions, char side,
 			double[] smallAngledDistances, double[] largeAngledDistances) 
-			throws ParallelRunwayException, CannotMakeRunwayException, VariableDeclarationException;
+			throws CannotMakeRunwayException, VariableDeclarationException;
 	
 	/**
 	 * Returns a list of all the names of the runways associated with this airport

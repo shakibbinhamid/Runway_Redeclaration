@@ -74,39 +74,21 @@ public class Airport implements AirportInterface, Savable {
 	@Override
 	public void addNewAirfield(int angleFromNorth, double[] dimensions, char side,
 			double[] smallAngledDistances, double[] largeAngledDistances) 
-					throws CannotMakeRunwayException, VariableDeclarationException, ParallelRunwayException {
+					throws CannotMakeRunwayException, VariableDeclarationException {
 		
 		AirfieldInterface newAirfield = new Airfield(angleFromNorth, dimensions, side, smallAngledDistances,largeAngledDistances);
 		
-		/*---[ Identify parallel runways ]----
-		 * Note: Having one previous runway at the same angle is handled differently 
-		 * to having two at the previous angle and 4 runways of the same angle are
-		 * not allowed, so we must count up all runways at that angle before throwing 
-		 * any exceptions. */
-		List<AirfieldInterface> parrallelRunways = new ArrayList<AirfieldInterface>();
-		String id_newAngle = newAirfield.getSmallAngledRunway().getIdentifier().substring(0, 2);
-		
 		for(AirfieldInterface runway : getAirfields()){
-			String id_angle =  runway.getSmallAngledRunway().getIdentifier().substring(0, 2);
-			//parallel runways would have the same angle part of the identifier
-			if(id_angle.equals(id_newAngle)){
-				parrallelRunways.add(runway);
+			if(runway.getName().equals(newAirfield.getName())){
+				throw new CannotMakeRunwayException(newAirfield,"that identifier is already in use");
 			}
-		}
-		if(!parrallelRunways.isEmpty()){
-			if(parrallelRunways.size()>=3) {
-				throw new CannotMakeRunwayException(newAirfield);
-			}
-			throw new ParallelRunwayException(this, parrallelRunways, newAirfield);
-		}
 		
+		}
 		this.airfields.add(newAirfield);
+		
+		
 	}
 	
-	protected void addParrallelAirfield(AirfieldInterface newAirfield){
-		this.airfields.add(newAirfield);
-	}
-
 	
 	public String toString(){
 		String out = getName()+": [";
