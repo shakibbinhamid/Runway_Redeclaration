@@ -140,11 +140,11 @@ public class Airfield implements AirfieldInterface, Savable {
 	
 	@Override
 	public double getTotalWidth() {
-		return getStripEnd()+longestTORA()+getStripEnd();
+		return getStripEnd()+longestTODA()+getStripEnd();
 	}
 	
-	private double longestTORA(){ 
-		if (getSmallAngledRunway().getTORA() > getLargeAngledRunway().getTORA()){
+	private double longestTODA(){ 
+		if (getSmallAngledRunway().getTODA() > getLargeAngledRunway().getTODA()){
 			return getSmallAngledRunway().getTORA();
 		}else{
 			return getLargeAngledRunway().getTORA();
