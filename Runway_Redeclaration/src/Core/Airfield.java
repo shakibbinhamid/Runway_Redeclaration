@@ -256,7 +256,6 @@ public class Airfield implements AirfieldInterface, Savable {
 			this.getSmallAngledRunway().landOver(getDefaultSmallAngledRunway(), this);
 		}
 		
-		
 		if(largeTakeOffTowards){
 			this.getLargeAngledRunway().takeOffTowardsOver(getDefaultLargeAngledRunway(), this);
 		}else{
@@ -267,7 +266,6 @@ public class Airfield implements AirfieldInterface, Savable {
 		}else{
 			this.getLargeAngledRunway().landOver(getDefaultLargeAngledRunway(), this);
 		}
-		
 	}
 	
 	@Override
@@ -298,7 +296,7 @@ public class Airfield implements AirfieldInterface, Savable {
 		return this.obstacle;
 	}
 
-	/**/@Override
+	@Override
 	public void addObstacle(ObstacleInterface obj,
 			double distanceFromSmall, double distanceFromLarge) throws InvalidIdentifierException {/**/
 
