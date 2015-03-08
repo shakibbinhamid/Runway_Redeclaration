@@ -48,7 +48,7 @@ public class View extends JPanel{
 		h = field.getRunwayGirth();
 		dt1 = field.getSmallAngledRunway().getDisplacedThreshold();
 		dt2 = field.getLargeAngledRunway().getDisplacedThreshold();
-		s1 = field.getLeftStripEnd();
+		s1 = field.getStripEnd();
 		s3 = field.getLongSpacer();
 		s4 = field.getShortSpacer();
 		s5 = field.getMediumSpacer();
