@@ -8,12 +8,10 @@ import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import Core.ParallelRunwayException;
 import CoreInterfaces.AirfieldInterface;
 import CoreInterfaces.AirportInterface;
 import CoreInterfaces.ObstacleInterface;
 import Exceptions.CannotMakeRunwayException;
-import Exceptions.InvalidIdentifierException;
 import Exceptions.VariableDeclarationException;
 
 /**
@@ -87,11 +85,11 @@ public class TopFrame extends JFrame{
 	 * @param smallInputs parameters of small angled runway
 	 * @param bigInputs parameters of big angled runway
 	 */
-	public void loadOrCreateField(int parseInt, double[] physicalInputs,
+	public void loadOrCreateField(int parseInt, char side,
 			double[] smallInputs, double[] bigInputs) {
 		try {
-			airport.addNewAirfield(parseInt, physicalInputs, smallInputs, bigInputs);
-		} catch (VariableDeclarationException | ParallelRunwayException | CannotMakeRunwayException e) {
+			airport.addNewAirfield(parseInt, side, smallInputs, bigInputs);
+		} catch (VariableDeclarationException | CannotMakeRunwayException e) {
 			e.printStackTrace();
 		}
 		List<AirfieldInterface> fields = airport.getAirfields();

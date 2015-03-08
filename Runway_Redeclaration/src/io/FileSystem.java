@@ -1,13 +1,24 @@
 package io;
+import java.awt.Dimension;
 import java.io.File;
 import java.util.ArrayList;
 
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+
 import Core.Airport;
 import Core.Obstacle;
+import CoreInterfaces.AirfieldInterface;
 import CoreInterfaces.AirportInterface;
+import CoreInterfaces.DeclaredRunwayInterface;
 import CoreInterfaces.ObstacleInterface;
+import Exceptions.CannotMakeRunwayException;
 import Exceptions.NothingToSaveException;
+import Exceptions.UnrecognisedAirfieldIntifierException;
+import Exceptions.VariableDeclarationException;
 import view.Notification;
+import view.View;
 
 /**
  * Handles the saving and loading of objects
@@ -101,7 +112,7 @@ public class FileSystem {
 
 	public AirportInterface loadAir(String fileName){
 		File airFile = new File(wd + datDir + airDir + "/" + fileName);
-		loadingNotification(fileName);
+		//loadingNotification(fileName);
 		AirportInterface a = (AirportInterface) XMLSaver.deserialise(Airport.class, airFile);
 		return a;
 	}
