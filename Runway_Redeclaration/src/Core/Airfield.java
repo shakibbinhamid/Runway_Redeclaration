@@ -56,7 +56,7 @@ public class Airfield implements AirfieldInterface, Savable {
 		
 		this.obstacle = null;
 
-		
+
 		//--[ Handle Runways ]-----
 		this.runways = new DeclaredRunwayInterface[2];
 		this.defaultRunways= new DeclaredRunwayInterface[2];
