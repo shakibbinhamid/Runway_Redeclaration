@@ -35,8 +35,7 @@ public class DeclaredRunway implements DeclaredRunwayInterface{
 	
 	public static final double DEFAULT_RESA = 240;
 	
-	@Element 
-	public String log; //TODO Somehow hide from element
+	public static String log; //TODO Somehow hide from element
 	@Element
 	private double decTora, decLda, decAsda, decToda, disThresh, resa, startOfRofl;
 	
@@ -50,7 +49,7 @@ public class DeclaredRunway implements DeclaredRunwayInterface{
 	
 	protected DeclaredRunway(AirfieldInterface airfield, int angleFromNorth, char side,
 			double tora, double asda, double toda, double lda) throws VariableDeclarationException{
-		this.log = "-[Log]-\n";
+		log = "-[Log]-\n";
 
 		setTORA(tora);
 		setASDA(asda);
@@ -444,7 +443,7 @@ public class DeclaredRunway implements DeclaredRunwayInterface{
 		}
 		
 		public void addToLog(String text){
-			this.log += text+"\n";
+			log += text+"\n";
 			try{
 				Notification.notify(text);
 			}catch (NullPointerException np){
@@ -453,7 +452,7 @@ public class DeclaredRunway implements DeclaredRunwayInterface{
 		}
 		
 		public String getLog(){
-			return this.log;
+			return log;
 		}
 		
 		public static char oppositeSide(char side){
