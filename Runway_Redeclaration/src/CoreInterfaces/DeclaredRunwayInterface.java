@@ -55,9 +55,13 @@ public interface DeclaredRunwayInterface {
 	double getStopway();
 	
 	double getDisplacedThreshold();
-	
+	void setDisplacedThreshold(double dT) throws VariableDeclarationException;
+
 	double getRESA();
 	void setRESA(double resa) throws VariableDeclarationException;
+	
+	double getStartOfRoll();
+	void setStartOfRoll(double roflmao) throws VariableDeclarationException;
 	
 //=====[ Mutators ]=================================================
 	void resetToNoObstacle(DeclaredRunwayInterface original) throws VariableDeclarationException;
@@ -74,5 +78,4 @@ public interface DeclaredRunwayInterface {
 	double getDescentAngle();
 	
 	double getAscentAngle();
-
 }
