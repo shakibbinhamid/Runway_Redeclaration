@@ -14,22 +14,30 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+import Core.Airport;
 import CoreInterfaces.AirfieldInterface;
+import CoreInterfaces.AirportInterface;
 import CoreInterfaces.DeclaredRunwayInterface;
+import Exceptions.CannotMakeRunwayException;
+import Exceptions.UnrecognisedAirfieldIntifierException;
+import Exceptions.VariableDeclarationException;
 
 
 /**
  * Preferred Size : 505 wide 275 tall
  * @author Shakib
+ * @Editor Shakib Stefan
  *
  */
 public class View extends JPanel{
-
+	private static final long serialVersionUID = 1L;
+	
 	private AirfieldInterface field;
 	private DeclaredRunwayInterface run;
-	private double b, h, dt1, dt2, s1, s3, s4, s5, s6, s7;
+	private int tora, girth, s1, s3, s4, s5, s6, s7, asda, toda, lda, startOfRoll;
+	private int smallDT, largeDT, currentDT;
 	private String s, ss;
-	private double x1, x2;
+	private int totalWidth;
 
 	private static int SPACE_ON_BOTH_SIDES = 20;
 	private static int DT_TO_BARCODE_LENGTH_RATIO_TO_TORA = 100;
@@ -46,8 +54,8 @@ public class View extends JPanel{
 	private static final int ARR_SIZE = 4;
 
 	public View(AirfieldInterface field, DeclaredRunwayInterface run){
-		//this.setField(field);
-		//this.setRun(run);
+		this.setField(field);
+		this.setRunway(run);
 	}
 
 	public AirfieldInterface getField() {
@@ -56,44 +64,66 @@ public class View extends JPanel{
 
 	public void setField(AirfieldInterface field) {
 		this.field = field;
-		h = field.getRunwayGirth();
-		dt1 = field.getSmallAngledRunway().getDisplacedThreshold();
-		dt2 = field.getLargeAngledRunway().getDisplacedThreshold();
-		s1 = field.getStripEnd();
-		s3 = field.getLongSpacer();
-		s4 = field.getShortSpacer();
-		s5 = field.getMediumSpacer();
-		s6 = field.getShortLength();
-		s7 = field.getLongLength();
+		girth = (int) field.getRunwayGirth();
+		smallDT = (int) field.getSmallAngledRunway().getDisplacedThreshold();
+		largeDT = (int) field.getLargeAngledRunway().getDisplacedThreshold();
+		s1 = (int) field.getStripEnd();
+		s3 = (int) field.getLongSpacer();
+		s4 = (int) field.getShortSpacer();
+		s5 = (int) field.getMediumSpacer();
+		s6 = (int) field.getShortLength();
+		s7 = (int) field.getLongLength();
 
 		s = field.getSmallAngledRunway().getIdentifier();
 		ss = field.getLargeAngledRunway().getIdentifier();
 	}
 
-	public DeclaredRunwayInterface getRun() {
+	public DeclaredRunwayInterface getRunway() {
 		return run;
 	}
 
-	public void setRun(DeclaredRunwayInterface run) {
+	public void setRunway(DeclaredRunwayInterface run) {
 		this.run = run;
-		b = run.getTORA();
-		x1 = b + 2*s1 + SPACE_ON_BOTH_SIDES;
+		tora = (int) run.getTORA();
+		totalWidth = (int) this.field.getTotalWidth();
+		asda = (int) getRunway().getASDA();
+		toda = (int) getRunway().getTODA();
+		lda = (int) getRunway().getLDA();
+		startOfRoll = (int) getRunway().getStartOfRoll();
+		currentDT = smallDT;
+		
+		//TODO have a look		<----------------------------------------------------------------------------------------------------
+		if(!run.isSmallEnd()){
+			startOfRoll = (int) (tora- getRunway().getStartOfRoll());
+			currentDT = tora-largeDT;
+		} 
 	}
 
 	public static void main(String[] s){
-
-		//AirfieldInterface field = new Airfield();
-
 		SwingUtilities.invokeLater(new Runnable(){
 
 			@Override
 			public void run() {
-				JPanel pane = new View(null, null);
+				
+				AirportInterface port = new Airport("Jim International");
+				AirfieldInterface air = null;
+				DeclaredRunwayInterface runway = null;
+				try {
+					port.addNewAirfield(90, 'L', new double[] {3902,3902,3902,3596}, new double[] {3884,3884,3962,3884});
+					air = port.getAirfield(port.getAirfieldNames().get(0));
+					runway = air.getSmallAngledRunway();
+					
+				} catch (CannotMakeRunwayException | VariableDeclarationException e) {
+					e.printStackTrace();
+				} catch (UnrecognisedAirfieldIntifierException e) {
+					e.printStackTrace();
+				}
+				JPanel pane = new View(air, runway);
 
 				JFrame frame = new JFrame();
 				frame.setMinimumSize(new Dimension (500,300));
 				frame.setContentPane(pane);
-
+				frame.setTitle("Testing");
 				frame.pack();
 				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				frame.setVisible(true);
@@ -104,8 +134,8 @@ public class View extends JPanel{
 
 	public void paint(Graphics g){
 		int x = this.getWidth();
-
-		doDrawing(g, 3902+120, x, "09L" , "27R", 3902, 110, 3902, 3902, 3596, 306, 0, 60, 150, 75, 105, 150, 300, 0);
+		doDrawing(g);
+		//, 3902+120, x, "09L" , "27R", 3902, 110, 3902, 3902, 3596, 306, 0, 60, 150, 75, 105, 150, 300, 0);
 	}
 
 	private Graphics getGraphicsComp(Graphics g, Color c){
@@ -122,13 +152,27 @@ public class View extends JPanel{
 		g2d.setRenderingHints(rh);
 		return g2d;
 	}
+	//TODO use!
+	
+	private int direction(){
+		return getRunway().isSmallEnd() ? 1:-1;
+	}
 
-	private void doDrawing(Graphics g, int x1, int x2, String s, String ss, int tora, int girth, int toda, int asda, int lda, int smalldt, int largedt, int s1, int s3, int s4, int s5, int s6, int s7, int startOfRoll) {
+	private void doDrawing(Graphics g){
+		doDrawing(g, totalWidth, this.getWidth(), s, ss, tora, girth, toda, asda, lda, smallDT, largeDT, currentDT, s1, s3, s4, s5, s6, s7, startOfRoll);
+	}
+	
+	private void doDrawing(Graphics g, int x1, int x2, String s, String ss, 
+			int tora, int girth, int toda, int asda, int lda, int smalldt, int largedt, int currentDT,
+			int s1, int s3, int s4, int s5, int s6, int s7, int startOfRoll) {
+		
 		System.out.println(this.getWidth()+","+this.getHeight());
 		tora = scaleToPixels(x1, x2, tora);
 		girth = scaleToPixels(x1, x2, girth);
 		smalldt = scaleToPixels(x1, x2, smalldt);
 		largedt = scaleToPixels(x1, x2, largedt);
+		currentDT = scaleToPixels(x1, x2, currentDT);
+		
 		s1 = scaleToPixels(x1, x2, s1);
 		s3 = scaleToPixels(x1, x2, s3);
 		s4 = scaleToPixels(x1, x2, s4);
@@ -140,17 +184,25 @@ public class View extends JPanel{
 		asda = scaleToPixels(x1, x2, asda);
 		lda = scaleToPixels(x1, x2, lda);
 
-		colorFrame(getGraphicsComp(g, grass));
-		drawWholeArea(getGraphicsComp(g, purple), tora, s1, s3);
-		drawClearedAndGradedArea(getGraphicsComp(g, clearedBlue), tora, s1, s4, s5, s6, s7);
-		drawMainRunwayRect(getGraphicsComp(g, Color.gray), tora, girth);
-		drawdtLines(getGraphicsComp(g, Color.red), tora, girth, smalldt, largedt);
-		drawBarCode(getGraphicsComp(g, Color.white), tora, girth, smalldt, largedt);
-		drawCenterLine(getGraphicsComp(g, Color.white), tora, girth, smalldt, largedt);
-		drawIdentifier(getGraphicsComp(g, Color.white), s, ss, tora, girth, smalldt, largedt);
+		Graphics2D g2 = (Graphics2D) g.create();
+		if(!getRunway().isSmallEnd()){
+			
+		}
+		
+		
+		colorFrame(getGraphicsComp(g2, grass));
+		drawWholeArea(getGraphicsComp(g2, purple), tora, s1, s3);
+		drawClearedAndGradedArea(getGraphicsComp(g2, clearedBlue), tora, s1, s4, s5, s6, s7);
+		drawMainRunwayRect(getGraphicsComp(g2, Color.gray), tora, girth);
+		drawdtLines(getGraphicsComp(g2, Color.red), tora, girth, smalldt, largedt);
+		drawBarCode(getGraphicsComp(g2, Color.white), tora, girth, smalldt, largedt);
+		drawCenterLine(getGraphicsComp(g2, Color.white), tora, girth, smalldt, largedt);
+		drawIdentifier(getGraphicsComp(g2, Color.white), s, ss, tora, girth, smalldt, largedt);
 
-		drawAllDim(getGraphicsComp(g, Color.black), tora, girth, toda, asda, lda, smalldt, startOfRoll);
+		drawAllDim(getGraphicsComp(g2, Color.black), tora, girth, toda, asda, lda, currentDT, startOfRoll);
+		
 	}
+
 
 	private int scaleToPixels (int howMuchWantToFit, int inHowMuch, int whatYouAreScaling){
 		BigDecimal value = new BigDecimal( whatYouAreScaling * inHowMuch/howMuchWantToFit);
