@@ -56,7 +56,7 @@ public class Airfield implements AirfieldInterface, Savable {
 		
 		this.obstacle = null;
 
-		
+
 		//--[ Handle Runways ]-----
 		this.runways = new DeclaredRunwayInterface[2];
 		this.defaultRunways= new DeclaredRunwayInterface[2];
@@ -84,8 +84,7 @@ public class Airfield implements AirfieldInterface, Savable {
 	}
 	
 	public static final double DEFAULT_GIRTH = 100;
-	public static final double DEFAULT_LEFT_STRIP_END = 60;
-	public static final double  DEFAULT_RIGHT_STRIP_END = 60;
+	public static final double DEFAULT_STRIP_END = 60;
 	public static final double DEFAULT_LONG_SPACER = 150;
 	public static final double DEFAULT_SHORT_SPACER = 75;
 	public static final double DEFAULT_MEDIUM_SPACER = 105;
@@ -96,8 +95,8 @@ public class Airfield implements AirfieldInterface, Savable {
 	 * Default value constructor
 	 */
 	protected Airfield(int angleFromNorth, char side ,double[] smallAngledDistances, double[] largeAngledDistances) throws VariableDeclarationException{
-		this(angleFromNorth, new double[] { DEFAULT_GIRTH, DEFAULT_LEFT_STRIP_END, 
-											DEFAULT_RIGHT_STRIP_END, DEFAULT_LONG_SPACER, 
+		this(angleFromNorth, new double[] { DEFAULT_GIRTH, DEFAULT_STRIP_END, 
+											DEFAULT_LONG_SPACER, 
 											DEFAULT_SHORT_SPACER, DEFAULT_MEDIUM_SPACER, 
 											DEFAULT_SHORT_LENGTH, DEFAULT_LONG_LENGTH}, 
 			 side, smallAngledDistances, largeAngledDistances);
@@ -145,9 +144,9 @@ public class Airfield implements AirfieldInterface, Savable {
 	
 	private double longestTODA(){ 
 		if (getSmallAngledRunway().getTODA() > getLargeAngledRunway().getTODA()){
-			return getSmallAngledRunway().getTORA();
+			return getSmallAngledRunway().getTODA();
 		}else{
-			return getLargeAngledRunway().getTORA();
+			return getLargeAngledRunway().getTODA();
 		}
 	}
 
@@ -161,7 +160,6 @@ public class Airfield implements AirfieldInterface, Savable {
 	 * without allowing the user to choose which side does what
 	 * 
 	 * @throws VariableDeclarationException
-	 * @throws  
 	 */
 	private void redeclareRunways() throws VariableDeclarationException{
 		getSmallAngledRunway().resetToNoObstacle(getDefaultSmallAngledRunway());
@@ -201,7 +199,6 @@ public class Airfield implements AirfieldInterface, Savable {
 	 * without allowing the user to choose which side does what
 	 * 
 	 * @throws VariableDeclarationException
-	 * @throws  
 	 */
 	public void redeclareRunways(boolean smallLandTowards, boolean smallTakeOffTowards, 
 			boolean largeLandTowards, boolean largeTakeOffTowards) 
@@ -259,7 +256,6 @@ public class Airfield implements AirfieldInterface, Savable {
 			this.getSmallAngledRunway().landOver(getDefaultSmallAngledRunway(), this);
 		}
 		
-		
 		if(largeTakeOffTowards){
 			this.getLargeAngledRunway().takeOffTowardsOver(getDefaultLargeAngledRunway(), this);
 		}else{
@@ -270,7 +266,6 @@ public class Airfield implements AirfieldInterface, Savable {
 		}else{
 			this.getLargeAngledRunway().landOver(getDefaultLargeAngledRunway(), this);
 		}
-		
 	}
 	
 	@Override
@@ -301,7 +296,7 @@ public class Airfield implements AirfieldInterface, Savable {
 		return this.obstacle;
 	}
 
-	/**/@Override
+	@Override
 	public void addObstacle(ObstacleInterface obj,
 			double distanceFromSmall, double distanceFromLarge) throws InvalidIdentifierException {/**/
 

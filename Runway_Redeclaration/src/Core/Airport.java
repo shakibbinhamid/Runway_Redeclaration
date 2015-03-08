@@ -72,11 +72,11 @@ public class Airport implements AirportInterface, Savable {
 	}
 
 	@Override
-	public void addNewAirfield(int angleFromNorth, double[] dimensions, char side,
+	public void addNewAirfield(int angleFromNorth, char side,
 			double[] smallAngledDistances, double[] largeAngledDistances) 
 					throws CannotMakeRunwayException, VariableDeclarationException {
 		
-		AirfieldInterface newAirfield = new Airfield(angleFromNorth, dimensions, side, smallAngledDistances,largeAngledDistances);
+		AirfieldInterface newAirfield = new Airfield(angleFromNorth, side, smallAngledDistances,largeAngledDistances);
 		
 		for(AirfieldInterface runway : getAirfields()){
 			if(runway.getName().equals(newAirfield.getName())){

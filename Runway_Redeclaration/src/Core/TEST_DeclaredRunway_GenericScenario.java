@@ -47,6 +47,13 @@ public class TEST_DeclaredRunway_GenericScenario {
 				new double[] {2792,2792,2792,3246}, new double[] {3534,3534,3612,2774},
 				3546, 50);
 	}
+	public static void Setup5() throws VariableDeclarationException, InvalidIdentifierException{
+		//  09L/27R
+		make(_027R, _09L,'L',
+				90, 20,
+				new double[] {3534,3534,3612,2774},  new double[] {2792,2792,2792,3246},  
+				  50, 3546);
+	}
 	static boolean verboseMode = false;
 	@BeforeClass
 	public static void chooseScenario() throws VariableDeclarationException, InvalidIdentifierException{
@@ -60,6 +67,9 @@ public class TEST_DeclaredRunway_GenericScenario {
 		 
 		 System.out.println("Choose a scneario");
 		 int choice = in.nextInt();
+		 if (choice == -1){
+			 entryModeSetup();
+		 }else
 		 if(choice== 1){
 			 Setup1();
 		 }else
@@ -70,7 +80,10 @@ public class TEST_DeclaredRunway_GenericScenario {
 			 Setup3();
 		 }else
 		 if(choice==4){
-			 Setup4();
+			Setup4();
+		 }else 
+		 if(choice==5){
+			Setup5();
 		 }else{
 			 System.out.println("Adios then bro");
 		 }
@@ -79,7 +92,136 @@ public class TEST_DeclaredRunway_GenericScenario {
 		 
 	}
 
-	
+	private static void entryModeSetup() throws VariableDeclarationException, InvalidIdentifierException{
+		System.out.println("Please enter values:\n");
+		
+		System.out.println("==[ Airfield Params ]==");
+		int angle = (int) getDblput("Angle");
+		System.out.print("Side $>");
+		String unchanged = inp.next();
+		char side = unchanged.charAt(0);
+		System.out.println("=========================\n\n");
+
+		System.out.println("==[ Small Angled Size ]==");
+		System.out.println("---[ Default Values ]----");
+		double tora = getDblput("TORA");
+		double toda = getDblput("TODA");
+		 if(toda < 0){ 
+			 tora = getDblput("r:TORA");
+			 toda = getDblput("TODA");
+		 }
+		 double asda = getDblput("ASDA");
+		 if(asda < 0)  {
+			 toda = getDblput("r:TODA");
+			 asda = getDblput("ASDA");
+		 }
+		 double lda = getDblput("LDA");
+		 if(lda < 0) {
+			 asda = getDblput("r:ASDA");
+			 getDblput("LDA");
+		 }
+
+		 if(toda == 0 ) toda = tora;
+		 if(asda == 0 ) asda = tora;
+		 if(lda == 0 ) lda = tora;
+		 
+		System.out.println("---[ Expected Values ]----");
+		double newtora = getDblput("TORA");
+		 if(newtora < 0) {
+			 lda = getDblput("r:LDA");
+			 newtora = getDblput("TORA");
+		 }
+		 double newtoda = getDblput("TODA");
+		 if(newtoda < 0){
+			 newtora = getDblput("r:(N) TORA");
+			 newtoda = getDblput("TODA");
+		 }
+		 double newasda = getDblput("ASDA");
+		 if(newasda < 0){
+			 newtoda = getDblput("r:(N) TODA");
+			 newasda = getDblput("ASDA");
+		 }
+		 double newlda = getDblput("LDA");
+		 if(newlda < 0){
+			 newasda = getDblput("r:(N) ASDA");
+			 newlda = getDblput("LDA");
+		 }
+
+		 
+		 if(newtoda == 0 ) newtoda = newtora;
+		 if(newasda == 0 ) newasda = newtora;
+		 if(newlda == 0 ) newlda = newtora;
+		
+		double[] smallDefVals = {tora,asda,toda,lda};
+		double[] smallExpVals = {newtora,newasda,newtoda,newlda};
+		System.out.println("=========================\n\n");
+		System.out.println("==[ Large Angled Size ]==");
+		System.out.println("---[ Default Values ]----");
+		
+	     tora = getDblput("TORA");
+	     if(tora < 0 ) {
+	    	 newlda = getDblput("r: LDA");
+	 		smallExpVals = new double[] {newtora,newasda,newtoda,newlda};
+	 		tora = getDblput("TORA");
+	     }
+	     toda = getDblput("TODA");
+		 if(toda < 0){ 
+			 tora = getDblput("r:TORA");
+			 toda = getDblput("TODA");
+		 }
+		  asda = getDblput("ASDA");
+		 if(asda < 0)  {
+			 toda = getDblput("r:TODA");
+			 asda = getDblput("ASDA");
+		 }
+		  lda = getDblput("LDA");
+		 if(lda < 0) {
+			 asda = getDblput("r:ASDA");
+			 getDblput("LDA");
+		 }
+
+		 if(toda == 0 ) toda = tora;
+		 if(asda == 0 ) asda = tora;
+		 if(lda == 0 ) lda = tora;
+		 
+		System.out.println("---[ Expected Values ]----");
+		 newtora = getDblput("TORA");
+		 if(newtora < 0) {
+			 lda = getDblput("r:LDA");
+			 newtora = getDblput("TORA");
+		 }
+		  newtoda = getDblput("TODA");
+		 if(newtoda < 0){
+			 newtora = getDblput("r:(N) TORA");
+			 newtoda = getDblput("TODA");
+		 }
+		  newasda = getDblput("ASDA");
+		 if(newasda < 0){
+			 newtoda = getDblput("r:(N) TODA");
+			 newasda = getDblput("ASDA");
+		 }
+		  newlda = getDblput("LDA");
+		 if(newlda < 0){
+			 newasda = getDblput("r:(N) ASDA");
+			 newlda = getDblput("LDA");
+		 }
+
+		 
+		 if(newtoda == 0 ) newtoda = newtora;
+		 if(newasda == 0 ) newasda = newtora;
+		 if(newlda == 0 ) newlda = newtora;
+		 
+		 double[] largeDefVals = {tora,asda,toda,lda};
+		 double[] largeExpVals = {newtora,newasda,newtoda,newlda};
+		 System.out.println("=========================\n\n");
+		
+		System.out.println("==[ Obstacle Params ]==");
+		double left = getDblput("Distance from left");
+		double right = getDblput("Distance from right");
+		double height = getDblput("Height");
+		 
+		 make(smallDefVals, largeDefVals, side, angle, height, smallExpVals, largeExpVals, left, right);
+	}
 	
 	
 	
@@ -126,6 +268,10 @@ public class TEST_DeclaredRunway_GenericScenario {
 		air = new Airfield(angle, side ,iniSmallVars, iniLargeVars);
 		obj = new Obstacle("Scenario Obstacle", 0, height);
 		
+		verbose();
+	}
+	
+	private static void verbose() throws InvalidIdentifierException{
 		if(verboseMode){
 			show("Small TORA",iniSmallVars[0],air.getSmallAngledRunway().getTORA(),0);
 			show("Small ASDA",iniSmallVars[1],air.getSmallAngledRunway().getASDA(),0);
@@ -134,7 +280,7 @@ public class TEST_DeclaredRunway_GenericScenario {
 
 			show("Small Stopway",iniSmallVars[1]-iniSmallVars[0],air.getSmallAngledRunway().getStopway(),0);
 			show("Small Clearway",iniSmallVars[2]-iniSmallVars[0],air.getSmallAngledRunway().getClearway(),0);
-			show("Small Displaced Threshold",iniSmallVars[0]-iniSmallVars[3],air.getSmallAngledRunway().getDisplacedThreshold(),0);
+	//		show("Small Displaced Threshold",iniSmallVars[0]-iniSmallVars[3],air.getSmallAngledRunway().getDisplacedThreshold(),0);
 
 			//--[ Large angled ]------------
 			show("Large TORA",iniLargeVars[0],air.getLargeAngledRunway().getTORA(),0);
@@ -144,7 +290,7 @@ public class TEST_DeclaredRunway_GenericScenario {
 
 			show("Large Stopway",iniLargeVars[1]-iniLargeVars[0],air.getLargeAngledRunway().getStopway(),0);
 			show("Large Clearway",iniLargeVars[2]-iniLargeVars[0],air.getLargeAngledRunway().getClearway(),0);
-			show("Large Displaced Threshold",iniLargeVars[0]-iniLargeVars[3],air.getLargeAngledRunway().getDisplacedThreshold(),0);
+		//	show("Large Displaced Threshold",iniLargeVars[0]-iniLargeVars[3],air.getLargeAngledRunway().getDisplacedThreshold(),0);
 			//===< END pre checks >========================
 
 
@@ -166,7 +312,7 @@ public class TEST_DeclaredRunway_GenericScenario {
 
 			show("NEW Small Stopway",expSmallVars[1]-expSmallVars[0],air.getSmallAngledRunway().getStopway(),0);
 			show("NEW Small Clearway",expSmallVars[2]-expSmallVars[0],air.getSmallAngledRunway().getClearway(),0);
-			show("NEW SMALL Displaced Threshold",expSmallVars[0]-expSmallVars[3],air.getSmallAngledRunway().getDisplacedThreshold(),0);
+	//		show("NEW SMALL Displaced Threshold",expSmallVars[0]-expSmallVars[3],air.getSmallAngledRunway().getDisplacedThreshold(),0);
 
 			//--[ Large angled ]------------
 			show("NEW Large TORA",expLargeVars[0],air.getLargeAngledRunway().getTORA(),0);
@@ -176,7 +322,7 @@ public class TEST_DeclaredRunway_GenericScenario {
 
 			show("NEW Large Stopway",expLargeVars[1]-expLargeVars[0],air.getLargeAngledRunway().getStopway(),0);
 			show("NEW Large Clearway",expLargeVars[2]-expLargeVars[0],air.getLargeAngledRunway().getClearway(),0);
-			show("NEW Large Displaced Threshold",expLargeVars[0]-expLargeVars[3],air.getLargeAngledRunway().getDisplacedThreshold(),0);
+	//		show("NEW Large Displaced Threshold",expLargeVars[0]-expLargeVars[3],air.getLargeAngledRunway().getDisplacedThreshold(),0);
 			//===< END Post checks >========================
 		}
 	}
@@ -195,7 +341,7 @@ public class TEST_DeclaredRunway_GenericScenario {
 
 			assertEquals("Small Stopway",iniSmallVars[1]-iniSmallVars[0],air.getSmallAngledRunway().getStopway(),0);
 			assertEquals("Small Clearway",iniSmallVars[2]-iniSmallVars[0],air.getSmallAngledRunway().getClearway(),0);
-			assertEquals("Small Displaced Threshold",iniSmallVars[0]-iniSmallVars[3],air.getSmallAngledRunway().getDisplacedThreshold(),0);
+	//		assertEquals("Small Displaced Threshold",iniSmallVars[0]-iniSmallVars[3],air.getSmallAngledRunway().getDisplacedThreshold(),0);
 
 			//--[ Large angled ]------------
 			assertEquals("Large TORA",iniLargeVars[0],air.getLargeAngledRunway().getTORA(),0);
@@ -205,7 +351,7 @@ public class TEST_DeclaredRunway_GenericScenario {
 
 			assertEquals("Large Stopway",iniLargeVars[1]-iniLargeVars[0],air.getLargeAngledRunway().getStopway(),0);
 			assertEquals("Large Clearway",iniLargeVars[2]-iniLargeVars[0],air.getLargeAngledRunway().getClearway(),0);
-			assertEquals("Large Displaced Threshold",iniLargeVars[0]-iniLargeVars[3],air.getLargeAngledRunway().getDisplacedThreshold(),0);
+	//		assertEquals("Large Displaced Threshold",iniLargeVars[0]-iniLargeVars[3],air.getLargeAngledRunway().getDisplacedThreshold(),0);
 			//===< END pre checks >========================
 
 
@@ -227,7 +373,7 @@ public class TEST_DeclaredRunway_GenericScenario {
 
 			assertEquals("NEW Small Stopway",expSmallVars[1]-expSmallVars[0],air.getSmallAngledRunway().getStopway(),0);
 			assertEquals("NEW Small Clearway",expSmallVars[2]-expSmallVars[0],air.getSmallAngledRunway().getClearway(),0);
-			assertEquals("NEW SMALL Displaced Threshold",expSmallVars[0]-expSmallVars[3],air.getSmallAngledRunway().getDisplacedThreshold(),0);
+	//		assertEquals("NEW SMALL Displaced Threshold",expSmallVars[0]-expSmallVars[3],air.getSmallAngledRunway().getDisplacedThreshold(),0);
 
 			//--[ Large angled ]------------
 			assertEquals("NEW Large TORA",expLargeVars[0],air.getLargeAngledRunway().getTORA(),0);
@@ -237,7 +383,7 @@ public class TEST_DeclaredRunway_GenericScenario {
 
 			assertEquals("NEW Large Stopway",expLargeVars[1]-expLargeVars[0],air.getLargeAngledRunway().getStopway(),0);
 			assertEquals("NEW Large Clearway",expLargeVars[2]-expLargeVars[0],air.getLargeAngledRunway().getClearway(),0);
-			assertEquals("NEW Large Displaced Threshold",expLargeVars[0]-expLargeVars[3],air.getLargeAngledRunway().getDisplacedThreshold(),0);
+	//		assertEquals("NEW Large Displaced Threshold",expLargeVars[0]-expLargeVars[3],air.getLargeAngledRunway().getDisplacedThreshold(),0);
 			//===< END Post checks >========================
 
 
@@ -260,6 +406,11 @@ public class TEST_DeclaredRunway_GenericScenario {
 	static Scanner inp = new Scanner(System.in);
 	private static String getInput(){
 		String out  = inp.nextLine();
+		return out;
+	}
+	private static double getDblput(String print){
+		System.out.print(print+" $>");
+		double out  = inp.nextDouble();
 		return out;
 	}
 	
