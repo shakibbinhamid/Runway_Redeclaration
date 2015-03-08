@@ -78,4 +78,6 @@ public interface DeclaredRunwayInterface {
 	double getDescentAngle();
 	
 	double getAscentAngle();
+
+	boolean isSmallEnd();
 }

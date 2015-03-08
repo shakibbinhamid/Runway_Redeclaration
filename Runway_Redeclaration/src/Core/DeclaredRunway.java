@@ -410,7 +410,7 @@ public class DeclaredRunway implements DeclaredRunwayInterface{
 		}
 		
 		
-		
+		@Override
 		public boolean isSmallEnd(){
 			return this.angle<180;
 		}
