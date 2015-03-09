@@ -18,18 +18,19 @@ public class ViewPanel extends JPanel{
 		this.runway = runway;
 		view1 = new View(field, runway);
 	//	view2 = new View(null, null);
-	//	init();
+		init();
 	}
 	
 	private void init(){
 		this.setLayout(new GridLayout(0,1));
-		
 		this.add(view1);
 		this.add(new JPanel());
 		
 	}
 	
-	public void updateView(){
-		
+	public void updateView(DeclaredRunwayInterface run){
+		this.runway = run;
+		view1.setRunway(run);
+		view1.repaint();
 	}
 }

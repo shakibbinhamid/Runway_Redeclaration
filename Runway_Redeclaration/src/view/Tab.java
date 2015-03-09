@@ -46,7 +46,7 @@ public class Tab extends JPanel{
 		info = new InfoPanel(new DeclaredRunwayInterface[]{field.getDefaultRunways()[0], field.getRunways()[0]},obs);
 		dataPanel.add(info, BorderLayout.CENTER);
 		
-		views = new ViewPanel(field.getSmallAngledRunway());
+		views = new ViewPanel(field, field.getSmallAngledRunway());
 		this.add(views, BorderLayout.CENTER);
 		
 	}
@@ -83,6 +83,7 @@ public class Tab extends JPanel{
 	 */
 	public void changeCurrentRunway(DeclaredRunwayInterface[] another){
 		info.updateRunwayTables(another);
+		views.updateView(another[1]);
 	}
 	
 	/**

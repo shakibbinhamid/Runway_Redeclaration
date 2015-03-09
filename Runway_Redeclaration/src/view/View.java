@@ -373,8 +373,6 @@ public class View extends JPanel{
 	private void drawAllDim(Graphics g, int direction, int tora, int girth, int toda, int asda, int lda, int dt, int startOfRoll){
 		int height = girth/2;
 		int bumper = 20;
-		System.out.println(startOfRoll);
-		System.out.println(dt);
 		drawdim(g, direction, tora, girth, "LDA", dt, lda, height + bumper);
 		drawdim(g, direction, tora, girth, "TORA", startOfRoll, tora, height + bumper + 1*VIRTUAL_GAP);
 		drawdim(g, direction, tora, girth, "ASDA", startOfRoll, asda, height + bumper + 2*VIRTUAL_GAP);

@@ -12,6 +12,7 @@ import CoreInterfaces.AirfieldInterface;
 import CoreInterfaces.AirportInterface;
 import CoreInterfaces.ObstacleInterface;
 import Exceptions.CannotMakeRunwayException;
+import Exceptions.InvalidIdentifierException;
 import Exceptions.VariableDeclarationException;
 
 /**
@@ -63,7 +64,6 @@ public class TopFrame extends JFrame{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setTitle("Runway Redeclaration Tool v.0.61");
 		this.setMinimumSize(new Dimension(1200,600));
-		this.setResizable(false);
 		this.pack();
 		setVisible(true);
 	}
@@ -102,13 +102,13 @@ public class TopFrame extends JFrame{
 	 * @param field the airfield to be added to
 	 * @param distanceFromLeft distance from the left hand side
 	 */
-	public void loadOrCreateObstacle(ObstacleInterface obs, AirfieldInterface field, double distanceFromLeft){
-		/*try {
-			field.addObstacle(obs, field.getSmallAngledRunway().getIdentifier(), distanceFromLeft);	
+	public void loadOrCreateObstacle(ObstacleInterface obs, AirfieldInterface field, double distanceFromLeft, double distanceFromRight){
+		try {
+			field.addObstacle(obs, distanceFromLeft, distanceFromRight);	
 		} catch (InvalidIdentifierException  e) {
 			e.printStackTrace();
 		}
-		tabbedPanel.updateTab(field);*/
+		tabbedPanel.updateTab(field);
 	}
 
 	/**

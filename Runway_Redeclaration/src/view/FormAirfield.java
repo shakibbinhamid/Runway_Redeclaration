@@ -240,7 +240,7 @@ public class FormAirfield extends FormGeneral {
 						}
 					}
 					try {
-						topFrame.loadOrCreateField(Integer.parseInt(angleTextBox.getText()), physicalInputs, smallInputs, bigInputs);
+						//topFrame.loadOrCreateField(Integer.parseInt(angleTextBox.getText()), physicalInputs, smallInputs, bigInputs);
 						dispose();
 					} catch (NumberFormatException e) {
 						e.printStackTrace();
