@@ -7,11 +7,14 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Insets;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
@@ -35,6 +38,8 @@ import Exceptions.VariableDeclarationException;
  */
 public class View extends JPanel{
 	private static final long serialVersionUID = 1L;
+	
+	private BufferedImage image;
 	
 	private AirfieldInterface field;
 	private DeclaredRunwayInterface run;
@@ -160,9 +165,16 @@ public class View extends JPanel{
 			e.printStackTrace();
 		}
 	}
+	
+	public void save(String fullpath) throws IOException{
+		ImageIO.write(image, "PNG", new File(fullpath));
+	}
 
 	public void paint(Graphics g){
-		doDrawing(g);
+		super.paint(g);
+		image = new BufferedImage(this.getWidth(), this.getHeight(), BufferedImage.TYPE_3BYTE_BGR);
+		doDrawing();
+		g.drawImage(image, 0, 0, null);
 	}
 
 	private Graphics getGraphicsComp(Graphics g, Color c){
@@ -184,7 +196,8 @@ public class View extends JPanel{
 		return getRunway().isSmallEnd() ? 1:-1;
 	}
 
-	private void doDrawing(Graphics g){
+	private void doDrawing(){
+		Graphics2D g = (Graphics2D) image.getGraphics();
 		doDrawing(g, s, ss,
 				defTora, defGirth, defSmallDT, defLargeDT, defStopway, defClearway,
 				stripEnd, longSpacer, shortSpacer, mediumSpacer, shortLength, longLength,

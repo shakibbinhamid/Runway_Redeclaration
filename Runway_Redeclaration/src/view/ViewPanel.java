@@ -33,4 +33,8 @@ public class ViewPanel extends JPanel{
 		view1.setRunway(run);
 		view1.repaint();
 	}
+	
+	public View getTopView(){
+		return view1;
+	}
 }

@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.BorderLayout;
+import java.io.IOException;
 
 import javax.swing.JPanel;
 
@@ -70,6 +71,10 @@ public class Tab extends JPanel{
 
 	public void setField(AirfieldInterface field) {
 		this.field = field;
+	}
+	
+	public void saveTopView(String fullpath) throws IOException{
+		this.views.getTopView().save(fullpath);
 	}
 	
 	public void updateInfo(AirfieldInterface field){

@@ -2,9 +2,12 @@ package view;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -25,7 +28,7 @@ public class TopMenu extends JMenuBar{
 	
 	private JMenuItem createAirport, createRunway, createObstacle;
 	private JMenuItem loadAirport, loadObstacle;
-	private JMenuItem saveAirport, saveObstacle;
+	private JMenuItem saveAirport, saveObstacle, saveTopView;
 	
 	private JMenuItem exit;
 	private JMenuItem editRunway, editObstacle, removeObs;
@@ -71,7 +74,7 @@ public class TopMenu extends JMenuBar{
 		//================================CREATE MENU==============================================//
 		
 		createAirport = getItem("Create Airport", iairport, SwingConstants.CENTER);
-		createRunway = getItem("Create Airfield", iairfield, SwingConstants.CENTER);//TODO: need to get an icon for runway
+		createRunway = getItem("Create Airfield", iairfield, SwingConstants.CENTER);
 		createObstacle = getItem("Create Obstacle", iobstacle, SwingConstants.CENTER);
 		
 		createAirport.addActionListener(new ActionListener(){
@@ -109,11 +112,38 @@ public class TopMenu extends JMenuBar{
 		//================================SAVE MENU==============================================//
 		saveAirport = getItem("Save Airport", iairport, SwingConstants.CENTER);
 		saveObstacle = getItem("Save Obstacle", iobstacle, SwingConstants.CENTER);
+		saveTopView = getItem("Save Topview", null, SwingConstants.CENTER);
 		
-		save = getMenu("Save", isave, new JMenuItem[]{saveAirport, saveObstacle});
+		save = getMenu("Save", isave, new JMenuItem[]{saveAirport, saveObstacle, saveTopView});
 		saveAirport.addActionListener(new SaveAirportListener(frame));
 		saveObstacle.addActionListener(new SaveObjectListener(frame));
+		saveTopView.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				if(frame.getAirport() != null){
 
+					JFileChooser fc = new JFileChooser();
+					fc.setDialogTitle("Save TopDown View");
+
+					int select = fc.showSaveDialog(frame);
+
+					if(select == JFileChooser.APPROVE_OPTION){
+						File fileToSave = fc.getSelectedFile();
+						try {
+							frame.getTabbePanel().getActiveTab().saveTopView(fileToSave.getAbsolutePath());
+							JOptionPane.showMessageDialog(frame, "Saved Successfully at "+ fileToSave.getAbsolutePath(), "SAVING DONE", JOptionPane.INFORMATION_MESSAGE);
+						} catch (IOException e1) {
+							JOptionPane.showMessageDialog(frame, "Could not save!", "SAVING FAILED", JOptionPane.ERROR_MESSAGE);
+							e1.printStackTrace();
+						}
+					}
+				}else
+					JOptionPane.showMessageDialog(frame, "Nothing to save!", "SAVING FAILED", JOptionPane.ERROR_MESSAGE);
+			}
+		});
+		
 		exit = getItem("Exit", iexit, SwingConstants.CENTER);
 		exit.addActionListener(new ActionListener(){
 

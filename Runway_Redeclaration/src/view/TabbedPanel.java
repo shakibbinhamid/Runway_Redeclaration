@@ -50,6 +50,10 @@ public class TabbedPanel extends JTabbedPane{
 		return ((Tab) this.getSelectedComponent()).getField();
 	}
 	
+	public Tab getActiveTab(){
+		return (Tab) this.getSelectedComponent();
+	}
+	
 	/**
 	 * Given an existing airfield, it will update that field (mutated).
 	 * Used to update an redeclare airfield runways.
