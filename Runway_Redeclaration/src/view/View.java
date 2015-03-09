@@ -232,7 +232,7 @@ public class View extends JPanel{
 
 		drawScale(getGraphicsComp(g2, Color.black), girth, x1, x2, 500);
 		drawFatArrow(getGraphicsComp(g2, Color.RED));
-		drawObstacle(g2);
+		//drawObstacle(g2);
 	}
 	
 	private int scaleToPixels(int dim){
@@ -574,7 +574,7 @@ public class View extends JPanel{
 				new int[] {0, -ARR_SIZE, ARR_SIZE, 0}, 4);
 	}
 	
-	private void drawObstacle(Graphics2D g) {
+	private void drawObstacle(Graphics2D g, int currentDT, int defTora, double girth ) {
 		Graphics2D g2 = (Graphics2D) g.create();
 
 		PositionedObstacle obj = (PositionedObstacle) getField().getPositionedObstacle();
@@ -583,9 +583,9 @@ public class View extends JPanel{
 		//distance is from the left hand side start of grey tarmac
 		double distance;
 		if (getRunway().isSmallEnd()){
-			distance = getRunway().getDisplacedThreshold() + obj.distanceFromSmallEnd();
+			distance = currentDT + obj.distanceFromSmallEnd();
 		}else{
-			distance = defTora - getRunway().getDisplacedThreshold() - obj.distanceFromLargeEnd();
+			distance = defTora - currentDT - obj.distanceFromLargeEnd();
 		}
 		
 		int x = (int) distance;//not scaled
