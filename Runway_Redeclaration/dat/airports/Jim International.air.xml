@@ -3,21 +3,21 @@
       <airfieldInterface class="Core.Airfield">
          <runways length="2">
             <declaredRunwayInterface class="Core.DeclaredRunway">
-               <decTora>3902.0</decTora>
-               <decLda>3596.0</decLda>
-               <decAsda>3902.0</decAsda>
-               <decToda>3902.0</decToda>
-               <disThresh>306.0</disThresh>
+               <decTora>3346.0</decTora>
+               <decLda>3346.0</decLda>
+               <decAsda>3346.0</decAsda>
+               <decToda>3346.0</decToda>
+               <disThresh>556.0</disThresh>
                <resa>240.0</resa>
-               <startOfRofl>0.0</startOfRofl>
+               <startOfRofl>556.0</startOfRofl>
                <angle>90</angle>
                <direction>L</direction>
             </declaredRunwayInterface>
             <declaredRunwayInterface class="Core.DeclaredRunway">
-               <decTora>3884.0</decTora>
-               <decLda>3884.0</decLda>
-               <decAsda>3884.0</decAsda>
-               <decToda>3962.0</decToda>
+               <decTora>3186.0</decTora>
+               <decLda>3046.0</decLda>
+               <decAsda>3186.0</decAsda>
+               <decToda>3186.0</decToda>
                <disThresh>0.0</disThresh>
                <resa>240.0</resa>
                <startOfRofl>0.0</startOfRofl>
@@ -49,6 +49,12 @@
                <direction>R</direction>
             </declaredRunwayInterface>
          </defaultRunways>
+         <obstacle distanceSmall="-50.0" distanceLarge="3346.0">
+            <unpositionedObj class="Core.Obstacle" name="A380">
+               <radius>0.0</radius>
+               <height>2.0</height>
+            </unpositionedObj>
+         </obstacle>
          <runGirth>100.0</runGirth>
          <stripEnd>60.0</stripEnd>
          <longSpacer>150.0</longSpacer>

@@ -62,6 +62,8 @@ public class View extends JPanel{
 	private static Color clearedBlue = new Color(0,128,255);
 	private static Color transparentYellow = new Color(255, 255, 0, 200);
 	private static Color transparentRed = new Color(255, 0, 0, 150);
+	private static Color VERYtransparentRed = new Color(255, 0, 0, 100);
+	private static Color VERY_VERY_transparentRed = new Color(255, 0, 0, 50);
 
 	private static final int ARR_SIZE = 4;
 
@@ -247,7 +249,7 @@ public class View extends JPanel{
 
 		drawScale(getGraphicsComp(g2, Color.black), defGirth, 500);
 		drawFatArrow(getGraphicsComp(g2, Color.RED), defGirth);
-		//drawObstacle(g2);
+		drawObstacle(g2,defSmalldt,defLargedt,defTora,defGirth);
 	}
 	
 	private int scaleToPixels(int dim){
@@ -627,40 +629,123 @@ public class View extends JPanel{
 				new int[] {0, -ARR_SIZE, ARR_SIZE, 0}, 4);
 	}
 	
-	private void drawObstacle(Graphics2D g, int dt, int defTora, double defGirth ) {
+	private void drawObstacle(Graphics2D g, int defSmalldt,int defLargedt, int defTora, double defGirth ) {
 		Graphics2D g2 = (Graphics2D) g.create();
+		Graphics2D g3 = (Graphics2D) g.create();
 
 		PositionedObstacle obj = (PositionedObstacle) getField().getPositionedObstacle();
 		if (obj==null) return;
-		
-		//distance is from the left hand side start of grey tarmac
-		double distance;
-		if (getRunway().isSmallEnd()){
-			distance = dt + obj.distanceFromSmallEnd();
-		}else{
-			distance = defTora - dt - obj.distanceFromLargeEnd();
-		}
-		
-		int x = (int) distance;//not scaled
+
+		int x;
 		int y = getHeight()/2;
-		
-		//TODO figure out how that scales
-		
-		//=[ For box ]=
+		if (getRunway().isSmallEnd()){
+			int dToLeftSide = this.getWidth()/2 - defTora/2;
+			x = dToLeftSide + defSmalldt + scaleToPixels( (int) obj.distanceFromSmallEnd());
+		}else{
+			int dToRightSide = this.getWidth()/2 + defTora/2;
+			x = dToRightSide - defLargedt - scaleToPixels((int)obj.distanceFromLargeEnd());
+		}
+
+
+		//====[ With Radius ]=========
+		int radius = scaleToPixels((int) obj.getRadius());
+		int diamter = radius*2;
+		//Body
+		g2.setColor(VERYtransparentRed);
+		g2.fillOval(x-radius, y-radius, diamter, diamter);
+		//Rim
+		g2.setColor(transparentRed);
+		g2.setStroke(new BasicStroke(0.75f));
+		g2.drawOval(x-radius, y-radius, diamter, diamter);
+
+		//-----[ RESA/ALS/Blast ]-----
+		int largestFactor; 
+		double ALS = getRunway().getAscentAngle()*getField().getPositionedObstacle().getHeight();
+		System.out.println("RESA: "+getRunway().getRESA()+"   ALS: "+ALS+"    Blast: "+getField().getBlastAllowance());
+
+		//find largest factor
+		if(getRunway().getRESA() > ALS &&  ALS > getField().getBlastAllowance()){
+			largestFactor = scaleToPixels((int) getRunway().getRESA());
+			System.out.println("RESA");
+		}else if(ALS > getField().getBlastAllowance()){
+			largestFactor = scaleToPixels((int) ALS);
+			System.out.println("ALS");
+
+		}else{
+			largestFactor = scaleToPixels((int) getField().getBlastAllowance());
+			System.out.println("Blast Time");
+
+		}
+		int maxRadius = radius + largestFactor;
+
+		//Body
+		g3.setColor(VERY_VERY_transparentRed);
+		g3.fillOval(x-maxRadius, y-maxRadius, maxRadius*2, maxRadius*2);
+		//Rim
+		g3.setColor(transparentRed);
+		g3.drawOval(x-maxRadius, y-maxRadius, maxRadius*2, maxRadius*2);
+
+
+
+		//=[ planes ]=
+		//Needs to be last
+		// draw cheeky plane
+		Graphics2D g4 = (Graphics2D) g.create();
+		if (getField().getPositionedObstacle().getName().matches("[a-zA-Z][0-9]+")) {
+			drawPlane(g4, (int) obj.getRadius(), x, y);
+		}
+		//=====[ No Radius ]=======
 		// draw an 'X' at point
-		int h = 4;//(int) (getField().getRunwayGirth()/2);//not scaled
+		int h = (int) (defGirth/6);//not scaled
 		g2.setStroke(new BasicStroke(3));
 		g2.drawLine(x+h, y+h, x-h, y-h);
 		g2.drawLine(x-h, y+h, x+h, y-h);
-		//=[ planes ]=
-		// draw cheeky plane
-		
-		//=[ generic ]=
-		int radius = 25;//TODO make relative to the obs and SCALE
-		int diamter = radius*2;
-		g2.setStroke(new BasicStroke(0.75f));
-		g2.setColor(Color.black);;
-		g2.drawOval(x-radius, y-radius, diamter, diamter);
-		//draw a circle of radius shaded //TODO get shaka's help for that	
+
+	}
+
+	private void drawPlane(Graphics2D g, int radius, int x, int y) {
+		Graphics2D g2 = (Graphics2D) g.create();
+		radius = 3*radius/4;
+		x = x - 3*radius/8;
+
+
+		//half width => sort of single wing span
+		int hwidth = radius*12/19;
+
+		int xUn = radius/19; int yUn = hwidth/12;
+
+		int hOneX = 		x+xUn/2;
+		int twoX = 			x+2*xUn;
+		int wingStartX=(int)(x+7*xUn);
+		int wingCurveX = 	x+11*xUn;
+		int wingEndX =(int)(x+11.5*xUn);
+		int wingEndX2 = 	x+13*xUn;
+		int dipStartX = 	x+14*xUn;
+		int dipBotX = 		x+15*xUn;
+		int tailStartX = 	x+17*xUn;
+		int tailEndX = 		x+19*xUn;
+		int buttX =  (int) (x+17.5*xUn);
+
+		int hOneY = 		y+yUn/2;
+		int oneY = 			y+yUn;
+		int wingCurveY = 	y+11*yUn;
+		int wingEndY =(int)(y+11.5*xUn);
+		int tailY = 		y+4*yUn;
+
+		int nhOneY = 			y-yUn/2;
+		int noneY = 			y-yUn;
+		int nwingCurveY = 		y-11*yUn;
+		int nwingEndY =(int)   (y-11.5*xUn);
+		int ntailY = 			y-4*yUn;
+
+		int[] xes  = {x, hOneX, twoX, wingStartX, wingCurveX, wingEndX, wingEndX2, wingCurveX, dipStartX, dipBotX, tailStartX, tailEndX, tailStartX, buttX, /* other side */ tailStartX, tailEndX, tailStartX, dipBotX, dipStartX, wingCurveX, wingEndX2, wingEndX, wingCurveX, wingStartX, twoX, hOneX};  
+
+		int[] yses = {y, hOneY, oneY, oneY,       wingCurveY, wingEndY, wingEndY,  oneY, 	   oneY,      hOneY,   tailY, 	   tailY,    hOneY,      y, /* other side */ nhOneY, ntailY, ntailY, nhOneY, noneY, noneY, nwingEndY, nwingEndY, nwingCurveY, noneY, noneY, nhOneY};
+
+		g2.setColor(Color.gray);
+		g2.fillPolygon(xes, yses, xes.length);
+		g2.setColor(Color.black);
+		g2.setStroke(new BasicStroke(0.15f));
+		g2.drawPolygon(xes, yses, xes.length);
 	}
 }
