@@ -97,7 +97,6 @@ public class View extends JPanel{
 			defTora = (int) field.getDefaultLargeAngledRunway().getTORA();
 		
 		totalWidth = (int) this.field.getTotalWidth();
-		System.out.println("total  "+totalWidth);
 		asda = (int) getRunway().getASDA();
 		toda = (int) getRunway().getTODA();
 		lda = (int) getRunway().getLDA();
@@ -122,12 +121,12 @@ public class View extends JPanel{
 					
 					
 					
-					air.addObstacle(new Obstacle("Box",4,3), 300, 3600);//TODO I added an obstacle!
+					air.addObstacle(new Obstacle("Box",12,0), -50, 3646);//TODO I added an obstacle!
 					
 					
 					
 					
-					runway = air.getLargeAngledRunway();
+					runway = air.getSmallAngledRunway();
 					
 				} catch (CannotMakeRunwayException | VariableDeclarationException e) {
 					e.printStackTrace();
@@ -186,6 +185,10 @@ public class View extends JPanel{
 	private void doDrawing(Graphics g, int x1, int x2, String s, String ss, 
 			int tora, int girth, int toda, int asda, int lda, int smalldt, int largedt, int currentDT, int stopway, int clearway,
 			int s1, int s3, int s4, int s5, int s6, int s7, int startOfRoll) {
+		
+		System.out.println("total  "+totalWidth);
+		System.out.println("SoR  "+startOfRoll);
+		
 		
 		tora = scaleToPixels(x1, x2, tora);
 		girth = scaleToPixels(x1, x2, girth);
