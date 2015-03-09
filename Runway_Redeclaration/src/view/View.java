@@ -121,12 +121,12 @@ public class View extends JPanel{
 					
 					
 					
-					air.addObstacle(new Obstacle("Box",12,0), -50, 3646);//TODO I added an obstacle!
+					//air.addObstacle(new Obstacle("Box",12,0), -50, 3646);//TODO I added an obstacle!
 					
 					
 					
 					
-					runway = air.getSmallAngledRunway();
+					runway = air.getLargeAngledRunway();
 					
 				} catch (CannotMakeRunwayException | VariableDeclarationException e) {
 					e.printStackTrace();
@@ -190,18 +190,18 @@ public class View extends JPanel{
 		System.out.println("SoR  "+startOfRoll);
 		
 		
-		tora = scaleToPixels(x1, x2, tora);
-		girth = scaleToPixels(x1, x2, girth);
-		smalldt = scaleToPixels(x1, x2, smalldt);
-		largedt = scaleToPixels(x1, x2, largedt);
-		currentDT = scaleToPixels(x1, x2, currentDT);
+		tora = scaleToPixels(tora);
+		girth = scaleToPixels(girth);
+		smalldt = scaleToPixels(smalldt);
+		largedt = scaleToPixels(largedt);
+		currentDT = scaleToPixels(currentDT);
 		
-		s1 = scaleToPixels(x1, x2, s1);
-		s3 = scaleToPixels(x1, x2, s3);
-		s4 = scaleToPixels(x1, x2, s4);
-		s5 = scaleToPixels(x1, x2, s5);
-		s6 = scaleToPixels(x1, x2, s6);
-		s7 = scaleToPixels(x1, x2, s7);
+		s1 = scaleToPixels(s1);
+		s3 = scaleToPixels(s3);
+		s4 = scaleToPixels(s4);
+		s5 = scaleToPixels(s5);
+		s6 = scaleToPixels(s6);
+		s7 = scaleToPixels(s7);
 
 		toda = scaleToPixels(x1, x2, toda);
 		asda = scaleToPixels(x1, x2, asda);
@@ -229,6 +229,10 @@ public class View extends JPanel{
 		drawScale(getGraphicsComp(g2, Color.black), girth, x1, x2, 500);
 		drawFatArrow(getGraphicsComp(g2, Color.RED));
 		//drawObstacle(g2);
+	}
+	
+	private int scaleToPixels(int dim){
+		return scaleToPixels(totalWidth, this.getWidth(), dim);
 	}
 
 	private int scaleToPixels (int howMuchWantToFit, int inHowMuch, int whatYouAreScaling){
