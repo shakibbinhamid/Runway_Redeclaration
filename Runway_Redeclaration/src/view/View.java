@@ -142,7 +142,7 @@ public class View extends JPanel{
 				JPanel pane = new View(air, runway);
 
 				JFrame frame = new JFrame();
-				frame.setMinimumSize(new Dimension (1200,500));
+				frame.setMinimumSize(new Dimension (300,200));
 				frame.setContentPane(pane);
 				frame.setTitle("Testing");
 				frame.pack();
@@ -232,7 +232,7 @@ public class View extends JPanel{
 		drawAllDim(getGraphicsComp(g2, Color.black), direction(), defTora, defGirth, tora, toda, asda, lda, dt, startOfRoll);
 		drawDirection(getGraphicsComp(g2, Color.RED), "Landing and TakeOff Direction: "+ run.getIdentifier(), defGirth);
 
-		//drawScale(getGraphicsComp(g2, Color.black), defGirth, x1, x2, 500);
+		drawScale(getGraphicsComp(g2, Color.black), defGirth, 500);
 		drawFatArrow(getGraphicsComp(g2, Color.RED), defGirth);
 		//drawObstacle(g2);
 	}
@@ -254,12 +254,28 @@ public class View extends JPanel{
 		g.create().fillRect(0, 0, this.getWidth(), this.getHeight());
 	}
 	
-	private void drawScale(Graphics g, int defGirth, int howMuchWantToFit, int inHowMuch, int howMuchWantToView){
+	private void drawScale(Graphics g, int defGirth, int howMuchWantToView){
 		Graphics2D g2 = (Graphics2D) g.create();
 	
-		int howMuchInPixels = scaleToPixels(howMuchWantToFit, inHowMuch, howMuchWantToView);
+		Font font = new Font("verdana", Font.PLAIN, 15);
+		FontMetrics fontMetrics = g2.getFontMetrics(font);
+		int initLen = fontMetrics.stringWidth("0");
+		int finalLen = fontMetrics.stringWidth(String.valueOf(howMuchWantToView)); 
+		g2.setFont(font);
+		
+		int howMuchInPixels = scaleToPixels(howMuchWantToView);
+		int startX = 10;
+		int Y = getHeight()/2 + defGirth * 5;
+		int endX = startX + howMuchInPixels;
+		
 		g2.setStroke(new BasicStroke(2));
-		g2.drawLine(10, getHeight()/2 + defGirth * 5, 10 + howMuchInPixels, getHeight()/2 + defGirth * 5);
+		g2.drawLine(startX, Y, endX, Y);
+		g2.drawLine(startX, Y, startX, Y - 5);
+		g2.drawLine(endX, Y, endX, Y - 5);
+		
+		g2.drawString("0", startX - initLen/2, Y - font.getSize());
+		g2.drawString(String.valueOf(howMuchWantToView), endX - finalLen/2, Y - font.getSize());
+
 	}
 
 	/** Draw purple rectangle */
@@ -465,7 +481,7 @@ public class View extends JPanel{
 		Graphics2D g2 = (Graphics2D) g.create();//for arrows
 		Graphics2D g3 = (Graphics2D) g.create();//for text
 
-		Font font = new Font("verdana", Font.PLAIN, 10);
+		Font font = new Font("verdana", Font.BOLD, 10);
 		FontMetrics fontMetrics = g3.getFontMetrics(font);
 		int titleLen = fontMetrics.stringWidth(variableName);
 		g3.setFont(font);
