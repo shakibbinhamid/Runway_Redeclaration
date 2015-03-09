@@ -238,7 +238,7 @@ public class Airfield implements AirfieldInterface, Savable {
 	public void addObstacle(ObstacleInterface obj, double distanceFromSmall, double distanceFromLarge, 
 			boolean smallLandTowards,boolean smallTakeOffTowards, 
 			boolean largeLandTowards,boolean largeTakeOffTowards) 
-					throws InvalidIdentifierException, VariableDeclarationException {
+					throws VariableDeclarationException {
 		
 		this.obstacle = new PositionedObstacle(obj, distanceFromSmall, distanceFromLarge);
 		
@@ -298,7 +298,7 @@ public class Airfield implements AirfieldInterface, Savable {
 
 	@Override
 	public void addObstacle(ObstacleInterface obj,
-			double distanceFromSmall, double distanceFromLarge) throws InvalidIdentifierException {/**/
+			double distanceFromSmall, double distanceFromLarge)  {/**/
 
 		this.obstacle = new PositionedObstacle(obj, distanceFromSmall, distanceFromLarge);
 		try {

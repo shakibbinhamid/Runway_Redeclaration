@@ -17,6 +17,8 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import Core.Airport;
+import Core.Obstacle;
+import Core.PositionedObstacle;
 import CoreInterfaces.AirfieldInterface;
 import CoreInterfaces.AirportInterface;
 import CoreInterfaces.DeclaredRunwayInterface;
@@ -86,10 +88,10 @@ public class View extends JPanel{
 		return run;
 	}
 
-	public void setRunway(DeclaredRunwayInterface run) {
-		this.run = run;
+	public void setRunway(DeclaredRunwayInterface runway) {
+		this.run = runway;
 		
-		if (run.isSmallEnd())
+		if (runway.isSmallEnd())
 			defTora = (int) field.getDefaultSmallAngledRunway().getTORA();
 		else
 			defTora = (int) field.getDefaultLargeAngledRunway().getTORA();
@@ -116,6 +118,14 @@ public class View extends JPanel{
 				try {
 					port.addNewAirfield(90, 'L', new double[] {3902,3902,3902,3596}, new double[] {3884,3900,3962,3884});
 					air = port.getAirfield(port.getAirfieldNames().get(0));
+					
+					
+					
+					air.addObstacle(new Obstacle("Box",4,3), 300, 3600);//TODO I added an obstacle!
+					
+					
+					
+					
 					runway = air.getLargeAngledRunway();
 					
 				} catch (CannotMakeRunwayException | VariableDeclarationException e) {
@@ -194,8 +204,8 @@ public class View extends JPanel{
 		lda = scaleToPixels(x1, x2, lda);
 		stopway = scaleToPixels(x1, x2, stopway);
 		clearway = scaleToPixels(x1, x2, clearway);
-		System.out.println(stopway);
-		System.out.println(clearway);
+//		System.out.println(stopway); //TODO remove these
+//		System.out.println(clearway);
 
 		Graphics2D g2 = (Graphics2D) g.create();
 		
@@ -215,11 +225,6 @@ public class View extends JPanel{
 		drawScale(getGraphicsComp(g2, Color.black), girth, x1, x2, 500);
 		drawFatArrow(getGraphicsComp(g2, Color.RED));
 		drawObstacle(g2);
-	}
-
-	private void drawObstacle(Graphics2D g2) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	private int scaleToPixels (int howMuchWantToFit, int inHowMuch, int whatYouAreScaling){
@@ -556,6 +561,46 @@ public class View extends JPanel{
 		g2.fillPolygon(new int[] {len, len-ARR_SIZE, len-ARR_SIZE, len},
 				new int[] {0, -ARR_SIZE, ARR_SIZE, 0}, 4);
 	}
+	
+	private void drawObstacle(Graphics2D g) {
+		Graphics2D g2 = (Graphics2D) g.create();
+
+		PositionedObstacle obj = (PositionedObstacle) getField().getPositionedObstacle();
+		if (obj==null) return;
+		
+		//distance is from the left hand side start of grey tarmac
+		double distance;
+		if (getRunway().isSmallEnd()){
+			distance = getRunway().getDisplacedThreshold() + obj.distanceFromSmallEnd();
+		}else{
+			distance = defTora - getRunway().getDisplacedThreshold() - obj.distanceFromLargeEnd();
+		}
+		
+		int x = (int) distance;//not scaled
+		int y = getHeight()/2;
+		
+		//TODO figure out how that scales
+		
+		//=[ For box ]=
+		// draw an 'X' at point
+		int h = 4;//(int) (getField().getRunwayGirth()/2);//not scaled
+		g2.setStroke(new BasicStroke(3));
+		g2.drawLine(x+h, y+h, x-h, y-h);
+		g2.drawLine(x-h, y+h, x+h, y-h);
+		//=[ planes ]=
+		// draw cheeky plane
+		
+		//=[ generic ]=
+		int radius = 25;
+		int diamter = radius*2;
+		g2.setStroke(new BasicStroke(0.75f));
+		g2.setColor(Color.black);;
+		g2.drawOval(x-radius, y-radius, diamter, diamter);
+		//draw a circle of radius shaded //TODO get shaka's help for that
+		
+		
+	}
+	
 	
 	
 

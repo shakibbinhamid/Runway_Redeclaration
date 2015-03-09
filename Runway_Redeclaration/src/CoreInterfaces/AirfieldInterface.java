@@ -104,7 +104,7 @@ public interface AirfieldInterface {
 	 *  a PositionedObstacleObject must be stored. An internal conversion must be made.
 	 * @throws UnusableRunwayException 
 	 */
-	void addObstacle(ObstacleInterface obj, double distanceFromSmall, double distanceFromLarge) throws InvalidIdentifierException;
+	void addObstacle(ObstacleInterface obj, double distanceFromSmall, double distanceFromLarge) ;
 	
 	/**
 	 * Changing/adding the obstacle on the tarmac. 
@@ -117,7 +117,7 @@ public interface AirfieldInterface {
 	 */
 	void addObstacle(ObstacleInterface obj, double distanceFromSmall, double distanceFromLarge,
 			boolean smallLandTowards, boolean smallTakeOffTowards, 
-			boolean largeLandTowards, boolean largeTakeOffTowards) throws InvalidIdentifierException, VariableDeclarationException;
+			boolean largeLandTowards, boolean largeTakeOffTowards) throws VariableDeclarationException;
 	
 	/** 
 	 * Changes the obstacle that is on the runway to null 
