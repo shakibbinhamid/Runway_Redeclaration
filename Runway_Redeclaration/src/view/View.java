@@ -134,7 +134,15 @@ public class View extends JPanel{
 				frame.setVisible(true);
 
 				pane.repaint();
+				
+				
 			}});
+		try {
+			Thread.sleep(60*1000);//60 secs
+			System.exit(0);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void paint(Graphics g){
@@ -203,8 +211,15 @@ public class View extends JPanel{
 		drawIdentifier(getGraphicsComp(g2, Color.white), s, ss, tora, girth, smalldt, largedt);
 		drawAllDim(getGraphicsComp(g2, Color.black), direction(), tora, girth, toda, asda, lda, currentDT, startOfRoll);
 		drawDirection(getGraphicsComp(g2, Color.RED), "Landing and TakeOff Direction: "+ run.getIdentifier(), girth);
-		
+
 		drawScale(getGraphicsComp(g2, Color.black), girth, x1, x2, 500);
+		drawFatArrow(getGraphicsComp(g2, Color.RED));
+		drawObstacle(g2);
+	}
+
+	private void drawObstacle(Graphics2D g2) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	private int scaleToPixels (int howMuchWantToFit, int inHowMuch, int whatYouAreScaling){
@@ -487,27 +502,42 @@ public class View extends JPanel{
 	}
 
 	private void drawFatArrow(Graphics g){
+		final double GOING_LEFT = -Math.PI/2;
+		final double GOING_RIGHT = Math.PI/2;
+		
+		int x = getWidth()/2;
+		int y = 4*getHeight()/5;
+		
+		if(getRunway().isSmallEnd()){
+			drawArrowAround(g, x, y, GOING_RIGHT, g.getColor(), Color.BLACK);
+		}else{
+			drawArrowAround(g, x, y, GOING_LEFT, g.getColor(), Color.BLACK);
+		}
+	}
+	
+	private void drawArrowAround(Graphics g, int pointX, int pointY, double angleInPi, Color fill, Color outline){
 		Graphics2D g2 = (Graphics2D) g.create();
-
-	    Insets insets = getInsets();
-	    // int w = getWidth() - insets.left - insets.right;
-	    int h = getHeight() - insets.top - insets.bottom;
-
-	    AffineTransform oldAT = g2.getTransform();
-	    try {
-	        //Move the origin to bottom-left, flip y axis
-	        g2.scale(1.0, -1.0);
-	        g2.translate(0, -h - insets.top);
-
-	        int xpoints[] = { 20, 30, 30, 35, 25, 15, 20 };
-	        int ypoints[] = { 10, 10, 30, 30, 45, 30, 30 };
-	        int npoints = 7;
-	        g2.fillPolygon(xpoints, ypoints, npoints);
-	    }
-	    finally {
-	      //restore
-	      g2.setTransform(oldAT);
-	    }
+		int length = 70; int radius = 15;
+		
+		int m = 1;
+		if(angleInPi<0) m = -1;
+		
+		int midX = pointX-m*length/2;
+		int backX = pointX-m*length;
+		int eithBack = pointX-m*7*length/8;
+		
+		int thirdG = pointY+radius/3;		int negthirdG = pointY-radius/3;
+		int thirdG2 = pointY+2*radius/3;	int negthirdG2 = pointY-2*radius/3;
+		int halfG = pointY+radius; 			int neghalfG = pointY-radius;
+		
+		int[] xes =  {pointX, midX,  midX,   backX,   eithBack, backX,      midX,      midX};
+		int[] yses = {pointY, halfG, thirdG, thirdG2, pointY,   negthirdG2, negthirdG, neghalfG};
+		
+		g2.setColor(fill);
+		g2.fillPolygon(xes, yses, xes.length);
+		g2.setColor(outline);
+		g2.setStroke(new BasicStroke(0.35f));
+		g2.drawPolygon(xes, yses, xes.length);
 	}
 	
 	/** Whole single arrow */
@@ -526,5 +556,7 @@ public class View extends JPanel{
 		g2.fillPolygon(new int[] {len, len-ARR_SIZE, len-ARR_SIZE, len},
 				new int[] {0, -ARR_SIZE, ARR_SIZE, 0}, 4);
 	}
+	
+	
 
 }
