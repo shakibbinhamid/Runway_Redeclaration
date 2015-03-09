@@ -89,9 +89,9 @@ public class LoadListener{
 			top.add(pane, BorderLayout.CENTER);
 			top.add(buttonPane, BorderLayout.SOUTH);
 			
-			pane.setLayout(new GridLayout(2,0));
-			pane.add(directionLeft); top.add(directionRight);
-			pane.add(distanceFromLeft); top.add(distanceFromRight);
+			pane.setLayout(new GridLayout(2,2));
+			pane.add(directionLeft); pane.add(directionRight);
+			pane.add(distanceFromLeft); pane.add(distanceFromRight);
 			
 			buttonPane.add(ok);
 			

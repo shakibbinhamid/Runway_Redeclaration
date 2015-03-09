@@ -233,7 +233,7 @@ public class View extends JPanel{
 		drawDirection(getGraphicsComp(g2, Color.RED), "Landing and TakeOff Direction: "+ run.getIdentifier(), defGirth);
 
 		//drawScale(getGraphicsComp(g2, Color.black), defGirth, x1, x2, 500);
-		drawFatArrow(getGraphicsComp(g2, Color.RED));
+		drawFatArrow(getGraphicsComp(g2, Color.RED), defGirth);
 		//drawObstacle(g2);
 	}
 	
@@ -521,12 +521,12 @@ public class View extends JPanel{
 		g2.drawString(s, (getWidth() / 2) - (titleLen / 2), getHeight()/2 + defGirth*5);
 	}
 
-	private void drawFatArrow(Graphics g){
+	private void drawFatArrow(Graphics g, int defGirth){
 		final double GOING_LEFT = -Math.PI/2;
 		final double GOING_RIGHT = Math.PI/2;
 		
 		int x = getWidth()/2;
-		int y = 4*getHeight()/5;
+		int y = getHeight()/2 + defGirth*3;
 		
 		if(getRunway().isSmallEnd()){
 			drawArrowAround(g, x, y, GOING_RIGHT, g.getColor(), Color.BLACK);
@@ -611,12 +611,6 @@ public class View extends JPanel{
 		g2.setStroke(new BasicStroke(0.75f));
 		g2.setColor(Color.black);;
 		g2.drawOval(x-radius, y-radius, diamter, diamter);
-		//draw a circle of radius shaded //TODO get shaka's help for that
-		
-		
+		//draw a circle of radius shaded //TODO get shaka's help for that	
 	}
-	
-	
-	
-
 }

@@ -103,11 +103,7 @@ public class TopFrame extends JFrame{
 	 * @param distanceFromLeft distance from the left hand side
 	 */
 	public void loadOrCreateObstacle(ObstacleInterface obs, AirfieldInterface field, double distanceFromLeft, double distanceFromRight){
-		try {
-			field.addObstacle(obs, distanceFromLeft, distanceFromRight);	
-		} catch (InvalidIdentifierException  e) {
-			e.printStackTrace();
-		}
+		field.addObstacle(obs, distanceFromLeft, distanceFromRight);
 		tabbedPanel.updateTab(field);
 	}
 
