@@ -34,7 +34,7 @@ public class View extends JPanel{
 	
 	private AirfieldInterface field;
 	private DeclaredRunwayInterface run;
-	private int tora, girth, s1, s3, s4, s5, s6, s7, asda, toda, lda, startOfRoll;
+	private int defTora, girth, s1, s3, s4, s5, s6, s7, asda, toda, lda, startOfRoll;
 	private int smallDT, largeDT, currentDT;
 	private String s, ss;
 	private int totalWidth;
@@ -84,19 +84,18 @@ public class View extends JPanel{
 
 	public void setRunway(DeclaredRunwayInterface run) {
 		this.run = run;
-		tora = (int) run.getTORA();
+		
+		if (run.isSmallEnd())
+			defTora = (int) field.getDefaultSmallAngledRunway().getTORA();
+		else
+			defTora = (int) field.getDefaultLargeAngledRunway().getTORA();
+		
 		totalWidth = (int) this.field.getTotalWidth();
 		asda = (int) getRunway().getASDA();
 		toda = (int) getRunway().getTODA();
 		lda = (int) getRunway().getLDA();
 		startOfRoll = (int) getRunway().getStartOfRoll();
-		currentDT = smallDT;
-		
-		//TODO have a look		<----------------------------------------------------------------------------------------------------
-		if(!run.isSmallEnd()){
-			startOfRoll = (int) (tora- getRunway().getStartOfRoll());
-			currentDT = tora-largeDT;
-		} 
+		currentDT = (int) getRunway().getDisplacedThreshold();
 	}
 
 	public static void main(String[] s){
@@ -111,7 +110,7 @@ public class View extends JPanel{
 				try {
 					port.addNewAirfield(90, 'L', new double[] {3902,3902,3902,3596}, new double[] {3884,3884,3962,3884});
 					air = port.getAirfield(port.getAirfieldNames().get(0));
-					runway = air.getSmallAngledRunway();
+					runway = air.getLargeAngledRunway();
 					
 				} catch (CannotMakeRunwayException | VariableDeclarationException e) {
 					e.printStackTrace();
@@ -133,9 +132,7 @@ public class View extends JPanel{
 	}
 
 	public void paint(Graphics g){
-		int x = this.getWidth();
 		doDrawing(g);
-		//, 3902+120, x, "09L" , "27R", 3902, 110, 3902, 3902, 3596, 306, 0, 60, 150, 75, 105, 150, 300, 0);
 	}
 
 	private Graphics getGraphicsComp(Graphics g, Color c){
@@ -159,14 +156,13 @@ public class View extends JPanel{
 	}
 
 	private void doDrawing(Graphics g){
-		doDrawing(g, totalWidth, this.getWidth(), s, ss, tora, girth, toda, asda, lda, smallDT, largeDT, currentDT, s1, s3, s4, s5, s6, s7, startOfRoll);
+		doDrawing(g, totalWidth, this.getWidth(), s, ss, defTora, girth, toda, asda, lda, smallDT, largeDT, currentDT, s1, s3, s4, s5, s6, s7, startOfRoll);
 	}
 	
 	private void doDrawing(Graphics g, int x1, int x2, String s, String ss, 
 			int tora, int girth, int toda, int asda, int lda, int smalldt, int largedt, int currentDT,
 			int s1, int s3, int s4, int s5, int s6, int s7, int startOfRoll) {
 		
-		System.out.println(this.getWidth()+","+this.getHeight());
 		tora = scaleToPixels(x1, x2, tora);
 		girth = scaleToPixels(x1, x2, girth);
 		smalldt = scaleToPixels(x1, x2, smalldt);
@@ -185,10 +181,6 @@ public class View extends JPanel{
 		lda = scaleToPixels(x1, x2, lda);
 
 		Graphics2D g2 = (Graphics2D) g.create();
-		if(!getRunway().isSmallEnd()){
-			
-		}
-		
 		
 		colorFrame(getGraphicsComp(g2, grass));
 		drawWholeArea(getGraphicsComp(g2, purple), tora, s1, s3);
@@ -199,7 +191,7 @@ public class View extends JPanel{
 		drawCenterLine(getGraphicsComp(g2, Color.white), tora, girth, smalldt, largedt);
 		drawIdentifier(getGraphicsComp(g2, Color.white), s, ss, tora, girth, smalldt, largedt);
 
-		drawAllDim(getGraphicsComp(g2, Color.black), tora, girth, toda, asda, lda, currentDT, startOfRoll);
+		drawAllDim(getGraphicsComp(g2, Color.black), direction(), tora, girth, toda, asda, lda, currentDT, startOfRoll);
 		
 	}
 
@@ -378,27 +370,36 @@ public class View extends JPanel{
 	}
 
 	/** Draws all virtual dimensions */
-	private void drawAllDim(Graphics g, int tora, int girth, int toda, int asda, int lda, int dt, int startOfRoll){
+	private void drawAllDim(Graphics g, int direction, int tora, int girth, int toda, int asda, int lda, int dt, int startOfRoll){
 		int height = girth/2;
-		int bumper = 10;
-		drawdim(g, tora, girth, "LDA", dt, lda, height + bumper);
-		drawdim(g, tora, girth, "TORA", startOfRoll, tora, height + bumper + 1*VIRTUAL_GAP);
-		drawdim(g, tora, girth, "ASDA", startOfRoll, asda, height + bumper + 2*VIRTUAL_GAP);
-		drawdim(g, tora, girth, "TODA", startOfRoll, toda, height + bumper + 3*VIRTUAL_GAP);
-
+		int bumper = 20;
+		System.out.println(startOfRoll);
+		System.out.println(dt);
+		drawdim(g, direction, tora, girth, "LDA", dt, lda, height + bumper);
+		drawdim(g, direction, tora, girth, "TORA", startOfRoll, tora, height + bumper + 1*VIRTUAL_GAP);
+		drawdim(g, direction, tora, girth, "ASDA", startOfRoll, asda, height + bumper + 2*VIRTUAL_GAP);
+		drawdim(g, direction, tora, girth, "TODA", startOfRoll, toda, height + bumper + 3*VIRTUAL_GAP);
 	}
 
 	/** Draws the arrows and labels for the virtual distances  */
-	private void drawdim(Graphics g, int tora, int girth, String variableName, int startWhere, int howlong, int howhighUp){
-		Graphics2D g2 = (Graphics2D) g.create();
-		Graphics2D g3 = (Graphics2D) g.create();
+	private void drawdim(Graphics g, int direction, int tora, int girth, String variableName, int startWhere, int howlong, int howhighUp){
+		Graphics2D g2 = (Graphics2D) g.create();//for arrows
+		Graphics2D g3 = (Graphics2D) g.create();//for text
 
-		int textGap = 10*variableName.length();
+		int textGap = 11*variableName.length();
 
+		int startX = 0, endX = 0, Y = 0;
+		
 		//first line vals
-		int endX = getWidth()/2 - tora/2 + startWhere;
-		int startX = this.getWidth()/2 ;
-		int Y = getHeight()/2 - girth/2 - howhighUp;
+		if(direction == 1){
+			endX = getWidth()/2 - tora/2 + startWhere;
+			startX = this.getWidth()/2 ;
+		}else{
+			endX = getWidth()/2 + tora/2 - startWhere;
+			startX = getWidth()/2 + textGap + startX/48;
+		}
+		
+		Y = getHeight()/2 - girth/2 - howhighUp;
 
 		drawArrow(g, startX, Y, endX, Y);
 
@@ -406,15 +407,22 @@ public class View extends JPanel{
 		g2.setStroke(new BasicStroke(0.75f));
 		g2.drawLine(endX, Y, endX, getHeight()/2-girth/2);
 
-
 		//text vals
 		g3.setFont(new Font("verdana", Font.PLAIN, 9));
 		//48 is for more evenly distributing the text
-		g3.drawString(variableName, startX + startX/48, Y+3);
+		if(direction == 1)
+			g3.drawString(variableName, startX + startX/37, Y+3);
+		else
+			g3.drawString(variableName, startX - startX/10, Y+3);
 
 		//Second line vals
-		endX += howlong;
-		startX += textGap + startX/48;
+		if (direction == 1){
+			endX += howlong;
+			startX += textGap + startX/48;
+		} else{
+			endX -= howlong;
+			startX = getWidth()/2;
+		}
 
 		drawArrow(g, startX, Y, endX, Y);
 
