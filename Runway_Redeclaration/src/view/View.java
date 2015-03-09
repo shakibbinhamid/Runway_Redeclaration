@@ -36,7 +36,7 @@ public class View extends JPanel{
 	
 	private AirfieldInterface field;
 	private DeclaredRunwayInterface run;
-	private int defTora, girth, s1, s3, s4, s5, s6, s7, asda, toda, lda, startOfRoll;
+	private int defTora, girth, s1, s3, s4, s5, s6, s7, asda, toda, lda, startOfRoll, stopway, clearway;
 	private int smallDT, largeDT, currentDT;
 	private String s, ss;
 	private int totalWidth;
@@ -52,6 +52,8 @@ public class View extends JPanel{
 	private static Color purple = new Color(128,128,255);
 	private static Color grass = new Color(95,245,22);
 	private static Color clearedBlue = new Color(0,128,255);
+	private static Color transparentYellow = new Color(255, 255, 0, 200);
+	private static Color transparentRed = new Color(255, 0, 0, 150);
 
 	private static final int ARR_SIZE = 4;
 
@@ -98,6 +100,8 @@ public class View extends JPanel{
 		lda = (int) getRunway().getLDA();
 		startOfRoll = (int) getRunway().getStartOfRoll();
 		currentDT = (int) getRunway().getDisplacedThreshold();
+		stopway = (int) getRunway().getStopway();
+		clearway = (int) getRunway().getClearway();
 	}
 
 	public static void main(String[] s){
@@ -110,7 +114,7 @@ public class View extends JPanel{
 				AirfieldInterface air = null;
 				DeclaredRunwayInterface runway = null;
 				try {
-					port.addNewAirfield(90, 'L', new double[] {3902,3902,3902,3596}, new double[] {3884,3884,3962,3884});
+					port.addNewAirfield(90, 'L', new double[] {3902,3902,3902,3596}, new double[] {3884,3900,3962,3884});
 					air = port.getAirfield(port.getAirfieldNames().get(0));
 					runway = air.getLargeAngledRunway();
 					
@@ -157,11 +161,11 @@ public class View extends JPanel{
 	}
 
 	private void doDrawing(Graphics g){
-		doDrawing(g, totalWidth, this.getWidth(), s, ss, defTora, girth, toda, asda, lda, smallDT, largeDT, currentDT, s1, s3, s4, s5, s6, s7, startOfRoll);
+		doDrawing(g, totalWidth, this.getWidth(), s, ss, defTora, girth, toda, asda, lda, smallDT, largeDT, currentDT, stopway, clearway, s1, s3, s4, s5, s6, s7, startOfRoll);
 	}
 	
 	private void doDrawing(Graphics g, int x1, int x2, String s, String ss, 
-			int tora, int girth, int toda, int asda, int lda, int smalldt, int largedt, int currentDT,
+			int tora, int girth, int toda, int asda, int lda, int smalldt, int largedt, int currentDT, int stopway, int clearway,
 			int s1, int s3, int s4, int s5, int s6, int s7, int startOfRoll) {
 		
 		tora = scaleToPixels(x1, x2, tora);
@@ -180,6 +184,10 @@ public class View extends JPanel{
 		toda = scaleToPixels(x1, x2, toda);
 		asda = scaleToPixels(x1, x2, asda);
 		lda = scaleToPixels(x1, x2, lda);
+		stopway = scaleToPixels(x1, x2, stopway);
+		clearway = scaleToPixels(x1, x2, clearway);
+		System.out.println(stopway);
+		System.out.println(clearway);
 
 		Graphics2D g2 = (Graphics2D) g.create();
 		
@@ -187,23 +195,37 @@ public class View extends JPanel{
 		drawWholeArea(getGraphicsComp(g2, purple), tora, s1, s3);
 		drawClearedAndGradedArea(getGraphicsComp(g2, clearedBlue), tora, s1, s4, s5, s6, s7);
 		drawMainRunwayRect(getGraphicsComp(g2, Color.gray), tora, girth);
+		drawClearway(getGraphicsComp(g2, transparentYellow), tora, girth, direction(), clearway);
+		drawStopway(getGraphicsComp(g2, transparentRed), tora, girth, direction(), stopway);
 		drawdtLines(getGraphicsComp(g2, Color.red), tora, girth, smalldt, largedt);
 		drawBarCode(getGraphicsComp(g2, Color.white), tora, girth, smalldt, largedt);
 		drawCenterLine(getGraphicsComp(g2, Color.white), tora, girth, smalldt, largedt);
 		drawIdentifier(getGraphicsComp(g2, Color.white), s, ss, tora, girth, smalldt, largedt);
 		drawAllDim(getGraphicsComp(g2, Color.black), direction(), tora, girth, toda, asda, lda, currentDT, startOfRoll);
-		drawFatArrow(getGraphicsComp(g2, Color.black));
-		drawDirection(getGraphicsComp(g2, Color.RED), "Landing and TakeOff Direction: "+ run.getIdentifier());
+		drawDirection(getGraphicsComp(g2, Color.RED), "Landing and TakeOff Direction: "+ run.getIdentifier(), girth);
+		
+		drawScale(getGraphicsComp(g2, Color.black), girth, x1, x2, 500);
 	}
-
 
 	private int scaleToPixels (int howMuchWantToFit, int inHowMuch, int whatYouAreScaling){
 		BigDecimal value = new BigDecimal( whatYouAreScaling * inHowMuch/howMuchWantToFit);
 		return value.intValue();
 	}
 
+	private int pixelsToScale (int howMuchMeters, int howManyPixels, int whatInPixels){
+		return new BigDecimal ( whatInPixels * howMuchMeters/howManyPixels ).intValue();
+	}
+	
 	private void colorFrame(Graphics g){
 		g.create().fillRect(0, 0, this.getWidth(), this.getHeight());
+	}
+	
+	private void drawScale(Graphics g, int girth, int howMuchWantToFit, int inHowMuch, int howMuchWantToView){
+		Graphics2D g2 = (Graphics2D) g.create();
+	
+		int howMuchInPixels = scaleToPixels(howMuchWantToFit, inHowMuch, howMuchWantToView);
+		g2.setStroke(new BasicStroke(2));
+		g2.drawLine(10, getHeight()/2 + girth * 5, 10 + howMuchInPixels, getHeight()/2 + girth * 5);
 	}
 
 	/** Draw purple rectangle */
@@ -366,8 +388,31 @@ public class View extends JPanel{
 		g2.setTransform(old);
 	}
 
-	private void drawStopandClear(Graphics g, int tora){
-
+	private void drawStopway(Graphics g, int tora, int girth, int direction, int stop){
+		
+		Graphics2D g2 = (Graphics2D) g.create();
+		
+		int startX, startY;
+		if(direction == 1)
+			startX = getWidth()/2 + tora/2;
+		else
+			startX = getWidth()/2 - tora/2 - stop;
+		startY = getHeight()/2 - girth/2;
+		
+		g2.fillRect(startX, startY, stop, girth);
+	}
+	
+	private void drawClearway(Graphics g, int tora, int girth, int direction, int clear){
+		
+		Graphics2D g2 = (Graphics2D) g.create();
+		
+		int startX, startY;
+		if(direction == 1)
+			startX = getWidth()/2 + tora/2;
+		else
+			startX = getWidth()/2 - tora/2 - clear;
+		startY = getHeight()/2 - girth;
+		g2.fillRect(startX, startY, clear, girth*2);
 	}
 
 	/** Draws all virtual dimensions */
@@ -408,7 +453,6 @@ public class View extends JPanel{
 		//vertical line to edge of runway
 		g2.setStroke(new BasicStroke(0.75f));
 		g2.drawLine(endX, Y, endX, getHeight()/2-girth/2);
-
 		
 		//-----------------------------------------------------
 		if(direction == 1)
@@ -416,7 +460,6 @@ public class View extends JPanel{
 		else
 			g3.drawString(variableName, startX - titleLen, Y+3);
 		//------------------------------------------------------
-		
 
 		//Second line vals
 		if (direction == 1){
@@ -433,14 +476,14 @@ public class View extends JPanel{
 		g2.drawLine(endX, Y, endX, getHeight()/2-girth/2);
 	}
 	
-	private void drawDirection(Graphics g, String s){
+	private void drawDirection(Graphics g, String s, int girth){
 		Graphics2D g2 = (Graphics2D) g.create();
 		
 		Font font = new Font("verdana", Font.BOLD+Font.ITALIC, 16);
 		FontMetrics fontMetrics = g.getFontMetrics(font);
 		int titleLen = fontMetrics.stringWidth(s);
 		g2.setFont(font);
-		g2.drawString(s, (getWidth() / 2) - (titleLen / 2), getHeight()/2 + girth);
+		g2.drawString(s, (getWidth() / 2) - (titleLen / 2), getHeight()/2 + girth*5);
 	}
 
 	private void drawFatArrow(Graphics g){
