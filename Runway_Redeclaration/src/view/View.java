@@ -4,8 +4,10 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Insets;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.math.BigDecimal;
@@ -149,7 +151,6 @@ public class View extends JPanel{
 		g2d.setRenderingHints(rh);
 		return g2d;
 	}
-	//TODO use!
 	
 	private int direction(){
 		return getRunway().isSmallEnd() ? 1:-1;
@@ -190,9 +191,9 @@ public class View extends JPanel{
 		drawBarCode(getGraphicsComp(g2, Color.white), tora, girth, smalldt, largedt);
 		drawCenterLine(getGraphicsComp(g2, Color.white), tora, girth, smalldt, largedt);
 		drawIdentifier(getGraphicsComp(g2, Color.white), s, ss, tora, girth, smalldt, largedt);
-
 		drawAllDim(getGraphicsComp(g2, Color.black), direction(), tora, girth, toda, asda, lda, currentDT, startOfRoll);
-		
+		drawFatArrow(getGraphicsComp(g2, Color.black));
+		drawDirection(getGraphicsComp(g2, Color.RED), "Landing and TakeOff Direction: "+ run.getIdentifier());
 	}
 
 
@@ -384,17 +385,20 @@ public class View extends JPanel{
 		Graphics2D g2 = (Graphics2D) g.create();//for arrows
 		Graphics2D g3 = (Graphics2D) g.create();//for text
 
-		int textGap = 11*variableName.length();
+		Font font = new Font("verdana", Font.PLAIN, 10);
+		FontMetrics fontMetrics = g3.getFontMetrics(font);
+		int titleLen = fontMetrics.stringWidth(variableName);
+		g3.setFont(font);
 
 		int startX = 0, endX = 0, Y = 0;
 		
 		//first line vals
 		if(direction == 1){
 			endX = getWidth()/2 - tora/2 + startWhere;
-			startX = this.getWidth()/2 ;
+			startX = this.getWidth()/2 - titleLen/2 ;
 		}else{
 			endX = getWidth()/2 + tora/2 - startWhere;
-			startX = getWidth()/2 + textGap + startX/48;
+			startX = getWidth()/2 + titleLen/2;
 		}
 		
 		Y = getHeight()/2 - girth/2 - howhighUp;
@@ -405,21 +409,22 @@ public class View extends JPanel{
 		g2.setStroke(new BasicStroke(0.75f));
 		g2.drawLine(endX, Y, endX, getHeight()/2-girth/2);
 
-		//text vals
-		g3.setFont(new Font("verdana", Font.PLAIN, 9));
-		//48 is for more evenly distributing the text
+		
+		//-----------------------------------------------------
 		if(direction == 1)
-			g3.drawString(variableName, startX + startX/37, Y+3);
+			g3.drawString(variableName, startX, Y+3);
 		else
-			g3.drawString(variableName, startX - startX/10, Y+3);
+			g3.drawString(variableName, startX - titleLen, Y+3);
+		//------------------------------------------------------
+		
 
 		//Second line vals
 		if (direction == 1){
 			endX += howlong;
-			startX += textGap + startX/48;
+			startX += titleLen;
 		} else{
 			endX -= howlong;
-			startX = getWidth()/2;
+			startX -= titleLen;
 		}
 
 		drawArrow(g, startX, Y, endX, Y);
@@ -427,7 +432,41 @@ public class View extends JPanel{
 		//vertical line to edge of runway
 		g2.drawLine(endX, Y, endX, getHeight()/2-girth/2);
 	}
+	
+	private void drawDirection(Graphics g, String s){
+		Graphics2D g2 = (Graphics2D) g.create();
+		
+		Font font = new Font("verdana", Font.BOLD+Font.ITALIC, 16);
+		FontMetrics fontMetrics = g.getFontMetrics(font);
+		int titleLen = fontMetrics.stringWidth(s);
+		g2.setFont(font);
+		g2.drawString(s, (getWidth() / 2) - (titleLen / 2), getHeight()/2 + girth);
+	}
 
+	private void drawFatArrow(Graphics g){
+		Graphics2D g2 = (Graphics2D) g.create();
+
+	    Insets insets = getInsets();
+	    // int w = getWidth() - insets.left - insets.right;
+	    int h = getHeight() - insets.top - insets.bottom;
+
+	    AffineTransform oldAT = g2.getTransform();
+	    try {
+	        //Move the origin to bottom-left, flip y axis
+	        g2.scale(1.0, -1.0);
+	        g2.translate(0, -h - insets.top);
+
+	        int xpoints[] = { 20, 30, 30, 35, 25, 15, 20 };
+	        int ypoints[] = { 10, 10, 30, 30, 45, 30, 30 };
+	        int npoints = 7;
+	        g2.fillPolygon(xpoints, ypoints, npoints);
+	    }
+	    finally {
+	      //restore
+	      g2.setTransform(oldAT);
+	    }
+	}
+	
 	/** Whole single arrow */
 	private void drawArrow(Graphics g1, int x1, int y1, int x2, int y2) {
 		Graphics2D g2 = (Graphics2D) g1.create();
