@@ -3,13 +3,16 @@ package view;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.Document;
+import javax.swing.JTextPane;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyleContext;
 
 /**
  * 
@@ -24,13 +27,13 @@ public class LogPanel extends JPanel{
 	private JLabel airportLabel;
 	private Log logPanel;
 	
-	private Color file, calc, defaultc;
+	private static final Color FILE = new Color(128, 0, 0);
+	private static final Color CALC = new Color(75, 0, 130);
+	private static final Color DEFAULT = Color.WHITE;
+	private static final Color ERROR = Color.RED;
 	
 	public LogPanel(String name){
 		this.label = name;
-		file = Color.blue;
-		calc = Color.green;
-		defaultc = Color.black;
 		init();
 	}
 	
@@ -66,20 +69,13 @@ public class LogPanel extends JPanel{
 	public void notify(String s, String c){
 		switch(c){
 		case "file":
-		{
-			notify(s, file);
-			
+			notify(s, FILE);
 			break;
-		}
 		case "calc":
-		{
-			notify(s, calc);
+			notify(s, CALC);
 			break;
-		}
 		default:
-		{
-			notify(s, defaultc);
-		}
+			notify(s, DEFAULT);
 		}
 	}
 	
@@ -94,23 +90,20 @@ public class LogPanel extends JPanel{
 	 */
 	private class Log extends JPanel{
 		private JScrollPane scroll;
-		private JTextArea text;
-		private Document doc;
+		private JTextPane text;
 		
 		private Log(){
 			
-			text = new JTextArea();
+			text = new JTextPane();
 			scroll = new JScrollPane(text);
-			doc = text.getDocument();
 			
 			init();
 		}
 		
 		private void init(){
 			this.setLayout(new BorderLayout());
-			
+			text.setBackground(new Color(191, 239, 255));
 			text.setEditable(false);
-			text.setLineWrap(true);
 			
 			this.add(scroll, BorderLayout.CENTER);
 		}
@@ -119,23 +112,30 @@ public class LogPanel extends JPanel{
 		 * adds a log to the text area
 		 */
 		private void addLog(String s){
-			addLog(s, defaultc);
+			addLog(s, DEFAULT);
 		}
 		
+		private void appendToPane(String msg, Color c){
+
+	        StyleContext sc = StyleContext.getDefaultStyleContext();
+	        AttributeSet aset = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Foreground, c);
+
+	        aset = sc.addAttribute(aset, StyleConstants.FontFamily, "Lucida Console");
+	        aset = sc.addAttribute(aset, StyleConstants.Alignment, StyleConstants.ALIGN_JUSTIFIED);
+
+	        int len = text.getDocument().getLength();
+	        text.setFont(new Font("verdana", Font.PLAIN, 12));
+	        text.setCaretPosition(len);
+	        text.setCharacterAttributes(aset, false);
+	        text.replaceSelection(msg);
+	    }
+
+		
 		private void addLog(String s, Color c){
-			/*StyleContext sc = StyleContext.getDefaultStyleContext();
-			AttributeSet aset = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Foreground, c);
-			text.setCharacterAttributes(aset, false); */
-			text.setForeground(c);
-			try {
-			      doc.insertString(doc.getLength(), "\n\n" + s, null);
-			      scroll.repaint();
-			      
-			} catch(BadLocationException exc) {
-			      exc.printStackTrace();
-			}
-			text.setForeground(Color.black);
-			//aset = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Foreground, defaultc);
+			text.setEditable(true);
+			appendToPane(s, c);
+			appendToPane("\n", c);
+			text.setEditable(false);
 		}
 	}
 }

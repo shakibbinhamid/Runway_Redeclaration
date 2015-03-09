@@ -59,7 +59,7 @@ public class LoadListener{
 			else{
 				if(fs.checkAir(chosen)){
 					AirportInterface airport = fs.loadAir(chosen);
-					Notification.notify(airport.getName() +" loaded.");
+					Notification.notify(airport.getName() +" loaded.", "file");
 					frame.loadOrCreateAirport(airport);
 					
 					frame.getLogPanel().repaint();
@@ -108,7 +108,6 @@ public class LoadListener{
 					}
 					ObjectFrame.this.dispose();
 				}
-				
 			});
 			
 			setPreferredSize(new Dimension(300,110));

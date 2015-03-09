@@ -2,10 +2,9 @@ package view;
 
 import java.awt.Color;
 
-
 public class Notification {
 	static TopFrame frame;
-	
+	 
 	public static void setFrame(TopFrame newFrame){
 		frame = newFrame;
 	}

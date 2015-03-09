@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.util.List;
@@ -66,6 +67,7 @@ public class TopFrame extends JFrame{
 		this.setMinimumSize(new Dimension(1200,600));
 		this.pack();
 		setVisible(true);
+
 	}
 	
 	/**

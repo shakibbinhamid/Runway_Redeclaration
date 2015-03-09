@@ -85,6 +85,7 @@ public class FileSystem {
 
 	public boolean saveObs(Obstacle o){
 		String dir = wd + datDir + objDir + "/" + o.getName() + objext + xmlext;
+		Notification.notify("Saving obstacle to \n" + dir + "...", "file");
 		return XMLSaver.serialise(o, dir);
 	}
 
@@ -106,15 +107,8 @@ public class FileSystem {
 			throw new NothingToSaveException();
 		}
 		String dir = wd + datDir + airDir + "/" + a.getName()+airext + xmlext;
-		Notification.notify("Saving airport to " + dir + "...");
+		Notification.notify("Saving airport to \n" + dir + "...", "file");
 		return XMLSaver.serialise(a, dir);
-	}
-
-	public AirportInterface loadAir(String fileName){
-		File airFile = new File(wd + datDir + airDir + "/" + fileName);
-		//loadingNotification(fileName);
-		AirportInterface a = (AirportInterface) XMLSaver.deserialise(Airport.class, airFile);
-		return a;
 	}
 
 	public AirportInterface loadAir(File airFile){
@@ -124,7 +118,7 @@ public class FileSystem {
 	}
 
 	private void loadingNotification(String name){
-		Notification.notify("Loading " + name + "...");
+		Notification.notify("Loading " + name + "...", "file");
 	}
 
 	//Returns true if chosen file is an airport file
