@@ -97,7 +97,7 @@ public class View extends JPanel{
 
 	public void setRunway(DeclaredRunwayInterface runway) {
 		this.run = runway;
-		DeclaredRunwayInterface defaultR = runway.isSmallEnd() ? field.getDefaultSmallAngledRunway() : field.getSmallAngledRunway();
+		DeclaredRunwayInterface defaultR = runway.isSmallEnd() ? field.getDefaultSmallAngledRunway() : field.getDefaultLargeAngledRunway();
 		
 		defTora = (int) defaultR.getTORA();
 		defTotalWidth = (int) this.field.getTotalWidth();
@@ -147,7 +147,7 @@ public class View extends JPanel{
 				JPanel pane = new View(air, runway);
 
 				JFrame frame = new JFrame();
-				frame.setMinimumSize(new Dimension (300,200));
+				frame.setMinimumSize(new Dimension (600,500));
 				frame.setContentPane(pane);
 				frame.setTitle("Testing");
 				frame.pack();
@@ -415,9 +415,9 @@ public class View extends JPanel{
 		int dtToBar = tora/DT_TO_BARCODE_LENGTH_RATIO_TO_TORA;
 		int bar = tora/TORA_TO_BAR_CODE_RATIO;
 
-		int startX = this.getWidth()/2 - tora/2 + smalldt + dtToBar + bar + 20;
+		int startX = this.getWidth()/2 - tora/2 + smalldt + dtToBar + bar + scaleToPixels(200);
 		int startY = this.getHeight()/2;
-		int endX = this.getWidth()/2 + tora/2 - largedt - dtToBar - bar - 20;
+		int endX = this.getWidth()/2 + tora/2 - largedt - dtToBar - bar - scaleToPixels(200);
 		int endY = startY;
 
 		g2.drawLine(startX, startY, endX, endY);
@@ -426,14 +426,33 @@ public class View extends JPanel{
 	/** Puts the 09L etc on each side of the runway  */
 	private void drawIdentifier(Graphics g, String stripEnd, String s2, int tora, int defGirth, int dt1, int dt2){
 		Graphics2D g2 = (Graphics2D) g.create();
+		
+		String regex = "(?<=\\D)(?=\\d)|(?<=\\d)(?=\\D)";
+
+		String leftangle = stripEnd.split(regex)[0];
+		String leftletter = stripEnd.split(regex)[1];
+		
+		String rightangle = s2.split(regex)[0];
+		String rightletter = s2.split(regex)[1];
+		
+		Font font = new Font("verdana", Font.BOLD, defGirth * 3/4);
+		FontMetrics fontMetrics = g2.getFontMetrics(font);
+		int leftangleLen = fontMetrics.stringWidth(leftangle);
+		int rightangleLen = fontMetrics.stringWidth(rightangle);
+		
+		int leftletterLen = fontMetrics.stringWidth(leftletter);
+		int leftletterHeight = fontMetrics.getAscent()-fontMetrics.getDescent();
+		
+		int rightletterLen = fontMetrics.stringWidth(rightletter);
+		int rightletterHeight = fontMetrics.getAscent()-fontMetrics.getDescent();
+		g2.setFont(font);
+		
+		System.out.println(leftangleLen);
 
 		final BasicStroke thick =
 				new BasicStroke(2);
 		g2.setStroke(thick);
 		int fontsize = defGirth/2;
-		/*if (fontsize<8) fontsize=8;*/
-
-		g2.setFont(new Font("verdana", Font.PLAIN, fontsize));
 
 		int dtToBar = tora/DT_TO_BARCODE_LENGTH_RATIO_TO_TORA;
 		int bar = tora/TORA_TO_BAR_CODE_RATIO;
@@ -442,12 +461,14 @@ public class View extends JPanel{
 		AffineTransform old = g2.getTransform();
 		at.setToRotation(Math.PI / 2.0);
 		g2.setTransform(at);
-		g2.drawString(stripEnd, getHeight()/2 - defGirth/2, -(getWidth()/2 - tora/2 + dt1 + dtToBar + bar + 5));
+		g2.drawString(leftangle, getHeight()/2 - leftangleLen/2, -(getWidth()/2 - tora/2 + dt1 + dtToBar + bar + 5 + leftletterHeight));
+		g2.drawString(leftletter, getHeight()/2 - leftletterLen/2, -(getWidth()/2 - tora/2 + dt1 + dtToBar + bar + 5 + leftletterHeight/10));
 
 		AffineTransform at2 = new AffineTransform();
 		at2.setToRotation(-Math.PI / 2.0);
 		g2.setTransform(at2);
-		g2.drawString(s2, -getHeight()/2 - defGirth/2, (getWidth()/2 + tora/2 - dt2 - dtToBar - bar - 5) );
+		g2.drawString(rightangle, -getHeight()/2 - rightangleLen/2, (getWidth()/2 + tora/2 - dt2 - dtToBar - bar - 5 - rightletterLen) );
+		g2.drawString(rightletter, -getHeight()/2 - rightletterLen/2, (getWidth()/2 + tora/2 - dt2 - dtToBar - bar - 5 - rightletterHeight/10));
 		g2.setTransform(old);
 	}
 
@@ -482,7 +503,7 @@ public class View extends JPanel{
 	private void drawAllDim(Graphics g, int direction, int defTora, int defGirth, int tora, int toda, int asda, int lda, int dt, int startOfRoll){
 		int height = defGirth/2;
 		int bumper = 20;
-		System.out.println("TORA :"+tora + " TODA: "+ toda + " ASDA: "+ asda + " LDA: "+ lda + "ROLL: "+ startOfRoll);
+		//System.out.println("TORA :"+tora + " TODA: "+ toda + " ASDA: "+ asda + " LDA: "+ lda + "ROLL: "+ startOfRoll);
 		drawdim(g, direction, defTora, defGirth, "LDA", dt, lda, height + bumper);
 		drawdim(g, direction, defTora, defGirth, "TORA", startOfRoll, tora, height + bumper + 1*VIRTUAL_GAP);
 		drawdim(g, direction, defTora, defGirth, "ASDA", startOfRoll, asda, height + bumper + 2*VIRTUAL_GAP);
