@@ -97,6 +97,7 @@ public class View extends JPanel{
 			defTora = (int) field.getDefaultLargeAngledRunway().getTORA();
 		
 		totalWidth = (int) this.field.getTotalWidth();
+		System.out.println("total  "+totalWidth);
 		asda = (int) getRunway().getASDA();
 		toda = (int) getRunway().getTODA();
 		lda = (int) getRunway().getLDA();
@@ -591,7 +592,7 @@ public class View extends JPanel{
 		// draw cheeky plane
 		
 		//=[ generic ]=
-		int radius = 25;
+		int radius = 25;//TODO make relative to the obs and SCALE
 		int diamter = radius*2;
 		g2.setStroke(new BasicStroke(0.75f));
 		g2.setColor(Color.black);;

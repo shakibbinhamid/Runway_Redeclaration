@@ -9,7 +9,6 @@ import CoreInterfaces.DeclaredRunwayInterface;
 import CoreInterfaces.ObstacleInterface;
 import CoreInterfaces.PositionedObstacleInterface;
 import CoreInterfaces.Savable;
-import Exceptions.InvalidIdentifierException;
 import Exceptions.VariableDeclarationException;
 
 @Root
@@ -139,14 +138,23 @@ public class Airfield implements AirfieldInterface, Savable {
 	
 	@Override
 	public double getTotalWidth() {
-		return getStripEnd()+longestTODA()+getStripEnd();
+		double smallDis = getPositionedObstacle().distanceFromSmallEnd();
+		double largeDis = getPositionedObstacle().distanceFromLargeEnd();
+		
+		double radiusBuffer = 0;
+		if(0 < smallDis){
+			radiusBuffer = -smallDis;
+		}else if(0 < largeDis){
+			radiusBuffer = -largeDis;
+		}
+		return getStripEnd()+longestTODA()+radiusBuffer+getStripEnd();
 	}
 	
 	private double longestTODA(){ 
-		if (getSmallAngledRunway().getTODA() > getLargeAngledRunway().getTODA()){
-			return getSmallAngledRunway().getTODA();
+		if (getDefaultSmallAngledRunway().getTODA() > getDefaultLargeAngledRunway().getTODA()){
+			return getDefaultSmallAngledRunway().getTODA();
 		}else{
-			return getLargeAngledRunway().getTODA();
+			return getDefaultLargeAngledRunway().getTODA();
 		}
 	}
 

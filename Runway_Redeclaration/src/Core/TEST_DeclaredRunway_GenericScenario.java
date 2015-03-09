@@ -389,12 +389,6 @@ public class TEST_DeclaredRunway_GenericScenario {
 
 			
 			
-		} catch (InvalidIdentifierException e) {
-			System.err.println("-[ Failed ]-");
-			System.err.println(air.getSmallAngledRunway().getIdentifier());
-			System.err.println("-------------");
-			failed = true;
-			reasons.add("InvalidIntetifierException thrown");
 
 		}finally{
 			inp.close();
