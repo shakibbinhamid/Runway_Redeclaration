@@ -2,6 +2,7 @@ package view;
 
 import io.FileSystem;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -67,22 +68,32 @@ public class LoadListener{
 		}
 	}
 	class ObjectFrame extends JFrame{
-		JLabel direction;
-		JTextField distance;
+		JLabel directionLeft, directionRight;
+		JTextField distanceFromLeft, distanceFromRight;
 		JButton ok;
 		
 		ObjectFrame(){
-			direction = new JLabel("Please Enter the Distance from the Left Side");
-			distance = new JTextField();
+			directionLeft = new JLabel("Please Enter the Distance from the Left Side");
+			directionRight = new JLabel("Please Enter the Distances from the Right Side");
+			distanceFromLeft = new JTextField();
+			distanceFromRight = new JTextField();
 			ok = new JButton("OK");
 			
+			JPanel top = new JPanel();
 			JPanel pane = new JPanel();
-			this.setContentPane(pane);
-			pane.setLayout(new GridLayout (3,0));
+			JPanel buttonPane = new JPanel();
 			
-			pane.add(direction);
-			pane.add(distance);
-			pane.add(ok);
+			this.setContentPane(top);
+			top.setLayout(new BorderLayout ());
+			
+			top.add(pane, BorderLayout.CENTER);
+			top.add(buttonPane, BorderLayout.SOUTH);
+			
+			pane.setLayout(new GridLayout(2,0));
+			pane.add(directionLeft); top.add(directionRight);
+			pane.add(distanceFromLeft); top.add(distanceFromRight);
+			
+			buttonPane.add(ok);
 			
 			ok.addActionListener(new ActionListener(){
 
@@ -91,7 +102,7 @@ public class LoadListener{
 					ObstacleInterface obs = fs.loadObs(chosen);
 					Notification.notify(obs.getName() + " loaded.", "file");
 					try{
-						frame.loadOrCreateObstacle(obs, ((Tab)frame.getTabbePanel().getSelectedComponent()).getField(), Double.parseDouble(distance.getText()));
+						frame.loadOrCreateObstacle(obs, ((Tab)frame.getTabbePanel().getSelectedComponent()).getField(), Double.parseDouble(distanceFromLeft.getText()), Double.parseDouble(distanceFromRight.getText()));
 					}catch(NumberFormatException nf){
 						JOptionPane.showMessageDialog(frame, "Enter a valid number", "ERROR: Distance", JOptionPane.ERROR_MESSAGE);
 					}
