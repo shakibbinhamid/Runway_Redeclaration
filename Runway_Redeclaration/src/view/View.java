@@ -118,15 +118,19 @@ public class View extends JPanel{
 				try {
 					port.addNewAirfield(90, 'L', new double[] {3902,3902,3902,3596}, new double[] {3884,3900,3962,3884});
 					air = port.getAirfield(port.getAirfieldNames().get(0));
+							
+					air.addObstacle(new Obstacle("Box",12,0), -50, 3646);//TODO I added an obstacle!
+				
+					runway = air.getSmallAngledRunway();
 					
+					System.out.println("TORA: "+ runway.getTORA());
+					System.out.println("TODA: "+ runway.getTODA());
+					System.out.println("ASDA: "+ runway.getASDA());
+					System.out.println("LDA: "+ runway.getLDA());
 					
+					System.out.println("ROLL: "+ runway.getStartOfRoll());
+					System.out.println("DT: "+ runway.getDisplacedThreshold());
 					
-					//air.addObstacle(new Obstacle("Box",12,0), -50, 3646);//TODO I added an obstacle!
-					
-					
-					
-					
-					runway = air.getLargeAngledRunway();
 					
 				} catch (CannotMakeRunwayException | VariableDeclarationException e) {
 					e.printStackTrace();
