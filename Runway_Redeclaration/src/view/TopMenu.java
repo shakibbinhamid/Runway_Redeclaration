@@ -1,5 +1,7 @@
 package view;
 
+import io.PrintSupport;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -49,7 +51,7 @@ public class TopMenu extends JMenuBar{
 		createHelpMenu();
 		
 		//================================Adding menus========================================//
-		addMenus(new JMenu[] {file, edit}); //print, help});
+		addMenus(new JMenu[] {file, edit ,print });//, help});
 		
 	}
 	
@@ -179,6 +181,14 @@ public class TopMenu extends JMenuBar{
 	private void createPrintMenu(){
 		//================================PRINT MENU==============================================//
 		printCalculation = getItem("Print Calculation", iprint, SwingConstants.CENTER);
+		printCalculation.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				PrintSupport.printComponent(frame.getLogPanel().getCalcTextPane());
+			}
+			
+		});
 		
 		print = getMenu("Print", null, new JMenuItem[]{printCalculation});
 	}

@@ -104,7 +104,7 @@ public class LoadListener{
 					try{
 						frame.loadOrCreateObstacle(obs, ((Tab)frame.getTabbePanel().getSelectedComponent()).getField(), Double.parseDouble(distanceFromLeft.getText()), Double.parseDouble(distanceFromRight.getText()));
 					}catch(NumberFormatException nf){
-						JOptionPane.showMessageDialog(frame, "Enter a valid number", "ERROR: Distance", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(frame, "Enter a valid number for distances please!", "ERROR: Distance", JOptionPane.ERROR_MESSAGE);
 					}
 					ObjectFrame.this.dispose();
 				}
