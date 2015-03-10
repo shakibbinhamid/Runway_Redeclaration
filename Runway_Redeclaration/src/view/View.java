@@ -67,9 +67,9 @@ public class View extends JPanel{
 
 	private static final int ARR_SIZE = 4;
 
-	public View(AirfieldInterface field, DeclaredRunwayInterface def, DeclaredRunwayInterface run){
+	public View(AirfieldInterface field, DeclaredRunwayInterface run){
 		this.setField(field);
-		this.setRunway(def, run);
+		this.setRunway(run);
 	}
 
 	public AirfieldInterface getField() {
@@ -97,9 +97,9 @@ public class View extends JPanel{
 		return run;
 	}
 
-	public void setRunway(DeclaredRunwayInterface defRunway, DeclaredRunwayInterface runway) {
+	public void setRunway(DeclaredRunwayInterface runway) {
 		this.run = runway;
-		DeclaredRunwayInterface defaultR = defRunway.isSmallEnd() ? field.getDefaultSmallAngledRunway() : field.getDefaultLargeAngledRunway();
+		DeclaredRunwayInterface defaultR = runway.isSmallEnd() ? field.getDefaultSmallAngledRunway() : field.getDefaultLargeAngledRunway();
 		
 		defTora = (int) defaultR.getTORA();
 		defTotalWidth = (int) this.field.getTotalWidth();
@@ -146,7 +146,7 @@ public class View extends JPanel{
 				} catch (UnrecognisedAirfieldIntifierException e) {
 					e.printStackTrace();
 				}
-				JPanel pane = new View(air, def, runway);
+				JPanel pane = new View(air, runway);
 				
 				JFrame frame = new JFrame();
 				frame.setMinimumSize(new Dimension (600,500));
@@ -273,6 +273,10 @@ public class View extends JPanel{
 
 	private int pixelsToScale (int howMuchMeters, int howManyPixels, int whatInPixels){
 		return new BigDecimal ( whatInPixels * howMuchMeters/howManyPixels ).intValue();
+	}
+	
+	private int pixelsToScale(int pixels){
+		return pixelsToScale(defTotalWidth, this.getWidth(), pixels);
 	}
 	
 	private void colorFrame(Graphics g){
@@ -576,7 +580,7 @@ public class View extends JPanel{
 		FontMetrics fontMetrics = g.getFontMetrics(font);
 		int titleLen = fontMetrics.stringWidth(s);
 		g2.setFont(font);
-		g2.drawString(s, (getWidth() / 2) - (titleLen / 2), 3*getHeight()/5+12 + defGirth*5);
+		g2.drawString(s, (getWidth() / 2) - (titleLen / 2), 7*getHeight()/10 +12 + defGirth*5);
 	}
 
 	private void drawFatArrow(Graphics g, int defGirth){
@@ -586,11 +590,19 @@ public class View extends JPanel{
 		int x = getWidth()/2;
 		int y = 3*getHeight()/5 + defGirth*3;
 		
+		int planeDirection;
 		if(getRunway().isSmallEnd()){
 			drawArrowAround(g, x, y, defGirth, GOING_RIGHT, g.getColor(), Color.BLACK);
+			planeDirection = -1;
+			
 		}else{
 			drawArrowAround(g, x, y, defGirth, GOING_LEFT, g.getColor(), Color.BLACK);
+			planeDirection = 1;
 		}
+		int planeWingSpan = pixelsToScale(getHeight()/10);
+		int planex = x-planeDirection*defGirth*3;
+		int planey = y;
+		drawPlane(g, planeWingSpan, planex, planey, planeDirection);
 	}
 	
 	private void drawArrowAround(Graphics g, int pointX, int pointY, int runwayGirth ,double angleInPi, Color fill, Color outline){
@@ -700,8 +712,8 @@ public class View extends JPanel{
 		// draw cheeky plane
 		Graphics2D g4 = (Graphics2D) g.create();
 		if (getField().getPositionedObstacle().getName().matches("[a-zA-Z][0-9]+")) {
-			System.out.println("PLANES PLANES PLANES PLANES");
-			drawPlane(g4, (int) obj.getRadius(), x, y, 1);
+			System.out.print("PLANES PLANES PLANES PLANES");
+			drawPlane(g4, (int) obj.getRadius(), x, y, -1);
 		}
 		//=====[ No Radius ]=======
 		// draw an 'X' at point
@@ -729,14 +741,16 @@ public class View extends JPanel{
 	 * 
 	 * @param direction 1 = heading left -1 = heading right
 	 */
-	private void drawPlane(Graphics2D g, int radius, int x, int y, double direction) {
+	private void drawPlane(Graphics g, int radius, int x, int y, double direction) {
+		System.out.println("PLANES TIME");
 		Graphics2D g2 = (Graphics2D) g.create();
-//		radius = 3*radius/4;
-		radius = scaleToPixels(radius);
-		x = x - 7*radius/8;
-		radius *= 2;
 		int m = (int) direction;
 
+		
+		
+		radius = scaleToPixels(radius);
+		x = x - m*7*radius/8;
+		radius *= 2;
 		//half width => sort of single wing span
 		int hwidth = radius*12/19;
 
