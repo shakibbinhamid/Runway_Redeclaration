@@ -162,7 +162,7 @@ public class View extends JPanel{
 			}});
 		try {
 			Thread.sleep(60*1000);//60 secs
-			//System.exit(0);
+			System.exit(0);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -576,7 +576,7 @@ public class View extends JPanel{
 		FontMetrics fontMetrics = g.getFontMetrics(font);
 		int titleLen = fontMetrics.stringWidth(s);
 		g2.setFont(font);
-		g2.drawString(s, (getWidth() / 2) - (titleLen / 2), getHeight()/2 + defGirth*5);
+		g2.drawString(s, (getWidth() / 2) - (titleLen / 2), 3*getHeight()/5+12 + defGirth*5);
 	}
 
 	private void drawFatArrow(Graphics g, int defGirth){
@@ -584,7 +584,7 @@ public class View extends JPanel{
 		final double GOING_RIGHT = Math.PI/2;
 		
 		int x = getWidth()/2;
-		int y = getHeight()/2 + defGirth*3;
+		int y = 3*getHeight()/5 + defGirth*3;
 		
 		if(getRunway().isSmallEnd()){
 			drawArrowAround(g, x, y, GOING_RIGHT, g.getColor(), Color.BLACK);
