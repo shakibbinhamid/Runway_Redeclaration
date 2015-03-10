@@ -122,13 +122,11 @@ public class View extends JPanel{
 				
 				AirportInterface port = new Airport("Jim International");
 				AirfieldInterface air = null;
-				DeclaredRunwayInterface def = null;
 				DeclaredRunwayInterface runway = null;
 				try {
 					port.addNewAirfield(90, 'L', new double[] {3902,3902,3902,3596}, new double[] {3884,3884,3962,3884});
 					air = port.getAirfield(port.getAirfieldNames().get(0));
-					def = air.getDefaultLargeAngledRunway();
-					runway = air.getLargeAngledRunway();
+					runway = air.getSmallAngledRunway();
 					air.addObstacle(new Obstacle("A600",100,12), -50, 3646);//TODO I added an obstacle!
 					
 					System.out.println("TORA: "+ runway.getTORA());
@@ -243,7 +241,7 @@ public class View extends JPanel{
 		startOfRoll = scaleToPixels(startOfRoll);
 
 		Graphics2D g2 = (Graphics2D) g.create();
-		
+		//TODO find me tag
 		colorFrame(getGraphicsComp(g2, grass));
 		drawWholeArea(getGraphicsComp(g2, purple), defTora, stripEnd, longSpacer);
 		drawClearedAndGradedArea(getGraphicsComp(g2, clearedBlue), defTora, stripEnd, shortSpacer, mediumSpacer, shortLength, longLength);
@@ -580,7 +578,7 @@ public class View extends JPanel{
 		FontMetrics fontMetrics = g.getFontMetrics(font);
 		int titleLen = fontMetrics.stringWidth(s);
 		g2.setFont(font);
-		g2.drawString(s, (getWidth() / 2) - (titleLen / 2), 7*getHeight()/10 +12 + defGirth*5);
+		g2.drawString(s, (getWidth() / 2) - (titleLen / 2), 7*getHeight()/10+ defGirth*5);
 	}
 
 	private void drawFatArrow(Graphics g, int defGirth){
