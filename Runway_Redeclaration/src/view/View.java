@@ -64,7 +64,7 @@ public class View extends JPanel{
 	private static Color transparentRed = new Color(255, 0, 0, 150);
 	private static Color VERYtransparentRed = new Color(255, 0, 0, 100);
 	private static Color VERY_VERY_transparentRed = new Color(255, 0, 0, 50);
-	private static Color planeGrey = new Color(200,200,200);
+	private static Color planeGrey = new Color(175,175,175);
 
 	private static final int ARR_SIZE = 4;
 
@@ -128,16 +128,7 @@ public class View extends JPanel{
 					port.addNewAirfield(90, 'L', new double[] {3902,3902,3902,3596}, new double[] {3884,3884,3962,3884});
 					air = port.getAirfield(port.getAirfieldNames().get(0));
 					runway = air.getSmallAngledRunway();
-					air.addObstacle(new Obstacle("Buggered A600 on fire",100,12), -50, 3646);//TODO I added an obstacle!
-					
-					System.out.println("TORA: "+ runway.getTORA());
-					System.out.println("TODA: "+ runway.getTODA());
-					System.out.println("ASDA: "+ runway.getASDA());
-					System.out.println("LDA: "+ runway.getLDA());
-					
-					System.out.println("ROLL: "+ runway.getStartOfRoll());
-					System.out.println("DT: "+ runway.getDisplacedThreshold());
-					System.out.println("TOTAL: "+ air.getTotalWidth());
+					air.addObstacle(new Obstacle("Buggered A600 on fire",100,7), -50, 3646);//TODO I added an obstacle!
 					
 					
 				} catch (CannotMakeRunwayException | VariableDeclarationException e) {
@@ -173,15 +164,6 @@ public class View extends JPanel{
 
 	public void paint(Graphics g){
 		super.paint(g);
-		
-		System.out.println("TORA: "+ tora);
-		System.out.println("TODA: "+ toda);
-		System.out.println("ASDA: "+ asda);
-		System.out.println("LDA: "+ lda);
-		
-		System.out.println("ROLL: "+ startOfRoll);
-		System.out.println("DT: "+ dt);
-		System.out.println("TOTAL: "+ defTotalWidth);
 		
 		image = new BufferedImage(this.getWidth(), this.getHeight(), BufferedImage.TYPE_3BYTE_BGR);
 		doDrawing();
@@ -655,12 +637,15 @@ public class View extends JPanel{
 
 		int x;
 		int y = getHeight()/2;
+		int direction;
 		if (getRunway().isSmallEnd()){
 			int dToLeftSide = this.getWidth()/2 - defTora/2;
 			x = dToLeftSide + defSmalldt + scaleToPixels( (int) obj.distanceFromSmallEnd());
+			direction = 1;
 		}else{
 			int dToRightSide = this.getWidth()/2 + defTora/2;
 			x = dToRightSide - defLargedt - scaleToPixels((int)obj.distanceFromLargeEnd());
+			direction = -1;
 		}
 
 
@@ -679,7 +664,6 @@ public class View extends JPanel{
 		int largestFactor; 
 		String factorName;
 		double ALS = getRunway().getAscentAngle()*getField().getPositionedObstacle().getHeight();
-		System.out.println("RESA: "+getRunway().getRESA()+"   ALS: "+ALS+"    Blast: "+getField().getBlastAllowance());
 
 		//find largest factor
 		if(getRunway().getRESA() > ALS &&  ALS > getField().getBlastAllowance()){
@@ -704,8 +688,9 @@ public class View extends JPanel{
 		g3.setColor(transparentRed);
 		g3.drawOval(x-maxRadius, y-maxRadius, maxRadius*2, maxRadius*2);
 		
-//		drawLargestFactorOnCircle(g, factorName, x, y-maxRadius, Color.BLACK);
-//
+		
+		drawLargestFactorOnCircle(g, factorName, maxRadius, direction, x, y, Color.BLACK);
+
 
 		//=[ planes ]=
 		Graphics2D g4 = (Graphics2D) g.create();
@@ -719,22 +704,24 @@ public class View extends JPanel{
 		g2.drawLine(x+h, y+h, x-h, y-h);
 		g2.drawLine(x-h, y+h, x+h, y-h);
 	}
-	private void drawLargestFactorOnCircle(Graphics g, String factor ,int largeRadius, int direction, int objX, int objY, int girth, Color textColor){
+	
+	private void drawLargestFactorOnCircle(Graphics g, String factor ,int largeRadius, int direction, int objX, int objY, Color textColor){
 		Graphics2D g2 = (Graphics2D) g.create();
 		
 		g2.setColor(textColor);
 		int size = 10;
 		g2.setFont(new Font("verdana", Font.BOLD, size));
-		int x = objX + direction*largeRadius;
 		
-		g2.drawString(factor, 0, 0);
+		int x = objX + largeRadius;
+		int y = objY + scaleToPixels((int)getField().getLongSpacer())+ g.getFontMetrics().getHeight();
+		
+		g2.drawString(factor, x, y);
 	}
 	
 	/**
-	 * @param direction 1 = heading left -1 = heading right
+	 * @param direction 1 = heading left,    -1 = heading right
 	 */
 	private void drawPlane(Graphics g, int radius, int x, int y, double direction) {
-		System.out.println("PLANES TIME");
 		Graphics2D g2 = (Graphics2D) g.create();
 		int m = (int) direction;
 
