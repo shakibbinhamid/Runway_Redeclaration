@@ -86,12 +86,13 @@ public class TopFrame extends JFrame{
 	 * @param physicalInputs physical dimensions of the runway
 	 * @param smallInputs parameters of small angled runway
 	 * @param bigInputs parameters of big angled runway
+	 * @throws VariableDeclarationException 
 	 */
 	public void loadOrCreateField(int parseInt, char side,
-			double[] smallInputs, double[] bigInputs) {
+			double[] smallInputs, double[] bigInputs) throws VariableDeclarationException {
 		try {
 			airport.addNewAirfield(parseInt, side, smallInputs, bigInputs);
-		} catch (VariableDeclarationException | CannotMakeRunwayException e) {
+		} catch (CannotMakeRunwayException e) {
 			e.printStackTrace();
 		}
 		List<AirfieldInterface> fields = airport.getAirfields();

@@ -7,10 +7,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
+import Core.Airport;
+import Exceptions.VariableDeclarationException;
 
 public class FormAirfield extends FormGeneral {
 	TopFrame topFrame;
@@ -26,56 +30,34 @@ public class FormAirfield extends FormGeneral {
 	
 	JLabel smallTORALabel;
 	JTextField smallTORATextBox;
-	JLabel smallStopwayLabel;
-	JTextField smallStopwayTextBox;
-	JLabel smallClearwayLabel;
-	JTextField smallClearwayTextBox;
-	JLabel smallDisplacedLabel;
-	JTextField smallDisplacedTextBox;
+	JLabel smallTODALabel;
+	JTextField smallTODATextBox;
+	JLabel smallASDALabel;
+	JTextField smallASDATextBox;
+	JLabel smallLDALabel;
+	JTextField smallLDATextBox;
 	
 	JLabel bigTORALabel;
 	JTextField bigTORATextBox;
-	JLabel bigStopwayLabel;
-	JTextField bigStopwayTextBox;
-	JLabel bigClearwayLabel;
-	JTextField bigClearwayTextBox;
-	JLabel bigDisplacedLabel;
-	JTextField bigDisplacedTextBox;
+	JLabel bigTODALabel;
+	JTextField bigTODATextBox;
+	JLabel bigASDALabel;
+	JTextField bigASDATextBox;
+	JLabel bigLDALabel;
+	JTextField bigLDATextBox;
 	
 	JLabel angleLabel;
 	JTextField angleTextBox;
-
-//	JLabel runwayWidthLabel;
-//	JTextField runwayWidthTextBox;
-//	
-//	JLabel runwayLengthLabel;
-//	JTextField runwayLengthTextBox;
-//	
-//	JLabel initialStopwayLabel;
-//	JTextField initialStopwayTextBox;
-//	
-//	JLabel stripSideLengthLabel;
-//	JTextField stripSideLengthTextBox;
-//	
-//	JLabel distanceToLongSpaceLabel;
-//	JTextField distanceToLongSpaceTextBox;
-//	
-//	JLabel shortClearedWidthLabel;
-//	JTextField shortClearedWidthTextBox;
-//	
-//	JLabel longClearedWidthSpaceLabel;
-//	JTextField longClearedWidthSpaceTextBox;
-//	
-//	JLabel fullWidthSpaceLabel;
-//	JTextField fullWidthSpaceTextBox;
-	
-	
+	JLabel sideLabel;
+	JComboBox sideComboBox;	
 
 	public FormAirfield(TopFrame topFrame) {
 		super(topFrame, "Create Airfield",true);
 		this.topFrame = topFrame;
 		smallValueTextFields = new ArrayList<JTextField>(10);
 		bigValueTextFields = new ArrayList<JTextField>(10);
+		
+		String[] sides = {" ","L","R","C"};
 		
 		upperPanel = new JPanel();
 		bottomPanel = new JPanel();
@@ -86,57 +68,38 @@ public class FormAirfield extends FormGeneral {
 		
 		bigTORALabel = new JLabel("Insert Large Angled TORA:");
 		bigTORATextBox = new JTextField();
-		bigStopwayLabel = new JLabel("Insert Large Angled Stopway");
-		bigStopwayTextBox = new JTextField();
-		bigClearwayLabel = new JLabel("Insert Large Angled Clearway");
-		bigClearwayTextBox = new JTextField();
-		bigDisplacedLabel = new JLabel("Insert Large Angled Displaced Threshold:");
-		bigDisplacedTextBox = new JTextField();
+		bigTODALabel = new JLabel("Insert Large Angled TODA");
+		bigTODATextBox = new JTextField();
+		bigASDALabel = new JLabel("Insert Large Angled ASDA");
+		bigASDATextBox = new JTextField();
+		bigLDALabel = new JLabel("Insert Large Angled LDA:");
+		bigLDATextBox = new JTextField();
 		
 		smallTORALabel = new JLabel("Insert Small Angled TORA:");
 		smallTORATextBox = new JTextField();
-		smallStopwayLabel = new JLabel("Insert Small Angled Stopway:");
-		smallStopwayTextBox = new JTextField();
-		smallClearwayLabel = new JLabel("Insert Small Angled Clearway:");
-		smallClearwayTextBox = new JTextField();
-		smallDisplacedLabel = new JLabel("Insert Small Angled Displaced Threshold:");
-		smallDisplacedTextBox = new JTextField();
+		smallTODALabel = new JLabel("Insert Small Angled TODA:");
+		smallTODATextBox = new JTextField();
+		smallASDALabel = new JLabel("Insert Small Angled ASDA:");
+		smallASDATextBox = new JTextField();
+		smallLDALabel = new JLabel("Insert Small Angled LDA:");
+		smallLDATextBox = new JTextField();
 		
-		angleLabel = new JLabel("Insert Airfield Angle to the North :");
+		angleLabel = new JLabel("Insert Airfield Angle to the North:");
 		angleTextBox = new JTextField();
-		
-//		runwayWidthLabel = new JLabel("Insert airfield width:");
-//		runwayWidthTextBox = new JTextField();
-//		
-//		runwayLengthLabel = new JLabel("Insert airfield length:");
-//		runwayLengthTextBox = new JTextField();
-//		
-//		initialStopwayLabel  = new JLabel("Insert initial Stopway:");
-//		initialStopwayTextBox = new JTextField();
-//		
-//		stripSideLengthLabel  = new JLabel("Insert strip side length:");
-//		stripSideLengthTextBox = new JTextField();
-//		
-//		distanceToLongSpaceLabel = new JLabel("Insert distance to long:");
-//		distanceToLongSpaceTextBox = new JTextField();
-//		
-//		shortClearedWidthLabel = new JLabel("Insert short cleared width:");
-//		shortClearedWidthTextBox = new JTextField();
-//		
-//		longClearedWidthSpaceLabel = new JLabel("Insert long cleared width:");
-//		longClearedWidthSpaceTextBox = new JTextField();
-//		
-//		fullWidthSpaceLabel = new JLabel("Insert full width:");
-//		fullWidthSpaceTextBox = new JTextField();
+		sideLabel = new JLabel("Choose the side of the runway:");
+		sideComboBox = new JComboBox<String>(sides);
 		setPreferredSize(new Dimension(500,350));
 		
 		init();
 	}
 	
 	public void init(){
-		upperPanel.setLayout(new GridLayout(2,1));
+		
+		upperPanel.setLayout(new GridLayout(2,2));
 		upperPanel.add(angleLabel);
+		upperPanel.add(sideLabel);
 		upperPanel.add(angleTextBox);
+		upperPanel.add(sideComboBox);
 		
 		bottomPanel.setLayout(new GridLayout(8, 2));
 		
@@ -145,51 +108,33 @@ public class FormAirfield extends FormGeneral {
 		bottomPanel.add(smallTORATextBox);
 		bottomPanel.add(bigTORATextBox);
 		
-		bottomPanel.add(smallStopwayLabel);
-		bottomPanel.add(bigStopwayLabel);
-		bottomPanel.add(smallStopwayTextBox);
-		bottomPanel.add(bigStopwayTextBox);
+		bottomPanel.add(smallTODALabel);
+		bottomPanel.add(bigTODALabel);
+		bottomPanel.add(smallTODATextBox);
+		bottomPanel.add(bigTODATextBox);
 		
-		bottomPanel.add(smallClearwayLabel);
-		bottomPanel.add(bigClearwayLabel);
-		bottomPanel.add(smallClearwayTextBox);
-		bottomPanel.add(bigClearwayTextBox);
+		bottomPanel.add(smallASDALabel);
+		bottomPanel.add(bigASDALabel);
+		bottomPanel.add(smallASDATextBox);
+		bottomPanel.add(bigASDATextBox);
 		
-		bottomPanel.add(smallDisplacedLabel);
-		bottomPanel.add(bigDisplacedLabel);
-		bottomPanel.add(smallDisplacedTextBox);
-		bottomPanel.add(bigDisplacedTextBox);
+		bottomPanel.add(smallLDALabel);
+		bottomPanel.add(bigLDALabel);
+		bottomPanel.add(smallLDATextBox);
+		bottomPanel.add(bigLDATextBox);
 		
 		textFieldsPanel.setLayout(new BorderLayout());
 		textFieldsPanel.add(upperPanel, BorderLayout.NORTH);
 		textFieldsPanel.add(bottomPanel, BorderLayout.CENTER);
 		
-		
-//		textFieldsPanel.add(runwayWidthLabel);
-//		textFieldsPanel.add(runwayWidthTextBox);
-//		textFieldsPanel.add(runwayLengthLabel);
-//		textFieldsPanel.add(runwayLengthTextBox);
-//		textFieldsPanel.add(initialStopwayLabel);
-//		textFieldsPanel.add(initialStopwayTextBox);
-//		textFieldsPanel.add(stripSideLengthLabel);
-//		textFieldsPanel.add(stripSideLengthTextBox);
-//		textFieldsPanel.add(distanceToLongSpaceLabel);
-//		textFieldsPanel.add(distanceToLongSpaceTextBox);
-//		textFieldsPanel.add(shortClearedWidthLabel);
-//		textFieldsPanel.add(shortClearedWidthTextBox);
-//		textFieldsPanel.add(longClearedWidthSpaceLabel);
-//		textFieldsPanel.add(longClearedWidthSpaceTextBox);
-//		textFieldsPanel.add(fullWidthSpaceLabel);
-//		textFieldsPanel.add(fullWidthSpaceTextBox);
-		
 		smallValueTextFields.add(smallTORATextBox);
 		bigValueTextFields.add(bigTORATextBox);
-		smallValueTextFields.add(smallStopwayTextBox);
-		bigValueTextFields.add(bigStopwayTextBox);
-		smallValueTextFields.add(smallClearwayTextBox);
-		bigValueTextFields.add(bigClearwayTextBox);
-		smallValueTextFields.add(smallDisplacedTextBox);
-		bigValueTextFields.add(bigDisplacedTextBox);
+		smallValueTextFields.add(smallTODATextBox);
+		bigValueTextFields.add(bigTODATextBox);
+		smallValueTextFields.add(smallASDATextBox);
+		bigValueTextFields.add(bigASDATextBox);
+		smallValueTextFields.add(smallLDATextBox);
+		bigValueTextFields.add(bigLDATextBox);
 		
 		setListener();
 		pack();
@@ -200,6 +145,7 @@ public class FormAirfield extends FormGeneral {
 	public void setListener(){
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				boolean okToAdd = false;
 				try{
 					if(angleTextBox.getText().equals("") || Integer.parseInt(angleTextBox.getText()) < 0){
 						JOptionPane.showMessageDialog(null, "Insert a valid angle value!", "Error!", JOptionPane.ERROR_MESSAGE);
@@ -208,9 +154,11 @@ public class FormAirfield extends FormGeneral {
 					JOptionPane.showMessageDialog(null, "Insert a valid angle value!", "Error!", JOptionPane.ERROR_MESSAGE);
 				}
 				
-				double[] physicalInputs = { 80, 1500, 150, 60, 300, 75, 105, 150 };
 				double[] smallInputs = new double[4];
 				double[] bigInputs = new double[4];
+				int angle = Integer.parseInt(angleTextBox.getText());
+				String sideStrig= (String) sideComboBox.getSelectedItem();
+				char sideChar = sideStrig.charAt(0);
 				
 				if(Integer.parseInt(angleTextBox.getText()) > 0){
 					for (int i = 0; i < 4; i++) {
@@ -226,6 +174,7 @@ public class FormAirfield extends FormGeneral {
 										JOptionPane.ERROR_MESSAGE);
 								break;
 							} else {
+								okToAdd = true;
 								smallInputs[i] = Integer
 										.parseInt(smallValueTextFields.get(i)
 												.getText());
@@ -239,15 +188,24 @@ public class FormAirfield extends FormGeneral {
 							break;
 						}
 					}
-					try {
-						//topFrame.loadOrCreateField(Integer.parseInt(angleTextBox.getText()), physicalInputs, smallInputs, bigInputs);
-						dispose();
-					} catch (NumberFormatException e) {
-						e.printStackTrace();
-					}
+				
+					if (okToAdd)
+						try {
+							angle = Integer.parseInt(angleTextBox.getText());
+							sideStrig = (String) sideComboBox.getSelectedItem();
+							sideChar = sideStrig.charAt(0);
+							topFrame.loadOrCreateField(angle, sideChar,
+									smallInputs, bigInputs);
+							dispose();
+						} catch (NumberFormatException e) {
+							JOptionPane.showMessageDialog(null, e.getMessage(),
+									"Invalid Input!", JOptionPane.ERROR_MESSAGE);
+						} catch (VariableDeclarationException e) {
+							JOptionPane.showMessageDialog(null, e.getMessage(),
+									"Invalid Input!", JOptionPane.ERROR_MESSAGE);
+						}
 				}
-				}
-			});
+			}
+		});
 	}
-	
 }

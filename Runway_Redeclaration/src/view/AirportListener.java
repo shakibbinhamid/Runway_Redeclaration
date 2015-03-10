@@ -15,6 +15,4 @@ public class AirportListener implements ActionListener{
 		FormAirport fa = new FormAirport(topFrame);
 		fa.init();		
 	}
-
-	
 }
