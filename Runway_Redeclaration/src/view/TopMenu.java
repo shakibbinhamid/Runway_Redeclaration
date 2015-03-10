@@ -134,7 +134,7 @@ public class TopMenu extends JMenuBar{
 					if(select == JFileChooser.APPROVE_OPTION){
 						File fileToSave = fc.getSelectedFile();
 						try {
-							frame.getTabbePanel().getActiveTab().saveTopView(fileToSave.getAbsolutePath());
+							frame.getTabbePanel().getActiveTab().saveTopView(fileToSave.getAbsolutePath() + ".png");
 							JOptionPane.showMessageDialog(frame, "Saved Successfully at "+ fileToSave.getAbsolutePath(), "SAVING DONE", JOptionPane.INFORMATION_MESSAGE);
 						} catch (IOException e1) {
 							JOptionPane.showMessageDialog(frame, "Could not save!", "SAVING FAILED", JOptionPane.ERROR_MESSAGE);
