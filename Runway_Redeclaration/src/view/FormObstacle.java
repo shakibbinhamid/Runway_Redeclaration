@@ -11,6 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
+import Core.Airport;
 import Core.Obstacle;
 import CoreInterfaces.AirfieldInterface;
 import Exceptions.UnrecognisedAirfieldIntifierException;
@@ -26,6 +27,8 @@ public class FormObstacle extends FormGeneral {
 	JTextField heigthTextBox;
 	JLabel distFromLeftLabel;
 	JTextField distFromLeftTextBox;
+	JLabel distFromRightLabel;
+	JTextField distFromRightTextBox;
 	
 	JLabel airfieldLabel;
 	JComboBox<String> airfieldComboBox;
@@ -42,6 +45,8 @@ public class FormObstacle extends FormGeneral {
 		heigthTextBox = new JTextField();
 		distFromLeftLabel = new JLabel("Insert Distance From Left:");
 		distFromLeftTextBox = new JTextField();
+		distFromRightLabel = new JLabel("Insert Distance From Right:");
+		distFromRightTextBox = new JTextField();
 		
 		airfieldLabel = new JLabel("Pick Airfield:");
 		
@@ -70,6 +75,8 @@ public class FormObstacle extends FormGeneral {
 		textFieldsPanel.add(heigthTextBox);	
 		textFieldsPanel.add(distFromLeftLabel);
 		textFieldsPanel.add(distFromLeftTextBox);
+		textFieldsPanel.add(distFromRightLabel);
+		textFieldsPanel.add(distFromRightTextBox);
 		
 		populateAirfieldComboBox();
 		
@@ -99,10 +106,11 @@ public class FormObstacle extends FormGeneral {
 					Obstacle obstacle = new Obstacle(name, radius, heigth);
 					String s = (String) airfieldComboBox.getSelectedItem();
 					
-						// I don't get this method signature
 						AirfieldInterface field = topFrame.getAirport().getAirfield(s);
 						//after adding the new obstacle, reload the airport to update the GUI
-						topFrame.loadOrCreateObstacle(obstacle, field, Double.parseDouble(distFromLeftTextBox.getText()));
+						double distLeft = Double.parseDouble(distFromLeftTextBox.getText());
+						double distRight = Double.parseDouble(distFromRightTextBox.getText());
+						topFrame.loadOrCreateObstacle(obstacle, field, distLeft, distRight);
 						dispose();
 					} catch (UnrecognisedAirfieldIntifierException e1) {
 						System.err.println("Invalid airfield identifier!");
