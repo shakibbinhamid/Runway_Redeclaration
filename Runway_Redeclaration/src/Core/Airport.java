@@ -7,6 +7,7 @@ import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
 
+import view.Notification;
 import CoreInterfaces.AirfieldInterface;
 import CoreInterfaces.AirportInterface;
 import CoreInterfaces.Savable;
@@ -85,7 +86,7 @@ public class Airport implements AirportInterface, Savable {
 		
 		}
 		this.airfields.add(newAirfield);
-		
+		Notification.notify(newAirfield.getName() + " added to "+ this.getName(), "file");
 		
 	}
 	

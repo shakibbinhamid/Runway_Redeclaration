@@ -4,6 +4,7 @@ import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementArray;
 import org.simpleframework.xml.Root;
 
+import view.Notification;
 import CoreInterfaces.AirfieldInterface;
 import CoreInterfaces.DeclaredRunwayInterface;
 import CoreInterfaces.ObstacleInterface;
@@ -312,8 +313,6 @@ public class Airfield implements AirfieldInterface, Savable {
 		this.obstacle = new PositionedObstacle(obj, distanceFromSmall, distanceFromLarge);
 		try {
 			this.redeclareRunways();
-
-
 		} catch (VariableDeclarationException  e) {
 			System.err.println("Stefan Here: This really should not happen! ... me thinks");
 			e.printStackTrace();
@@ -323,42 +322,13 @@ public class Airfield implements AirfieldInterface, Savable {
 		}
 	}
 
-	/*@Override
-	 @Deprecated
-	public void addObstacle(ObstacleInterface obj, String indentifier, double howFarIn) 
-			throws InvalidIdentifierException  {
-
-		//Figuring where dat ting is near bruv... 
-		if(indentifier.equals(this.getSmallAngledRunway().getIdentifier())){
-			double otherhowFarIn = this.getSmallAngledRunway().getTORA()-this.getSmallAngledRunway().getDisplacedThreshold()-this.getLargeAngledRunway().getDisplacedThreshold()-howFarIn;
-			this.obstacle = new PositionedObstacle(obj,howFarIn, otherhowFarIn);
-
-		}else if(indentifier.equals(this.getLargeAngledRunway().getIdentifier())){
-			double otherhowFarIn = this.getSmallAngledRunway().getTORA()-this.getLargeAngledRunway().getDisplacedThreshold()-this.getSmallAngledRunway().getDisplacedThreshold()-howFarIn;
-			this.obstacle = new PositionedObstacle(obj,otherhowFarIn, howFarIn);
-
-		}else{
-			//Excuse me! I don't own one of those, how dare you suggest such a thing!
-			throw new InvalidIdentifierException(indentifier, this);
-		} 
-		try {
-			this.redeclareRunways();
-
-
-		} catch (VariableDeclarationException  e) {
-			System.err.println("Stefan Here: This really should not happen! ... me thinks");
-			e.printStackTrace();
-		}
-	 */
-
-
 	@Override
 	public void removeObstacle() {
 		this.obstacle = null;
 		try {
 			this.getSmallAngledRunway().resetToNoObstacle(getDefaultSmallAngledRunway());
 			this.getLargeAngledRunway().resetToNoObstacle(getDefaultLargeAngledRunway());
-
+			Notification.notify( this.getPositionedObstacle().getName() + " Removed From "+ this.getName(), "file");
 		} catch (VariableDeclarationException e) {
 			System.err.println("Stefan Again: Urm I don't think any of this should have happened...");
 			e.printStackTrace();
