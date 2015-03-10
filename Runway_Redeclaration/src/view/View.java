@@ -587,15 +587,15 @@ public class View extends JPanel{
 		int y = 3*getHeight()/5 + defGirth*3;
 		
 		if(getRunway().isSmallEnd()){
-			drawArrowAround(g, x, y, GOING_RIGHT, g.getColor(), Color.BLACK);
+			drawArrowAround(g, x, y, defGirth, GOING_RIGHT, g.getColor(), Color.BLACK);
 		}else{
-			drawArrowAround(g, x, y, GOING_LEFT, g.getColor(), Color.BLACK);
+			drawArrowAround(g, x, y, defGirth, GOING_LEFT, g.getColor(), Color.BLACK);
 		}
 	}
 	
-	private void drawArrowAround(Graphics g, int pointX, int pointY, double angleInPi, Color fill, Color outline){
+	private void drawArrowAround(Graphics g, int pointX, int pointY, int runwayGirth ,double angleInPi, Color fill, Color outline){
 		Graphics2D g2 = (Graphics2D) g.create();
-		int length = 70; int radius = 15;
+		int radius = 7*runwayGirth/8; int length = 14*radius/3;
 		
 		int m = 1;
 		if(angleInPi<0) m = -1;
