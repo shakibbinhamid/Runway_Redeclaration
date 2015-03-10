@@ -32,15 +32,6 @@ public class FormObstacle extends FormGeneral {
 	
 	JLabel airfieldLabel;
 	JComboBox<String> airfieldComboBox;
-	
-	public static void main(String[] args) {
-		TopFrame tf = new TopFrame();
-		Airport airp = new Airport("Gatwicked");
-		tf.loadOrCreateAirport(airp);
-		FormAirfield fa = new FormAirfield(tf);
-		FormObstacle fo = new FormObstacle(tf);
-
-	}
 
 	public FormObstacle(TopFrame topFrame) {
 		super(topFrame, "Create Obstacle", true);
