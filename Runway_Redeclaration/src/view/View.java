@@ -762,8 +762,8 @@ public class View extends JPanel{
 
 		int nhOneY = 			y-yUn/2;
 		int noneY = 			y-yUn;
-		int nwingCurveY = 		y-11*yUn;
-		int nwingEndY =(int)   (y-11.5*xUn);
+		int nwingCurveY = 	(int)(y-10.5*yUn);
+		int nwingEndY =(int)   (y-11*xUn);
 		int ntailY = 			y-4*yUn;
 
 		int[] xes  = {x, hOneX, twoX, wingStartX, wingCurveX, wingEndX, wingEndX2, wingCurveX, dipStartX, dipBotX, tailStartX, tailEndX, tailStartX, buttX, /* other side */ tailStartX, tailEndX, tailStartX, dipBotX, dipStartX, wingCurveX, wingEndX2, wingEndX, wingCurveX, wingStartX, twoX, hOneX};  
