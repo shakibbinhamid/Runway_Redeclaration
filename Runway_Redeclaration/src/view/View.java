@@ -129,7 +129,7 @@ public class View extends JPanel{
 					air = port.getAirfield(port.getAirfieldNames().get(0));
 					def = air.getDefaultLargeAngledRunway();
 					runway = air.getLargeAngledRunway();
-					air.addObstacle(new Obstacle("Box",0,12), -50, 3646);//TODO I added an obstacle!
+					air.addObstacle(new Obstacle("A600",100,12), -50, 3646);//TODO I added an obstacle!
 					
 					System.out.println("TORA: "+ runway.getTORA());
 					System.out.println("TODA: "+ runway.getTODA());
@@ -666,20 +666,22 @@ public class View extends JPanel{
 
 		//-----[ RESA/ALS/Blast ]-----
 		int largestFactor; 
+		String factorName;
 		double ALS = getRunway().getAscentAngle()*getField().getPositionedObstacle().getHeight();
 		System.out.println("RESA: "+getRunway().getRESA()+"   ALS: "+ALS+"    Blast: "+getField().getBlastAllowance());
 
 		//find largest factor
 		if(getRunway().getRESA() > ALS &&  ALS > getField().getBlastAllowance()){
 			largestFactor = scaleToPixels((int) getRunway().getRESA());
-			System.out.println("RESA");
+			factorName = "RESA";
+			
 		}else if(ALS > getField().getBlastAllowance()){
 			largestFactor = scaleToPixels((int) ALS);
-			System.out.println("ALS");
+			factorName = "ALS";
 
 		}else{
 			largestFactor = scaleToPixels((int) getField().getBlastAllowance());
-			System.out.println("Blast Time");
+			factorName = "Blast Zone";
 
 		}
 		int maxRadius = radius + largestFactor;
@@ -690,15 +692,16 @@ public class View extends JPanel{
 		//Rim
 		g3.setColor(transparentRed);
 		g3.drawOval(x-maxRadius, y-maxRadius, maxRadius*2, maxRadius*2);
-
+		
+		drawLargestFactorOnCircle(g, factorName, x, y-maxRadius, Color.BLACK);
 
 
 		//=[ planes ]=
-		//Needs to be last
 		// draw cheeky plane
 		Graphics2D g4 = (Graphics2D) g.create();
 		if (getField().getPositionedObstacle().getName().matches("[a-zA-Z][0-9]+")) {
-			drawPlane(g4, (int) obj.getRadius(), x, y);
+			System.out.println("PLANES PLANES PLANES PLANES");
+			drawPlane(g4, (int) obj.getRadius(), x, y, 1);
 		}
 		//=====[ No Radius ]=======
 		// draw an 'X' at point
@@ -708,34 +711,53 @@ public class View extends JPanel{
 		g2.drawLine(x-h, y+h, x+h, y-h);
 
 	}
-
-	private void drawPlane(Graphics2D g, int radius, int x, int y) {
+	private void drawLargestFactorOnCircle(Graphics g, String factor ,int startBoxX, int startBoxY, Color textColor){
 		Graphics2D g2 = (Graphics2D) g.create();
-		radius = 3*radius/4;
-		x = x - 3*radius/8;
-
+		
+		g2.setColor(textColor);
+		int size = 10;
+		g2.setFont(new Font("verdana", Font.BOLD, size));
+		startBoxX -= g.getFontMetrics().stringWidth(factor)/2;
+		startBoxY -= g.getFontMetrics().getHeight()/4;
+		
+		g2.drawString(factor, startBoxX, startBoxY);
+		
+		
+	}
+	
+	/**
+	 * 
+	 * @param direction 1 = heading left -1 = heading right
+	 */
+	private void drawPlane(Graphics2D g, int radius, int x, int y, double direction) {
+		Graphics2D g2 = (Graphics2D) g.create();
+//		radius = 3*radius/4;
+		radius = scaleToPixels(radius);
+		x = x - 7*radius/8;
+		radius *= 2;
+		int m = (int) direction;
 
 		//half width => sort of single wing span
 		int hwidth = radius*12/19;
 
 		int xUn = radius/19; int yUn = hwidth/12;
 
-		int hOneX = 		x+xUn/2;
-		int twoX = 			x+2*xUn;
-		int wingStartX=(int)(x+7*xUn);
-		int wingCurveX = 	x+11*xUn;
-		int wingEndX =(int)(x+11.5*xUn);
-		int wingEndX2 = 	x+13*xUn;
-		int dipStartX = 	x+14*xUn;
-		int dipBotX = 		x+15*xUn;
-		int tailStartX = 	x+17*xUn;
-		int tailEndX = 		x+19*xUn;
-		int buttX =  (int) (x+17.5*xUn);
+		int hOneX = 		x+m*xUn/2;
+		int twoX = 			x+m*2*xUn;
+		int wingStartX=(int)(x+m*7*xUn);
+		int wingCurveX = 	x+m*11*xUn;
+		int wingEndX =(int)(x+m*11.5*xUn);
+		int wingEndX2 = 	x+m*13*xUn;
+		int dipStartX = 	x+m*14*xUn;
+		int dipBotX = 		x+m*15*xUn;
+		int tailStartX = 	x+m*17*xUn;
+		int tailEndX = 		x+m*19*xUn;
+		int buttX =  (int) (x+m*17.5*xUn);
 
 		int hOneY = 		y+yUn/2;
 		int oneY = 			y+yUn;
-		int wingCurveY = 	y+11*yUn;
-		int wingEndY =(int)(y+11.5*xUn);
+		int wingCurveY =(int) (y+10.5*yUn);
+		int wingEndY =(int)(y+11*xUn);
 		int tailY = 		y+4*yUn;
 
 		int nhOneY = 			y-yUn/2;
