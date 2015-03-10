@@ -64,6 +64,7 @@ public class View extends JPanel{
 	private static Color transparentRed = new Color(255, 0, 0, 150);
 	private static Color VERYtransparentRed = new Color(255, 0, 0, 100);
 	private static Color VERY_VERY_transparentRed = new Color(255, 0, 0, 50);
+	private static Color planeGrey = new Color(200,200,200);
 
 	private static final int ARR_SIZE = 4;
 
@@ -127,7 +128,7 @@ public class View extends JPanel{
 					port.addNewAirfield(90, 'L', new double[] {3902,3902,3902,3596}, new double[] {3884,3884,3962,3884});
 					air = port.getAirfield(port.getAirfieldNames().get(0));
 					runway = air.getSmallAngledRunway();
-					air.addObstacle(new Obstacle("A600",100,12), -50, 3646);//TODO I added an obstacle!
+					air.addObstacle(new Obstacle("Buggered A600 on fire",100,12), -50, 3646);//TODO I added an obstacle!
 					
 					System.out.println("TORA: "+ runway.getTORA());
 					System.out.println("TODA: "+ runway.getTODA());
@@ -703,40 +704,33 @@ public class View extends JPanel{
 		g3.setColor(transparentRed);
 		g3.drawOval(x-maxRadius, y-maxRadius, maxRadius*2, maxRadius*2);
 		
-		drawLargestFactorOnCircle(g, factorName, x, y-maxRadius, Color.BLACK);
-
+//		drawLargestFactorOnCircle(g, factorName, x, y-maxRadius, Color.BLACK);
+//
 
 		//=[ planes ]=
-		// draw cheeky plane
 		Graphics2D g4 = (Graphics2D) g.create();
-		if (getField().getPositionedObstacle().getName().matches("[a-zA-Z][0-9]+")) {
-			System.out.print("PLANES PLANES PLANES PLANES");
+		if (getField().getPositionedObstacle().getName().matches(".*[a-zA-Z][0-9]+.*")) {
 			drawPlane(g4, (int) obj.getRadius(), x, y, -1);
 		}
 		//=====[ No Radius ]=======
 		// draw an 'X' at point
-		int h = (int) (defGirth/6);//not scaled
+		int h = (int) (defGirth/6);
 		g2.setStroke(new BasicStroke(3));
 		g2.drawLine(x+h, y+h, x-h, y-h);
 		g2.drawLine(x-h, y+h, x+h, y-h);
-
 	}
-	private void drawLargestFactorOnCircle(Graphics g, String factor ,int startBoxX, int startBoxY, Color textColor){
+	private void drawLargestFactorOnCircle(Graphics g, String factor ,int largeRadius, int direction, int objX, int objY, int girth, Color textColor){
 		Graphics2D g2 = (Graphics2D) g.create();
 		
 		g2.setColor(textColor);
 		int size = 10;
 		g2.setFont(new Font("verdana", Font.BOLD, size));
-		startBoxX -= g.getFontMetrics().stringWidth(factor)/2;
-		startBoxY -= g.getFontMetrics().getHeight()/4;
+		int x = objX + direction*largeRadius;
 		
-		g2.drawString(factor, startBoxX, startBoxY);
-		
-		
+		g2.drawString(factor, 0, 0);
 	}
 	
 	/**
-	 * 
 	 * @param direction 1 = heading left -1 = heading right
 	 */
 	private void drawPlane(Graphics g, int radius, int x, int y, double direction) {
@@ -744,8 +738,6 @@ public class View extends JPanel{
 		Graphics2D g2 = (Graphics2D) g.create();
 		int m = (int) direction;
 
-		
-		
 		radius = scaleToPixels(radius);
 		x = x - m*7*radius/8;
 		radius *= 2;
@@ -782,7 +774,7 @@ public class View extends JPanel{
 
 		int[] yses = {y, hOneY, oneY, oneY,       wingCurveY, wingEndY, wingEndY,  oneY, 	   oneY,      hOneY,   tailY, 	   tailY,    hOneY,      y, /* other side */ nhOneY, ntailY, ntailY, nhOneY, noneY, noneY, nwingEndY, nwingEndY, nwingCurveY, noneY, noneY, nhOneY};
 
-		g2.setColor(Color.gray);
+		g2.setColor(planeGrey);
 		g2.fillPolygon(xes, yses, xes.length);
 		g2.setColor(Color.black);
 		g2.setStroke(new BasicStroke(0.15f));
