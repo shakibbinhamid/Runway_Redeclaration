@@ -428,7 +428,7 @@ public class DeclaredRunway implements DeclaredRunwayInterface{
 		}
 		
 		public void addToLog(String text){
-			log += text+"\n";
+			log += text;
 			try{
 				Notification.notify(text, "calc");
 			}catch (NullPointerException np){
