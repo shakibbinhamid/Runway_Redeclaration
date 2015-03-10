@@ -114,7 +114,7 @@ public class View extends JPanel{
 		startOfRoll = (int) getRunway().getStartOfRoll();
 		dt = (int) getRunway().getDisplacedThreshold();
 	}
-
+	/*
 	public static void main(String[] s){
 		SwingUtilities.invokeLater(new Runnable(){
 
@@ -156,7 +156,7 @@ public class View extends JPanel{
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-	}
+	}*/
 	
 	public void save(String fullpath) throws IOException{
 		ImageIO.write(image, "PNG", new File(fullpath));
