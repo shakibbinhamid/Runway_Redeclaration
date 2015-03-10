@@ -129,10 +129,10 @@ public class FormAirfield extends FormGeneral {
 		
 		smallValueTextFields.add(smallTORATextBox);
 		bigValueTextFields.add(bigTORATextBox);
-		smallValueTextFields.add(smallTODATextBox);
-		bigValueTextFields.add(bigTODATextBox);
 		smallValueTextFields.add(smallASDATextBox);
 		bigValueTextFields.add(bigASDATextBox);
+		smallValueTextFields.add(smallTODATextBox);
+		bigValueTextFields.add(bigTODATextBox);
 		smallValueTextFields.add(smallLDATextBox);
 		bigValueTextFields.add(bigLDATextBox);
 		
