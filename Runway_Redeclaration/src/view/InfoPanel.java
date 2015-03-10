@@ -10,6 +10,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+import CoreInterfaces.AirfieldInterface;
 import CoreInterfaces.DeclaredRunwayInterface;
 import CoreInterfaces.ObstacleInterface;
 import CoreInterfaces.PositionedObstacleInterface;
@@ -19,6 +20,7 @@ public class InfoPanel extends JPanel{
 	private static final String[] runwayColumnNames 	= 	{"Parameter","Default", "Redeclared"};
 	private static final String[] obstacleColumnNames 	= 	{"Parameter", "Value"};
 
+	private AirfieldInterface field;
 	private DeclaredRunwayInterface defaultRunway;
 	private DeclaredRunwayInterface runway;
 	private PositionedObstacleInterface obs;
@@ -27,8 +29,9 @@ public class InfoPanel extends JPanel{
 	private TablePanel obstacleDataTable;
 	private TablePanel advancedDataTable;
 
-	public InfoPanel(DeclaredRunwayInterface[] runways, PositionedObstacleInterface obs){
+	public InfoPanel( AirfieldInterface field, DeclaredRunwayInterface[] runways, PositionedObstacleInterface obs){
 
+		this.field = field;
 		this.setRunway(runways[0]);
 		this.setRunway(runways[1]);
 		this.setObs(obs);
@@ -115,14 +118,15 @@ public class InfoPanel extends JPanel{
 	public void updateObstacleTable(PositionedObstacleInterface obs){
 		if(obs != null){
 			this.obs = obs;
-			String[] name, height, radius, distance;
+			String[] name, height, radius, distanceLeft, distanceRight;
 
 			name = new String[]{"Name", getObstaclePara(obs, "name")};
 			height = new String[]{"Height", getObstaclePara(obs, "height")};
 			radius = new String[]{"Radius", getObstaclePara(obs, "radius")};
-			distance = new String[]{"Distance from left side", getObstaclePara(obs, "distance")};
+			distanceLeft = new String[]{"Distance from "+ field.getSmallAngledRunway().getIdentifier(), getObstaclePara(obs, "distance from left")};
+			distanceRight = new String[]{"Distance from "+ field.getLargeAngledRunway().getIdentifier(), getObstaclePara(obs, "distance from right")};
 
-			updateObstacleTable(new String[][]{name, height, radius, distance});
+			updateObstacleTable(new String[][]{name, height, radius, distanceLeft, distanceRight});
 		}
 	}
 
@@ -143,7 +147,7 @@ public class InfoPanel extends JPanel{
 
 		stop = new String[]{"Stopway",getRunwayPara(def, "stop"), getRunwayPara(run, "stop")};
 		clear = new String[]{"Clearway",getRunwayPara(def, "clear"), getRunwayPara(run, "clear")};
-		blast= new String[]{"Blast Protection", getRunwayPara(def, "blast"), getRunwayPara(run, "blast")};
+		blast= new String[]{"Blast Allowance", getRunwayPara(def, "blast"), getRunwayPara(run, "blast")};
 		resa = new String[]{"RESA", getRunwayPara(def, "resa"), getRunwayPara(run, "resa")};
 		angleA = new String[]{"Ascent Angle", getRunwayPara(def, "ascent"), getRunwayPara(run, "ascent")};
 		angleD = new String[]{"Descent Angle", getRunwayPara(def, "descent"), getRunwayPara(run, "descent")};
@@ -162,7 +166,7 @@ public class InfoPanel extends JPanel{
 		case "stop": return String.valueOf(runway.getStopway());
 		case "resa": return String.valueOf(runway.getRESA());
 		case "clear": return String.valueOf(runway.getClearway());
-		//case "blast": return String.valueOf();
+		case "blast": return String.valueOf(field.getBlastAllowance());
 		case "ascent": return String.valueOf(runway.getAscentAngle());
 		case "descent": return String.valueOf(runway.getDescentAngle());
 		}
@@ -174,7 +178,8 @@ public class InfoPanel extends JPanel{
 		case "name" : return obs.getName();
 		case "radius" : return String.valueOf(obs.getRadius());
 		case "height" : return String.valueOf(obs.getHeight());
-		case "distance": return String.valueOf(obs.distanceFromSmallEnd());
+		case "distance from left": return String.valueOf(obs.distanceFromSmallEnd());
+		case "distance from right": return String.valueOf(obs.distanceFromLargeEnd());
 		}
 		return null;
 	}

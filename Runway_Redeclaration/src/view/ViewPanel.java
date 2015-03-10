@@ -13,10 +13,10 @@ public class ViewPanel extends JPanel{
 	private DeclaredRunwayInterface runway;
 	private View view1, view2;
 
-	public ViewPanel(AirfieldInterface field, DeclaredRunwayInterface runway){
+	public ViewPanel(AirfieldInterface field, DeclaredRunwayInterface def, DeclaredRunwayInterface runway){
 		this.field = field;
 		this.runway = runway;
-		view1 = new View(field, runway);
+		view1 = new View(field, def, runway);
 	//	view2 = new View(null, null);
 		init();
 	}
@@ -28,9 +28,9 @@ public class ViewPanel extends JPanel{
 		
 	}
 	
-	public void updateView(DeclaredRunwayInterface run){
+	public void updateView(DeclaredRunwayInterface def, DeclaredRunwayInterface run){
 		this.runway = run;
-		view1.setRunway(run);
+		view1.setRunway(def, run);
 		view1.repaint();
 	}
 	

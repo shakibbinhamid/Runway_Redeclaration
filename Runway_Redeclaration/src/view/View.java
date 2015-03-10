@@ -67,9 +67,9 @@ public class View extends JPanel{
 
 	private static final int ARR_SIZE = 4;
 
-	public View(AirfieldInterface field, DeclaredRunwayInterface run){
+	public View(AirfieldInterface field, DeclaredRunwayInterface def, DeclaredRunwayInterface run){
 		this.setField(field);
-		this.setRunway(run);
+		this.setRunway(def, run);
 	}
 
 	public AirfieldInterface getField() {
@@ -97,9 +97,9 @@ public class View extends JPanel{
 		return run;
 	}
 
-	public void setRunway(DeclaredRunwayInterface runway) {
+	public void setRunway(DeclaredRunwayInterface defRunway, DeclaredRunwayInterface runway) {
 		this.run = runway;
-		DeclaredRunwayInterface defaultR = runway.isSmallEnd() ? field.getDefaultSmallAngledRunway() : field.getDefaultLargeAngledRunway();
+		DeclaredRunwayInterface defaultR = defRunway.isSmallEnd() ? field.getDefaultSmallAngledRunway() : field.getDefaultLargeAngledRunway();
 		
 		defTora = (int) defaultR.getTORA();
 		defTotalWidth = (int) this.field.getTotalWidth();
@@ -122,14 +122,14 @@ public class View extends JPanel{
 				
 				AirportInterface port = new Airport("Jim International");
 				AirfieldInterface air = null;
+				DeclaredRunwayInterface def = null;
 				DeclaredRunwayInterface runway = null;
 				try {
 					port.addNewAirfield(90, 'L', new double[] {3902,3902,3902,3596}, new double[] {3884,3884,3962,3884});
 					air = port.getAirfield(port.getAirfieldNames().get(0));
-							
+					def = air.getDefaultLargeAngledRunway();
+					runway = air.getLargeAngledRunway();
 					air.addObstacle(new Obstacle("Box",0,12), -50, 3646);//TODO I added an obstacle!
-				
-					runway = air.getSmallAngledRunway();
 					
 					System.out.println("TORA: "+ runway.getTORA());
 					System.out.println("TODA: "+ runway.getTODA());
@@ -146,7 +146,7 @@ public class View extends JPanel{
 				} catch (UnrecognisedAirfieldIntifierException e) {
 					e.printStackTrace();
 				}
-				JPanel pane = new View(air, runway);
+				JPanel pane = new View(air, def, runway);
 				
 				JFrame frame = new JFrame();
 				frame.setMinimumSize(new Dimension (600,500));
@@ -462,7 +462,6 @@ public class View extends JPanel{
 		final BasicStroke thick =
 				new BasicStroke(2);
 		g2.setStroke(thick);
-		int fontsize = defGirth/2;
 
 		int dtToBar = tora/DT_TO_BARCODE_LENGTH_RATIO_TO_TORA;
 		int bar = tora/TORA_TO_BAR_CODE_RATIO;
