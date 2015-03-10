@@ -165,15 +165,6 @@ public class View extends JPanel{
 	public void paint(Graphics g){
 		super.paint(g);
 		
-		System.out.println("TORA: "+ tora);
-		System.out.println("TODA: "+ toda);
-		System.out.println("ASDA: "+ asda);
-		System.out.println("LDA: "+ lda);
-		
-		System.out.println("ROLL: "+ startOfRoll);
-		System.out.println("DT: "+ dt);
-		System.out.println("TOTAL: "+ defTotalWidth);
-		
 		image = new BufferedImage(this.getWidth(), this.getHeight(), BufferedImage.TYPE_3BYTE_BGR);
 		doDrawing();
 		g.drawImage(image, 0, 0, null);
@@ -673,7 +664,6 @@ public class View extends JPanel{
 		int largestFactor; 
 		String factorName;
 		double ALS = getRunway().getAscentAngle()*getField().getPositionedObstacle().getHeight();
-		System.out.println("RESA: "+getRunway().getRESA()+"   ALS: "+ALS+"    Blast: "+getField().getBlastAllowance());
 
 		//find largest factor
 		if(getRunway().getRESA() > ALS &&  ALS > getField().getBlastAllowance()){
@@ -732,7 +722,6 @@ public class View extends JPanel{
 	 * @param direction 1 = heading left,    -1 = heading right
 	 */
 	private void drawPlane(Graphics g, int radius, int x, int y, double direction) {
-		System.out.println("PLANES TIME");
 		Graphics2D g2 = (Graphics2D) g.create();
 		int m = (int) direction;
 
