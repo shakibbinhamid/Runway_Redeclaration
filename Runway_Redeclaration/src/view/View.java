@@ -127,9 +127,9 @@ public class View extends JPanel{
 					port.addNewAirfield(90, 'L', new double[] {3902,3902,3902,3596}, new double[] {3884,3884,3962,3884});
 					air = port.getAirfield(port.getAirfieldNames().get(0));
 							
-					air.addObstacle(new Obstacle("Box",0,12), 50, 3646);//TODO I added an obstacle!
+					air.addObstacle(new Obstacle("Box",0,12), -50, 3646);//TODO I added an obstacle!
 				
-					runway = air.getLargeAngledRunway();
+					runway = air.getSmallAngledRunway();
 					
 					System.out.println("TORA: "+ runway.getTORA());
 					System.out.println("TODA: "+ runway.getTODA());
@@ -147,7 +147,7 @@ public class View extends JPanel{
 					e.printStackTrace();
 				}
 				JPanel pane = new View(air, runway);
-
+				
 				JFrame frame = new JFrame();
 				frame.setMinimumSize(new Dimension (600,500));
 				frame.setContentPane(pane);
@@ -174,6 +174,16 @@ public class View extends JPanel{
 
 	public void paint(Graphics g){
 		super.paint(g);
+		
+		System.out.println("TORA: "+ tora);
+		System.out.println("TODA: "+ toda);
+		System.out.println("ASDA: "+ asda);
+		System.out.println("LDA: "+ lda);
+		
+		System.out.println("ROLL: "+ startOfRoll);
+		System.out.println("DT: "+ dt);
+		System.out.println("TOTAL: "+ defTotalWidth);
+		
 		image = new BufferedImage(this.getWidth(), this.getHeight(), BufferedImage.TYPE_3BYTE_BGR);
 		doDrawing();
 		g.drawImage(image, 0, 0, null);
@@ -448,8 +458,6 @@ public class View extends JPanel{
 		int rightletterLen = fontMetrics.stringWidth(rightletter);
 		int rightletterHeight = fontMetrics.getAscent()-fontMetrics.getDescent();
 		g2.setFont(font);
-		
-		System.out.println(leftangleLen);
 
 		final BasicStroke thick =
 				new BasicStroke(2);
@@ -505,7 +513,6 @@ public class View extends JPanel{
 	private void drawAllDim(Graphics g, int direction, int defTora, int defGirth, int tora, int toda, int asda, int lda, int dt, int startOfRoll){
 		int height = defGirth/2;
 		int bumper = 20;
-		//System.out.println("TORA :"+tora + " TODA: "+ toda + " ASDA: "+ asda + " LDA: "+ lda + "ROLL: "+ startOfRoll);
 		drawdim(g, direction, defTora, defGirth, "LDA", dt, lda, height + bumper);
 		drawdim(g, direction, defTora, defGirth, "TORA", startOfRoll, tora, height + bumper + 1*VIRTUAL_GAP);
 		drawdim(g, direction, defTora, defGirth, "ASDA", startOfRoll, asda, height + bumper + 2*VIRTUAL_GAP);

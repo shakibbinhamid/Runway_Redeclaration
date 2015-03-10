@@ -227,6 +227,7 @@ public class DeclaredRunway implements DeclaredRunwayInterface{
 			setTODA(original.getTODA());
 			setRESA(original.getRESA());
 			setDisplacedThreshold(original.getDisplacedThreshold());
+			setStartOfRoll(original.getStartOfRoll());
 		}
 
 		@Override
@@ -242,7 +243,7 @@ public class DeclaredRunway implements DeclaredRunwayInterface{
 				return;
 			}
 
-			double distFromObs = distanceFrom(parent.getPositionedObstacle()) + 2*parent.getPositionedObstacle().getRadius();
+			double distFromObs = distanceFrom(parent.getPositionedObstacle()) - 2*parent.getPositionedObstacle().getRadius();
 			double RESA = getRESA();
 			double ALS = parent.getPositionedObstacle().getHeight() * getDescentAngle();
 			
