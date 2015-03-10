@@ -465,18 +465,18 @@ public class View extends JPanel{
 
 		int dtToBar = tora/DT_TO_BARCODE_LENGTH_RATIO_TO_TORA;
 		int bar = tora/TORA_TO_BAR_CODE_RATIO;
-
+		int textGap = Math.max(rightletterHeight,leftletterHeight)/3;
 		AffineTransform at = new AffineTransform();
 		AffineTransform old = g2.getTransform();
 		at.setToRotation(Math.PI / 2.0);
 		g2.setTransform(at);
-		g2.drawString(leftangle, getHeight()/2 - leftangleLen/2, -(getWidth()/2 - tora/2 + dt1 + dtToBar + bar + 5 + leftletterHeight));
+		g2.drawString(leftangle, getHeight()/2 - leftangleLen/2, -(getWidth()/2 - tora/2 + dt1 + dtToBar + bar + 5 + leftletterHeight+textGap));
 		g2.drawString(leftletter, getHeight()/2 - leftletterLen/2, -(getWidth()/2 - tora/2 + dt1 + dtToBar + bar + 5 + leftletterHeight/10));
 
 		AffineTransform at2 = new AffineTransform();
 		at2.setToRotation(-Math.PI / 2.0);
 		g2.setTransform(at2);
-		g2.drawString(rightangle, -getHeight()/2 - rightangleLen/2, (getWidth()/2 + tora/2 - dt2 - dtToBar - bar - 5 - rightletterLen) );
+		g2.drawString(rightangle, -getHeight()/2 - rightangleLen/2, (getWidth()/2 + tora/2 - dt2 - dtToBar - bar - 5 - rightletterLen-textGap) );
 		g2.drawString(rightletter, -getHeight()/2 - rightletterLen/2, (getWidth()/2 + tora/2 - dt2 - dtToBar - bar - 5 - rightletterHeight/10));
 		g2.setTransform(old);
 	}
