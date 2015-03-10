@@ -103,7 +103,7 @@ public class LogPanel extends JPanel{
 		return fileLogPanel.text;
 	}
 	
-	public Component getCalcTextPane(){
+	public JTextPane getCalcTextPane(){
 		return calcLogPanel.text;
 	}
 	
@@ -138,13 +138,6 @@ public class LogPanel extends JPanel{
 			text.setEditable(false);
 
 			this.add(scroll, BorderLayout.CENTER);
-		}
-
-		/*
-		 * adds a log to the text area
-		 */
-		private void addLog(String s){
-			addLog(s, DEFAULT);
 		}
 
 		private void appendToPane(String msg, Color c){

@@ -1,6 +1,6 @@
 package view;
 
-import io.PrintSupport;
+import io.Print;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -185,7 +185,7 @@ public class TopMenu extends JMenuBar{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				PrintSupport.printComponent(frame.getLogPanel().getCalcTextPane());
+				Print.print(frame.getLogPanel().getCalcTextPane().getText());
 			}
 			
 		});

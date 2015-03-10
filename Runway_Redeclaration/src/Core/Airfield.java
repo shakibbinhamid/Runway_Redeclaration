@@ -324,11 +324,11 @@ public class Airfield implements AirfieldInterface, Savable {
 
 	@Override
 	public void removeObstacle() {
+		Notification.notify( this.getPositionedObstacle().getName() + " Removed From "+ this.getName(), "file");
 		this.obstacle = null;
 		try {
 			this.getSmallAngledRunway().resetToNoObstacle(getDefaultSmallAngledRunway());
 			this.getLargeAngledRunway().resetToNoObstacle(getDefaultLargeAngledRunway());
-			Notification.notify( this.getPositionedObstacle().getName() + " Removed From "+ this.getName(), "file");
 		} catch (VariableDeclarationException e) {
 			System.err.println("Stefan Again: Urm I don't think any of this should have happened...");
 			e.printStackTrace();
