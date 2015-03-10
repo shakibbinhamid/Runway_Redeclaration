@@ -4,6 +4,6 @@
 	<classpathentry kind="src" path="icon"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/SIMPLE XML"/>
+	<classpathentry kind="lib" path="libraries/simple-xml-2.7.1/jar/simple-xml-2.7.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
