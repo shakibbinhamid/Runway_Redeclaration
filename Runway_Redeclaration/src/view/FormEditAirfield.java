@@ -21,26 +21,26 @@ import Exceptions.VariableDeclarationException;
 public class FormEditAirfield extends FormAirfield{
 	Airfield currentAirfield;
 	
-//	// TESTING 
-//	public static void main(String[] args) {
-//		test();
-//	}
-//	
-//	public static void test(){
-//		double[] testSmallValues = {3500,4000,4500,2500};
-//		double[] testBigValues = {4000,4500,5000,3000};
-//		TopFrame tf = new TopFrame();
-//		Airport airp = new Airport("Gatwicked");
-//		tf.loadOrCreateAirport(airp);
-//		try {
-//			tf.loadOrCreateField(90, ' ', testSmallValues, testBigValues);
-//			tf.loadOrCreateAirport(airp);
-//		} catch (VariableDeclarationException e) {
-//			e.printStackTrace();
-//		}
-//		
-//		FormEditAirfield fa = new FormEditAirfield(tf);
-//	}
+	// TESTING 
+	public static void main(String[] args) {
+		test();
+	}
+	
+	public static void test(){
+		double[] testSmallValues = {3500,4000,4500,2500};
+		double[] testBigValues = {4000,4500,5000,3000};
+		TopFrame tf = new TopFrame();
+		Airport airp = new Airport("Gatwicked");
+		tf.loadOrCreateAirport(airp);
+		try {
+			tf.loadOrCreateField(90, 'L', testSmallValues, testBigValues);
+			tf.loadOrCreateAirport(airp);
+		} catch (VariableDeclarationException e) {
+			e.printStackTrace();
+		}
+		
+		FormEditAirfield fa = new FormEditAirfield(tf);
+	}
 	
 	public FormEditAirfield(TopFrame topFrame){
 		super(topFrame, "Edit airfield");
@@ -121,10 +121,10 @@ public void init(){
 		
 		smallValueTextFields.add(smallTORATextBox);
 		bigValueTextFields.add(bigTORATextBox);
-		smallValueTextFields.add(smallTODATextBox);
-		bigValueTextFields.add(bigTODATextBox);
 		smallValueTextFields.add(smallASDATextBox);
 		bigValueTextFields.add(bigASDATextBox);
+		smallValueTextFields.add(smallTODATextBox);
+		bigValueTextFields.add(bigTODATextBox);
 		smallValueTextFields.add(smallLDATextBox);
 		bigValueTextFields.add(bigLDATextBox);
 		
@@ -210,16 +210,19 @@ public void init(){
 			public void actionPerformed(ActionEvent arg0) {
 				boolean okToAdd = false;
 				
+				System.out.println(smallValueTextFields.get(0).getText());
+				//System.out.println(currentAirfield.);
+				
 				double[] smallInputs = new double[4];
 				double[] bigInputs = new double[4];
-				int angle;
-				String sideStrig= (String) sideComboBox.getSelectedItem();
-				char sideChar = sideStrig.charAt(0);
+				int angle ;
+				//String sideStrig= (String) sideComboBox.getSelectedItem();
+	;
 				
 					for (int i = 0; i < 4; i++) {
 						try {
-							if (Integer.parseInt(smallValueTextFields.get(i).getText()) < 0
-									|| Integer.parseInt(bigValueTextFields.get(i).getText()) < 0
+							if (Double.parseDouble(smallValueTextFields.get(i).getText()) < 0
+									|| Double.parseDouble(bigValueTextFields.get(i).getText()) < 0
 									|| smallValueTextFields.get(i).getText().equals("")
 									|| bigValueTextFields.get(i).getText().equals("")) {
 								System.err.println("Invalid inputs!");
@@ -230,10 +233,9 @@ public void init(){
 								break;
 							} else {
 								okToAdd = true;
-								smallInputs[i] = Integer
-										.parseInt(smallValueTextFields.get(i)
+								smallInputs[i] = Double.parseDouble(smallValueTextFields.get(i)
 												.getText());
-								bigInputs[i] = Integer.parseInt(bigValueTextFields
+								bigInputs[i] = Double.parseDouble(bigValueTextFields
 										.get(i).getText());
 							}
 						} catch (NumberFormatException e) {
@@ -247,10 +249,15 @@ public void init(){
 					if (okToAdd)
 						try {
 							angle = currentAirfield.getDefaultSmallAngledRunway().getAngle();
-							sideStrig = (String) sideComboBox.getSelectedItem();
-							sideChar = sideStrig.charAt(0);
+							char sideChar = currentAirfield.getSmallAngledRunway().getSideLetter();
+							Airfield f = new Airfield(angle, sideChar,
+									smallInputs, bigInputs);
+							System.out.println(f.getName());
 							topFrame.getTabbePanel().updateTab(new Airfield(angle, sideChar,
 									smallInputs, bigInputs));
+							System.out.println(angle);
+							System.out.println(sideChar);
+
 							dispose();
 						} catch (NumberFormatException e) {
 							JOptionPane.showMessageDialog(null, e.getMessage(),
