@@ -13,6 +13,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 /**
  * 
  * @author Stefan
@@ -52,7 +53,11 @@ public class WelcomePanel extends JPanel {
 		JPanel titlePanel = new JPanel();
 		titlePanel.setLayout(new GridLayout(2, 1));
 		JLabel title1 = new JLabel("Runway Re-Declaration Tool");
-		JLabel title2 = new JLabel("                        Welcome");
+		JLabel title2 = new JLabel("Welcome");
+		title1.setHorizontalAlignment(SwingConstants.CENTER);
+		title2.setHorizontalAlignment(SwingConstants.CENTER);
+		
+
 		
 		title1.setFont(new Font("Verdana",Font.BOLD,35));
 		title2.setFont(new Font("Verdana",Font.BOLD,35));
@@ -104,7 +109,7 @@ public class WelcomePanel extends JPanel {
 	}
 
 
-	public boolean isHelpingDevelopers(){
+	public boolean isHelpingDeveloper(){
 		return this.helpingDevelopers.isSelected();
 	}
 

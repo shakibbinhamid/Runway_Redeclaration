@@ -54,7 +54,7 @@ public class TopFrame extends JFrame{
 		this.setContentPane(topPanel);
 		topPanel.setLayout(new BorderLayout());
 		
-		logPanel = new LogPanel(null);
+		logPanel = new LogPanel(null,this);
 		topPanel.add(logPanel, BorderLayout.WEST);
 		
 		tabbedPanel = new TabbedPanel();
@@ -166,5 +166,9 @@ public class TopFrame extends JFrame{
 		}
 		repaint();
 
+	}
+	
+	protected boolean isUserHelpingDeveloper(){
+		return this.welcomePanel.isHelpingDeveloper();
 	}
 }
