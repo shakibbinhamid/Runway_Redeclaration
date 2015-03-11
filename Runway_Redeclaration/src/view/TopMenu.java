@@ -151,7 +151,7 @@ public class TopMenu extends JMenuBar{
 						try {
 							ImageFilter filter = (ImageFilter) fc.getFileFilter();
 							//Fix for Mac
-							if(filter == null) filter = new PNGFilter();
+							if(filter == null) filter = new JPGFilter();
 							frame.getTabbePanel().getActiveTab().saveTopView(fileToSave.getAbsolutePath() + filter.getExt(), filter.getName());
 							JOptionPane.showMessageDialog(frame, "Saved Successfully at "+ fileToSave.getAbsolutePath(), "SAVING DONE", JOptionPane.INFORMATION_MESSAGE);
 						} catch (IOException e1) {
