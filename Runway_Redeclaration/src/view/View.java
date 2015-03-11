@@ -567,8 +567,9 @@ public class View extends JPanel{
 		inStart = outEnd+direction*dimensionLength;
 		
 		int temp1, temp2;
-		temp1 = (inStart+outEnd)/2;
-		
+		temp1 = (inStart+outEnd)/2 + direction*titleLen/2;
+		temp2 = (inStart+outEnd)/2 - direction*titleLen/2;
+
 		
 
 
