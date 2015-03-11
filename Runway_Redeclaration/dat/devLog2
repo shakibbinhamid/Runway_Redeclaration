@@ -1,0 +1,36 @@
+Loading Heathrow.air.xml...Jim International loaded.Loading A380.obj.xml...A380 loaded.-[ 09L (Take Off Away) ]- Distance From Threshold (Dis): -50.0
+Blast Allowance: 300.0
+Displaced Threshold (DT): 306.0
+
+TORA = TORA - Blast - Dis - DT     = 3902.0 - 300.0 - -50.0 - 306.0
+ASDA = (R)TORA + Stopway     = 3346.0 + 0.0
+TODA = (R)TORA + Clearway     = 3346.0 + 0.0--------------------------------------
+
+
+-[ 09L (Land Over) ]-Distance From Obs: -50.0
+RESA: 240.0
+ALS: 600.0
+Strip End: 60.0
+Blast Allowance: 300.0
+Largest Factor(ALS): 660.0
+
+LDA = LDA - Dis - ALS    = 3596.0 - -50.0 - 660.0--------------------------------------
+
+
+-[ 27R (Take Off Towards) ]-Distance From Threshold (Dis): 3646.0m 
+ALS: 600.0m
+Displaced Threshold (DT): 0.0m
+Strip End: 60.0m
+
+TORA = Dis + DT - ALS - Strip End     = 3646.0 + 0.0 - 600.0 - 60.0
+ASDA = (R)TORA
+TODA = (R)TORA--------------------------------------
+
+
+-[ 27R (Land Towards) ]-Distance From Obs(Dis): 3646.0
+RESA: 240.0
+Strip End: 60.0
+
+LDA = Dis - RESA - strip end    = 3646.0 - 240.0 - 60.0--------------------------------------
+
+

@@ -1,0 +1,36 @@
+Loading Gatwick.air.xml...Gatwick loaded.Loading A380.obj.xml...A380 loaded.-[ 08L (Take Off Away) ]- Distance From Threshold (Dis): -30.0
+Blast Allowance: 300.0
+Displaced Threshold (DT): 322.0
+
+TORA = TORA - Blast - Dis - DT     = 2565.0 - 300.0 - -30.0 - 322.0
+ASDA = (R)TORA + Stopway     = 1973.0 + 0.0
+TODA = (R)TORA + Clearway     = 1973.0 + 475.0--------------------------------------
+
+
+-[ 08L (Land Over) ]-Distance From Obs: -30.0
+RESA: 240.0
+ALS: 600.0
+Strip End: 60.0
+Blast Allowance: 300.0
+Largest Factor(ALS): 660.0
+
+LDA = LDA - Dis - ALS    = 2243.0 - -30.0 - 660.0--------------------------------------
+
+
+-[ 26R (Take Off Towards) ]-Distance From Threshold (Dis): 2595.0m 
+ALS: 600.0m
+Displaced Threshold (DT): 417.0m
+Strip End: 60.0m
+
+TORA = Dis + DT - ALS - Strip End     = 2595.0 + 417.0 - 600.0 - 60.0
+ASDA = (R)TORA
+TODA = (R)TORA--------------------------------------
+
+
+-[ 26R (Land Towards) ]-Distance From Obs(Dis): 2595.0
+RESA: 240.0
+Strip End: 60.0
+
+LDA = Dis - RESA - strip end    = 2595.0 - 240.0 - 60.0--------------------------------------
+
+
