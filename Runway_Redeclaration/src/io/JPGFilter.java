@@ -5,7 +5,7 @@ import java.io.File;
 
 public class JPGFilter extends ImageFilter{
 	 public boolean accept(File f) {
-         return f.getName().endsWith(".jpg") || f.getName().endsWith(".jpeg");
+         return f.getName().endsWith(".jpg") || f.getName().endsWith(".jpeg") || f.isDirectory();
      }
 
      public String getDescription() {
