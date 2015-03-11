@@ -16,6 +16,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
+import javax.swing.SwingConstants;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
@@ -58,6 +59,8 @@ public class LogPanel extends JPanel{
 		this.setLayout(new BorderLayout());
 
 		airportLabel = new JLabel("Airport");
+		airportLabel.setFont(new Font("verdana", Font.ITALIC, 15));
+		airportLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		airportLabel.setPreferredSize(new Dimension(300,20));
 		this.add(airportLabel, BorderLayout.NORTH);
 
