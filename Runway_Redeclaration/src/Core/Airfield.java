@@ -308,18 +308,12 @@ public class Airfield implements AirfieldInterface, Savable {
 
 	@Override
 	public void addObstacle(ObstacleInterface obj,
-			double distanceFromSmall, double distanceFromLarge)  {/**/
+			double distanceFromSmall, double distanceFromLarge) throws VariableDeclarationException  {/**/
 
 		this.obstacle = new PositionedObstacle(obj, distanceFromSmall, distanceFromLarge);
-		try {
-			this.redeclareRunways();
-		} catch (VariableDeclarationException  e) {
-			System.err.println("Stefan Here: This really should not happen! ... me thinks");
-			e.printStackTrace();
-			System.out.println( ((DeclaredRunway)getSmallAngledRunway()).getLog() );
-			System.out.println( ((DeclaredRunway)getLargeAngledRunway()).getLog() );
 
-		}
+			this.redeclareRunways();
+
 	}
 
 	@Override

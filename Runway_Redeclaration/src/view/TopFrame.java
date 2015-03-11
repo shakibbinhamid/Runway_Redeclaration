@@ -108,8 +108,12 @@ public class TopFrame extends JFrame{
 	 */
 	public void loadOrCreateObstacle(ObstacleInterface obs, AirfieldInterface field, double distanceFromLeft, double distanceFromRight){
 		this.getLogPanel().clearCalcTextPane();
-		field.addObstacle(obs, distanceFromLeft, distanceFromRight);
-		tabbedPanel.updateTab(field);
+		try {
+			field.addObstacle(obs, distanceFromLeft, distanceFromRight);
+			tabbedPanel.updateTab(field);
+		} catch (VariableDeclarationException e) {
+			JOptionPane.showMessageDialog(this, "Your Obstacle has made the runway unusable --- " + e.getMessage(), "ERROR: Unusable Runway", JOptionPane.ERROR_MESSAGE);
+		}
 	}
 
 	/**

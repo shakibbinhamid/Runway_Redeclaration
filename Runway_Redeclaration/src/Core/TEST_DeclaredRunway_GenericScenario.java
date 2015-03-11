@@ -295,7 +295,12 @@ public class TEST_DeclaredRunway_GenericScenario {
 
 
 			//===[ Add Obstacle ]==============================================================
-			air.addObstacle(obj,leftDistance,rightDistance);
+			try {
+				air.addObstacle(obj,leftDistance,rightDistance);
+			} catch (VariableDeclarationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			assertNotEquals("Obstacle is actually added",air.getPositionedObstacle(), null);
 			show("MY maths for small side works",leftDistance,air.getPositionedObstacle().distanceFromSmallEnd(),0);
 			show("My maths for large side worked",rightDistance,air.getPositionedObstacle().distanceFromLargeEnd(),0);
@@ -356,7 +361,12 @@ public class TEST_DeclaredRunway_GenericScenario {
 
 
 			//===[ Add Obstacle ]==============================================================
-			air.addObstacle(obj,leftDistance,rightDistance);
+			try {
+				air.addObstacle(obj,leftDistance,rightDistance);
+			} catch (VariableDeclarationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			assertNotEquals("Obstacle is actually added",air.getPositionedObstacle(), null);
 			assertEquals("MY maths for small side works",leftDistance,air.getPositionedObstacle().distanceFromSmallEnd(),0);
 			assertEquals("My maths for large side worked",rightDistance,air.getPositionedObstacle().distanceFromLargeEnd(),0);
