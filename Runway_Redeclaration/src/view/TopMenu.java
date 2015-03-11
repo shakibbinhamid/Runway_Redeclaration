@@ -177,10 +177,16 @@ public class TopMenu extends JMenuBar{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (frame.getTabbePanel().getActiveField() != null)
-					new FormEditObstacle(frame);
-				else
-					JOptionPane.showMessageDialog(frame, "There is no Airfield to edit", "ERROR: Edit Airfield Failure", JOptionPane.ERROR_MESSAGE);
+				TabbedPanel panel = frame.getTabbePanel();
+				AirfieldInterface field = panel.getActiveField();
+				if(field != null){
+					if(field.getPositionedObstacle() != null){
+						new FormEditObstacle(frame);
+					}else{
+						JOptionPane.showMessageDialog(frame, "There is no obstacle to edit!", "ERROR: Edit Obstacle Failure", JOptionPane.ERROR_MESSAGE);
+					}
+				}else
+					JOptionPane.showMessageDialog(frame, "There is not even an airfield!", "ERROR: Edit Obstacle Failure", JOptionPane.ERROR_MESSAGE);
 			}
 		});
 		
@@ -192,10 +198,14 @@ public class TopMenu extends JMenuBar{
 				TabbedPanel panel = frame.getTabbePanel();
 				AirfieldInterface field = panel.getActiveField();
 				if(field != null){
-					field.removeObstacle();
-					panel.updateTab(field);
+					if(field.getPositionedObstacle() != null){
+						field.removeObstacle();
+						panel.updateTab(field);
+					}else{
+						JOptionPane.showMessageDialog(frame, "There is no obstacle to remove!", "ERROR: Remove Obstacle Failure", JOptionPane.ERROR_MESSAGE);
+					}
 				}else
-					JOptionPane.showMessageDialog(frame, "There is no obstacle to remove!", "ERROR: Remove Obstacle Failure", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(frame, "There is no Airfield to remove the obstacle from!", "ERROR: Remove Obstacle Failure", JOptionPane.ERROR_MESSAGE);
 			}
 			
 		});
