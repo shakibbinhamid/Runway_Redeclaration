@@ -107,7 +107,6 @@ public class LogPanel extends JPanel{
 		File f = new File("./dat/devLog"+i);
 		while(f.exists() && !f.isDirectory()){
 			f = new File("./dat/devLog"+i);
-			System.out.println("./dat/devLog"+i);
 			i++;
 		}
 		 try {
