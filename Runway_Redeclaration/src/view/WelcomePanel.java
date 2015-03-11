@@ -73,7 +73,10 @@ public class WelcomePanel extends JPanel {
 
 		JPanel middle = new JPanel();
 		middle.setLayout(new GridLayout(2,1));
-		middle.add(new JLabel("We noticed you have no airport loaded, choose an option from bellow:"));
+		JLabel label = new JLabel("We noticed you have no airport loaded. Please choose an option from bellow");
+		label.setFont(new Font("verdana", Font.PLAIN, 20));
+		middle.add(label);
+		label.setHorizontalAlignment(SwingConstants.CENTER);
 
 		JPanel buttons = new JPanel();
 		buttons.setLayout(new GridLayout(2,1));
@@ -112,14 +115,5 @@ public class WelcomePanel extends JPanel {
 	public boolean isHelpingDeveloper(){
 		return this.helpingDevelopers.isSelected();
 	}
-
-	
-//	@Override
-//	public void paint(Graphics g){
-//	}
-	
-
-
-
 
 }

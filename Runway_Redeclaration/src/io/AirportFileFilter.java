@@ -1,7 +1,6 @@
 package io;
  
 import java.io.File;
-import java.io.FileFilter;
  
 public class AirportFileFilter extends javax.swing.filechooser.FileFilter {
  
