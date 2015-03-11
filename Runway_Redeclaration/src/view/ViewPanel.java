@@ -2,6 +2,7 @@ package view;
 
 import java.awt.GridLayout;
 
+import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
 import CoreInterfaces.AirfieldInterface;
@@ -25,7 +26,8 @@ public class ViewPanel extends JPanel{
 		this.setLayout(new GridLayout(0,1));
 		this.add(view1);
 		this.add(new JPanel());
-		
+
+		view1.setBorder(BorderFactory.createTitledBorder("Top View"));
 	}
 	
 	public void updateView(DeclaredRunwayInterface run){
