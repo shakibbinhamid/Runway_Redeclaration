@@ -2,6 +2,7 @@ package view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.util.ArrayList;
@@ -27,7 +28,9 @@ public class LogPanel extends JPanel{
 
 	private String label;
 	private JLabel airportLabel;
-	private Log logPanel;
+	private JPanel logs;
+	private Log fileLogPanel;
+	private Log calcLogPanel;
 
 	private static final Color FILE = new Color(128, 0, 0);
 	private static final Color CALC = new Color(75, 0, 130);
@@ -51,9 +54,16 @@ public class LogPanel extends JPanel{
 
 		if(label != null)
 			updateLabelText(label);
+		
+		logs = new JPanel();
+		logs.setLayout(new BorderLayout());
+		this.add(logs, BorderLayout.CENTER);
 
-		logPanel = new Log();
-		this.add(logPanel, BorderLayout.CENTER);
+		fileLogPanel = new Log();
+		logs.add(fileLogPanel, BorderLayout.NORTH);
+		
+		calcLogPanel = new Log();
+		logs.add(calcLogPanel, BorderLayout.CENTER);
 	}
 
 	/**
@@ -64,25 +74,45 @@ public class LogPanel extends JPanel{
 		airportLabel.setText(airportName);
 	}
 
-	public void notify(String s){
-		logPanel.addLog(s);
-	}
-
 	public void notify(String s, String c){
 		switch(c){
 		case "file":
-			notify(s, FILE);
+			notifyFile(s);
 			break;
 		case "calc":
-			notify(s, CALC);
+			notifyCalc(s);
 			break;
 		default:
-			notify(s, DEFAULT);
+			notifyDefault(s);;
 		}
 	}
-
-	public void notify(String s, Color c){
-		logPanel.addLog(s, c);
+	
+	private void notifyDefault(String s){
+		fileLogPanel.addLog(s, DEFAULT);
+	}
+	
+	private void notifyFile(String s){
+		fileLogPanel.addLog(s, FILE);
+	}
+	
+	private void notifyCalc(String s){
+		calcLogPanel.addLog(s, CALC);
+	}
+	
+	public Component getfileTextPane(){
+		return fileLogPanel.text;
+	}
+	
+	public JTextPane getCalcTextPane(){
+		return calcLogPanel.text;
+	}
+	
+	public void clearFileTextPane(){
+		fileLogPanel.text.setText("");
+	}
+	
+	public void clearCalcTextPane(){
+		calcLogPanel.text.setText("");
 	}
 
 	/**
@@ -108,13 +138,6 @@ public class LogPanel extends JPanel{
 			text.setEditable(false);
 
 			this.add(scroll, BorderLayout.CENTER);
-		}
-
-		/*
-		 * adds a log to the text area
-		 */
-		private void addLog(String s){
-			addLog(s, DEFAULT);
 		}
 
 		private void appendToPane(String msg, Color c){
@@ -148,18 +171,12 @@ public class LogPanel extends JPanel{
 			StringBuilder strBuilder = new StringBuilder();
 			for(int i = 0; i < words.length; i += 1){
 				String word = words[i];
-				// If adding the new word to the current line would be too long,
-				// then put it on a new line (and split it up if it's too long).
 				if (curLineLength + word.length() > width){
-					// Only move down to a new line if we have text on the current line.
-					// Avoids situation where wrapped whitespace causes emptylines in text.
 					if (curLineLength > 0){
 						strBuilder.append("\n");
 						curLineLength = 0;
 					}
 
-					// If the current word is too long to fit on a line even on it's own then
-					// split the word up.
 					while (word.length() > width){
 						strBuilder.append(word.substring(0, width - 1));
 						word = word.substring(width - 1);
@@ -167,7 +184,6 @@ public class LogPanel extends JPanel{
 						strBuilder.append("\n");
 					}
 
-					// Remove leading whitespace from the word so the new line starts flush to the left.
 					word = word.trim();
 				}
 				strBuilder.append(word);
@@ -190,7 +206,6 @@ public class LogPanel extends JPanel{
 
 				String word = str.substring(startIndex, index - startIndex);
 				char nextChar = str.substring(index, 1).toCharArray()[0];
-				// Dashes and the likes should stick to the word occuring before it. Whitespace doesn't have to.
 				if (Character.isWhitespace(nextChar)){
 					parts.add(word);
 					parts.add(new Character(nextChar).toString());

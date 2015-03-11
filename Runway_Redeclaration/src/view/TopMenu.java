@@ -1,5 +1,7 @@
 package view;
 
+import io.Print;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -49,7 +51,7 @@ public class TopMenu extends JMenuBar{
 		createHelpMenu();
 		
 		//================================Adding menus========================================//
-		addMenus(new JMenu[] {file, edit}); //print, help});
+		addMenus(new JMenu[] {file, edit ,print });//, help});
 		
 	}
 	
@@ -132,7 +134,7 @@ public class TopMenu extends JMenuBar{
 					if(select == JFileChooser.APPROVE_OPTION){
 						File fileToSave = fc.getSelectedFile();
 						try {
-							frame.getTabbePanel().getActiveTab().saveTopView(fileToSave.getAbsolutePath());
+							frame.getTabbePanel().getActiveTab().saveTopView(fileToSave.getAbsolutePath() + ".png");
 							JOptionPane.showMessageDialog(frame, "Saved Successfully at "+ fileToSave.getAbsolutePath(), "SAVING DONE", JOptionPane.INFORMATION_MESSAGE);
 						} catch (IOException e1) {
 							JOptionPane.showMessageDialog(frame, "Could not save!", "SAVING FAILED", JOptionPane.ERROR_MESSAGE);
@@ -179,6 +181,14 @@ public class TopMenu extends JMenuBar{
 	private void createPrintMenu(){
 		//================================PRINT MENU==============================================//
 		printCalculation = getItem("Print Calculation", iprint, SwingConstants.CENTER);
+		printCalculation.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Print.print(frame.getLogPanel().getCalcTextPane().getText());
+			}
+			
+		});
 		
 		print = getMenu("Print", null, new JMenuItem[]{printCalculation});
 	}

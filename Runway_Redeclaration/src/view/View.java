@@ -64,12 +64,13 @@ public class View extends JPanel{
 	private static Color transparentRed = new Color(255, 0, 0, 150);
 	private static Color VERYtransparentRed = new Color(255, 0, 0, 100);
 	private static Color VERY_VERY_transparentRed = new Color(255, 0, 0, 50);
+	private static Color planeGrey = new Color(175,175,175);
 
 	private static final int ARR_SIZE = 4;
 
-	public View(AirfieldInterface field, DeclaredRunwayInterface def, DeclaredRunwayInterface run){
+	public View(AirfieldInterface field, DeclaredRunwayInterface run){
 		this.setField(field);
-		this.setRunway(def, run);
+		this.setRunway(run);
 	}
 
 	public AirfieldInterface getField() {
@@ -97,9 +98,9 @@ public class View extends JPanel{
 		return run;
 	}
 
-	public void setRunway(DeclaredRunwayInterface defRunway, DeclaredRunwayInterface runway) {
+	public void setRunway(DeclaredRunwayInterface runway) {
 		this.run = runway;
-		DeclaredRunwayInterface defaultR = defRunway.isSmallEnd() ? field.getDefaultSmallAngledRunway() : field.getDefaultLargeAngledRunway();
+		DeclaredRunwayInterface defaultR = runway.isSmallEnd() ? field.getDefaultSmallAngledRunway() : field.getDefaultLargeAngledRunway();
 		
 		defTora = (int) defaultR.getTORA();
 		defTotalWidth = (int) this.field.getTotalWidth();
@@ -113,7 +114,7 @@ public class View extends JPanel{
 		startOfRoll = (int) getRunway().getStartOfRoll();
 		dt = (int) getRunway().getDisplacedThreshold();
 	}
-
+	/*
 	public static void main(String[] s){
 		SwingUtilities.invokeLater(new Runnable(){
 
@@ -122,23 +123,12 @@ public class View extends JPanel{
 				
 				AirportInterface port = new Airport("Jim International");
 				AirfieldInterface air = null;
-				DeclaredRunwayInterface def = null;
 				DeclaredRunwayInterface runway = null;
 				try {
 					port.addNewAirfield(90, 'L', new double[] {3902,3902,3902,3596}, new double[] {3884,3884,3962,3884});
 					air = port.getAirfield(port.getAirfieldNames().get(0));
-					def = air.getDefaultLargeAngledRunway();
-					runway = air.getLargeAngledRunway();
-					air.addObstacle(new Obstacle("Box",0,12), -50, 3646);//TODO I added an obstacle!
-					
-					System.out.println("TORA: "+ runway.getTORA());
-					System.out.println("TODA: "+ runway.getTODA());
-					System.out.println("ASDA: "+ runway.getASDA());
-					System.out.println("LDA: "+ runway.getLDA());
-					
-					System.out.println("ROLL: "+ runway.getStartOfRoll());
-					System.out.println("DT: "+ runway.getDisplacedThreshold());
-					System.out.println("TOTAL: "+ air.getTotalWidth());
+					runway = air.getSmallAngledRunway();
+					air.addObstacle(new Obstacle("Buggered A600 on fire",100,7), -50, 3646);//TODO I added an obstacle!
 					
 					
 				} catch (CannotMakeRunwayException | VariableDeclarationException e) {
@@ -146,7 +136,7 @@ public class View extends JPanel{
 				} catch (UnrecognisedAirfieldIntifierException e) {
 					e.printStackTrace();
 				}
-				JPanel pane = new View(air, def, runway);
+				JPanel pane = new View(air, runway);
 				
 				JFrame frame = new JFrame();
 				frame.setMinimumSize(new Dimension (600,500));
@@ -162,11 +152,11 @@ public class View extends JPanel{
 			}});
 		try {
 			Thread.sleep(60*1000);//60 secs
-			//System.exit(0);
+			System.exit(0);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-	}
+	}*/
 	
 	public void save(String fullpath) throws IOException{
 		ImageIO.write(image, "PNG", new File(fullpath));
@@ -174,15 +164,6 @@ public class View extends JPanel{
 
 	public void paint(Graphics g){
 		super.paint(g);
-		
-		System.out.println("TORA: "+ tora);
-		System.out.println("TODA: "+ toda);
-		System.out.println("ASDA: "+ asda);
-		System.out.println("LDA: "+ lda);
-		
-		System.out.println("ROLL: "+ startOfRoll);
-		System.out.println("DT: "+ dt);
-		System.out.println("TOTAL: "+ defTotalWidth);
 		
 		image = new BufferedImage(this.getWidth(), this.getHeight(), BufferedImage.TYPE_3BYTE_BGR);
 		doDrawing();
@@ -243,7 +224,7 @@ public class View extends JPanel{
 		startOfRoll = scaleToPixels(startOfRoll);
 
 		Graphics2D g2 = (Graphics2D) g.create();
-		
+		//TODO find me tag
 		colorFrame(getGraphicsComp(g2, grass));
 		drawWholeArea(getGraphicsComp(g2, purple), defTora, stripEnd, longSpacer);
 		drawClearedAndGradedArea(getGraphicsComp(g2, clearedBlue), defTora, stripEnd, shortSpacer, mediumSpacer, shortLength, longLength);
@@ -255,7 +236,7 @@ public class View extends JPanel{
 		drawCenterLine(getGraphicsComp(g2, Color.white), defTora, defGirth, defSmalldt, defLargedt);
 		drawIdentifier(getGraphicsComp(g2, Color.white), s, ss, defTora, defGirth, defSmalldt, defLargedt);
 		drawAllDim(getGraphicsComp(g2, Color.black), direction(), defTora, defGirth, tora, toda, asda, lda, dt, startOfRoll);
-		drawDirection(getGraphicsComp(g2, Color.RED), "Landing and TakeOff Direction: "+ run.getIdentifier(), defGirth);
+		drawDirection(getGraphicsComp(g2, Color.RED), "Landing and Take Off Direction: "+ run.getIdentifier(), defGirth);
 
 		drawScale(getGraphicsComp(g2, Color.black), defGirth, 500);
 		drawFatArrow(getGraphicsComp(g2, Color.RED), defGirth);
@@ -273,6 +254,10 @@ public class View extends JPanel{
 
 	private int pixelsToScale (int howMuchMeters, int howManyPixels, int whatInPixels){
 		return new BigDecimal ( whatInPixels * howMuchMeters/howManyPixels ).intValue();
+	}
+	
+	private int pixelsToScale(int pixels){
+		return pixelsToScale(defTotalWidth, this.getWidth(), pixels);
 	}
 	
 	private void colorFrame(Graphics g){
@@ -576,7 +561,7 @@ public class View extends JPanel{
 		FontMetrics fontMetrics = g.getFontMetrics(font);
 		int titleLen = fontMetrics.stringWidth(s);
 		g2.setFont(font);
-		g2.drawString(s, (getWidth() / 2) - (titleLen / 2), getHeight()/2 + defGirth*5);
+		g2.drawString(s, (getWidth() / 2) - (titleLen / 2), 7*getHeight()/10+ defGirth*5);
 	}
 
 	private void drawFatArrow(Graphics g, int defGirth){
@@ -584,18 +569,26 @@ public class View extends JPanel{
 		final double GOING_RIGHT = Math.PI/2;
 		
 		int x = getWidth()/2;
-		int y = getHeight()/2 + defGirth*3;
+		int y = 3*getHeight()/5 + defGirth*3;
 		
+		int planeDirection;
 		if(getRunway().isSmallEnd()){
-			drawArrowAround(g, x, y, GOING_RIGHT, g.getColor(), Color.BLACK);
+			drawArrowAround(g, x, y, defGirth, GOING_RIGHT, g.getColor(), Color.BLACK);
+			planeDirection = -1;
+			
 		}else{
-			drawArrowAround(g, x, y, GOING_LEFT, g.getColor(), Color.BLACK);
+			drawArrowAround(g, x, y, defGirth, GOING_LEFT, g.getColor(), Color.BLACK);
+			planeDirection = 1;
 		}
+		int planeWingSpan = pixelsToScale(getHeight()/10);
+		int planex = x-planeDirection*defGirth*3;
+		int planey = y;
+		drawPlane(g, planeWingSpan, planex, planey, planeDirection);
 	}
 	
-	private void drawArrowAround(Graphics g, int pointX, int pointY, double angleInPi, Color fill, Color outline){
+	private void drawArrowAround(Graphics g, int pointX, int pointY, int runwayGirth ,double angleInPi, Color fill, Color outline){
 		Graphics2D g2 = (Graphics2D) g.create();
-		int length = 70; int radius = 15;
+		int radius = 7*runwayGirth/8; int length = 14*radius/3;
 		
 		int m = 1;
 		if(angleInPi<0) m = -1;
@@ -644,12 +637,15 @@ public class View extends JPanel{
 
 		int x;
 		int y = getHeight()/2;
+		int direction;
 		if (getRunway().isSmallEnd()){
 			int dToLeftSide = this.getWidth()/2 - defTora/2;
 			x = dToLeftSide + defSmalldt + scaleToPixels( (int) obj.distanceFromSmallEnd());
+			direction = 1;
 		}else{
 			int dToRightSide = this.getWidth()/2 + defTora/2;
 			x = dToRightSide - defLargedt - scaleToPixels((int)obj.distanceFromLargeEnd());
+			direction = -1;
 		}
 
 
@@ -666,20 +662,21 @@ public class View extends JPanel{
 
 		//-----[ RESA/ALS/Blast ]-----
 		int largestFactor; 
+		String factorName;
 		double ALS = getRunway().getAscentAngle()*getField().getPositionedObstacle().getHeight();
-		System.out.println("RESA: "+getRunway().getRESA()+"   ALS: "+ALS+"    Blast: "+getField().getBlastAllowance());
 
 		//find largest factor
 		if(getRunway().getRESA() > ALS &&  ALS > getField().getBlastAllowance()){
 			largestFactor = scaleToPixels((int) getRunway().getRESA());
-			System.out.println("RESA");
+			factorName = "RESA";
+			
 		}else if(ALS > getField().getBlastAllowance()){
 			largestFactor = scaleToPixels((int) ALS);
-			System.out.println("ALS");
+			factorName = "ALS";
 
 		}else{
 			largestFactor = scaleToPixels((int) getField().getBlastAllowance());
-			System.out.println("Blast Time");
+			factorName = "Blast Zone";
 
 		}
 		int maxRadius = radius + largestFactor;
@@ -690,65 +687,81 @@ public class View extends JPanel{
 		//Rim
 		g3.setColor(transparentRed);
 		g3.drawOval(x-maxRadius, y-maxRadius, maxRadius*2, maxRadius*2);
-
+		
+		
+		drawLargestFactorOnCircle(g, factorName, maxRadius, direction, x, y, Color.BLACK);
 
 
 		//=[ planes ]=
-		//Needs to be last
-		// draw cheeky plane
 		Graphics2D g4 = (Graphics2D) g.create();
-		if (getField().getPositionedObstacle().getName().matches("[a-zA-Z][0-9]+")) {
-			drawPlane(g4, (int) obj.getRadius(), x, y);
+		if (getField().getPositionedObstacle().getName().matches(".*[a-zA-Z][0-9]+.*")) {
+			drawPlane(g4, (int) obj.getRadius(), x, y, -1);
 		}
 		//=====[ No Radius ]=======
 		// draw an 'X' at point
-		int h = (int) (defGirth/6);//not scaled
+		int h = (int) (defGirth/6);
 		g2.setStroke(new BasicStroke(3));
 		g2.drawLine(x+h, y+h, x-h, y-h);
 		g2.drawLine(x-h, y+h, x+h, y-h);
-
 	}
-
-	private void drawPlane(Graphics2D g, int radius, int x, int y) {
+	
+	private void drawLargestFactorOnCircle(Graphics g, String factor ,int largeRadius, int direction, int objX, int objY, Color textColor){
 		Graphics2D g2 = (Graphics2D) g.create();
-		radius = 3*radius/4;
-		x = x - 3*radius/8;
+		
+		g2.setColor(textColor);
+		int size = 10;
+		g2.setFont(new Font("verdana", Font.BOLD, size));
+		
+		int x = objX + largeRadius;
+		int y = objY + scaleToPixels((int)getField().getLongSpacer())+ g.getFontMetrics().getHeight();
+		
+		g2.drawString(factor, x, y);
+	}
+	
+	/**
+	 * @param direction 1 = heading left,    -1 = heading right
+	 */
+	private void drawPlane(Graphics g, int radius, int x, int y, double direction) {
+		Graphics2D g2 = (Graphics2D) g.create();
+		int m = (int) direction;
 
-
+		radius = scaleToPixels(radius);
+		x = x - m*7*radius/8;
+		radius *= 2;
 		//half width => sort of single wing span
 		int hwidth = radius*12/19;
 
 		int xUn = radius/19; int yUn = hwidth/12;
 
-		int hOneX = 		x+xUn/2;
-		int twoX = 			x+2*xUn;
-		int wingStartX=(int)(x+7*xUn);
-		int wingCurveX = 	x+11*xUn;
-		int wingEndX =(int)(x+11.5*xUn);
-		int wingEndX2 = 	x+13*xUn;
-		int dipStartX = 	x+14*xUn;
-		int dipBotX = 		x+15*xUn;
-		int tailStartX = 	x+17*xUn;
-		int tailEndX = 		x+19*xUn;
-		int buttX =  (int) (x+17.5*xUn);
+		int hOneX = 		x+m*xUn/2;
+		int twoX = 			x+m*2*xUn;
+		int wingStartX=(int)(x+m*7*xUn);
+		int wingCurveX = 	x+m*11*xUn;
+		int wingEndX =(int)(x+m*11.5*xUn);
+		int wingEndX2 = 	x+m*13*xUn;
+		int dipStartX = 	x+m*14*xUn;
+		int dipBotX = 		x+m*15*xUn;
+		int tailStartX = 	x+m*17*xUn;
+		int tailEndX = 		x+m*19*xUn;
+		int buttX =  (int) (x+m*17.5*xUn);
 
 		int hOneY = 		y+yUn/2;
 		int oneY = 			y+yUn;
-		int wingCurveY = 	y+11*yUn;
-		int wingEndY =(int)(y+11.5*xUn);
+		int wingCurveY =(int) (y+10.5*yUn);
+		int wingEndY =(int)(y+11*xUn);
 		int tailY = 		y+4*yUn;
 
 		int nhOneY = 			y-yUn/2;
 		int noneY = 			y-yUn;
-		int nwingCurveY = 		y-11*yUn;
-		int nwingEndY =(int)   (y-11.5*xUn);
+		int nwingCurveY = 	(int)(y-10.5*yUn);
+		int nwingEndY =(int)   (y-11*xUn);
 		int ntailY = 			y-4*yUn;
 
 		int[] xes  = {x, hOneX, twoX, wingStartX, wingCurveX, wingEndX, wingEndX2, wingCurveX, dipStartX, dipBotX, tailStartX, tailEndX, tailStartX, buttX, /* other side */ tailStartX, tailEndX, tailStartX, dipBotX, dipStartX, wingCurveX, wingEndX2, wingEndX, wingCurveX, wingStartX, twoX, hOneX};  
 
 		int[] yses = {y, hOneY, oneY, oneY,       wingCurveY, wingEndY, wingEndY,  oneY, 	   oneY,      hOneY,   tailY, 	   tailY,    hOneY,      y, /* other side */ nhOneY, ntailY, ntailY, nhOneY, noneY, noneY, nwingEndY, nwingEndY, nwingCurveY, noneY, noneY, nhOneY};
 
-		g2.setColor(Color.gray);
+		g2.setColor(planeGrey);
 		g2.fillPolygon(xes, yses, xes.length);
 		g2.setColor(Color.black);
 		g2.setStroke(new BasicStroke(0.15f));

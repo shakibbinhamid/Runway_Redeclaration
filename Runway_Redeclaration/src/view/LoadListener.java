@@ -10,8 +10,8 @@ import java.awt.event.ActionListener;
 import java.io.File;
 
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -53,7 +53,7 @@ public class LoadListener{
 				}
 				else{
 					
-					new ObjectFrame();
+					new ObjectFrame(frame, "Object Location", true);
 				}
 			}
 			else{
@@ -67,14 +67,15 @@ public class LoadListener{
 			}
 		}
 	}
-	class ObjectFrame extends JFrame{
+	class ObjectFrame extends JDialog{
 		JLabel directionLeft, directionRight;
 		JTextField distanceFromLeft, distanceFromRight;
 		JButton ok;
 		
-		ObjectFrame(){
-			directionLeft = new JLabel("Please Enter the Distance from the Left Side");
-			directionRight = new JLabel("Please Enter the Distances from the Right Side");
+		ObjectFrame(TopFrame topFrame, String title, boolean modality){
+			super(topFrame, title, modality);
+			directionLeft = new JLabel("Please Enter the Distance from "+frame.getTabbePanel().getActiveField().getDefaultSmallAngledRunway().getIdentifier());
+			directionRight = new JLabel("Please Enter the Distances from "+frame.getTabbePanel().getActiveField().getDefaultLargeAngledRunway().getIdentifier());
 			distanceFromLeft = new JTextField();
 			distanceFromRight = new JTextField();
 			ok = new JButton("OK");
@@ -104,13 +105,14 @@ public class LoadListener{
 					try{
 						frame.loadOrCreateObstacle(obs, ((Tab)frame.getTabbePanel().getSelectedComponent()).getField(), Double.parseDouble(distanceFromLeft.getText()), Double.parseDouble(distanceFromRight.getText()));
 					}catch(NumberFormatException nf){
-						JOptionPane.showMessageDialog(frame, "Enter a valid number", "ERROR: Distance", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(frame, "Enter a valid number for distances please!", "ERROR: Distance", JOptionPane.ERROR_MESSAGE);
 					}
 					ObjectFrame.this.dispose();
 				}
 			});
 			
-			setPreferredSize(new Dimension(300,110));
+			setPreferredSize(new Dimension(500,110));
+			setLocation(frame.getLocation().x + frame.getWidth() / 4, frame.getLocation().y + frame.getHeight() / 4);
 			this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 			this.setResizable(false);
 			this.pack();
