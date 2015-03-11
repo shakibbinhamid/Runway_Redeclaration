@@ -3,6 +3,7 @@ package view;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BoxLayout;
@@ -11,13 +12,14 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
-import Core.Airport;
 import Core.Obstacle;
+import Core.PositionedObstacle;
 import CoreInterfaces.AirfieldInterface;
 import Exceptions.UnrecognisedAirfieldIntifierException;
 
 public class FormObstacle extends FormGeneral {
 	TopFrame topFrame;
+	ArrayList<JTextField> textFields;
 	
 	JLabel nameLabel;
 	JTextField nameTextBox;
@@ -32,6 +34,40 @@ public class FormObstacle extends FormGeneral {
 	
 	JLabel airfieldLabel;
 	JComboBox<String> airfieldComboBox;
+	
+	// constructor used for editing 
+	public FormObstacle(TopFrame topFrame, String title) {
+		super(topFrame, title, true);
+		this.topFrame = topFrame;
+		
+		nameLabel = new JLabel("Edit Name:");
+		nameTextBox = new JTextField();
+		radiusLabel = new JLabel("Edit Radius:");
+		radiusTextBox = new JTextField();
+		heigthLabel = new JLabel("Edit Height:");
+		heigthTextBox = new JTextField();
+		distFromLeftLabel = new JLabel("Edit Distance From Left:");
+		distFromLeftTextBox = new JTextField();
+		distFromRightLabel = new JLabel("Edit Distance From Right:");
+		distFromRightTextBox = new JTextField();
+		
+		airfieldLabel = new JLabel("Change Airfield:");
+		
+		airfieldComboBox = new JComboBox<String>();
+		populateTextfields();
+		
+		setPreferredSize(new Dimension(230,300));
+		
+	}
+	
+	private void populateTextfields(){		
+		textFields = new ArrayList<JTextField>();
+		textFields.add(nameTextBox);
+		textFields.add(radiusTextBox);
+		textFields.add(heigthTextBox);
+		textFields.add(distFromLeftTextBox);
+		textFields.add(distFromRightTextBox);
+	}
 
 	public FormObstacle(TopFrame topFrame) {
 		super(topFrame, "Create Obstacle", true);
@@ -48,10 +84,8 @@ public class FormObstacle extends FormGeneral {
 		distFromRightLabel = new JLabel("Insert Distance From Right:");
 		distFromRightTextBox = new JTextField();
 		
-		airfieldLabel = new JLabel("Pick Airfield:");
-		
+		airfieldLabel = new JLabel("Pick Airfield:");	
 		airfieldComboBox = new JComboBox<String>();
-		
 		setPreferredSize(new Dimension(300,300));
 		
 		init();
