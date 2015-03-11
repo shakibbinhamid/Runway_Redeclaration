@@ -86,7 +86,7 @@ public class FormObstacle extends FormGeneral {
 		
 		airfieldLabel = new JLabel("Pick Airfield:");	
 		airfieldComboBox = new JComboBox<String>();
-		setPreferredSize(new Dimension(300,300));
+		setPreferredSize(new Dimension(300,350));
 		
 		init();
 	}

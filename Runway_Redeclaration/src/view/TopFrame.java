@@ -3,6 +3,7 @@ package view;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.Toolkit;
 import java.util.List;
 
 import javax.swing.JFrame;
@@ -60,6 +61,7 @@ public class TopFrame extends JFrame{
 		
 		Notification.setFrame(this);
 		
+		this.setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setTitle("Runway Redeclaration Tool v.0.61");
 		this.setMinimumSize(new Dimension(1200,600));
