@@ -33,7 +33,7 @@ public class FormEditAirfield extends FormAirfield{
 		Airport airp = new Airport("Gatwicked");
 		tf.loadOrCreateAirport(airp);
 		try {
-			tf.loadOrCreateField(90, ' ', testSmallValues, testBigValues);
+			tf.loadOrCreateField(90, 'L', testSmallValues, testBigValues);
 			tf.loadOrCreateAirport(airp);
 		} catch (VariableDeclarationException e) {
 			e.printStackTrace();
@@ -211,12 +211,13 @@ public void init(){
 				boolean okToAdd = false;
 				
 				System.out.println(smallValueTextFields.get(0).getText());
+				//System.out.println(currentAirfield.);
 				
 				double[] smallInputs = new double[4];
 				double[] bigInputs = new double[4];
-				int angle;
-				String sideStrig= (String) sideComboBox.getSelectedItem();
-				char sideChar = sideStrig.charAt(0);
+				int angle ;
+				//String sideStrig= (String) sideComboBox.getSelectedItem();
+	;
 				
 					for (int i = 0; i < 4; i++) {
 						try {
@@ -248,10 +249,15 @@ public void init(){
 					if (okToAdd)
 						try {
 							angle = currentAirfield.getDefaultSmallAngledRunway().getAngle();
-							sideStrig = (String) sideComboBox.getSelectedItem();
-							sideChar = sideStrig.charAt(0);
+							char sideChar = currentAirfield.getSmallAngledRunway().getSideLetter();
+							Airfield f = new Airfield(angle, sideChar,
+									smallInputs, bigInputs);
+							System.out.println(f.getName());
 							topFrame.getTabbePanel().updateTab(new Airfield(angle, sideChar,
 									smallInputs, bigInputs));
+							System.out.println(angle);
+							System.out.println(sideChar);
+
 							dispose();
 						} catch (NumberFormatException e) {
 							JOptionPane.showMessageDialog(null, e.getMessage(),
