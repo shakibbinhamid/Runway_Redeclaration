@@ -17,8 +17,8 @@ import CoreInterfaces.PositionedObstacleInterface;
 
 public class InfoPanel extends JPanel{
 
-	private static final String[] runwayColumnNames 	= 	{"Parameter","Default", "Redeclared"};
-	private static final String[] obstacleColumnNames 	= 	{"Parameter", "Value"};
+	private static final String[] runwayColumnNames 	= 	{"Parameter","Default (m)", "Redeclared (m)"};
+	private static final String[] obstacleColumnNames 	= 	{"Parameter", "Value (m)"};
 
 	private AirfieldInterface field;
 	private DeclaredRunwayInterface defaultRunway;

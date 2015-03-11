@@ -73,8 +73,8 @@ public class Tab extends JPanel{
 		this.field = field;
 	}
 	
-	public void saveTopView(String fullpath) throws IOException{
-		this.views.getTopView().save(fullpath);
+	public void saveTopView(String fullpath, String ext) throws IOException{
+		this.views.getTopView().save(fullpath, ext);
 	}
 	
 	public void updateInfo(AirfieldInterface field){

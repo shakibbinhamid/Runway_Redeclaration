@@ -14,7 +14,6 @@ import java.io.IOException;
 import java.math.BigDecimal;
 
 import javax.imageio.ImageIO;
-import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
 import Core.PositionedObstacle;
@@ -150,8 +149,8 @@ public class View extends JPanel{
 		}
 	}*/
 	
-	public void save(String fullpath) throws IOException{
-		ImageIO.write(image, "PNG", new File(fullpath));
+	public void save(String fullpath, String ext) throws IOException{
+		ImageIO.write(image, ext, new File(fullpath));
 	}
 
 	public void paint(Graphics g){
@@ -237,7 +236,7 @@ public class View extends JPanel{
 	}
 	
 	private int scaleToPixels(int dim){
-		return scaleToPixels(defTotalWidth+500, this.getWidth(), dim);
+		return scaleToPixels(defTotalWidth, this.getWidth(), dim);
 	}
 
 	private int scaleToPixels (int howMuchWantToFit, int inHowMuch, int whatYouAreScaling){

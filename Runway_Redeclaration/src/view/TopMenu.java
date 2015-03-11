@@ -1,5 +1,8 @@
 package view;
 
+import io.ImageFilter;
+import io.JPGFilter;
+import io.PNGFilter;
 import io.Print;
 
 import java.awt.event.ActionEvent;
@@ -15,6 +18,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
+import javax.swing.filechooser.FileFilter;
 
 import CoreInterfaces.AirfieldInterface;
 
@@ -30,7 +34,7 @@ public class TopMenu extends JMenuBar{
 	
 	private JMenuItem createAirport, createRunway, createObstacle;
 	private JMenuItem loadAirport, loadObstacle;
-	private JMenuItem saveAirport, saveObstacle, saveTopView;
+	private JMenuItem saveAirport, saveObstacle, saveTopView, saveAirportAs, saveObstacleAs;
 	
 	private JMenuItem exit;
 	private JMenuItem editRunway, editObstacle, removeObs;
@@ -119,9 +123,14 @@ public class TopMenu extends JMenuBar{
 		saveObstacle = getItem("Save Obstacle", iobstacle, SwingConstants.CENTER);
 		saveTopView = getItem("Save Topview", iview, SwingConstants.CENTER);
 		
-		save = getMenu("Save", isave, new JMenuItem[]{saveAirport, saveObstacle, saveTopView});
+		saveAirportAs = getItem("Save Airport As", iairport, SwingConstants.CENTER);
+		saveObstacleAs = getItem("Save Obstacle As", iobstacle, SwingConstants.CENTER);
+		
+		save = getMenu("Save", isave, new JMenuItem[]{saveAirport, saveObstacle, saveAirportAs, saveObstacleAs, saveTopView});
 		saveAirport.addActionListener(new SaveAirportListener(frame));
 		saveObstacle.addActionListener(new SaveObjectListener(frame));
+		saveAirportAs.addActionListener(new SaveAirportAsListener(frame));
+		saveObstacleAs.addActionListener(new SaveObstacleAsListener(frame));
 		saveTopView.addActionListener(new ActionListener() {
 			
 			@Override
@@ -131,13 +140,19 @@ public class TopMenu extends JMenuBar{
 
 					JFileChooser fc = new JFileChooser();
 					fc.setDialogTitle("Save TopDown View");
-
+					
+					fc.setAcceptAllFileFilterUsed(false);
+					fc.setCurrentDirectory(new File("./"));
+					fc.addChoosableFileFilter(new JPGFilter());
+					fc.addChoosableFileFilter(new PNGFilter());
 					int select = fc.showSaveDialog(frame);
-
 					if(select == JFileChooser.APPROVE_OPTION){
 						File fileToSave = fc.getSelectedFile();
 						try {
-							frame.getTabbePanel().getActiveTab().saveTopView(fileToSave.getAbsolutePath() + ".png");
+							ImageFilter filter = (ImageFilter) fc.getFileFilter();
+							//Fix for Mac
+							if(filter == null) filter = new PNGFilter();
+							frame.getTabbePanel().getActiveTab().saveTopView(fileToSave.getAbsolutePath() + filter.getExt(), filter.getName());
 							JOptionPane.showMessageDialog(frame, "Saved Successfully at "+ fileToSave.getAbsolutePath(), "SAVING DONE", JOptionPane.INFORMATION_MESSAGE);
 						} catch (IOException e1) {
 							JOptionPane.showMessageDialog(frame, "Could not save!", "SAVING FAILED", JOptionPane.ERROR_MESSAGE);
