@@ -134,8 +134,11 @@ public class FormObstacle extends FormGeneral {
 					try {
 					double radius = Double.parseDouble(radiusTextBox.getText());
 					double heigth = Double.parseDouble(heigthTextBox.getText());
-					if(radius < 0 || heigth < 0){
+					if(radius < 0 ){
 						throw new NumberFormatException();
+					}
+					if(heigth < 0){
+						heigth = 0;
 					}
 					Obstacle obstacle = new Obstacle(name, radius, heigth);
 					String s = (String) airfieldComboBox.getSelectedItem();

@@ -23,9 +23,8 @@ public class FormGeneral extends JDialog {
 		getContentPane().add(textFieldsPanel, BorderLayout.CENTER);
 		buttonPanel.add(button);
 		getContentPane().add(buttonPanel, BorderLayout.SOUTH);
-		
-	//TODO:	this.getRootPane().setDefaultButton(button);
-		
+		this.getRootPane().setDefaultButton(button);
+				
 		
 		if (topFrame != null) {
 		      Dimension parentSize = topFrame.getSize(); 
