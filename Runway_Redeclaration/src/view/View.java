@@ -14,7 +14,6 @@ import java.io.IOException;
 import java.math.BigDecimal;
 
 import javax.imageio.ImageIO;
-import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
 import Core.PositionedObstacle;
@@ -237,7 +236,7 @@ public class View extends JPanel{
 	}
 
 	private int scaleToPixels(int dim){
-		return scaleToPixels(defTotalWidth+500, this.getWidth(), dim);
+		return scaleToPixels(defTotalWidth, this.getWidth(), dim);
 	}
 
 	private int scaleToPixels (int howMuchWantToFit, int inHowMuch, int whatYouAreScaling){
@@ -490,14 +489,14 @@ public class View extends JPanel{
 	private void drawAllDim(Graphics g, int direction, int defTora, int defGirth, int tora, int toda, int asda, int lda, int dt, int startOfRoll){
 		int height = defGirth/2;
 		int bumper = 20;
-		drawdim(g, direction, lda, defTora, defGirth, "LDA", dt, lda, height + bumper);
-		drawdim(g, direction, lda, defTora, defGirth, "TORA", startOfRoll, tora, height + bumper + 1*VIRTUAL_GAP);
-		drawdim(g, direction, lda, defTora, defGirth, "ASDA", startOfRoll, asda, height + bumper + 2*VIRTUAL_GAP);
-		drawdim(g, direction, lda, defTora, defGirth, "TODA", startOfRoll, toda, height + bumper + 3*VIRTUAL_GAP);
+		drawdim(g, direction, defTora, defGirth, "LDA", dt, lda, height + bumper);
+		drawdim(g, direction, defTora, defGirth, "TORA", startOfRoll, tora, height + bumper + 1*VIRTUAL_GAP);
+		drawdim(g, direction, defTora, defGirth, "ASDA", startOfRoll, asda, height + bumper + 2*VIRTUAL_GAP);
+		drawdim(g, direction, defTora, defGirth, "TODA", startOfRoll, toda, height + bumper + 3*VIRTUAL_GAP);
 	}
 
 	/** Draws the arrows and labels for the virtual distances  */
-	private void drawdim(Graphics g, int direction, int ldaTitleStart ,int tora, int defGirth, String variableName, int startWhere, int howlong, int howhighUp){
+	private void drawdim(Graphics g, int direction, int tora, int defGirth, String variableName, int startWhere, int howlong, int howhighUp){
 		Graphics2D g2 = (Graphics2D) g.create();//for arrows
 		Graphics2D g3 = (Graphics2D) g.create();//for text
 
@@ -509,8 +508,13 @@ public class View extends JPanel{
 		int startX = 0, endX = 0, Y = 0;
 
 		//first line vals
-		startX = getWidth()/2 - tora/2 + ldaTitleStart;
-		endX = startX+titleLen;
+		if(direction == 1){
+			endX = getWidth()/2 - tora/2 + startWhere;
+			startX = 3*this.getWidth()/4 - titleLen/2 ;
+		}else{
+			endX = getWidth()/2 + tora/2 - startWhere;
+			startX = 1*getWidth()/4 + titleLen/2;
+		}
 
 		Y = getHeight()/2 - defGirth/2 - howhighUp;
 
@@ -541,50 +545,28 @@ public class View extends JPanel{
 		//vertical line to edge of runway
 		g2.drawLine(endX, Y, endX, getHeight()/2-defGirth/2);
 	}
-	
-	private void drawdim(Graphics g, int direction ,int tora, int defGirth, String variableName, int startWhere, int lda, int howhighUp){
-		Graphics2D g2 = (Graphics2D) g.create();//for arrows
-		Graphics2D g3 = (Graphics2D) g.create();//for text
 
+	public void drawDimension(Graphics g, int lda, int direction, int startWhere, int defTora, String dimensionName, int dimensionLength){
+		Graphics2D g2 = (Graphics2D) g.create();
+		
 		Font font = new Font("verdana", Font.BOLD, 10);
-		FontMetrics fontMetrics = g3.getFontMetrics(font);
-		int titleLen = fontMetrics.stringWidth(variableName);
-		g3.setFont(font);
+		FontMetrics fontMetrics = g2.getFontMetrics(font);
+		int titleLen = fontMetrics.stringWidth(dimensionName);
 
-		int startX = 0, endX = 0, Y = 0;
 
-		//first line vals
-		startX = getWidth()/2 - tora/2 + ldaTitleStart;
-		endX = startX+titleLen;
+		int inStart, inEnd, outStart, outEnd;
 
-		Y = getHeight()/2 - defGirth/2 - howhighUp;
+		outEnd = getWidth()/2-direction*defTora/2;
+		inStart = outEnd+direction*dimensionLength;
+		
+		int temp1, temp2;
+		temp1 = (inStart+outEnd)/2;
+		
+		
 
-		drawArrow(g, startX, Y, endX, Y);
 
-		//vertical line to edge of runway
-		g2.setStroke(new BasicStroke(0.75f));
-		g2.drawLine(endX, Y, endX, getHeight()/2-defGirth/2);
 
-		//-----------------------------------------------------
-		if(direction == 1)
-			g3.drawString(variableName, startX, Y+3);
-		else
-			g3.drawString(variableName, startX - titleLen, Y+3);
-		//------------------------------------------------------
 
-		//Second line vals
-		if (direction == 1){
-			endX += lda;
-			startX += titleLen;
-		} else{
-			endX -= lda;
-			startX -= titleLen;
-		}
-
-		drawArrow(g, startX, Y, endX, Y);
-
-		//vertical line to edge of runway
-		g2.drawLine(endX, Y, endX, getHeight()/2-defGirth/2);
 	}
 
 	@SuppressWarnings("unused")
