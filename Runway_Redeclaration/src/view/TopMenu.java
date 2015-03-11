@@ -15,6 +15,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
+import javax.swing.filechooser.FileFilter;
 
 import CoreInterfaces.AirfieldInterface;
 
@@ -136,9 +137,36 @@ public class TopMenu extends JMenuBar{
 
 					JFileChooser fc = new JFileChooser();
 					fc.setDialogTitle("Save TopDown View");
+					
+					fc.setAcceptAllFileFilterUsed(false);
+					fc.setCurrentDirectory(new File("./"));
+					fc.addChoosableFileFilter(new FileFilter() {
 
+				        @Override
+				        public boolean accept(File f) {
+				            return f.getName().endsWith(".jpg") || f.getName().endsWith(".jpeg");
+				        }
+
+				        @Override
+				        public String getDescription() {
+				            return "JPEG file";
+				        }
+
+				    });
+					fc.addChoosableFileFilter(new FileFilter() {
+
+				        @Override
+				        public boolean accept(File f) {
+				            return f.getName().endsWith(".png");
+				        }
+
+				        @Override
+				        public String getDescription() {
+				            return "PNG file";
+				        }
+
+				    });
 					int select = fc.showSaveDialog(frame);
-
 					if(select == JFileChooser.APPROVE_OPTION){
 						File fileToSave = fc.getSelectedFile();
 						try {
