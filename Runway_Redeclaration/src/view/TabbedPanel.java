@@ -64,6 +64,8 @@ public class TabbedPanel extends JTabbedPane{
 		
 		Tab add = new Tab(field);
 		
+		System.out.println(field.getName());
+		
 		this.removeAll();
 		tabs.set(index, add);
 		

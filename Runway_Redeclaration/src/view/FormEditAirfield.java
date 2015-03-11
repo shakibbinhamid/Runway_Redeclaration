@@ -1,12 +1,16 @@
 package view;
 
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import Core.Airfield;
+import Exceptions.VariableDeclarationException;
 
 public class FormEditAirfield extends FormAirfield{
 	Airfield currentAirfield;
@@ -93,5 +97,74 @@ public class FormEditAirfield extends FormAirfield{
 				}
 			});
 		}
+	}
+	
+
+	public void setListener(){
+		
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				boolean okToAdd = false;
+				try{
+					if(angleTextBox.getText().equals("") || Integer.parseInt(angleTextBox.getText()) < 0){
+						JOptionPane.showMessageDialog(null, "Insert a valid angle value!", "Error!", JOptionPane.ERROR_MESSAGE);
+					}
+				} catch (NumberFormatException n) {
+					JOptionPane.showMessageDialog(null, "Insert a valid angle value!", "Error!", JOptionPane.ERROR_MESSAGE);
+				}
+				
+				double[] smallInputs = new double[4];
+				double[] bigInputs = new double[4];
+				int angle = Integer.parseInt(angleTextBox.getText());
+				String sideStrig= (String) sideComboBox.getSelectedItem();
+				char sideChar = sideStrig.charAt(0);
+				
+				if(Integer.parseInt(angleTextBox.getText()) > 0){
+					for (int i = 0; i < 4; i++) {
+						try {
+							if (Integer.parseInt(smallValueTextFields.get(i).getText()) < 0
+									|| Integer.parseInt(bigValueTextFields.get(i).getText()) < 0
+									|| smallValueTextFields.get(i).getText().equals("")
+									|| bigValueTextFields.get(i).getText().equals("")) {
+								System.err.println("Invalid inputs!");
+								JOptionPane.showMessageDialog(null,
+										"Please input only integers!",
+										"Invalid Input!",
+										JOptionPane.ERROR_MESSAGE);
+								break;
+							} else {
+								okToAdd = true;
+								smallInputs[i] = Integer
+										.parseInt(smallValueTextFields.get(i)
+												.getText());
+								bigInputs[i] = Integer.parseInt(bigValueTextFields
+										.get(i).getText());
+							}
+						} catch (NumberFormatException e) {
+							JOptionPane.showMessageDialog(null,
+									"Please input only integers!",
+									"Invalid Input!", JOptionPane.ERROR_MESSAGE);
+							break;
+						}
+					}
+				
+					if (okToAdd)
+						try {
+							angle = Integer.parseInt(angleTextBox.getText());
+							sideStrig = (String) sideComboBox.getSelectedItem();
+							sideChar = sideStrig.charAt(0);
+							topFrame.getTabbePanel().updateTab(new Airfield(angle, sideChar,
+									smallInputs, bigInputs));
+							dispose();
+						} catch (NumberFormatException e) {
+							JOptionPane.showMessageDialog(null, e.getMessage(),
+									"Invalid Input!", JOptionPane.ERROR_MESSAGE);
+						} catch (VariableDeclarationException e) {
+							JOptionPane.showMessageDialog(null, e.getMessage(),
+									"Invalid Input!", JOptionPane.ERROR_MESSAGE);
+						}
+				}
+			}
+		});
 	}
 }

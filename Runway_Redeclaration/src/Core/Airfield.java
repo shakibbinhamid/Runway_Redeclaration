@@ -94,7 +94,7 @@ public class Airfield implements AirfieldInterface, Savable {
 	/**
 	 * Default value constructor
 	 */
-	protected Airfield(int angleFromNorth, char side ,double[] smallAngledDistances, double[] largeAngledDistances) throws VariableDeclarationException{
+	public Airfield(int angleFromNorth, char side ,double[] smallAngledDistances, double[] largeAngledDistances) throws VariableDeclarationException{
 		this(angleFromNorth, new double[] { DEFAULT_GIRTH, DEFAULT_STRIP_END, 
 				DEFAULT_LONG_SPACER, 
 				DEFAULT_SHORT_SPACER, DEFAULT_MEDIUM_SPACER, 
