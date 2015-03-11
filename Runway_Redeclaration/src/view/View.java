@@ -239,7 +239,7 @@ public class View extends JPanel{
 	}
 
 	private int scaleToPixels(int dim){
-		return scaleToPixels(defTotalWidth, this.getWidth()-20, dim);
+		return scaleToPixels(defTotalWidth, this.getWidth(), dim);
 	}
 
 	private int scaleToPixels (int howMuchWantToFit, int inHowMuch, int whatYouAreScaling){
