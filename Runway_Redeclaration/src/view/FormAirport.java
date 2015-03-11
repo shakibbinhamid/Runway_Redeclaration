@@ -47,7 +47,7 @@ public class FormAirport extends FormGeneral {
 					dispose();
 					topFrame.loadOrCreateAirport(airport);	
 					FormAirfield fa = new FormAirfield(topFrame);
-					topFrame.loadOrCreateAirport(airport);							
+					topFrame.loadOrCreateAirport(airport);					
 				}	
 			}
 		});

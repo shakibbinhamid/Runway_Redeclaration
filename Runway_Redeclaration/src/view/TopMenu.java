@@ -162,6 +162,34 @@ public class TopMenu extends JMenuBar{
 		editRunway = getItem("Edit Runway", iedit, SwingConstants.CENTER);
 		editObstacle = getItem("Edit Obstacles", iedit, SwingConstants.CENTER);
 		
+		editRunway.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (frame.getTabbePanel().getActiveField() != null)
+					new FormEditAirfield(frame);
+				else
+					JOptionPane.showMessageDialog(frame, "There is no Airfield to edit", "ERROR: Edit Airfield Failure", JOptionPane.ERROR_MESSAGE);
+			}
+		});
+		
+		editObstacle.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				TabbedPanel panel = frame.getTabbePanel();
+				AirfieldInterface field = panel.getActiveField();
+				if(field != null){
+					if(field.getPositionedObstacle() != null){
+						new FormEditObstacle(frame);
+					}else{
+						JOptionPane.showMessageDialog(frame, "There is no obstacle to edit!", "ERROR: Edit Obstacle Failure", JOptionPane.ERROR_MESSAGE);
+					}
+				}else
+					JOptionPane.showMessageDialog(frame, "There is not even an airfield!", "ERROR: Edit Obstacle Failure", JOptionPane.ERROR_MESSAGE);
+			}
+		});
+		
 		removeObs = getItem("Remove Obstacle", null, SwingConstants.CENTER);
 		removeObs.addActionListener(new ActionListener(){
 
@@ -169,13 +197,20 @@ public class TopMenu extends JMenuBar{
 			public void actionPerformed(ActionEvent e) {
 				TabbedPanel panel = frame.getTabbePanel();
 				AirfieldInterface field = panel.getActiveField();
-				field.removeObstacle();
-				panel.updateTab(field);
+				if(field != null){
+					if(field.getPositionedObstacle() != null){
+						field.removeObstacle();
+						panel.updateTab(field);
+					}else{
+						JOptionPane.showMessageDialog(frame, "There is no obstacle to remove!", "ERROR: Remove Obstacle Failure", JOptionPane.ERROR_MESSAGE);
+					}
+				}else
+					JOptionPane.showMessageDialog(frame, "There is no Airfield to remove the obstacle from!", "ERROR: Remove Obstacle Failure", JOptionPane.ERROR_MESSAGE);
 			}
 			
 		});
 		
-		edit = getMenu("Edit", null, new JMenuItem[]{ removeObs});
+		edit = getMenu("Edit", null, new JMenuItem[]{editRunway, editObstacle, removeObs});
 	}
 	
 	private void createPrintMenu(){

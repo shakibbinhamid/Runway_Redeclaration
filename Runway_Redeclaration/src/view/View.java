@@ -2,7 +2,6 @@ package view;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
@@ -15,19 +14,11 @@ import java.io.IOException;
 import java.math.BigDecimal;
 
 import javax.imageio.ImageIO;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 
-import Core.Airport;
-import Core.Obstacle;
 import Core.PositionedObstacle;
 import CoreInterfaces.AirfieldInterface;
-import CoreInterfaces.AirportInterface;
 import CoreInterfaces.DeclaredRunwayInterface;
-import Exceptions.CannotMakeRunwayException;
-import Exceptions.UnrecognisedAirfieldIntifierException;
-import Exceptions.VariableDeclarationException;
 
 
 /**

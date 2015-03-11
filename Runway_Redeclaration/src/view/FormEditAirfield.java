@@ -10,8 +10,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import Core.Airfield;
-import Core.Airport;
-import Exceptions.VariableDeclarationException;
 
 public class FormEditAirfield extends FormAirfield{
 	Airfield currentAirfield;
@@ -52,16 +50,16 @@ public class FormEditAirfield extends FormAirfield{
 					if (jtf.getText().equals("")){
 						jtf.setFont(newTextFieldFont);
 						if(smallValueTextFields.indexOf(jtf) == 0){
-							jtf.setText(String.valueOf(currentAirfield.getSmallAngledRunway().getTORA()));
+							jtf.setText("TORA: "+ String.valueOf(currentAirfield.getSmallAngledRunway().getTORA()));
 						}
 						if(smallValueTextFields.indexOf(jtf) == 1){
-							jtf.setText(String.valueOf(currentAirfield.getSmallAngledRunway().getTODA()));
+							jtf.setText("TODA: "+String.valueOf(currentAirfield.getSmallAngledRunway().getTODA()));
 						}
 						if(smallValueTextFields.indexOf(jtf) == 2){
-							jtf.setText(String.valueOf(currentAirfield.getSmallAngledRunway().getASDA()));
+							jtf.setText("ASDA: "+ String.valueOf(currentAirfield.getSmallAngledRunway().getASDA()));
 						}
 						if(smallValueTextFields.indexOf(jtf) == 3){
-							jtf.setText(String.valueOf(currentAirfield.getSmallAngledRunway().getLDA()));
+							jtf.setText("LDA: "+ String.valueOf(currentAirfield.getSmallAngledRunway().getLDA()));
 						}
 					}
 				}

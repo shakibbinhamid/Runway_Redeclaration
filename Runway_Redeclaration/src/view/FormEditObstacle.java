@@ -1,15 +1,13 @@
 package view;
 
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
 import javax.swing.JTextField;
 
-import Core.Airport;
-import Core.Obstacle;
 import Core.PositionedObstacle;
-import Exceptions.VariableDeclarationException;
 
 public class FormEditObstacle extends FormObstacle{
 	PositionedObstacle currentObstacle;
@@ -42,6 +40,7 @@ public class FormEditObstacle extends FormObstacle{
 		currentObstacle = (PositionedObstacle) topFrame.getTabbePanel().getActiveTab().getObs();
 		setInitialTextfields();
 		setTextfieldListener();
+		setPreferredSize(new Dimension(300,350));
 		init();
 	}
 	
