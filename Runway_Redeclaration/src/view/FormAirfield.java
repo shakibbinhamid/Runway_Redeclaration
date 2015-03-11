@@ -76,15 +76,15 @@ public class FormAirfield extends FormGeneral {
 		smallValuesLabel = new JLabel("Left Starting Runway values:");
 		largeValuesLabel = new JLabel("Right Starting Runway values:");
 		
-		String smallTora = String.valueOf(topFrame.getTabbePanel().getActiveField().getSmallAngledRunway().getTORA());
-		String smallToda = String.valueOf(topFrame.getTabbePanel().getActiveField().getSmallAngledRunway().getTODA());
-		String smallAsda = String.valueOf(topFrame.getTabbePanel().getActiveField().getSmallAngledRunway().getASDA());
-		String smallLda = String.valueOf(topFrame.getTabbePanel().getActiveField().getSmallAngledRunway().getLDA());
+		String smallTora = String.valueOf(topFrame.getTabbePanel().getActiveField().getDefaultSmallAngledRunway().getTORA());
+		String smallToda = String.valueOf(topFrame.getTabbePanel().getActiveField().getDefaultSmallAngledRunway().getTODA());
+		String smallAsda = String.valueOf(topFrame.getTabbePanel().getActiveField().getDefaultSmallAngledRunway().getASDA());
+		String smallLda = String.valueOf(topFrame.getTabbePanel().getActiveField().getDefaultSmallAngledRunway().getLDA());
 		
-		String bigTora = String.valueOf(topFrame.getTabbePanel().getActiveField().getLargeAngledRunway().getTORA());
-		String bigToda = String.valueOf(topFrame.getTabbePanel().getActiveField().getLargeAngledRunway().getTODA());
-		String bigAsda = String.valueOf(topFrame.getTabbePanel().getActiveField().getLargeAngledRunway().getASDA());
-		String bigLda = String.valueOf(topFrame.getTabbePanel().getActiveField().getLargeAngledRunway().getLDA());
+		String bigTora = String.valueOf(topFrame.getTabbePanel().getActiveField().getDefaultLargeAngledRunway().getTORA());
+		String bigToda = String.valueOf(topFrame.getTabbePanel().getActiveField().getDefaultLargeAngledRunway().getTODA());
+		String bigAsda = String.valueOf(topFrame.getTabbePanel().getActiveField().getDefaultLargeAngledRunway().getASDA());
+		String bigLda = String.valueOf(topFrame.getTabbePanel().getActiveField().getDefaultLargeAngledRunway().getLDA());
 
 		bigTORATextBox = new JTextField(bigTora);
 		bigTODATextBox = new JTextField(bigToda);

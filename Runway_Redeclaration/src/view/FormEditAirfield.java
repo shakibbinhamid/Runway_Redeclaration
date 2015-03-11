@@ -8,7 +8,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -16,6 +15,7 @@ import javax.swing.SwingConstants;
 
 import Core.Airfield;
 import Core.Airport;
+import CoreInterfaces.PositionedObstacleInterface;
 import Exceptions.VariableDeclarationException;
 
 public class FormEditAirfield extends FormAirfield{
@@ -155,16 +155,16 @@ public void init(){
 					if (jtf.getText().equals("")){
 						//jtf.setFont(newTextFieldFont);
 						if(smallValueTextFields.indexOf(jtf) == 0){
-							jtf.setText(String.valueOf(currentAirfield.getSmallAngledRunway().getTORA()));
+							jtf.setText(String.valueOf(currentAirfield.getDefaultSmallAngledRunway().getTORA()));
 						}
 						if(smallValueTextFields.indexOf(jtf) == 2){
-							jtf.setText(String.valueOf(currentAirfield.getSmallAngledRunway().getTODA()));
+							jtf.setText(String.valueOf(currentAirfield.getDefaultSmallAngledRunway().getTODA()));
 						}
 						if(smallValueTextFields.indexOf(jtf) == 1){
-							jtf.setText(String.valueOf(currentAirfield.getSmallAngledRunway().getASDA()));
+							jtf.setText(String.valueOf(currentAirfield.getDefaultSmallAngledRunway().getASDA()));
 						}
 						if(smallValueTextFields.indexOf(jtf) == 3){
-							jtf.setText(String.valueOf(currentAirfield.getSmallAngledRunway().getLDA()));
+							jtf.setText(String.valueOf(currentAirfield.getDefaultSmallAngledRunway().getLDA()));
 						}
 					}
 				}
@@ -182,16 +182,16 @@ public void init(){
 					if (jtf.getText().equals("")){
 						//jtf.setFont(newTextFieldFont);
 						if(bigValueTextFields.indexOf(jtf) == 0){
-							jtf.setText(String.valueOf(currentAirfield.getLargeAngledRunway().getTORA()));
+							jtf.setText("dlkjfdlkjf ");
 						}
 						if(bigValueTextFields.indexOf(jtf) == 2){
-							jtf.setText(String.valueOf(currentAirfield.getLargeAngledRunway().getTODA()));
+							jtf.setText(String.valueOf(currentAirfield.getDefaultLargeAngledRunway().getTODA()));
 						}
 						if(bigValueTextFields.indexOf(jtf) == 1){
-							jtf.setText(String.valueOf(currentAirfield.getLargeAngledRunway().getASDA()));
+							jtf.setText(String.valueOf(currentAirfield.getDefaultLargeAngledRunway().getASDA()));
 						}
 						if(bigValueTextFields.indexOf(jtf) == 3){
-							jtf.setText(String.valueOf(currentAirfield.getLargeAngledRunway().getLDA()));
+							jtf.setText(String.valueOf(currentAirfield.getDefaultLargeAngledRunway().getLDA()));
 						}
 					}
 				}
@@ -209,9 +209,6 @@ public void init(){
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				boolean okToAdd = false;
-				
-				System.out.println(smallValueTextFields.get(0).getText());
-				//System.out.println(currentAirfield.);
 				
 				double[] smallInputs = new double[4];
 				double[] bigInputs = new double[4];
@@ -252,11 +249,11 @@ public void init(){
 							char sideChar = currentAirfield.getSmallAngledRunway().getSideLetter();
 							Airfield f = new Airfield(angle, sideChar,
 									smallInputs, bigInputs);
-							System.out.println(f.getName());
-							topFrame.getTabbePanel().updateTab(new Airfield(angle, sideChar,
-									smallInputs, bigInputs));
-							System.out.println(angle);
-							System.out.println(sideChar);
+							if(currentAirfield.getPositionedObstacle() != null){
+								PositionedObstacleInterface o = currentAirfield.getPositionedObstacle();
+								f.addObstacle(o, o.distanceFromSmallEnd(), o.distanceFromLargeEnd());
+							}
+							topFrame.getTabbePanel().updateTab(f);
 
 							dispose();
 						} catch (NumberFormatException e) {
