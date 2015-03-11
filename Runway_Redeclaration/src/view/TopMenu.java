@@ -37,7 +37,7 @@ public class TopMenu extends JMenuBar{
 	private JMenuItem printCalculation;
 	private JMenuItem about, contact;
 	
-	private ImageIcon icreate, iload, isave, iedit, iprint, icalc, iairport, iairfield, iobstacle, iabout, icontact, iexit, iremove;
+	private ImageIcon icreate, iload, isave, iedit, iview, iprint, icalc, iairport, iairfield, iobstacle, iabout, icontact, iexit, iremove;
 	
 	private TopFrame frame; 
 	
@@ -72,6 +72,7 @@ public class TopMenu extends JMenuBar{
 		iedit = getIcon("/edit.png");
 		icalc = getIcon("/icalc.png");
 		iremove = getIcon("/bin.png");
+		iview = getIcon("/view.png");
 	}
 	
 	private void createFileMenu(){
@@ -116,7 +117,7 @@ public class TopMenu extends JMenuBar{
 		//================================SAVE MENU==============================================//
 		saveAirport = getItem("Save Airport", iairport, SwingConstants.CENTER);
 		saveObstacle = getItem("Save Obstacle", iobstacle, SwingConstants.CENTER);
-		saveTopView = getItem("Save Topview", null, SwingConstants.CENTER);
+		saveTopView = getItem("Save Topview", iview, SwingConstants.CENTER);
 		
 		save = getMenu("Save", isave, new JMenuItem[]{saveAirport, saveObstacle, saveTopView});
 		saveAirport.addActionListener(new SaveAirportListener(frame));
