@@ -1,15 +1,21 @@
 package view;
 
+import java.awt.BorderLayout;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
+import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 import Core.Airfield;
+import Core.Airport;
 import Exceptions.VariableDeclarationException;
 
 public class FormEditAirfield extends FormAirfield{
@@ -39,7 +45,105 @@ public class FormEditAirfield extends FormAirfield{
 	public FormEditAirfield(TopFrame topFrame){
 		super(topFrame, "Edit airfield");
 		currentAirfield = (Airfield) topFrame.getTabbePanel().getActiveField();
+		setUpEditingForm();
 		init();
+	}
+	
+	public void setUpEditingForm(){
+		button.setText("Apply");
+		angleLabel = new JLabel("Airfield ");
+		angleLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+		angleTextBox.setText(currentAirfield.getName());
+		angleTextBox.setEditable(false);
+		sideLabel.setText(currentAirfield.getName());
+		sideComboBox.setSelectedItem(currentAirfield.getSmallAngledRunway().getSideLetter());
+		sideComboBox.setEditable(false);
+		
+	}
+public void init(){
+		
+		
+		upperPanel.setLayout(new GridLayout(3,2));
+		upperPanel.add(angleLabel);
+		upperPanel.add(sideLabel);
+		//upperPanel.add(angleTextBox);
+		upperPanel.add(new JLabel());
+//		upperPanel.add(sideComboBox);
+		upperPanel.add(new JLabel());
+		
+		String dan = topFrame.getTabbePanel().getActiveField().getDefaultSmallAngledRunway().getIdentifier();
+		smallValuesLabel.setText(dan + " Runway Parameters");
+		smallValuesLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		upperPanel.add(smallValuesLabel);
+		String charlie = topFrame.getTabbePanel().getActiveField().getDefaultLargeAngledRunway().getIdentifier();
+		largeValuesLabel.setText(charlie + " Runway Parameters");
+		largeValuesLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		upperPanel.add(largeValuesLabel);
+		
+		bottomPanel.setLayout(new GridLayout(5, 3));
+		
+		
+//		bottomPanel.add(smallTORALabel);
+//		bottomPanel.add(bigTORALabel);
+		bottomPanel.add(smallTORATextBox);
+		JLabel toraLabel = new JLabel("TORA");
+		toraLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		bottomPanel.add(toraLabel);
+		bottomPanel.add(bigTORATextBox);
+		
+//		bottomPanel.add(smallTODALabel);
+//		bottomPanel.add(bigTODALabel);
+		bottomPanel.add(smallTODATextBox);
+		JLabel todaLabel = new JLabel("TODA");
+		todaLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		bottomPanel.add(todaLabel);;
+		bottomPanel.add(bigTODATextBox);
+		
+//		bottomPanel.add(smallASDALabel);
+//		bottomPanel.add(bigASDALabel);
+		bottomPanel.add(smallASDATextBox);
+		JLabel asdaLabel = new JLabel("ASDA");
+		asdaLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		bottomPanel.add(asdaLabel);		
+		bottomPanel.add(bigASDATextBox);
+		
+//		bottomPanel.add(smallLDALabel);
+//		bottomPanel.add(bigLDALabel);
+		bottomPanel.add(smallLDATextBox);
+		JLabel ldaLabel = new JLabel("LDA");
+		ldaLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		bottomPanel.add(ldaLabel);
+		bottomPanel.add(bigLDATextBox);
+		
+		textFieldsPanel.setLayout(new BorderLayout());
+		textFieldsPanel.add(upperPanel, BorderLayout.NORTH);
+		textFieldsPanel.add(bottomPanel, BorderLayout.CENTER);
+		
+		smallValueTextFields.add(smallTORATextBox);
+		bigValueTextFields.add(bigTORATextBox);
+		smallValueTextFields.add(smallTODATextBox);
+		bigValueTextFields.add(bigTODATextBox);
+		smallValueTextFields.add(smallASDATextBox);
+		bigValueTextFields.add(bigASDATextBox);
+		smallValueTextFields.add(smallLDATextBox);
+		bigValueTextFields.add(bigLDATextBox);
+		
+		
+//		for(int i=0;i<4;i++){
+//			Font newTextFieldFont; 
+//			JTextField currentSmall =  smallValueTextFields.get(i);
+//			JTextField currentBig =  bigValueTextFields.get(i);
+//			newTextFieldFont = new Font(currentSmall.getFont().getName(),Font.ITALIC,currentSmall.getFont().getSize());
+//			currentSmall.setFont(newTextFieldFont);
+//			currentBig.setFont(newTextFieldFont);
+//		}
+		
+		
+		setTextfieldsListener();
+		setListener();
+		pack();
+		this.setResizable(false);
+		this.setVisible(true);
 	}
 	
 	public void setTextfieldsListener(){
@@ -49,24 +153,24 @@ public class FormEditAirfield extends FormAirfield{
 				Font newTextFieldFont=new Font(jtf.getFont().getName(),Font.ITALIC,jtf.getFont().getSize());
 				public void focusLost(FocusEvent e) {
 					if (jtf.getText().equals("")){
-						jtf.setFont(newTextFieldFont);
+						//jtf.setFont(newTextFieldFont);
 						if(smallValueTextFields.indexOf(jtf) == 0){
-							jtf.setText("TORA: "+ String.valueOf(currentAirfield.getSmallAngledRunway().getTORA()));
+							jtf.setText(String.valueOf(currentAirfield.getSmallAngledRunway().getTORA()));
 						}
 						if(smallValueTextFields.indexOf(jtf) == 1){
-							jtf.setText("TODA: "+String.valueOf(currentAirfield.getSmallAngledRunway().getTODA()));
+							jtf.setText(String.valueOf(currentAirfield.getSmallAngledRunway().getTODA()));
 						}
 						if(smallValueTextFields.indexOf(jtf) == 2){
-							jtf.setText("ASDA: "+ String.valueOf(currentAirfield.getSmallAngledRunway().getASDA()));
+							jtf.setText(String.valueOf(currentAirfield.getSmallAngledRunway().getASDA()));
 						}
 						if(smallValueTextFields.indexOf(jtf) == 3){
-							jtf.setText("LDA: "+ String.valueOf(currentAirfield.getSmallAngledRunway().getLDA()));
+							jtf.setText(String.valueOf(currentAirfield.getSmallAngledRunway().getLDA()));
 						}
 					}
 				}
 				public void focusGained(FocusEvent e) {
 					jtf.setFont(null);
-					jtf.setText("");
+					//jtf.setText("");
 				}
 			});
 		}
@@ -76,7 +180,7 @@ public class FormEditAirfield extends FormAirfield{
 				Font newTextFieldFont=new Font(jtf.getFont().getName(),Font.ITALIC,jtf.getFont().getSize());
 				public void focusLost(FocusEvent e) {
 					if (jtf.getText().equals("")){
-						jtf.setFont(newTextFieldFont);
+						//jtf.setFont(newTextFieldFont);
 						if(bigValueTextFields.indexOf(jtf) == 0){
 							jtf.setText(String.valueOf(currentAirfield.getLargeAngledRunway().getTORA()));
 						}
@@ -93,7 +197,7 @@ public class FormEditAirfield extends FormAirfield{
 				}
 				public void focusGained(FocusEvent e) {
 					jtf.setFont(null);
-					jtf.setText("");
+					//jtf.setText("");
 				}
 			});
 		}
@@ -105,21 +209,13 @@ public class FormEditAirfield extends FormAirfield{
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				boolean okToAdd = false;
-				try{
-					if(angleTextBox.getText().equals("") || Integer.parseInt(angleTextBox.getText()) < 0){
-						JOptionPane.showMessageDialog(null, "Insert a valid angle value!", "Error!", JOptionPane.ERROR_MESSAGE);
-					}
-				} catch (NumberFormatException n) {
-					JOptionPane.showMessageDialog(null, "Insert a valid angle value!", "Error!", JOptionPane.ERROR_MESSAGE);
-				}
 				
 				double[] smallInputs = new double[4];
 				double[] bigInputs = new double[4];
-				int angle = Integer.parseInt(angleTextBox.getText());
+				int angle;
 				String sideStrig= (String) sideComboBox.getSelectedItem();
 				char sideChar = sideStrig.charAt(0);
 				
-				if(Integer.parseInt(angleTextBox.getText()) > 0){
 					for (int i = 0; i < 4; i++) {
 						try {
 							if (Integer.parseInt(smallValueTextFields.get(i).getText()) < 0
@@ -150,7 +246,7 @@ public class FormEditAirfield extends FormAirfield{
 				
 					if (okToAdd)
 						try {
-							angle = Integer.parseInt(angleTextBox.getText());
+							angle = currentAirfield.getDefaultSmallAngledRunway().getAngle();
 							sideStrig = (String) sideComboBox.getSelectedItem();
 							sideChar = sideStrig.charAt(0);
 							topFrame.getTabbePanel().updateTab(new Airfield(angle, sideChar,
@@ -163,7 +259,6 @@ public class FormEditAirfield extends FormAirfield{
 							JOptionPane.showMessageDialog(null, e.getMessage(),
 									"Invalid Input!", JOptionPane.ERROR_MESSAGE);
 						}
-				}
 			}
 		});
 	}
