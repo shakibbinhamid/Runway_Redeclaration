@@ -1,0 +1,178 @@
+<airport name="Heathrow Test">
+   <airfields class="java.util.ArrayList">
+      <airfieldInterface class="Core.Airfield">
+         <runways length="2">
+            <declaredRunwayInterface class="Core.DeclaredRunway">
+               <decTora>3660.0</decTora>
+               <decLda>3353.0</decLda>
+               <decAsda>3660.0</decAsda>
+               <decToda>3660.0</decToda>
+               <disThresh>307.0</disThresh>
+               <resa>240.0</resa>
+               <startOfRofl>0.0</startOfRofl>
+               <angle>90</angle>
+               <direction>R</direction>
+            </declaredRunwayInterface>
+            <declaredRunwayInterface class="Core.DeclaredRunway">
+               <decTora>3660.0</decTora>
+               <decLda>3660.0</decLda>
+               <decAsda>3660.0</decAsda>
+               <decToda>3660.0</decToda>
+               <disThresh>0.0</disThresh>
+               <resa>240.0</resa>
+               <startOfRofl>0.0</startOfRofl>
+               <angle>270</angle>
+               <direction>L</direction>
+            </declaredRunwayInterface>
+         </runways>
+         <defaultRunways length="2">
+            <declaredRunwayInterface class="Core.DeclaredRunway">
+               <decTora>3660.0</decTora>
+               <decLda>3353.0</decLda>
+               <decAsda>3660.0</decAsda>
+               <decToda>3660.0</decToda>
+               <disThresh>307.0</disThresh>
+               <resa>240.0</resa>
+               <startOfRofl>0.0</startOfRofl>
+               <angle>90</angle>
+               <direction>R</direction>
+            </declaredRunwayInterface>
+            <declaredRunwayInterface class="Core.DeclaredRunway">
+               <decTora>3660.0</decTora>
+               <decLda>3660.0</decLda>
+               <decAsda>3660.0</decAsda>
+               <decToda>3660.0</decToda>
+               <disThresh>0.0</disThresh>
+               <resa>240.0</resa>
+               <startOfRofl>0.0</startOfRofl>
+               <angle>270</angle>
+               <direction>L</direction>
+            </declaredRunwayInterface>
+         </defaultRunways>
+         <runGirth>100.0</runGirth>
+         <stripEnd>60.0</stripEnd>
+         <longSpacer>150.0</longSpacer>
+         <shortSpacer>75.0</shortSpacer>
+         <mediumSpacer>105.0</mediumSpacer>
+         <shortLength>150.0</shortLength>
+         <longLength>300.0</longLength>
+         <blastProt>300.0</blastProt>
+      </airfieldInterface>
+      <airfieldInterface class="Core.Airfield">
+         <runways length="2">
+            <declaredRunwayInterface class="Core.DeclaredRunway">
+               <decTora>1000.0</decTora>
+               <decLda>1000.0</decLda>
+               <decAsda>1000.0</decAsda>
+               <decToda>1000.0</decToda>
+               <disThresh>0.0</disThresh>
+               <resa>240.0</resa>
+               <startOfRofl>0.0</startOfRofl>
+               <angle>9</angle>
+               <direction>R</direction>
+            </declaredRunwayInterface>
+            <declaredRunwayInterface class="Core.DeclaredRunway">
+               <decTora>1000.0</decTora>
+               <decLda>1000.0</decLda>
+               <decAsda>1000.0</decAsda>
+               <decToda>1000.0</decToda>
+               <disThresh>0.0</disThresh>
+               <resa>240.0</resa>
+               <startOfRofl>0.0</startOfRofl>
+               <angle>189</angle>
+               <direction>L</direction>
+            </declaredRunwayInterface>
+         </runways>
+         <defaultRunways length="2">
+            <declaredRunwayInterface class="Core.DeclaredRunway">
+               <decTora>1000.0</decTora>
+               <decLda>1000.0</decLda>
+               <decAsda>1000.0</decAsda>
+               <decToda>1000.0</decToda>
+               <disThresh>0.0</disThresh>
+               <resa>240.0</resa>
+               <startOfRofl>0.0</startOfRofl>
+               <angle>9</angle>
+               <direction>R</direction>
+            </declaredRunwayInterface>
+            <declaredRunwayInterface class="Core.DeclaredRunway">
+               <decTora>1000.0</decTora>
+               <decLda>1000.0</decLda>
+               <decAsda>1000.0</decAsda>
+               <decToda>1000.0</decToda>
+               <disThresh>0.0</disThresh>
+               <resa>240.0</resa>
+               <startOfRofl>0.0</startOfRofl>
+               <angle>189</angle>
+               <direction>L</direction>
+            </declaredRunwayInterface>
+         </defaultRunways>
+         <runGirth>100.0</runGirth>
+         <stripEnd>60.0</stripEnd>
+         <longSpacer>150.0</longSpacer>
+         <shortSpacer>75.0</shortSpacer>
+         <mediumSpacer>105.0</mediumSpacer>
+         <shortLength>150.0</shortLength>
+         <longLength>300.0</longLength>
+         <blastProt>300.0</blastProt>
+      </airfieldInterface>
+      <airfieldInterface class="Core.Airfield">
+         <runways length="2">
+            <declaredRunwayInterface class="Core.DeclaredRunway">
+               <decTora>1000.0</decTora>
+               <decLda>1000.0</decLda>
+               <decAsda>1000.0</decAsda>
+               <decToda>1000.0</decToda>
+               <disThresh>0.0</disThresh>
+               <resa>240.0</resa>
+               <startOfRofl>0.0</startOfRofl>
+               <angle>9</angle>
+               <direction>L</direction>
+            </declaredRunwayInterface>
+            <declaredRunwayInterface class="Core.DeclaredRunway">
+               <decTora>1000.0</decTora>
+               <decLda>1000.0</decLda>
+               <decAsda>1000.0</decAsda>
+               <decToda>1000.0</decToda>
+               <disThresh>0.0</disThresh>
+               <resa>240.0</resa>
+               <startOfRofl>0.0</startOfRofl>
+               <angle>189</angle>
+               <direction>R</direction>
+            </declaredRunwayInterface>
+         </runways>
+         <defaultRunways length="2">
+            <declaredRunwayInterface class="Core.DeclaredRunway">
+               <decTora>1000.0</decTora>
+               <decLda>1000.0</decLda>
+               <decAsda>1000.0</decAsda>
+               <decToda>1000.0</decToda>
+               <disThresh>0.0</disThresh>
+               <resa>240.0</resa>
+               <startOfRofl>0.0</startOfRofl>
+               <angle>9</angle>
+               <direction>L</direction>
+            </declaredRunwayInterface>
+            <declaredRunwayInterface class="Core.DeclaredRunway">
+               <decTora>1000.0</decTora>
+               <decLda>1000.0</decLda>
+               <decAsda>1000.0</decAsda>
+               <decToda>1000.0</decToda>
+               <disThresh>0.0</disThresh>
+               <resa>240.0</resa>
+               <startOfRofl>0.0</startOfRofl>
+               <angle>189</angle>
+               <direction>R</direction>
+            </declaredRunwayInterface>
+         </defaultRunways>
+         <runGirth>100.0</runGirth>
+         <stripEnd>60.0</stripEnd>
+         <longSpacer>150.0</longSpacer>
+         <shortSpacer>75.0</shortSpacer>
+         <mediumSpacer>105.0</mediumSpacer>
+         <shortLength>150.0</shortLength>
+         <longLength>300.0</longLength>
+         <blastProt>300.0</blastProt>
+      </airfieldInterface>
+   </airfields>
+</airport>

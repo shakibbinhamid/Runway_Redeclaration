@@ -30,7 +30,7 @@ public class TopMenu extends JMenuBar{
 	
 	private JMenuItem createAirport, createRunway, createObstacle;
 	private JMenuItem loadAirport, loadObstacle;
-	private JMenuItem saveAirport, saveObstacle, saveTopView;
+	private JMenuItem saveAirport, saveObstacle, saveTopView, saveAirportAs, saveObstacleAs;
 	
 	private JMenuItem exit;
 	private JMenuItem editRunway, editObstacle, removeObs;
@@ -119,9 +119,14 @@ public class TopMenu extends JMenuBar{
 		saveObstacle = getItem("Save Obstacle", iobstacle, SwingConstants.CENTER);
 		saveTopView = getItem("Save Topview", iview, SwingConstants.CENTER);
 		
-		save = getMenu("Save", isave, new JMenuItem[]{saveAirport, saveObstacle, saveTopView});
+		saveAirportAs = getItem("Save Airport As", iairport, SwingConstants.CENTER);
+		saveObstacleAs = getItem("Save Obstacle As", iobstacle, SwingConstants.CENTER);
+		
+		save = getMenu("Save", isave, new JMenuItem[]{saveAirport, saveObstacle, saveAirportAs, saveObstacleAs, saveTopView});
 		saveAirport.addActionListener(new SaveAirportListener(frame));
 		saveObstacle.addActionListener(new SaveObjectListener(frame));
+		saveAirportAs.addActionListener(new SaveAirportAsListener(frame));
+		saveObstacleAs.addActionListener(new SaveObstacleAsListener(frame));
 		saveTopView.addActionListener(new ActionListener() {
 			
 			@Override

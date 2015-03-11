@@ -116,7 +116,7 @@ public class View extends JPanel{
 				AirfieldInterface air = null;
 				DeclaredRunwayInterface runway = null;
 				try {
-					port.addNewAirfield(90, 'L', new double[] {3902,3902,3902,3596}, new double[] {3884,3884,3962,3884});
+					port.addNewAirfield(90, 'L', new double[] {2565,2565,3040,2243}, new double[] {2565,2565,3962,3884});
 					air = port.getAirfield(port.getAirfieldNames().get(0));
 					runway = air.getSmallAngledRunway();
 					air.addObstacle(new Obstacle("Buggered A600 on fire",100,7), -50, 3646);//TODO I added an obstacle!
@@ -192,6 +192,9 @@ public class View extends JPanel{
 			int defTora, int defGirth, int defSmalldt, int defLargedt, int defStopway, int defClearway,
 			int stripEnd, int longSpacer, int shortSpacer, int mediumSpacer, int shortLength, int longLength,
 			int tora, int toda, int asda, int lda, int dt, int startOfRoll) {
+		
+		System.out.println(toda);
+		
 
 		defTora = scaleToPixels(defTora);
 		defGirth = scaleToPixels(defGirth);
@@ -236,7 +239,7 @@ public class View extends JPanel{
 	}
 
 	private int scaleToPixels(int dim){
-		return scaleToPixels(defTotalWidth, this.getWidth(), dim);
+		return scaleToPixels(defTotalWidth, this.getWidth()-20, dim);
 	}
 
 	private int scaleToPixels (int howMuchWantToFit, int inHowMuch, int whatYouAreScaling){
@@ -262,7 +265,7 @@ public class View extends JPanel{
 		Font font = new Font("verdana", Font.PLAIN, 15);
 		FontMetrics fontMetrics = g2.getFontMetrics(font);
 		int initLen = fontMetrics.stringWidth("0");
-		int finalLen = fontMetrics.stringWidth(String.valueOf(howMuchWantToView)); 
+		int finalLen = fontMetrics.stringWidth(String.valueOf(howMuchWantToView)+"m"); 
 		g2.setFont(font);
 
 		int howMuchInPixels = scaleToPixels(howMuchWantToView);
@@ -276,7 +279,7 @@ public class View extends JPanel{
 		g2.drawLine(endX, Y, endX, Y - 5);
 
 		g2.drawString("0", startX - initLen/2, Y - font.getSize());
-		g2.drawString(String.valueOf(howMuchWantToView), endX - finalLen/2, Y - font.getSize());
+		g2.drawString(String.valueOf(howMuchWantToView)+"m", endX - finalLen/2, Y - font.getSize());
 
 	}
 
@@ -499,6 +502,10 @@ public class View extends JPanel{
 	private void drawdim(Graphics g, int direction, int tora, int defGirth, String variableName, int startWhere, int howlong, int howhighUp){
 		Graphics2D g2 = (Graphics2D) g.create();//for arrows
 		Graphics2D g3 = (Graphics2D) g.create();//for text
+		
+		System.out.println(variableName);
+		System.out.println(this.getWidth());
+		System.out.println(howlong - startWhere);
 
 		Font font = new Font("verdana", Font.BOLD, 10);
 		FontMetrics fontMetrics = g3.getFontMetrics(font);

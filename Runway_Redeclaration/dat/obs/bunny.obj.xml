@@ -1,0 +1,4 @@
+<obstacle name="bunny">
+   <radius>0.0</radius>
+   <height>25.0</height>
+</obstacle>
