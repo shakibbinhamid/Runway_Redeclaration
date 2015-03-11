@@ -19,7 +19,7 @@ public class FormAirport extends FormGeneral {
 	public FormAirport(TopFrame topFrame) {
 		super(topFrame, "Create Airport",true);
 		this.topFrame = topFrame;
-		nameLabel = new JLabel("Insert airport name:");
+		nameLabel = new JLabel("Insert Airport Name:");
 		name = new JTextField();
 		setPreferredSize(new Dimension(180,110));
 		init();
