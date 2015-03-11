@@ -5,6 +5,10 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,13 +36,18 @@ public class LogPanel extends JPanel{
 	private Log fileLogPanel;
 	private Log calcLogPanel;
 
+	private TopFrame parent;
+	private File devLog;
+
 	private static final Color FILE = new Color(128, 0, 0);
 	private static final Color CALC = new Color(75, 0, 130);
 	private static final Color DEFAULT = Color.WHITE;
 	private static final Color ERROR = Color.RED;
 
-	public LogPanel(String name){
+	public LogPanel(String name, TopFrame top){
 		this.label = name;
+		this.parent = top;
+		this.devLog = this.makeFile();
 		init();
 	}
 
@@ -75,6 +84,9 @@ public class LogPanel extends JPanel{
 	}
 
 	public void notify(String s, String c){
+		if(this.parent.isUserHelpingDeveloper()){ 
+			this.saveLogToDeveloper(s);
+		}
 		switch(c){
 		case "file":
 			notifyFile(s);
@@ -84,6 +96,41 @@ public class LogPanel extends JPanel{
 			break;
 		default:
 			notifyDefault(s);;
+		}
+	}
+	
+	private File makeFile(){
+		int i = 0;
+		File f = new File("./dat/devLog"+i);
+		while(f.exists() && !f.isDirectory()){
+			f = new File("./dat/devLog"+i);
+			System.out.println("./dat/devLog"+i);
+			i++;
+		}
+		 try {
+			this.devWriter = new BufferedWriter(new FileWriter(f));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return f;
+	}
+	
+	BufferedWriter devWriter; 
+	private void saveLogToDeveloper(String info){
+		try {
+		    devWriter.write(info);
+		    devWriter.flush();
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+	}
+	
+	@Override
+	public void finalize(){
+		try {
+			devWriter.flush();
+			devWriter.close();
+		} catch (IOException e) {
 		}
 	}
 	
@@ -154,7 +201,7 @@ public class LogPanel extends JPanel{
 			text.setCharacterAttributes(aset, false);
 			text.replaceSelection(msg);
 		}
-
+		
 		private void addLog(String s, Color c){
 			text.setEditable(true);
 			appendToPane(wordWrap(s, 40), c);
