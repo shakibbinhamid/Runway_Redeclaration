@@ -24,6 +24,7 @@ public abstract class SaveSaveableAsListener implements ActionListener{
 
 	public SaveSaveableAsListener(String type, String typeC, javax.swing.filechooser.FileFilter filter) {
 		super();
+		fs = new FileSystem();
 		this.type = type;
 		this.typeC = typeC;
 		this.filter = filter;
