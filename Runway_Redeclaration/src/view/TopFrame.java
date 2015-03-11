@@ -7,6 +7,7 @@ import java.awt.Toolkit;
 import java.util.List;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import CoreInterfaces.AirfieldInterface;
@@ -92,11 +93,11 @@ public class TopFrame extends JFrame{
 			double[] smallInputs, double[] bigInputs) throws VariableDeclarationException {
 		try {
 			airport.addNewAirfield(parseInt, side, smallInputs, bigInputs);
+			List<AirfieldInterface> fields = airport.getAirfields();
+			tabbedPanel.addTab(fields.get(fields.size() - 1));
 		} catch (CannotMakeRunwayException e) {
-			e.printStackTrace();
+			JOptionPane.showMessageDialog(this, "You already have an airfield "+e.getInvalidRunway().getName(), "ERROR: Airfield Create Fail", JOptionPane.ERROR_MESSAGE);
 		}
-		List<AirfieldInterface> fields = airport.getAirfields();
-		tabbedPanel.addTab(fields.get(fields.size() - 1));
 	}
 	
 	/**
