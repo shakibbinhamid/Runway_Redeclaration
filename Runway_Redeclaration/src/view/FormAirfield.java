@@ -191,10 +191,10 @@ public class FormAirfield extends FormGeneral {
 		
 		smallValueTextFields.add(smallTORATextBox);
 		bigValueTextFields.add(bigTORATextBox);
-		smallValueTextFields.add(smallTODATextBox);
-		bigValueTextFields.add(bigTODATextBox);
 		smallValueTextFields.add(smallASDATextBox);
 		bigValueTextFields.add(bigASDATextBox);
+		smallValueTextFields.add(smallTODATextBox);
+		bigValueTextFields.add(bigTODATextBox);
 		smallValueTextFields.add(smallLDATextBox);
 		bigValueTextFields.add(bigLDATextBox);
 		
@@ -226,10 +226,10 @@ public class FormAirfield extends FormGeneral {
 						if(smallValueTextFields.indexOf(jtf) == 0){
 							jtf.setText("TORA");
 						}
-						if(smallValueTextFields.indexOf(jtf) == 1){
+						if(smallValueTextFields.indexOf(jtf) == 2){
 							jtf.setText("TODA");
 						}
-						if(smallValueTextFields.indexOf(jtf) == 2){
+						if(smallValueTextFields.indexOf(jtf) == 1){
 							jtf.setText("ASDA");
 						}
 						if(smallValueTextFields.indexOf(jtf) == 3){
@@ -253,10 +253,10 @@ public class FormAirfield extends FormGeneral {
 						if(bigValueTextFields.indexOf(jtf) == 0){
 							jtf.setText("TORA");
 						}
-						if(bigValueTextFields.indexOf(jtf) == 1){
+						if(bigValueTextFields.indexOf(jtf) == 2){
 							jtf.setText("TODA");
 						}
-						if(bigValueTextFields.indexOf(jtf) == 2){
+						if(bigValueTextFields.indexOf(jtf) == 1){
 							jtf.setText("ASDA");
 						}
 						if(bigValueTextFields.indexOf(jtf) == 3){
@@ -294,8 +294,8 @@ public class FormAirfield extends FormGeneral {
 				if(Integer.parseInt(angleTextBox.getText()) > 0){
 					for (int i = 0; i < 4; i++) {
 						try {
-							if (Integer.parseInt(smallValueTextFields.get(i).getText()) < 0
-									|| Integer.parseInt(bigValueTextFields.get(i).getText()) < 0
+							if (Double.parseDouble(smallValueTextFields.get(i).getText()) < 0
+									|| Double.parseDouble(bigValueTextFields.get(i).getText()) < 0
 									|| smallValueTextFields.get(i).getText().equals("")
 									|| bigValueTextFields.get(i).getText().equals("")) {
 								System.err.println("Invalid inputs!");
@@ -306,10 +306,9 @@ public class FormAirfield extends FormGeneral {
 								break;
 							} else {
 								okToAdd = true;
-								smallInputs[i] = Integer
-										.parseInt(smallValueTextFields.get(i)
+								smallInputs[i] = Double.parseDouble(smallValueTextFields.get(i)
 												.getText());
-								bigInputs[i] = Integer.parseInt(bigValueTextFields
+								bigInputs[i] = Double.parseDouble(bigValueTextFields
 										.get(i).getText());
 							}
 						} catch (NumberFormatException e) {
