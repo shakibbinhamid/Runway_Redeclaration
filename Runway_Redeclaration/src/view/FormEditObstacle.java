@@ -7,7 +7,10 @@ import java.awt.event.FocusListener;
 
 import javax.swing.JTextField;
 
+import Core.Airport;
+import Core.Obstacle;
 import Core.PositionedObstacle;
+import Exceptions.VariableDeclarationException;
 
 public class FormEditObstacle extends FormObstacle{
 	PositionedObstacle currentObstacle;
@@ -41,6 +44,7 @@ public class FormEditObstacle extends FormObstacle{
 		setInitialTextfields();
 		setTextfieldListener();
 		setPreferredSize(new Dimension(300,350));
+		button.setText("Apply");
 		init();
 	}
 	
@@ -48,7 +52,7 @@ public class FormEditObstacle extends FormObstacle{
 		
 		for(JTextField jtf : textFields){
 			Font newTextFieldFont=new Font(jtf.getFont().getName(),Font.ITALIC,jtf.getFont().getSize());
-			jtf.setFont(newTextFieldFont);
+			//jtf.setFont(newTextFieldFont);
 			if(textFields.indexOf(jtf) == 0){
 				jtf.setText(currentObstacle.getName());
 			}
@@ -74,7 +78,7 @@ public class FormEditObstacle extends FormObstacle{
 				Font newTextFieldFont=new Font(jtf.getFont().getName(),Font.ITALIC,jtf.getFont().getSize());
 				public void focusLost(FocusEvent e) {
 					if (jtf.getText().equals("")){
-						jtf.setFont(newTextFieldFont);
+						//jtf.setFont(newTextFieldFont);
 						if(textFields.indexOf(jtf) == 0){
 							jtf.setText(currentObstacle.getName());
 						}
@@ -94,8 +98,8 @@ public class FormEditObstacle extends FormObstacle{
 				}
 				
 				public void focusGained(FocusEvent e) {
-					jtf.setFont(null);
-					jtf.setText("");
+					//jtf.setFont(null);
+					//jtf.setText("");
 				}
 			});
 		}

@@ -31,19 +31,16 @@ public class FormAirfield extends FormGeneral {
 	JLabel smallValuesLabel;
 	JLabel largeValuesLabel;
 	
-	JLabel smallTORALabel;
-	JLabel smallTODALabel;
-	JLabel smallASDALabel;
-	JLabel smallLDALabel;
+//	JLabel smallTORALabel;
+//	JLabel smallTODALabel;
+//	JLabel smallASDALabel;
+//	JLabel smallLDALabel;
+	
 	JTextField smallTORATextBox;
 	JTextField smallTODATextBox;
 	JTextField smallASDATextBox;
 	JTextField smallLDATextBox;
 	
-	JLabel bigTORALabel;
-	JLabel bigTODALabel;
-	JLabel bigASDALabel;
-	JLabel bigLDALabel;
 	JTextField bigTORATextBox;
 	JTextField bigTODATextBox;
 	JTextField bigASDATextBox;
@@ -122,6 +119,11 @@ public class FormAirfield extends FormGeneral {
 		smallValuesLabel = new JLabel("Left Starting Runway values:");
 		largeValuesLabel = new JLabel("Right Starting Runway values:");
 		
+//		toraLabel = new JLabel("TORA:");
+//		todaLabel = new JLabel("TODA");
+//		asdaLabel = new JLabel("ASDA");
+//		ldaLabel = new JLabel("LDA:");
+		
 //		bigTORALabel = new JLabel("Insert Large Angled TORA:");
 //		bigTODALabel = new JLabel("Insert Large Angled TODA");
 //		bigASDALabel = new JLabel("Insert Large Angled ASDA");
@@ -189,22 +191,22 @@ public class FormAirfield extends FormGeneral {
 		
 		smallValueTextFields.add(smallTORATextBox);
 		bigValueTextFields.add(bigTORATextBox);
-		smallValueTextFields.add(smallASDATextBox);
-		bigValueTextFields.add(bigASDATextBox);
 		smallValueTextFields.add(smallTODATextBox);
 		bigValueTextFields.add(bigTODATextBox);
+		smallValueTextFields.add(smallASDATextBox);
+		bigValueTextFields.add(bigASDATextBox);
 		smallValueTextFields.add(smallLDATextBox);
 		bigValueTextFields.add(bigLDATextBox);
 		
 		
-		for(int i=0;i<4;i++){
-			Font newTextFieldFont; 
-			JTextField currentSmall =  smallValueTextFields.get(i);
-			JTextField currentBig =  bigValueTextFields.get(i);
-			newTextFieldFont = new Font(currentSmall.getFont().getName(),Font.ITALIC,currentSmall.getFont().getSize());
-			currentSmall.setFont(newTextFieldFont);
-			currentBig.setFont(newTextFieldFont);
-		}
+//		for(int i=0;i<4;i++){
+//			Font newTextFieldFont; 
+//			JTextField currentSmall =  smallValueTextFields.get(i);
+//			JTextField currentBig =  bigValueTextFields.get(i);
+//			newTextFieldFont = new Font(currentSmall.getFont().getName(),Font.ITALIC,currentSmall.getFont().getSize());
+//			currentSmall.setFont(newTextFieldFont);
+//			currentBig.setFont(newTextFieldFont);
+//		}
 		
 		
 		setTextfieldsListener();
@@ -220,7 +222,7 @@ public class FormAirfield extends FormGeneral {
 				Font newTextFieldFont=new Font(jtf.getFont().getName(),Font.ITALIC,jtf.getFont().getSize());
 				public void focusLost(FocusEvent e) {
 					if (jtf.getText().equals("")){
-						jtf.setFont(newTextFieldFont);
+						//jtf.setFont(newTextFieldFont);
 						if(smallValueTextFields.indexOf(jtf) == 0){
 							jtf.setText("TORA");
 						}
@@ -236,7 +238,7 @@ public class FormAirfield extends FormGeneral {
 					}
 				}
 				public void focusGained(FocusEvent e) {
-					jtf.setFont(null);
+					//jtf.setFont(null);
 					jtf.setText("");
 				}
 			});
@@ -247,7 +249,7 @@ public class FormAirfield extends FormGeneral {
 				Font newTextFieldFont=new Font(jtf.getFont().getName(),Font.ITALIC,jtf.getFont().getSize());
 				public void focusLost(FocusEvent e) {
 					if (jtf.getText().equals("")){
-						jtf.setFont(newTextFieldFont);
+						//jtf.setFont(newTextFieldFont);
 						if(bigValueTextFields.indexOf(jtf) == 0){
 							jtf.setText("TORA");
 						}
@@ -263,7 +265,7 @@ public class FormAirfield extends FormGeneral {
 					}
 				}
 				public void focusGained(FocusEvent e) {
-					jtf.setFont(null);
+					//jtf.setFont(null);
 					jtf.setText("");
 				}
 			});
