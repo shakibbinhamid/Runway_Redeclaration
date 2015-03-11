@@ -4,7 +4,6 @@ import io.AirportFileFilter;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,43 +11,56 @@ import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-
+/**
+ * 
+ * @author Stefan
+ *
+ */
 public class WelcomePanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 
 	private JCheckBox helpingDevelopers;
 	private TopFrame topframe;
 
-	public static void main(String[] args){
-
-		JFrame f = new JFrame("Test");
-		f.setContentPane(new WelcomePanel());
-
-		f.setVisible(true);
-		f.setSize(700, 300);
-		f.setLocationRelativeTo(null);
-	}
-	public WelcomePanel(){
-		this(null);
-	}
+//	public static void main(String[] args){
+//
+//		JFrame f = new JFrame("Test");
+//		f.setContentPane(new WelcomePanel());
+//
+//		f.setVisible(true);
+//		f.setSize(700, 300);
+//		f.setLocationRelativeTo(null);
+//	}
+//	public WelcomePanel(){
+//		this(null);
+//	}
 
 	public WelcomePanel(TopFrame top){
 		this.helpingDevelopers = new JCheckBox("Give permission to send log files to help development?", true);
 		this.topframe = top;
 
+		this.setOpaque(true);
+		
 		init();
 	}
 
 	private void init() {
 		this.setLayout(new BorderLayout());
 
-		JLabel title = new JLabel("Welcome to the Runway Re-Declaration Tool");
-		title.setFont(new Font("Verdana",Font.BOLD,24));
-		this.add(title, BorderLayout.NORTH);
-
+		JPanel titlePanel = new JPanel();
+		titlePanel.setLayout(new GridLayout(2, 1));
+		JLabel title1 = new JLabel("Runway Re-Declaration Tool");
+		JLabel title2 = new JLabel("                        Welcome");
+		
+		title1.setFont(new Font("Verdana",Font.BOLD,35));
+		title2.setFont(new Font("Verdana",Font.BOLD,35));
+		
+		titlePanel.add(title1);
+		titlePanel.add(title2);
+		this.add(titlePanel, BorderLayout.NORTH);
+		
 		JLabel filler = new JLabel("    ");
 		this.add(filler,BorderLayout.EAST);
 		this.add(filler, BorderLayout.WEST);
@@ -70,6 +82,7 @@ public class WelcomePanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				new FormAirport(topframe);
+				topframe.switchToTabbedPanel();
 			}
 		});
 
@@ -79,6 +92,7 @@ public class WelcomePanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				new LoadListener(topframe, new AirportFileFilter(), "airports/");
+				topframe.switchToTabbedPanel();
 			}
 		});
 		middle.add(buttons);
@@ -90,11 +104,15 @@ public class WelcomePanel extends JPanel {
 	}
 
 
-	public boolean helpDevelopers(){
+	public boolean isHelpingDevelopers(){
 		return this.helpingDevelopers.isSelected();
 	}
 
-
+	
+//	@Override
+//	public void paint(Graphics g){
+//	}
+	
 
 
 
