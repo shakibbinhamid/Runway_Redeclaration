@@ -2,6 +2,7 @@ package view;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
@@ -14,12 +15,19 @@ import java.io.IOException;
 import java.math.BigDecimal;
 
 import javax.imageio.ImageIO;
-import javax.swing.BorderFactory;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
+import Core.Airport;
+import Core.Obstacle;
 import Core.PositionedObstacle;
 import CoreInterfaces.AirfieldInterface;
+import CoreInterfaces.AirportInterface;
 import CoreInterfaces.DeclaredRunwayInterface;
+import Exceptions.CannotMakeRunwayException;
+import Exceptions.UnrecognisedAirfieldIntifierException;
+import Exceptions.VariableDeclarationException;
 
 
 /**
@@ -117,7 +125,7 @@ public class View extends JPanel{
 				AirfieldInterface air = null;
 				DeclaredRunwayInterface runway = null;
 				try {
-					port.addNewAirfield(90, 'L', new double[] {3902,3902,3902,3596}, new double[] {3884,3884,3962,3884});
+					port.addNewAirfield(90, 'L', new double[] {2565,2565,3040,2243}, new double[] {2565,2565,3962,3884});
 					air = port.getAirfield(port.getAirfieldNames().get(0));
 					runway = air.getSmallAngledRunway();
 					air.addObstacle(new Obstacle("Buggered A600 on fire",100,7), -50, 3646);//TODO I added an obstacle!
@@ -193,6 +201,9 @@ public class View extends JPanel{
 			int defTora, int defGirth, int defSmalldt, int defLargedt, int defStopway, int defClearway,
 			int stripEnd, int longSpacer, int shortSpacer, int mediumSpacer, int shortLength, int longLength,
 			int tora, int toda, int asda, int lda, int dt, int startOfRoll) {
+		
+		System.out.println(toda);
+		
 
 		defTora = scaleToPixels(defTora);
 		defGirth = scaleToPixels(defGirth);
@@ -500,6 +511,10 @@ public class View extends JPanel{
 	private void drawdim(Graphics g, int direction, int tora, int defGirth, String variableName, int startWhere, int howlong, int howhighUp){
 		Graphics2D g2 = (Graphics2D) g.create();//for arrows
 		Graphics2D g3 = (Graphics2D) g.create();//for text
+		
+		System.out.println(variableName);
+		System.out.println(this.getWidth());
+		System.out.println(howlong - startWhere);
 
 		Font font = new Font("verdana", Font.BOLD, 10);
 		FontMetrics fontMetrics = g3.getFontMetrics(font);
