@@ -149,8 +149,8 @@ public class View extends JPanel{
 		}
 	}*/
 	
-	public void save(String fullpath) throws IOException{
-		ImageIO.write(image, "PNG", new File(fullpath));
+	public void save(String fullpath, String ext) throws IOException{
+		ImageIO.write(image, ext, new File(fullpath));
 	}
 
 	public void paint(Graphics g){

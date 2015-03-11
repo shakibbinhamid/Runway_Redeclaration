@@ -1,5 +1,8 @@
 package view;
 
+import io.ImageFilter;
+import io.JPGFilter;
+import io.PNGFilter;
 import io.Print;
 
 import java.awt.event.ActionEvent;
@@ -140,37 +143,14 @@ public class TopMenu extends JMenuBar{
 					
 					fc.setAcceptAllFileFilterUsed(false);
 					fc.setCurrentDirectory(new File("./"));
-					fc.addChoosableFileFilter(new FileFilter() {
-
-				        @Override
-				        public boolean accept(File f) {
-				            return f.getName().endsWith(".jpg") || f.getName().endsWith(".jpeg");
-				        }
-
-				        @Override
-				        public String getDescription() {
-				            return "JPEG file";
-				        }
-
-				    });
-					fc.addChoosableFileFilter(new FileFilter() {
-
-				        @Override
-				        public boolean accept(File f) {
-				            return f.getName().endsWith(".png");
-				        }
-
-				        @Override
-				        public String getDescription() {
-				            return "PNG file";
-				        }
-
-				    });
+					fc.addChoosableFileFilter(new JPGFilter());
+					fc.addChoosableFileFilter(new PNGFilter());
 					int select = fc.showSaveDialog(frame);
 					if(select == JFileChooser.APPROVE_OPTION){
 						File fileToSave = fc.getSelectedFile();
 						try {
-							frame.getTabbePanel().getActiveTab().saveTopView(fileToSave.getAbsolutePath() + ".png");
+							ImageFilter filter = (ImageFilter) fc.getFileFilter();
+							frame.getTabbePanel().getActiveTab().saveTopView(fileToSave.getAbsolutePath() + filter.getExt(), filter.getName());
 							JOptionPane.showMessageDialog(frame, "Saved Successfully at "+ fileToSave.getAbsolutePath(), "SAVING DONE", JOptionPane.INFORMATION_MESSAGE);
 						} catch (IOException e1) {
 							JOptionPane.showMessageDialog(frame, "Could not save!", "SAVING FAILED", JOptionPane.ERROR_MESSAGE);
