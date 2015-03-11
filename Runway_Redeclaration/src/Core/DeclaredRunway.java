@@ -48,7 +48,7 @@ public class DeclaredRunway implements DeclaredRunwayInterface{
 	protected DeclaredRunway(){}
 	
 	protected DeclaredRunway(AirfieldInterface airfield, int angleFromNorth, char side,
-			double tora, double asda, double toda, double lda) throws VariableDeclarationException{
+			double tora, double toda, double asda, double lda) throws VariableDeclarationException{
 		log = "-[Log]-\n";
 
 		setTORA(tora);
