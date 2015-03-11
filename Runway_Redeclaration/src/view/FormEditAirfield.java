@@ -20,7 +20,7 @@ import Exceptions.VariableDeclarationException;
 
 public class FormEditAirfield extends FormAirfield{
 	Airfield currentAirfield;
-	
+	/*
 	// TESTING 
 	public static void main(String[] args) {
 		test();
@@ -40,7 +40,7 @@ public class FormEditAirfield extends FormAirfield{
 		}
 		
 		FormEditAirfield fa = new FormEditAirfield(tf);
-	}
+	}*/
 	
 	public FormEditAirfield(TopFrame topFrame){
 		super(topFrame, "Edit airfield");

@@ -50,14 +50,14 @@ public class FormAirfield extends FormGeneral {
 	JTextField angleTextBox;
 	JLabel sideLabel;
 	JComboBox<String> sideComboBox;	
-	
+	/*
 	public static void main(String[] args) {
 		TopFrame tf = new TopFrame();
 		Airport airp = new Airport("Gatwicked");
 		tf.loadOrCreateAirport(airp);
 		FormAirfield fa = new FormAirfield(tf);
 		//FormObstacle fo = new FormObstacle(tf);
-	}
+	}*/
 	
 	// constructor used for editing an airfield
 	public FormAirfield(TopFrame topFrame, String title) {

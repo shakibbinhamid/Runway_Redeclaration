@@ -46,9 +46,9 @@ public class FormObstacle extends FormGeneral {
 		radiusTextBox = new JTextField();
 		heigthLabel = new JLabel("Edit Height:");
 		heigthTextBox = new JTextField();
-		distFromLeftLabel = new JLabel("Edit Distance From Left:");
+		distFromLeftLabel = new JLabel("Edit Distance From "+ topFrame.getTabbePanel().getActiveField().getDefaultSmallAngledRunway().getIdentifier());
 		distFromLeftTextBox = new JTextField();
-		distFromRightLabel = new JLabel("Edit Distance From Right:");
+		distFromRightLabel = new JLabel("Edit Distance From "+ topFrame.getTabbePanel().getActiveField().getDefaultLargeAngledRunway().getIdentifier());
 		distFromRightTextBox = new JTextField();
 		
 		airfieldLabel = new JLabel("Change Airfield:");
@@ -79,9 +79,9 @@ public class FormObstacle extends FormGeneral {
 		radiusTextBox = new JTextField();
 		heigthLabel = new JLabel("Insert Height:");
 		heigthTextBox = new JTextField();
-		distFromLeftLabel = new JLabel("Insert Distance From Left:");
+		distFromLeftLabel = new JLabel("Insert Distance From "+ topFrame.getTabbePanel().getActiveField().getDefaultSmallAngledRunway().getIdentifier());
 		distFromLeftTextBox = new JTextField();
-		distFromRightLabel = new JLabel("Insert Distance From Right:");
+		distFromRightLabel = new JLabel("Insert Distance From "+ topFrame.getTabbePanel().getActiveField().getDefaultLargeAngledRunway().getIdentifier());
 		distFromRightTextBox = new JTextField();
 		
 		airfieldLabel = new JLabel("Pick Airfield:");	
