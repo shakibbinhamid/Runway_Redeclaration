@@ -2,7 +2,7 @@ package io;
 import java.io.File;
 import java.util.ArrayList;
 
-import view.Notification;
+import listeners.Notification;
 import Core.Airport;
 import Core.Obstacle;
 import CoreInterfaces.AirportInterface;

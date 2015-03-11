@@ -262,7 +262,7 @@ public class View extends JPanel{
 		Font font = new Font("verdana", Font.PLAIN, 15);
 		FontMetrics fontMetrics = g2.getFontMetrics(font);
 		int initLen = fontMetrics.stringWidth("0");
-		int finalLen = fontMetrics.stringWidth(String.valueOf(howMuchWantToView)); 
+		int finalLen = fontMetrics.stringWidth(String.valueOf(howMuchWantToView)+"m"); 
 		g2.setFont(font);
 		
 		int howMuchInPixels = scaleToPixels(howMuchWantToView);
@@ -276,7 +276,7 @@ public class View extends JPanel{
 		g2.drawLine(endX, Y, endX, Y - 5);
 		
 		g2.drawString("0", startX - initLen/2, Y - font.getSize());
-		g2.drawString(String.valueOf(howMuchWantToView), endX - finalLen/2, Y - font.getSize());
+		g2.drawString(String.valueOf(howMuchWantToView)+"m", endX - finalLen/2, Y - font.getSize());
 
 	}
 

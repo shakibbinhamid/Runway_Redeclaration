@@ -1,4 +1,4 @@
-package view;
+package listeners;
 
 import io.FileSystem;
 
@@ -7,6 +7,8 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JOptionPane;
 
+import view.Tab;
+import view.TopFrame;
 import Core.Obstacle;
 import CoreInterfaces.Savable;
 

@@ -1,4 +1,6 @@
-package view;
+package listeners;
+
+import view.TopFrame;
 
 public class GeneralListener {
 	TopFrame topFrame;

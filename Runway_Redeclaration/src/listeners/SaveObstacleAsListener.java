@@ -1,10 +1,12 @@
-package view;
+package listeners;
  
 import io.ObstacleFileFilter;
 
 import java.awt.event.ActionListener;
 import java.io.File;
 
+import view.Tab;
+import view.TopFrame;
 import Core.Obstacle;
 import CoreInterfaces.Savable;
 import Exceptions.NothingToSaveException;

@@ -1,7 +1,10 @@
-package view;
+package listeners;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import view.FormEditObstacle;
+import view.TopFrame;
 
 public class ObstacleEditListener implements ActionListener{
 

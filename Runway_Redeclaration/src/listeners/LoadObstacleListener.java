@@ -1,4 +1,4 @@
-package view;
+package listeners;
 
 import io.ObstacleFileFilter;
 
@@ -6,6 +6,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JOptionPane;
+
+import view.LoadListener;
+import view.TopFrame;
 
 public class LoadObstacleListener implements ActionListener{
 

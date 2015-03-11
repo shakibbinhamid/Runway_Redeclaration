@@ -1,8 +1,9 @@
 package Core;
 
+import listeners.Notification;
+
 import org.simpleframework.xml.Element;
 
-import view.Notification;
 import CoreInterfaces.AirfieldInterface;
 import CoreInterfaces.DeclaredRunwayInterface;
 import CoreInterfaces.PositionedObstacleInterface;
