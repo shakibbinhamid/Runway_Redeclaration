@@ -192,9 +192,6 @@ public class View extends JPanel{
 			int defTora, int defGirth, int defSmalldt, int defLargedt, int defStopway, int defClearway,
 			int stripEnd, int longSpacer, int shortSpacer, int mediumSpacer, int shortLength, int longLength,
 			int tora, int toda, int asda, int lda, int dt, int startOfRoll) {
-		
-		System.out.println(toda);
-		
 
 		defTora = scaleToPixels(defTora);
 		defGirth = scaleToPixels(defGirth);
@@ -239,7 +236,7 @@ public class View extends JPanel{
 	}
 
 	private int scaleToPixels(int dim){
-		return scaleToPixels(defTotalWidth, this.getWidth(), dim);
+		return scaleToPixels(defTotalWidth + 500, this.getWidth(), dim);
 	}
 
 	private int scaleToPixels (int howMuchWantToFit, int inHowMuch, int whatYouAreScaling){
