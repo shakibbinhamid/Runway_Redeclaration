@@ -22,9 +22,11 @@ import Exceptions.VariableDeclarationException;
  */
 public class TopFrame extends JFrame{
 	
+	
 	private JPanel topPanel;
 		private LogPanel logPanel;
 		private TabbedPanel tabbedPanel;
+		private WelcomePanel welcomePanel;
 	
 	private AirportInterface airport;
 
@@ -46,7 +48,6 @@ public class TopFrame extends JFrame{
 	}
 	
 	public void init(){
-		
 		this.setJMenuBar(new TopMenu(this));
 		
 		topPanel = new JPanel();
@@ -57,7 +58,9 @@ public class TopFrame extends JFrame{
 		topPanel.add(logPanel, BorderLayout.WEST);
 		
 		tabbedPanel = new TabbedPanel();
-		topPanel.add(tabbedPanel, BorderLayout.CENTER);
+		
+		welcomePanel = new WelcomePanel(this);
+		topPanel.add(welcomePanel, BorderLayout.CENTER);
 		
 		Notification.setFrame(this);
 		
@@ -66,6 +69,8 @@ public class TopFrame extends JFrame{
 		this.setTitle("Runway Redeclaration Tool v.0.61");
 		this.setMinimumSize(new Dimension(1200,600));
 		this.pack();
+		this.setLocationRelativeTo(null);
+
 		setVisible(true);
 
 	}
@@ -118,6 +123,10 @@ public class TopFrame extends JFrame{
 	public AirportInterface getAirport() {
 		return airport;
 	}
+	
+	public boolean hasAirport(){
+		return !(getAirport()==null);
+	}
 
 	/**
 	 * Set the airport
@@ -141,5 +150,15 @@ public class TopFrame extends JFrame{
 	 */
 	public LogPanel getLogPanel() {
 		return logPanel;
+	}
+	
+	
+	protected void switchToTabbedPanel(){
+		if(hasAirport()){
+			this.remove(this.welcomePanel);;
+			this.add(this.tabbedPanel, BorderLayout.CENTER);
+		}
+		repaint();
+
 	}
 }
