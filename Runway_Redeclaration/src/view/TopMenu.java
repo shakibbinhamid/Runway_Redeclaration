@@ -25,8 +25,8 @@ public class TopMenu extends JMenuBar{
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private JMenu file, edit, print, help;
-	private JMenu create, load, save;
+	private JMenu edit, print, help;
+	private JMenu create, load, save, remove;
 	
 	private JMenuItem createAirport, createRunway, createObstacle;
 	private JMenuItem loadAirport, loadObstacle;
@@ -37,7 +37,7 @@ public class TopMenu extends JMenuBar{
 	private JMenuItem printCalculation;
 	private JMenuItem about, contact;
 	
-	private ImageIcon icreate, iload, isave, iedit, iprint, iairport, iairfield, iobstacle, iabout, icontact, iexit;
+	private ImageIcon icreate, iload, isave, iedit, iprint, icalc, iairport, iairfield, iobstacle, iabout, icontact, iexit, iremove;
 	
 	private TopFrame frame; 
 	
@@ -47,11 +47,12 @@ public class TopMenu extends JMenuBar{
 		loadIcons();
 		createFileMenu();
 		createEditMenu();
+		createRemoveMenu();
 		createPrintMenu();
 		createHelpMenu();
 		
 		//================================Adding menus========================================//
-		addMenus(new JMenu[] {file, edit ,print });//, help});
+		addMenus(new JMenu[] {create, load, save, edit, remove ,print });//, help});
 		
 	}
 	
@@ -69,7 +70,8 @@ public class TopMenu extends JMenuBar{
 		icontact = getIcon("/contact.png");
 		iexit = getIcon("/exit.png");
 		iedit = getIcon("/edit.png");
-		
+		icalc = getIcon("/icalc.png");
+		iremove = getIcon("/bin.png");
 	}
 	
 	private void createFileMenu(){
@@ -153,14 +155,12 @@ public class TopMenu extends JMenuBar{
 			public void actionPerformed(ActionEvent e) {
 				frame.dispose();
 			}});
-		
-		file = getMenu("File", null, new JMenuItem[]{create, load, save, exit});
 	}
 	
 	private void createEditMenu(){
 		//================================EDIT MENU==============================================//
-		editRunway = getItem("Edit Runway", iedit, SwingConstants.CENTER);
-		editObstacle = getItem("Edit Obstacles", iedit, SwingConstants.CENTER);
+		editRunway = getItem("Edit Runway", iairfield, SwingConstants.CENTER);
+		editObstacle = getItem("Edit Obstacles", iobstacle, SwingConstants.CENTER);
 		
 		editRunway.addActionListener(new ActionListener() {
 			
@@ -190,7 +190,11 @@ public class TopMenu extends JMenuBar{
 			}
 		});
 		
-		removeObs = getItem("Remove Obstacle", null, SwingConstants.CENTER);
+		edit = getMenu("Edit", iedit, new JMenuItem[]{editRunway, editObstacle});
+	}
+	
+	private void createRemoveMenu(){
+		removeObs = getItem("Remove Obstacle", iobstacle, SwingConstants.CENTER);
 		removeObs.addActionListener(new ActionListener(){
 
 			@Override
@@ -210,12 +214,12 @@ public class TopMenu extends JMenuBar{
 			
 		});
 		
-		edit = getMenu("Edit", null, new JMenuItem[]{editRunway, editObstacle, removeObs});
+		remove = getMenu("Remove", iremove, new JMenuItem[]{removeObs});
 	}
 	
 	private void createPrintMenu(){
 		//================================PRINT MENU==============================================//
-		printCalculation = getItem("Print Calculation", iprint, SwingConstants.CENTER);
+		printCalculation = getItem("Print Calculation", icalc, SwingConstants.CENTER);
 		printCalculation.addActionListener(new ActionListener(){
 
 			@Override
@@ -225,7 +229,7 @@ public class TopMenu extends JMenuBar{
 			
 		});
 		
-		print = getMenu("Print", null, new JMenuItem[]{printCalculation});
+		print = getMenu("Print", iprint, new JMenuItem[]{printCalculation});
 	}
 	
 	private void createHelpMenu(){

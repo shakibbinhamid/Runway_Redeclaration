@@ -47,7 +47,9 @@ public class TabbedPanel extends JTabbedPane{
 	 * @return the active airfield
 	 */
 	public AirfieldInterface getActiveField(){
-		return ((Tab) this.getSelectedComponent()).getField();
+		if (this.getSelectedComponent() != null)
+			return ((Tab) this.getSelectedComponent()).getField();
+		return null;
 	}
 	
 	public Tab getActiveTab(){
@@ -63,9 +65,6 @@ public class TabbedPanel extends JTabbedPane{
 		int index = this.indexOfTab(field.getName());
 		
 		Tab add = new Tab(field);
-		
-		System.out.println(field.getName());
-		
 		this.removeAll();
 		tabs.set(index, add);
 		

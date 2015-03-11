@@ -3,7 +3,6 @@ package view;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.EventQueue;
-import java.awt.Toolkit;
 import java.util.List;
 
 import javax.swing.JFrame;
@@ -61,7 +60,8 @@ public class TopFrame extends JFrame{
 		tabbedPanel = new TabbedPanel();
 		
 		welcomePanel = new WelcomePanel(this);
-		topPanel.add(welcomePanel, BorderLayout.CENTER);
+		topPanel.add(tabbedPanel, BorderLayout.CENTER);
+		//topPanel.add(welcomePanel, BorderLayout.CENTER);
 		
 		Notification.setFrame(this);
 		
