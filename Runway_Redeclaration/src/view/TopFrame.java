@@ -61,7 +61,7 @@ public class TopFrame extends JFrame{
 		
 		welcomePanel = new WelcomePanel(this);
 		topPanel.add(tabbedPanel, BorderLayout.CENTER);
-		//topPanel.add(welcomePanel, BorderLayout.CENTER);
+		topPanel.add(welcomePanel, BorderLayout.CENTER);
 		
 		Notification.setFrame(this);
 		
@@ -84,6 +84,7 @@ public class TopFrame extends JFrame{
 		setAirport(airport);
 		logPanel.updateLabelText(airport.getName());
 		tabbedPanel.updateTabs(airport);
+		switchToTabbedPanel();
 	}
 	
 	/**

@@ -227,7 +227,8 @@ public class View extends JPanel{
 		drawCenterLine(getGraphicsComp(g2, Color.white), defTora, defGirth, defSmalldt, defLargedt);
 		drawIdentifier(getGraphicsComp(g2, Color.white), s, ss, defTora, defGirth, defSmalldt, defLargedt);
 		drawAllDim(getGraphicsComp(g2, Color.black), direction(), defTora, defGirth, tora, toda, asda, lda, dt, startOfRoll);
-		drawDirection(getGraphicsComp(g2, Color.RED), "Landing and Take Off Direction: "+ run.getIdentifier(), defGirth);
+		//Not wanted anymore
+		//		drawDirection(getGraphicsComp(g2, Color.RED), "Landing and Take Off Direction: "+ run.getIdentifier(), defGirth);
 
 		drawScale(getGraphicsComp(g2, Color.black), defGirth, 500);
 		drawFatArrow(getGraphicsComp(g2, Color.RED), defGirth);
@@ -545,6 +546,8 @@ public class View extends JPanel{
 		g2.drawLine(endX, Y, endX, getHeight()/2-defGirth/2);
 	}
 	
+	@SuppressWarnings("unused")
+	@Deprecated
 	private void drawDirection(Graphics g, String s, int defGirth){
 		Graphics2D g2 = (Graphics2D) g.create();
 		
