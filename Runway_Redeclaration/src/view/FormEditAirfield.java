@@ -157,10 +157,10 @@ public void init(){
 						if(smallValueTextFields.indexOf(jtf) == 0){
 							jtf.setText(String.valueOf(currentAirfield.getSmallAngledRunway().getTORA()));
 						}
-						if(smallValueTextFields.indexOf(jtf) == 1){
+						if(smallValueTextFields.indexOf(jtf) == 2){
 							jtf.setText(String.valueOf(currentAirfield.getSmallAngledRunway().getTODA()));
 						}
-						if(smallValueTextFields.indexOf(jtf) == 2){
+						if(smallValueTextFields.indexOf(jtf) == 1){
 							jtf.setText(String.valueOf(currentAirfield.getSmallAngledRunway().getASDA()));
 						}
 						if(smallValueTextFields.indexOf(jtf) == 3){
@@ -184,10 +184,10 @@ public void init(){
 						if(bigValueTextFields.indexOf(jtf) == 0){
 							jtf.setText(String.valueOf(currentAirfield.getLargeAngledRunway().getTORA()));
 						}
-						if(bigValueTextFields.indexOf(jtf) == 1){
+						if(bigValueTextFields.indexOf(jtf) == 2){
 							jtf.setText(String.valueOf(currentAirfield.getLargeAngledRunway().getTODA()));
 						}
-						if(bigValueTextFields.indexOf(jtf) == 2){
+						if(bigValueTextFields.indexOf(jtf) == 1){
 							jtf.setText(String.valueOf(currentAirfield.getLargeAngledRunway().getASDA()));
 						}
 						if(bigValueTextFields.indexOf(jtf) == 3){
