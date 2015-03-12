@@ -68,7 +68,7 @@ public class TopFrame extends JFrame{
 		
 		this.setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setTitle("Runway Redeclaration Tool v.0.61");
+		this.setTitle("Runway Redeclaration Tool v.0.81");
 		this.setMinimumSize(new Dimension(1200,600));
 		this.pack();
 		this.setLocationRelativeTo(null);
