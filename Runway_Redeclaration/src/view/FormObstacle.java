@@ -3,6 +3,8 @@ package view;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +15,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import Core.Obstacle;
-import Core.PositionedObstacle;
 import CoreInterfaces.AirfieldInterface;
 import Exceptions.UnrecognisedAirfieldIntifierException;
 
@@ -56,6 +57,22 @@ public class FormObstacle extends FormGeneral {
 		airfieldComboBox = new JComboBox<String>();
 		populateTextfields();
 		
+		airfieldComboBox.addItemListener(new ItemListener(){
+
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+
+				String item = (String) e.getItem();
+				System.out.println("CRAZY");
+
+				distFromLeftLabel.setText("Edit Distance From "+ ((String)airfieldComboBox.getSelectedItem()).split("/")[0]);
+				distFromRightLabel.setText("Edit Distance From "+ ((String)airfieldComboBox.getSelectedItem()).split("/")[1]);
+
+				repaint();
+			}
+
+		});
+		
 		setPreferredSize(new Dimension(230,300));
 		
 	}
@@ -86,6 +103,22 @@ public class FormObstacle extends FormGeneral {
 		
 		airfieldLabel = new JLabel("Pick Airfield:");	
 		airfieldComboBox = new JComboBox<String>();
+		
+		airfieldComboBox.addItemListener(new ItemListener(){
+
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+
+				System.out.println("CRAZY");
+
+				distFromLeftLabel.setText("Edit Distance From "+ ((String)airfieldComboBox.getSelectedItem()).split("/")[0]);
+				distFromRightLabel.setText("Edit Distance From "+ ((String)airfieldComboBox.getSelectedItem()).split("/")[1]);
+
+				repaint();
+			}
+
+		});
+		
 		setPreferredSize(new Dimension(300,350));
 		
 		init();

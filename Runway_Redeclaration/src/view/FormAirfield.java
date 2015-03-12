@@ -305,7 +305,6 @@ public class FormAirfield extends FormGeneral {
 										JOptionPane.ERROR_MESSAGE);
 								break;
 							} else {
-								okToAdd = true;
 								smallInputs[i] = Double.parseDouble(smallValueTextFields.get(i)
 												.getText());
 								bigInputs[i] = Double.parseDouble(bigValueTextFields
@@ -318,8 +317,10 @@ public class FormAirfield extends FormGeneral {
 							break;
 						}
 					}
+					
+					okToAdd = true;
 				
-					if (okToAdd)
+					if (okToAdd){
 						try {
 							angle = Integer.parseInt(angleTextBox.getText());
 							sideStrig = (String) sideComboBox.getSelectedItem();
@@ -334,6 +335,8 @@ public class FormAirfield extends FormGeneral {
 							JOptionPane.showMessageDialog(null, e.getMessage(),
 									"Invalid Input!", JOptionPane.ERROR_MESSAGE);
 						}
+					}else
+						JOptionPane.showMessageDialog(topFrame, "Some inputs were not entered properly", "FAILED TO CREATE AIRFIELD", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});
