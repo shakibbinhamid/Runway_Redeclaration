@@ -520,8 +520,8 @@ public class View extends JPanel{
 		drawArrow(g, endStart, Y, endEnd, Y);
 		//vertical line to edge of runway
 		g2.setStroke(new BasicStroke(0.75f));
-		g2.drawLine(startStart, Y, startStart, getHeight()/2-girth/2);
-		g2.drawLine(endEnd, Y, endEnd, getHeight()/2-girth/2);
+		g2.drawLine(startStart, Y, startStart, VIEW_HEIGHT/2-girth/2);
+		g2.drawLine(endEnd, Y, endEnd, VIEW_HEIGHT/2-girth/2);
 		
 		int buffer = titleLen/4;
 		g2.drawString(dimensionName,Math.min(startEnd,endStart)+buffer, Y+3);
