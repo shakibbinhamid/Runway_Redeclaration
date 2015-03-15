@@ -18,7 +18,6 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
-import javax.swing.filechooser.FileFilter;
 
 import listeners.LoadAirportListener;
 import listeners.LoadObstacleListener;
@@ -88,9 +87,9 @@ public class TopMenu extends JMenuBar{
 	private void createFileMenu(){
 		//================================CREATE MENU==============================================//
 		
-		createAirport = getItem("Create Airport", iairport, SwingConstants.CENTER);
-		createRunway = getItem("Create Airfield", iairfield, SwingConstants.CENTER);
-		createObstacle = getItem("Create Obstacle", iobstacle, SwingConstants.CENTER);
+		createAirport = getItem("Create Airport", iairport, SwingConstants.LEFT);
+		createRunway = getItem("Create Airfield", iairfield, SwingConstants.LEFT);
+		createObstacle = getItem("Create Obstacle", iobstacle, SwingConstants.LEFT);
 		
 		createAirport.addActionListener(new ActionListener(){
 			@Override
@@ -117,20 +116,20 @@ public class TopMenu extends JMenuBar{
 		create = getMenu("Create", icreate, new JMenuItem[]{createAirport, createRunway, createObstacle});
 		
 		//================================LOAD MENU==============================================//
-		loadAirport = getItem("Load Airport", iairport, SwingConstants.CENTER);
-		loadObstacle = getItem("Load Obstacle", iobstacle, SwingConstants.CENTER);
+		loadAirport = getItem("Load Airport", iairport, SwingConstants.LEFT);
+		loadObstacle = getItem("Load Obstacle", iobstacle, SwingConstants.LEFT);
 		
 		load = getMenu("Load", iload, new JMenuItem[]{loadAirport, loadObstacle});
 		loadAirport.addActionListener(new LoadAirportListener(frame));
 		loadObstacle.addActionListener(new LoadObstacleListener(frame));
 		
 		//================================SAVE MENU==============================================//
-		saveAirport = getItem("Save Airport", iairport, SwingConstants.CENTER);
-		saveObstacle = getItem("Save Obstacle", iobstacle, SwingConstants.CENTER);
-		saveTopView = getItem("Save Topview", iview, SwingConstants.CENTER);
+		saveAirport = getItem("Save Airport", iairport, SwingConstants.LEFT);
+		saveObstacle = getItem("Save Obstacle", iobstacle, SwingConstants.LEFT);
+		saveTopView = getItem("Save Topview", iview, SwingConstants.LEFT);
 		
-		saveAirportAs = getItem("Save Airport As", iairport, SwingConstants.CENTER);
-		saveObstacleAs = getItem("Save Obstacle As", iobstacle, SwingConstants.CENTER);
+		saveAirportAs = getItem("Save Airport As", iairport, SwingConstants.LEFT);
+		saveObstacleAs = getItem("Save Obstacle As", iobstacle, SwingConstants.LEFT);
 		
 		save = getMenu("Save", isave, new JMenuItem[]{saveAirport, saveObstacle, saveAirportAs, saveObstacleAs, saveTopView});
 		saveAirport.addActionListener(new SaveAirportListener(frame));
@@ -170,7 +169,7 @@ public class TopMenu extends JMenuBar{
 			}
 		});
 		
-		exit = getItem("Exit", iexit, SwingConstants.CENTER);
+		exit = getItem("Exit", iexit, SwingConstants.LEFT);
 		exit.addActionListener(new ActionListener(){
 
 			@Override
@@ -181,8 +180,8 @@ public class TopMenu extends JMenuBar{
 	
 	private void createEditMenu(){
 		//================================EDIT MENU==============================================//
-		editRunway = getItem("Edit Runway", iairfield, SwingConstants.CENTER);
-		editObstacle = getItem("Edit Obstacles", iobstacle, SwingConstants.CENTER);
+		editRunway = getItem("Edit Runway", iairfield, SwingConstants.LEFT);
+		editObstacle = getItem("Edit Obstacles", iobstacle, SwingConstants.LEFT);
 		
 		editRunway.addActionListener(new ActionListener() {
 			
@@ -216,7 +215,7 @@ public class TopMenu extends JMenuBar{
 	}
 	
 	private void createRemoveMenu(){
-		removeObs = getItem("Remove Obstacle", iobstacle, SwingConstants.CENTER);
+		removeObs = getItem("Remove Obstacle", iobstacle, SwingConstants.LEFT);
 		removeObs.addActionListener(new ActionListener(){
 
 			@Override
@@ -241,7 +240,7 @@ public class TopMenu extends JMenuBar{
 	
 	private void createPrintMenu(){
 		//================================PRINT MENU==============================================//
-		printCalculation = getItem("Print Calculation", icalc, SwingConstants.CENTER);
+		printCalculation = getItem("Print Calculation", icalc, SwingConstants.LEFT);
 		printCalculation.addActionListener(new ActionListener(){
 
 			@Override
@@ -256,8 +255,8 @@ public class TopMenu extends JMenuBar{
 	
 	private void createHelpMenu(){
 		//================================HELP MENU==============================================//
-		about = getItem("About", iabout, SwingConstants.CENTER);
-		contact = getItem("Contact", icontact, SwingConstants.CENTER);
+		about = getItem("About", iabout, SwingConstants.LEFT);
+		contact = getItem("Contact", icontact, SwingConstants.LEFT);
 		
 		help = getMenu("Help", null, new JMenuItem[]{about, contact});
 	}
@@ -298,7 +297,7 @@ public class TopMenu extends JMenuBar{
 		
 		JMenu menu = new JMenu(text);
 		menu.setIcon(icon);
-		menu.setHorizontalAlignment(SwingConstants.CENTER);
+		menu.setHorizontalAlignment(SwingConstants.LEFT);
 		for(int i=0; i<items.length; i++)
 			menu.add(items[i]);
 		

@@ -8,6 +8,8 @@ import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
 
 import listeners.Notification;
 import CoreInterfaces.AirfieldInterface;
@@ -49,6 +51,17 @@ public class TopFrame extends JFrame{
 	}
 	
 	public void init(){
+		try {
+		    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+		        if ("Nimbus".equals(info.getName())) {
+		            UIManager.setLookAndFeel(info.getClassName());
+		            break;
+		        }
+		    }
+		} catch (Exception e) {
+		    // If Nimbus is not available, you can set the GUI to another look and feel.
+		}
+		
 		this.setJMenuBar(new TopMenu(this));
 		
 		topPanel = new JPanel();
@@ -65,6 +78,7 @@ public class TopFrame extends JFrame{
 		topPanel.add(welcomePanel, BorderLayout.CENTER);
 		
 		Notification.setFrame(this);
+		
 		
 		this.setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

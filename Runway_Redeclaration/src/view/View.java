@@ -39,6 +39,9 @@ public class View extends JPanel{
 	private int defTora, defSmallDT, defLargeDT, defStopway, defClearway, defTotalWidth;
 	private int tora, asda, toda, lda, dt, startOfRoll;
 	private String s, ss;
+	
+	private static int VIEW_WIDTH;
+	private static int VIEW_HEIGHT;
 
 	private static int SPACE_ON_BOTH_SIDES = 20;
 	private static int DT_TO_BARCODE_LENGTH_RATIO_TO_TORA = 100;
@@ -155,14 +158,15 @@ public class View extends JPanel{
 
 	public void paint(Graphics g){
 		super.paint(g);
-		
-		image = new BufferedImage(this.getWidth(), this.getHeight(), BufferedImage.TYPE_3BYTE_BGR);
+		VIEW_WIDTH = this.getWidth() - 40;
+		VIEW_HEIGHT = this.getHeight() - 40;
+		image = new BufferedImage(VIEW_WIDTH, VIEW_HEIGHT, BufferedImage.TYPE_3BYTE_BGR);
 		doDrawing();
-		g.drawImage(image, 0, 0, null);
+		g.drawImage(image, 20, 20, null);
 	}
 
 	private Graphics getGraphicsComp(Graphics g, Color c){
-		Graphics2D g2d = (Graphics2D) g;
+		Graphics2D g2d = (Graphics2D) g.create();
 
 		g2d.setColor(c);
 
@@ -215,7 +219,7 @@ public class View extends JPanel{
 		startOfRoll = scaleToPixels(startOfRoll);
 
 		Graphics2D g2 = (Graphics2D) g.create();
-		//TODO find me tag
+
 		colorFrame(getGraphicsComp(g2, grass));
 		drawWholeArea(getGraphicsComp(g2, purple), defTora, stripEnd, longSpacer);
 		drawClearedAndGradedArea(getGraphicsComp(g2, clearedBlue), defTora, stripEnd, shortSpacer, mediumSpacer, shortLength, longLength);
@@ -227,8 +231,6 @@ public class View extends JPanel{
 		drawCenterLine(getGraphicsComp(g2, Color.white), defTora, defGirth, defSmalldt, defLargedt);
 		drawIdentifier(getGraphicsComp(g2, Color.white), s, ss, defTora, defGirth, defSmalldt, defLargedt);
 		drawAllDim(getGraphicsComp(g2, Color.black), direction(), defTora, defGirth, tora, toda, asda, lda, dt, startOfRoll);
-		//Not wanted anymore
-		//		drawDirection(getGraphicsComp(g2, Color.RED), "Landing and Take Off Direction: "+ run.getIdentifier(), defGirth);
 
 		drawScale(getGraphicsComp(g2, Color.black), defGirth, 500);
 		drawFatArrow(getGraphicsComp(g2, Color.RED), defGirth);
@@ -236,7 +238,7 @@ public class View extends JPanel{
 	}
 	
 	private int scaleToPixels(int dim){
-		return scaleToPixels(defTotalWidth + 500, this.getWidth(), dim);
+		return scaleToPixels(defTotalWidth + 500, VIEW_WIDTH, dim);
 	}
 
 	private int scaleToPixels (int howMuchWantToFit, int inHowMuch, int whatYouAreScaling){
@@ -253,7 +255,7 @@ public class View extends JPanel{
 	}
 	
 	private void colorFrame(Graphics g){
-		g.create().fillRect(0, 0, this.getWidth(), this.getHeight());
+		g.create().fillRect(0, 0, VIEW_WIDTH, VIEW_HEIGHT);
 	}
 	
 	private void drawScale(Graphics g, int defGirth, int howMuchWantToView){
@@ -267,7 +269,7 @@ public class View extends JPanel{
 		
 		int howMuchInPixels = scaleToPixels(howMuchWantToView);
 		int startX = 10;
-		int Y = getHeight()/2 + defGirth * 5;
+		int Y = VIEW_HEIGHT/2 + defGirth * 5;
 		int endX = startX + howMuchInPixels;
 		
 		g2.setStroke(new BasicStroke(2));
@@ -284,8 +286,8 @@ public class View extends JPanel{
 	private void drawWholeArea(Graphics g, int tora, int stripSide, int longSpacer){
 		Graphics2D g2 = (Graphics2D) g.create();
 
-		int startX = this.getWidth()/2 - tora/2 - stripSide;
-		int startY = this.getHeight()/2 - longSpacer;
+		int startX = VIEW_WIDTH/2 - tora/2 - stripSide;
+		int startY = VIEW_HEIGHT/2 - longSpacer;
 
 		int width = tora + 2*stripSide;
 		int height = 2*longSpacer;
@@ -300,17 +302,17 @@ public class View extends JPanel{
 	private void drawClearedAndGradedArea(Graphics g, int tora, int stripEnd, int shortSpacer, int mediumSpacer, int shortLength, int longLength){
 		Graphics2D g2  = (Graphics2D) g.create();
 
-		int X1 = this.getWidth()/2 - tora/2  -stripEnd;	int X12 = X1;
+		int X1 = VIEW_WIDTH/2 - tora/2  -stripEnd;	int X12 = X1;
 		int X2 = X1 + stripEnd + shortLength;						int X11 = X2;
 		int X3 = X1 + stripEnd + longLength;						int X10 = X3;
 
-		int X6 = this.getWidth()/2 + tora/2 + stripEnd;	int X7 = X6;
+		int X6 = VIEW_WIDTH/2 + tora/2 + stripEnd;	int X7 = X6;
 		int X5 = X6 - stripEnd - shortLength;						int X8 = X5;
 		int X4 = X6 - stripEnd - longLength;						int X9 = X4;
 
-		int Y1 = this.getHeight()/2 - shortSpacer;		int Y12 = Y1 + 2*shortSpacer;
+		int Y1 = VIEW_HEIGHT/2 - shortSpacer;		int Y12 = Y1 + 2*shortSpacer;
 		int Y2 = Y1;							int Y11 = Y12;
-		int Y3 = this.getHeight()/2 - mediumSpacer;		int Y10 = Y3 + 2*mediumSpacer;
+		int Y3 = VIEW_HEIGHT/2 - mediumSpacer;		int Y10 = Y3 + 2*mediumSpacer;
 
 		int Y4 = Y3;							int Y7 = Y12;
 		int Y5 = Y1;							int Y8 = Y12;
@@ -331,8 +333,8 @@ public class View extends JPanel{
 	private void drawMainRunwayRect(Graphics g, int tora, int defGirth){
 		Graphics2D g2  = (Graphics2D) g.create();
 
-		int startX = this.getWidth()/2 - tora/2;
-		int startY = this.getHeight()/2 - defGirth/2;
+		int startX = VIEW_WIDTH/2 - tora/2;
+		int startY = VIEW_HEIGHT/2 - defGirth/2;
 
 		g2.fillRect(startX, startY, tora, defGirth);
 		g2.setColor(Color.BLACK);
@@ -344,15 +346,15 @@ public class View extends JPanel{
 	private void drawdtLines(Graphics g, int tora, int defGirth, int dt1, int dt2){
 		Graphics2D g2  = (Graphics2D) g.create();
 
-		int	startX = this.getWidth()/2 	- tora/2 + dt1;
-		int startY = this.getHeight()/2 - defGirth/2;
+		int	startX = VIEW_WIDTH/2 - tora/2 + dt1;
+		int startY = VIEW_HEIGHT/2 - defGirth/2;
 		int endX = startX;
 		int endY = startY + defGirth;
 
 		g2.drawLine(startX, startY, endX, endY);
 
-		startX = this.getWidth()/2 + tora/2 - dt2;
-		startY = this.getHeight()/2 - defGirth/2;
+		startX = VIEW_WIDTH/2 + tora/2 - dt2;
+		startY = VIEW_HEIGHT/2 - defGirth/2;
 		endX = startX;
 		endY = startY + defGirth;
 
@@ -369,8 +371,8 @@ public class View extends JPanel{
 		int dtToBar = tora/DT_TO_BARCODE_LENGTH_RATIO_TO_TORA;
 		int bar = tora/TORA_TO_BAR_CODE_RATIO;
 
-		int startX = getWidth()/2 - tora/2 + smalldt + dtToBar;
-		int startY = getHeight()/2 - defGirth/2;
+		int startX = VIEW_WIDTH/2 - tora/2 + smalldt + dtToBar;
+		int startY = VIEW_HEIGHT/2 - defGirth/2;
 		int endX = startX + bar;
 
 		//draws 5 lines
@@ -379,8 +381,8 @@ public class View extends JPanel{
 			g2.drawLine(startX, startY, endX, startY);
 		}
 
-		startX = getWidth()/2 + tora/2 - largedt - dtToBar;
-		startY = getHeight()/2 - defGirth/2;
+		startX = VIEW_WIDTH/2 + tora/2 - largedt - dtToBar;
+		startY = VIEW_HEIGHT/2 - defGirth/2;
 		endX = startX - bar;
 
 		//draws 5 lines
@@ -404,9 +406,9 @@ public class View extends JPanel{
 		int dtToBar = tora/DT_TO_BARCODE_LENGTH_RATIO_TO_TORA;
 		int bar = tora/TORA_TO_BAR_CODE_RATIO;
 
-		int startX = this.getWidth()/2 - tora/2 + smalldt + dtToBar + bar + scaleToPixels(200);
-		int startY = this.getHeight()/2;
-		int endX = this.getWidth()/2 + tora/2 - largedt - dtToBar - bar - scaleToPixels(200);
+		int startX = VIEW_WIDTH/2 - tora/2 + smalldt + dtToBar + bar + scaleToPixels(200);
+		int startY = VIEW_HEIGHT/2;
+		int endX = VIEW_WIDTH/2 + tora/2 - largedt - dtToBar - bar - scaleToPixels(200);
 		int endY = startY;
 
 		g2.drawLine(startX, startY, endX, endY);
@@ -447,14 +449,14 @@ public class View extends JPanel{
 		AffineTransform old = g2.getTransform();
 		at.setToRotation(Math.PI / 2.0);
 		g2.setTransform(at);
-		g2.drawString(leftangle, getHeight()/2 - leftangleLen/2, -(getWidth()/2 - tora/2 + dt1 + dtToBar + bar + 5 + leftletterHeight+textGap));
-		g2.drawString(leftletter, getHeight()/2 - leftletterLen/2, -(getWidth()/2 - tora/2 + dt1 + dtToBar + bar + 5 + leftletterHeight/10));
+		g2.drawString(leftangle, VIEW_HEIGHT/2 - leftangleLen/2, -(VIEW_WIDTH/2 - tora/2 + dt1 + dtToBar + bar + 5 + leftletterHeight+textGap));
+		g2.drawString(leftletter, VIEW_HEIGHT/2 - leftletterLen/2, -(VIEW_WIDTH/2 - tora/2 + dt1 + dtToBar + bar + 5 + leftletterHeight/10));
 
 		AffineTransform at2 = new AffineTransform();
 		at2.setToRotation(-Math.PI / 2.0);
 		g2.setTransform(at2);
-		g2.drawString(rightangle, -getHeight()/2 - rightangleLen/2, (getWidth()/2 + tora/2 - dt2 - dtToBar - bar - 5 - rightletterLen-textGap) );
-		g2.drawString(rightletter, -getHeight()/2 - rightletterLen/2, (getWidth()/2 + tora/2 - dt2 - dtToBar - bar - 5 - rightletterHeight/10));
+		g2.drawString(rightangle, -VIEW_HEIGHT/2 - rightangleLen/2, (VIEW_WIDTH/2 + tora/2 - dt2 - dtToBar - bar - 5 - rightletterLen-textGap) );
+		g2.drawString(rightletter, -VIEW_HEIGHT/2 - rightletterLen/2, (VIEW_WIDTH/2 + tora/2 - dt2 - dtToBar - bar - 5 - rightletterHeight/10));
 		g2.setTransform(old);
 	}
 
@@ -464,10 +466,10 @@ public class View extends JPanel{
 		
 		int startX, startY;
 		if(direction == 1)
-			startX = getWidth()/2 + tora/2;
+			startX = VIEW_WIDTH/2 + tora/2;
 		else
-			startX = getWidth()/2 - tora/2 - stop;
-		startY = getHeight()/2 - defGirth/2;
+			startX = VIEW_WIDTH/2 - tora/2 - stop;
+		startY = VIEW_HEIGHT/2 - defGirth/2;
 		
 		g2.fillRect(startX, startY, stop, defGirth);
 	}
@@ -478,10 +480,10 @@ public class View extends JPanel{
 		
 		int startX, startY;
 		if(direction == 1)
-			startX = getWidth()/2 + tora/2;
+			startX = VIEW_WIDTH/2 + tora/2;
 		else
-			startX = getWidth()/2 - tora/2 - clear;
-		startY = getHeight()/2 - defGirth;
+			startX = VIEW_WIDTH/2 - tora/2 - clear;
+		startY = VIEW_HEIGHT/2 - defGirth;
 		g2.fillRect(startX, startY, clear, defGirth*2);
 	}
 
@@ -506,13 +508,13 @@ public class View extends JPanel{
 
 		int startStart, startEnd, endStart, endEnd;
 		
-		startStart = getWidth()/2 - direction*(defTora/2-startWhere);
-		startEnd = getWidth()/2 - direction*defTora/2 + direction*lda/2 + direction*dt - 3*direction*titleLen/4;
+		startStart = VIEW_WIDTH/2 - direction*(defTora/2-startWhere);
+		startEnd = VIEW_WIDTH/2 - direction*defTora/2 + direction*lda/2 + direction*dt - 3*direction*titleLen/4;
 		
 		endEnd = startStart + direction*dimensionLength;
-		endStart= getWidth()/2 - direction*defTora/2 + direction*lda/2 + direction*dt + 3*direction*titleLen/4;
+		endStart= VIEW_WIDTH/2 - direction*defTora/2 + direction*lda/2 + direction*dt + 3*direction*titleLen/4;
  
-		int Y = getHeight()/2 - girth/2 - howhighUp;
+		int Y = VIEW_HEIGHT/2 - girth/2 - howhighUp;
 
 		drawArrow(g, startEnd, Y, startStart, Y);
 		drawArrow(g, endStart, Y, endEnd, Y);
@@ -525,25 +527,13 @@ public class View extends JPanel{
 		g2.drawString(dimensionName,Math.min(startEnd,endStart)+buffer, Y+3);
 
 	}
-	
-	@SuppressWarnings("unused")
-	@Deprecated
-	private void drawDirection(Graphics g, String s, int defGirth){
-		Graphics2D g2 = (Graphics2D) g.create();
-		
-		Font font = new Font("verdana", Font.BOLD+Font.ITALIC, 16);
-		FontMetrics fontMetrics = g.getFontMetrics(font);
-		int titleLen = fontMetrics.stringWidth(s);
-		g2.setFont(font);
-		g2.drawString(s, (getWidth() / 2) - (titleLen / 2), 7*getHeight()/10+ defGirth*5);
-	}
 
 	private void drawFatArrow(Graphics g, int defGirth){
 		final double GOING_LEFT = -Math.PI/2;
 		final double GOING_RIGHT = Math.PI/2;
 		
-		int x = getWidth()/2;
-		int y = 3*getHeight()/5 + defGirth*3;
+		int x = VIEW_WIDTH/2;
+		int y = 3*VIEW_HEIGHT/5 + defGirth*3;
 		
 		int planeDirection;
 		if(getRunway().isSmallEnd()){
@@ -554,7 +544,7 @@ public class View extends JPanel{
 			drawArrowAround(g, x, y, defGirth, GOING_LEFT, g.getColor(), Color.BLACK);
 			planeDirection = 1;
 		}
-		int planeWingSpan = pixelsToScale(getHeight()/10);
+		int planeWingSpan = pixelsToScale(this.getHeight()/10);
 		int planex = x-planeDirection*defGirth*3;
 		int planey = y;
 		drawPlane(g, planeWingSpan, planex, planey, planeDirection);
@@ -610,14 +600,14 @@ public class View extends JPanel{
 		if (obj==null) return;
 
 		int x;
-		int y = getHeight()/2;
+		int y = VIEW_HEIGHT/2;
 		int direction;
 		if (getRunway().isSmallEnd()){
-			int dToLeftSide = this.getWidth()/2 - defTora/2;
+			int dToLeftSide = VIEW_WIDTH/2 - defTora/2;
 			x = dToLeftSide + defSmalldt + scaleToPixels( (int) obj.distanceFromSmallEnd());
 			direction = 1;
 		}else{
-			int dToRightSide = this.getWidth()/2 + defTora/2;
+			int dToRightSide = VIEW_WIDTH/2 + defTora/2;
 			x = dToRightSide - defLargedt - scaleToPixels((int)obj.distanceFromLargeEnd());
 			direction = -1;
 		}
