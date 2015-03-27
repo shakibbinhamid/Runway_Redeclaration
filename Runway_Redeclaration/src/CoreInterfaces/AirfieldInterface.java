@@ -147,6 +147,4 @@ public interface AirfieldInterface {
 
 	DeclaredRunwayInterface getDefaultSmallAngledRunway();
 //===============================================================
-
-
 }

@@ -8,7 +8,6 @@ import java.io.FileFilter;
 
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import view.LoadListener;
 import view.TopFrame;
 
 public class LoadAirportListener implements ActionListener{

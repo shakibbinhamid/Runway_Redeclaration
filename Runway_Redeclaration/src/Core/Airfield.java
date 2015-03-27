@@ -1,6 +1,7 @@
 package Core;
 
-import listeners.Notification;
+import notification.Notification;
+import notification.NotificationPanel;
 
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementArray;
@@ -82,6 +83,7 @@ public class Airfield implements AirfieldInterface, Savable {
 
 		this.runways[1] = new DeclaredRunway(this, angleFromNorth+180, opSide, rTORA, rASDA, rTODA, rLDA);
 		this.defaultRunways[1] = new DeclaredRunway(this, angleFromNorth+180, opSide, rTORA, rASDA, rTODA, rLDA);
+		
 	}
 
 	public static final double DEFAULT_GIRTH = 100;
@@ -181,20 +183,16 @@ public class Airfield implements AirfieldInterface, Savable {
 			if(getPositionedObstacle().distanceFromSmallEnd() < getPositionedObstacle().distanceFromLargeEnd()){
 				//closer to small angled end
 
-				getSmallAngledRunway().takeOffAwayFrom(getDefaultSmallAngledRunway(), this);
-				getSmallAngledRunway().landOver(getDefaultSmallAngledRunway(), this);
+				getSmallAngledRunway().takeOffAwayLandOver(getDefaultSmallAngledRunway(), this);
 
-				getLargeAngledRunway().takeOffTowardsOver(getDefaultLargeAngledRunway(), this);
-				getLargeAngledRunway().landTowards(getDefaultLargeAngledRunway(), this);
+				getLargeAngledRunway().takeOffTowardsLandTowards(getDefaultLargeAngledRunway(), this);
 
 			}else{
 				//closer to large angled end or equal hence IT DONT MATTER BRUV
 
-				getSmallAngledRunway().takeOffTowardsOver(getDefaultSmallAngledRunway(), this);
-				getSmallAngledRunway().landTowards(getDefaultSmallAngledRunway(), this);
+				getSmallAngledRunway().takeOffTowardsLandTowards(getDefaultSmallAngledRunway(), this);
 
-				getLargeAngledRunway().takeOffAwayFrom(getDefaultLargeAngledRunway(), this);
-				getLargeAngledRunway().landOver(getDefaultLargeAngledRunway(), this);
+				getLargeAngledRunway().takeOffAwayLandOver(getDefaultLargeAngledRunway(), this);
 			}
 		}
 		//ALL DEM CHANGES IS MADE MUN, Go chill dem plane drivers sort da rest of it out mun ;)
@@ -203,7 +201,6 @@ public class Airfield implements AirfieldInterface, Savable {
 		System.out.println( ((DeclaredRunway)getLargeAngledRunway()).getLog() );
 
 	}
-
 
 	/**
 	 * We redeclare when there is an object added or removed, 
@@ -312,14 +309,13 @@ public class Airfield implements AirfieldInterface, Savable {
 			double distanceFromSmall, double distanceFromLarge) throws VariableDeclarationException  {/**/
 
 		this.obstacle = new PositionedObstacle(obj, distanceFromSmall, distanceFromLarge);
-
-			this.redeclareRunways();
+		this.redeclareRunways();
 
 	}
 
 	@Override
 	public void removeObstacle() {
-		Notification.notify( this.getPositionedObstacle().getName() + " Removed From "+ this.getName(), "file");
+		NotificationPanel.notifyIt(this.getPositionedObstacle().getName() + " Removed", this.getPositionedObstacle().getName() + " Removed From "+ this.getName(), Notification.FILE);
 		this.obstacle = null;
 		try {
 			this.getSmallAngledRunway().resetToNoObstacle(getDefaultSmallAngledRunway());

@@ -2,7 +2,8 @@ package io;
 import java.io.File;
 import java.util.ArrayList;
 
-import listeners.Notification;
+import notification.Notification;
+import notification.NotificationPanel;
 import Core.Airport;
 import Core.Obstacle;
 import CoreInterfaces.AirportInterface;
@@ -13,6 +14,7 @@ import Exceptions.NothingToSaveException;
 /**
  * Handles the saving and loading of objects
  * @author Jonathan
+ * @editor shakib-bin hamid
  *
  */
 public class FileSystem {
@@ -82,7 +84,7 @@ public class FileSystem {
 		checkNull(o);
 		String dir = savefile.getAbsolutePath();
 		if(XMLSaver.serialise(o, dir)){
-			Notification.notify("Saving obstacle to \n" + dir + "...", "file");
+			NotificationPanel.notifyIt(o.getName()+" Saved", "Saving obstacle to \n" + dir + "...", Notification.FILE);
 			return true;
 		}
 		else {
@@ -90,15 +92,7 @@ public class FileSystem {
 		}
 	}
 
-	public ObstacleInterface loadObs(String fileName){
-		File obsFile = new File(wd + datDir + objDir + "/"+fileName);
-		loadingNotification(fileName);
-		ObstacleInterface loadedObs = (ObstacleInterface) XMLSaver.deserialise(Obstacle.class, obsFile);
-		return loadedObs;
-	}
-
 	public ObstacleInterface loadObs(File obsFile){
-		loadingNotification(obsFile.getName());
 		ObstacleInterface loadedObs = (ObstacleInterface) XMLSaver.deserialise(Obstacle.class, obsFile);
 		return loadedObs;
 	}
@@ -110,13 +104,7 @@ public class FileSystem {
 	public boolean saveAir(Airport a, File savefile) throws NothingToSaveException{
 		checkNull(a);
 		String dir = savefile.getAbsolutePath();
-		if(XMLSaver.serialise(a, dir)){
-			Notification.notify("Saving airport to \n" + dir + "...", "file");
-			return true;
-		}
-		else {
-			return false;
-		}
+		return XMLSaver.serialise(a, dir);
 	}
 	
 	private void checkNull(Savable a) throws NothingToSaveException {
@@ -126,13 +114,8 @@ public class FileSystem {
 	}
 
 	public AirportInterface loadAir(File airFile){
-		loadingNotification(airFile.getName());
 		AirportInterface a = (AirportInterface) XMLSaver.deserialise(Airport.class, airFile);
 		return a;
-	}
-
-	private void loadingNotification(String name){
-		Notification.notify("Loading " + name + "...", "file");
 	}
 
 	//Returns true if chosen file is an airport file

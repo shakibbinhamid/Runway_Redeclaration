@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 
@@ -9,6 +10,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
 
 import CoreInterfaces.AirfieldInterface;
 import CoreInterfaces.DeclaredRunwayInterface;
@@ -229,17 +232,19 @@ public class InfoPanel extends JPanel{
 		TablePanel (String panelName, String[] columnNames){
 
 			title = panelName;	
-			table = new JTable(tableModel);
 
 			for(int i=0; i<columnNames.length; i++){
 				tableModel.addColumn(columnNames[i]);
 			}
+			
+			table = new JTable(tableModel);
 
 			table.getTableHeader().setReorderingAllowed(false);
 
 			table.setFocusable(false);
 			table.setRowSelectionAllowed(false);
-
+			table.setFillsViewportHeight( true );
+			
 			this.setBorder(BorderFactory.createTitledBorder(title));
 			this.setLayout(new BorderLayout());
 			this.add(new JScrollPane(table), BorderLayout.CENTER);

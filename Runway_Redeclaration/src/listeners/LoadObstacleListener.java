@@ -7,7 +7,6 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JOptionPane;
 
-import view.LoadListener;
 import view.TopFrame;
 
 public class LoadObstacleListener implements ActionListener{

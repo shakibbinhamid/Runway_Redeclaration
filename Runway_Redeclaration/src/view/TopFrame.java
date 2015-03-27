@@ -1,17 +1,17 @@
 package view;
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
+import javax.swing.JSplitPane;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
-import listeners.Notification;
+import notification.Notification;
+import notification.NotificationPanel;
 import CoreInterfaces.AirfieldInterface;
 import CoreInterfaces.AirportInterface;
 import CoreInterfaces.ObstacleInterface;
@@ -26,7 +26,7 @@ import Exceptions.VariableDeclarationException;
 public class TopFrame extends JFrame{
 	
 	
-	private JPanel topPanel;
+	private JSplitPane topPanel;
 		private LogPanel logPanel;
 		private TabbedPanel tabbedPanel;
 		private WelcomePanel welcomePanel;
@@ -64,26 +64,25 @@ public class TopFrame extends JFrame{
 		
 		this.setJMenuBar(new TopMenu(this));
 		
-		topPanel = new JPanel();
+		topPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+		topPanel.setOneTouchExpandable(true);
 		this.setContentPane(topPanel);
-		topPanel.setLayout(new BorderLayout());
 		
-		logPanel = new LogPanel(null,this);
-		topPanel.add(logPanel, BorderLayout.WEST);
+		logPanel = new LogPanel();
+		topPanel.setLeftComponent(logPanel);
 		
 		tabbedPanel = new TabbedPanel();
 		
 		welcomePanel = new WelcomePanel(this);
-		topPanel.add(tabbedPanel, BorderLayout.CENTER);
-		topPanel.add(welcomePanel, BorderLayout.CENTER);
+		topPanel.setRightComponent(welcomePanel);
 		
-		Notification.setFrame(this);
-		
+		topPanel.setDividerLocation(300);
 		
 		this.setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setTitle("Runway Redeclaration Tool v.0.81");
 		this.setMinimumSize(new Dimension(1200,600));
+		tabbedPanel.setMinimumSize(new Dimension(this.getMinimumSize().width - 300, 200));
 		this.pack();
 		this.setLocationRelativeTo(null);
 
@@ -99,6 +98,7 @@ public class TopFrame extends JFrame{
 		setAirport(airport);
 		logPanel.updateLabelText(airport.getName());
 		tabbedPanel.updateTabs(airport);
+		NotificationPanel.notifyIt(airport.getName()+" Added", airport.getName() +" loaded.", Notification.FILE);
 		switchToTabbedPanel();
 	}
 	
@@ -128,10 +128,10 @@ public class TopFrame extends JFrame{
 	 * @param distanceFromLeft distance from the left hand side
 	 */
 	public void loadOrCreateObstacle(ObstacleInterface obs, AirfieldInterface field, double distanceFromLeft, double distanceFromRight){
-		this.getLogPanel().clearCalcTextPane();
 		try {
 			field.addObstacle(obs, distanceFromLeft, distanceFromRight);
 			tabbedPanel.updateTab(field);
+			NotificationPanel.notifyIt(obs.getName() + " Loaded", obs.getName() + " loaded.", Notification.FILE);
 		} catch (VariableDeclarationException e) {
 			JOptionPane.showMessageDialog(this, "Your Obstacle has made the runway unusable --- " + e.getMessage(), "ERROR: Unusable Runway", JOptionPane.ERROR_MESSAGE);
 		}
@@ -177,7 +177,7 @@ public class TopFrame extends JFrame{
 	protected void switchToTabbedPanel(){
 		if(hasAirport()){
 			this.remove(this.welcomePanel);;
-			this.add(this.tabbedPanel, BorderLayout.CENTER);
+			topPanel.setRightComponent(this.tabbedPanel);
 		}
 		repaint();
 

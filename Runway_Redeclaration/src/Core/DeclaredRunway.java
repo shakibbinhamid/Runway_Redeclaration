@@ -1,6 +1,7 @@
 package Core;
 
-import listeners.Notification;
+import notification.Notification;
+import notification.NotificationPanel;
 
 import org.simpleframework.xml.Element;
 
@@ -37,6 +38,9 @@ public class DeclaredRunway implements DeclaredRunwayInterface{
 	public static final double DEFAULT_RESA = 240;
 	
 	public static String log; 
+	
+	private StringBuilder s = new StringBuilder();
+	
 	@Element
 	private double decTora, decLda, decAsda, decToda, disThresh, resa, startOfRofl;
 	
@@ -230,6 +234,26 @@ public class DeclaredRunway implements DeclaredRunwayInterface{
 			setDisplacedThreshold(original.getDisplacedThreshold());
 			setStartOfRoll(original.getStartOfRoll());
 		}
+		
+		@Override
+		public void takeOffAwayLandOver(DeclaredRunwayInterface original, AirfieldInterface parent)throws VariableDeclarationException{
+			s.setLength(0);
+			s.append("\n-[ "+getIdentifier()+"Take Off Away & Land Over ]-\n");
+			this.line();
+			takeOffAwayFrom(original, parent);
+			landOver(original, parent);
+			this.addToLog(s.toString());
+		}
+		
+		@Override
+		public void takeOffTowardsLandTowards(DeclaredRunwayInterface original, AirfieldInterface parent)throws VariableDeclarationException{
+			s.setLength(0);
+			s.append("\n-[ "+getIdentifier()+"Take Off Towards & Land Towards ]-");
+			this.line();
+			takeOffTowardsOver(original, parent);
+			landTowards(original, parent);
+			this.addToLog(s.toString());
+		}
 
 		@Override
 		/**  ________________
@@ -238,7 +262,6 @@ public class DeclaredRunway implements DeclaredRunwayInterface{
 		 *  |________________
 		 */
 		public void landOver(DeclaredRunwayInterface original, AirfieldInterface parent) throws VariableDeclarationException {
-			this.addToLog("-[ "+getIdentifier()+" (Land Over) ]-");
 			if(outOfBounds(parent.getStripEnd(), parent.getPositionedObstacle())){
 				this.addToLog("Out of Bounds");
 				return;
@@ -264,15 +287,15 @@ public class DeclaredRunway implements DeclaredRunwayInterface{
 				largeFactorName = "ALS";
 			}
 
-			this.addToLog("Distance From Obs: "+distFromObs);
-			this.addToLog("\nRESA: "+ RESA);
-			this.addToLog("\nALS: "+ ALS);
-			this.addToLog("\nStrip End: "+parent.getStripEnd());
-			this.addToLog("\nBlast Allowance: "+ parent.getBlastAllowance());
-			this.addToLog("\nLargest Factor("+largeFactorName+"): "+ largestFactor);
+			s.append("Distance From Obs: "+distFromObs);
+			s.append("\nRESA: "+ RESA);
+			s.append("\nALS: "+ ALS);
+			s.append("\nStrip End: "+parent.getStripEnd());
+			s.append("\nBlast Allowance: "+ parent.getBlastAllowance());
+			s.append("\nLargest Factor("+largeFactorName+"): "+ largestFactor);
+			s.append("\n\nLDA = LDA - Dis - "+largeFactorName);
+			s.append("\n    = "+original.getLDA()+" - "+distFromObs+" - "+ largestFactor);
 			
-			this.addToLog("\n\nLDA = LDA - Dis - "+largeFactorName);
-			this.addToLog("    = "+original.getLDA()+" - "+distFromObs+" - "+ largestFactor);
 			this.line();
 
 		}
@@ -284,7 +307,6 @@ public class DeclaredRunway implements DeclaredRunwayInterface{
 		 *  |________________
 		 */
 		public void landTowards(DeclaredRunwayInterface original, AirfieldInterface parent) throws VariableDeclarationException {
-			this.addToLog("-[ "+getIdentifier()+" (Land Towards) ]-");
 			if(outOfBounds(parent.getStripEnd(), parent.getPositionedObstacle())){
 				this.addToLog("Out of Bounds");
 				return;
@@ -298,11 +320,11 @@ public class DeclaredRunway implements DeclaredRunwayInterface{
 				newLDA = original.getLDA();
 			}
 			
-			this.addToLog("Distance From Obs(Dis): "+distFromObs);
-			this.addToLog("\nRESA: "+resa);
-			this.addToLog("\nStrip End: "+ parent.getStripEnd());
-			this.addToLog("\n\nLDA = Dis - RESA - strip end");
-			this.addToLog("    = "+distFromObs+" - "+resa+" - "+parent.getStripEnd());
+			s.append("Distance From Obs(Dis): "+distFromObs);
+			s.append("\nRESA: "+resa);
+			s.append("\nStrip End: "+ parent.getStripEnd());
+			s.append("\n\nLDA = Dis - RESA - strip end");
+			s.append("\n    = "+distFromObs+" - "+resa+" - "+parent.getStripEnd());
 			this.line();
 			
 			setLDA(newLDA);
@@ -317,7 +339,6 @@ public class DeclaredRunway implements DeclaredRunwayInterface{
 		 */
 		public void takeOffAwayFrom(DeclaredRunwayInterface original, AirfieldInterface parent) throws VariableDeclarationException {
 			//ASSUMPTION: stopway is part of clearway
-			this.addToLog("-[ "+getIdentifier()+" (Take Off Away) ]- ");
 			if(outOfBounds(parent.getStripEnd(), parent.getPositionedObstacle())){
 				this.addToLog("Out of Bounds");
 				return;
@@ -335,15 +356,15 @@ public class DeclaredRunway implements DeclaredRunwayInterface{
 			setTODA(newTORA+original.getClearway());
 			setStartOfRoll(original.getTORA()-newTORA);
 			
-			this.addToLog("Distance From Threshold (Dis): "+distFromObs);
-			this.addToLog("\nBlast Allowance: "+ parent.getBlastAllowance());
-			this.addToLog("\nDisplaced Threshold (DT): "+ original.getDisplacedThreshold());
-			this.addToLog("\n\nTORA = TORA - Blast - Dis - DT");
-			this.addToLog("     = "+original.getTORA()+" - "+parent.getBlastAllowance()+" - "+distFromObs+" - "+getDisplacedThreshold());
-			this.addToLog("\nASDA = (R)TORA + Stopway");
-			this.addToLog("     = "+newTORA+" + "+original.getStopway());
-			this.addToLog("\nTODA = (R)TORA + Clearway");
-			this.addToLog("     = "+newTORA+" + "+original.getClearway());
+			s.append("Distance From Threshold (Dis): "+distFromObs);
+			s.append("\nBlast Allowance: "+ parent.getBlastAllowance());
+			s.append("\nDisplaced Threshold (DT): "+ original.getDisplacedThreshold());
+			s.append("\n\nTORA = TORA - Blast - Dis - DT");
+			s.append("\n     = "+original.getTORA()+" - "+parent.getBlastAllowance()+" - "+distFromObs+" - "+getDisplacedThreshold());
+			s.append("\nASDA = (R)TORA + Stopway");
+			s.append("\n     = "+newTORA+" + "+original.getStopway());
+			s.append("\nTODA = (R)TORA + Clearway");
+			s.append("\n     = "+newTORA+" + "+original.getClearway());
 			this.line();
 		}
 
@@ -354,7 +375,6 @@ public class DeclaredRunway implements DeclaredRunwayInterface{
 		 *  |________________
 		 */
 		public void takeOffTowardsOver(DeclaredRunwayInterface original, AirfieldInterface parent) throws VariableDeclarationException {
-			this.addToLog("-[ "+getIdentifier()+" (Take Off Towards) ]-");
 			if(outOfBounds(parent.getStripEnd(), parent.getPositionedObstacle())){
 				this.addToLog("Out of Bounds");
 				return;
@@ -372,16 +392,15 @@ public class DeclaredRunway implements DeclaredRunwayInterface{
 			setASDA(newTORA); //Stopway blocked
 			setTODA(newTORA);//clearway blocked
 
-			this.addToLog("Distance From Threshold (Dis): "+distFromObs+"m ");
-			this.addToLog("\nALS: "+ALS+"m");
-			this.addToLog("\nDisplaced Threshold (DT): "+original.getDisplacedThreshold()+"m");
-			this.addToLog("\nStrip End: "+ parent.getStripEnd()+"m");
-			this.addToLog("\n\nTORA = Dis + DT - ALS - Strip End");
-			this.addToLog("     = "+distFromObs+" + "+original.getDisplacedThreshold()+" - "+ALS+" - "+parent.getStripEnd());
-			this.addToLog("\nASDA = (R)TORA");
-			this.addToLog("\nTODA = (R)TORA");
+			s.append("Distance From Threshold (Dis): "+distFromObs+"m ");
+			s.append("\nALS: "+ALS+"m");
+			s.append("\nDisplaced Threshold (DT): "+original.getDisplacedThreshold()+"m");
+			s.append("\nStrip End: "+ parent.getStripEnd()+"m");
+			s.append("\n\nTORA = Dis + DT - ALS - Strip End");
+			s.append("\n     = "+distFromObs+" + "+original.getDisplacedThreshold()+" - "+ALS+" - "+parent.getStripEnd());
+			s.append("\nASDA = (R)TORA");
+			s.append("\nTODA = (R)TORA");
 			this.line();
-			
 		}
 		
 		
@@ -425,13 +444,13 @@ public class DeclaredRunway implements DeclaredRunwayInterface{
 		}
 		
 		public void line(){
-			this.addToLog("--------------------------------------\n\n\n");
+			s.append("\n\n--------------------------------------\n\n");
 		}
 		
 		public void addToLog(String text){
 			log += text;
 			try{
-				Notification.notify(text, "calc");
+				NotificationPanel.notifyIt("Redeclaration on "+this.getIdentifier(),text, Notification.FILE);
 			}catch (NullPointerException np){
 				//External Logger not initialised
 			}

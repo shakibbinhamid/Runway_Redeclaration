@@ -29,7 +29,7 @@ public class XMLSaver {
 	public static Savable deserialise(Class classType, File xmlFile){
 		Serializer serializer = new Persister();
 		try {
-			return serializer.read(classType, xmlFile);
+			return (Savable) serializer.read(classType, xmlFile);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

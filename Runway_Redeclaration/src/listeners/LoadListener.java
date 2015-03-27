@@ -1,4 +1,4 @@
-package view;
+package listeners;
 
 import io.FileSystem;
 
@@ -17,6 +17,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import view.Tab;
+import view.TopFrame;
 import CoreInterfaces.AirportInterface;
 import CoreInterfaces.ObstacleInterface;
 
@@ -52,7 +54,6 @@ public class LoadListener{
 					JOptionPane.showMessageDialog(null, "You cannot load an obstacle before loading an airport.", "Error",JOptionPane.ERROR_MESSAGE);
 				}
 				else{
-					
 					new ObjectFrame(frame, "Object Location", true);
 				}
 			}
@@ -60,7 +61,6 @@ public class LoadListener{
 				if(fs.checkAir(chosen)){
 					AirportInterface airport = fs.loadAir(chosen);
 					frame.loadOrCreateAirport(airport);
-					
 					frame.getLogPanel().repaint();
 				}
 			}
@@ -109,7 +109,7 @@ public class LoadListener{
 				}
 			});
 			
-			setPreferredSize(new Dimension(500,110));
+			setPreferredSize(new Dimension(500,120));
 			setLocation(frame.getLocation().x + frame.getWidth() / 4, frame.getLocation().y + frame.getHeight() / 4);
 			this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 			this.setResizable(false);

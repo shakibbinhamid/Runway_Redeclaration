@@ -245,7 +245,8 @@ public class TopMenu extends JMenuBar{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Print.print(frame.getLogPanel().getCalcTextPane().getText());
+				//TODO: Fix printing
+				//Print.print(frame.getLogPanel().getCalcTextPane().getText());
 			}
 			
 		});

@@ -80,4 +80,10 @@ public interface DeclaredRunwayInterface {
 	double getAscentAngle();
 
 	boolean isSmallEnd();
+
+	void takeOffAwayLandOver(DeclaredRunwayInterface original,
+			AirfieldInterface parent) throws VariableDeclarationException;
+
+	void takeOffTowardsLandTowards(DeclaredRunwayInterface original,
+			AirfieldInterface parent) throws VariableDeclarationException;
 }

@@ -3,7 +3,8 @@ package Core;
 import java.util.ArrayList;
 import java.util.List;
 
-import listeners.Notification;
+import notification.Notification;
+import notification.NotificationPanel;
 
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.ElementList;
@@ -87,7 +88,7 @@ public class Airport implements AirportInterface, Savable {
 		
 		}
 		this.airfields.add(newAirfield);
-		Notification.notify(newAirfield.getName() + " added to "+ this.getName(), "file");
+		NotificationPanel.notifyIt(newAirfield.getName() + " created", newAirfield.getName() + " added to "+ this.getName(), Notification.FILE);
 		
 	}
 	
