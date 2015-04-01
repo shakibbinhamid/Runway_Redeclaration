@@ -27,7 +27,7 @@ import CoreInterfaces.DeclaredRunwayInterface;
  * @Editor Shakib Stefan
  *
  */
-public class View extends JPanel{
+public class ViewTop extends JPanel{
 	private static final long serialVersionUID = 1L;
 	
 	private BufferedImage image;
@@ -62,7 +62,7 @@ public class View extends JPanel{
 
 	private static final int ARR_SIZE = 4;
 
-	public View(AirfieldInterface field, DeclaredRunwayInterface run){
+	public ViewTop(AirfieldInterface field, DeclaredRunwayInterface run){
 		this.setField(field);
 		this.setRunway(run);
 	}
