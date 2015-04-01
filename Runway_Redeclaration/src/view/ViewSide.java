@@ -43,7 +43,7 @@ public class ViewSide extends JPanel{
 	public void setAirfield(AirfieldInterface newAirfield){
 		this.airfield = newAirfield;
 		
-		//TODO include more
+		//TODO !IF NEEDED! add the special values
 	}
 	
 	public DeclaredRunwayInterface getRunway(){ return this.runway; }
@@ -51,7 +51,7 @@ public class ViewSide extends JPanel{
 		this.runway = newRunway;
 		
 		
-		//TODO inlcude more
+		//TODO !IF NEEDED! add the special values
 	}
 	
 	//======[ Scaling ]=====================================================================================================
@@ -90,9 +90,10 @@ public class ViewSide extends JPanel{
 	}
 	
 	private void drawImage(Graphics2D g2) {
-		// TODO Auto-generated method stub
+		// TODO Determine sections
 		
 	}
+	
 	//----[ Generic Drawing ]---------------------------------------------------------------------
 	private void drawLine_inM(Graphics2D g, double x1m, double y1m, double x2m, double y2m){
 		Graphics2D g2 = (Graphics2D) g.create();
