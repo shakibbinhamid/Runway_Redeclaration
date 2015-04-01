@@ -1,6 +1,5 @@
 package CoreInterfaces;
 
-import Exceptions.InvalidIdentifierException;
 import Exceptions.VariableDeclarationException;
 
 
@@ -81,11 +80,17 @@ public interface AirfieldInterface {
 	
 	void setBlastAllowance(double blast);
 	
+	
+	/** returns all the above dimensions in an array */
 	double[] getDimensionsToArray();
+	
+	
 	
 	double getTotalWidth();
 	
 	double getTotalHeight();
+	
+	double getTotalGirth();
 	
 	
 //=====================================================	
@@ -147,4 +152,5 @@ public interface AirfieldInterface {
 
 	DeclaredRunwayInterface getDefaultSmallAngledRunway();
 //===============================================================
+
 }

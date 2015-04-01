@@ -164,8 +164,13 @@ public class Airfield implements AirfieldInterface, Savable {
 	}
 
 	@Override
-	public double getTotalHeight() {
+	public double getTotalGirth() {
 		return getLongSpacer()*2;
+	}
+	
+	@Override 
+	public double getTotalHeight(){
+		return getPositionedObstacle().getHeight();
 	}
 
 	/**
