@@ -88,7 +88,7 @@ public class Airport implements AirportInterface, Savable {
 		
 		}
 		this.airfields.add(newAirfield);
-		NotificationPanel.notifyIt(newAirfield.getName() + " created", newAirfield.getName() + " added to "+ this.getName(), Notification.FILE);
+//		NotificationPanel.notifyIt(newAirfield.getName() + " created", newAirfield.getName() + " added to "+ this.getName(), Notification.FILE);
 		
 	}
 	
