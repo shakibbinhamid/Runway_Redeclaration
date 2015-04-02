@@ -11,10 +11,10 @@ import CoreInterfaces.AirfieldInterface;
 import CoreInterfaces.DeclaredRunwayInterface;
 
 /**
- * [] Version 1: Points 
- * [] Version 2: Rotate Points 
- * [] Version 3: Scale/Zoom 
- * [] Version 4: Pan by focus points 
+ * [X] Version 1: Points 
+ * [ ] Version 2: Rotate Points 
+ * [ ] Version 3: Scale/Zoom 
+ * [ ] Version 4: Pan by focus points 
  * 
  * 
  * We use Points so that they can be translated!
@@ -28,12 +28,12 @@ import CoreInterfaces.DeclaredRunwayInterface;
 public abstract class AbstractView extends JPanel {
 	/**
 	 * [X] Version 0: Nada Complete
-	 * [ ] Version 1: Points 
+	 * [X] Version 1: Points 
 	 * [ ] Version 2: Rotate Points 
 	 * [ ] Version 3: Scale/Zoom 
 	 * [ ] Version 4: Pan by focus points 
 	 */
-	private static final long serialVersionUID = 0L;
+	private static final long serialVersionUID = 1L;
 
 	private AirfieldInterface airfield;
 	private DeclaredRunwayInterface runway;
@@ -41,6 +41,8 @@ public abstract class AbstractView extends JPanel {
 	private BufferedImage image;
 
 	private int IMAGE_WIDTH, IMAGE_HEIGHT;
+
+	public final static Color GRASS_COLOUR = new Color(95,245,22);
 
 	public AbstractView (AirfieldInterface airfield, DeclaredRunwayInterface runway){
 		setAirfield(airfield);
