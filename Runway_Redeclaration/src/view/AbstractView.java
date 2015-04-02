@@ -5,6 +5,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
+import javafx.beans.binding.IntegerBinding;
+
 import javax.swing.JPanel;
 
 import CoreInterfaces.AirfieldInterface;
@@ -85,11 +87,11 @@ public abstract class AbstractView extends JPanel {
 	}
 
 	protected static double pixelsToMeters(int yourPixels, double meters, int pixels){
-		return yourPixels * pixels / meters;
+		return yourPixels *  meters/pixels;
 	}
 
 	protected static int metersToPixels(double yourMeters, double meters, int pixels){
-		return (int) (yourMeters * meters/pixels);
+		return (int) (yourMeters * pixels/meters);
 	}
 
 	/*@Deprecated
@@ -240,14 +242,21 @@ public abstract class AbstractView extends JPanel {
 		public int y_pix() { return Ym_to_pixels(this.ym); }
 
 		
+		
+		public Point offsetXByPixels(int xPix){
+			return new Point(x_m() + Xpix_to_m(xPix),y_m());
+		}
+		public Point offsetYByPixels(int yPix){
+			return new Point(x_m(),y_m()+Ypix_to_m(yPix));
+		}
+		
+		
 		private double xRelativeToPivot(){
-			
-			
+			//TODO complete later
 			return 0d;
 		}
 		private double yRelativeToPivot(){
-			
-			
+			//TODO complete later
 			return 0d;
 		}
 	}

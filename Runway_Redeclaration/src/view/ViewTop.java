@@ -628,10 +628,10 @@ public class ViewTop extends JPanel{
 		int largestFactor; 
 		String factorName;
 		double ALS = getRunway().getAscentAngle()*getField().getPositionedObstacle().getHeight();
-
+		double SE = getField().getStripEnd();
 		//find largest factor
-		if(getRunway().getRESA() > ALS &&  ALS > getField().getBlastAllowance()){
-			largestFactor = scaleToPixels((int) getRunway().getRESA());
+		if(getRunway().getRESA()+SE > ALS+SE &&  ALS+SE > getField().getBlastAllowance()){
+			largestFactor = scaleToPixels((int) (getRunway().getRESA()+SE));
 			factorName = "RESA";
 			
 		}else if(ALS > getField().getBlastAllowance()){
@@ -639,7 +639,7 @@ public class ViewTop extends JPanel{
 			factorName = "ALS";
 
 		}else{
-			largestFactor = scaleToPixels((int) getField().getBlastAllowance());
+			largestFactor = scaleToPixels((int) (getField().getBlastAllowance()+SE));
 			factorName = "Blast Zone";
 
 		}
