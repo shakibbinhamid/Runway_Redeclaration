@@ -76,6 +76,8 @@ public abstract class AbstractView extends JPanel {
 
 
 	//======[ Scaling ]=====================================================================================================
+	/** Ensures the IMAGE_*dimensions* are correct for this round of painting,
+	 *  Resets the image to a blank canvas making it easier to use */
 	private void rescaleImageSize(){
 		this.IMAGE_WIDTH = this.getWidth();
 		this.IMAGE_HEIGHT = this.getHeight();
@@ -98,7 +100,7 @@ public abstract class AbstractView extends JPanel {
 
 	//----[ M to Pix ]----------------------------------------------------------------------------------------------------------
 	public int Xm_to_pixels(double xm){
-		double largestWidth = (int) getAirfield().getTotalWidth();
+		double largestWidth = getAirfield().getTotalWidth();
 		int xPix = metersToPixels(xm, largestWidth, IMAGE_WIDTH);
 
 		System.out.println("X: "+xm+"m   to  "+xPix+"pixels");
@@ -132,6 +134,17 @@ public abstract class AbstractView extends JPanel {
 
 	//===========================================================================================================================
 
+	
+	//======[ Rotation Methods ]================================================================================================
+	
+	private Point getPivot(){
+		double middleX = getAirfield().getTotalWidth()/2;
+		double middleY = largestHeight()/2;
+		return new Point(middleX,middleY);
+	}
+	
+	
+	//===========================================================================================================================
 
 	
 	//======[ Drawing the image ]================================================================================================
@@ -226,6 +239,17 @@ public abstract class AbstractView extends JPanel {
 		public double y_m(){ return this.ym; }
 		public int y_pix() { return Ym_to_pixels(this.ym); }
 
+		
+		private double xRelativeToPivot(){
+			
+			
+			return 0d;
+		}
+		private double yRelativeToPivot(){
+			
+			
+			return 0d;
+		}
 	}
 
 }

@@ -24,7 +24,17 @@ import Exceptions.VariableDeclarationException;
  * @Editor Stefan Shakib
  */
 public class ViewSide extends AbstractView{
+	/**
+	 * [X] Version 0: Nada Complete
+	 * [X] Version 1: Points 
+	 * [ ] Version 2: Rotate Points 
+	 * [ ] Version 3: Scale/Zoom 
+	 * [ ] Version 4: Pan by focus points 
+	 */
+	private static final long serialVersionUID = 1L;
 
+	
+	
 	public static void main(String[] args){
 		try {
 			JFrame f = new JFrame("Test");
@@ -49,15 +59,6 @@ public class ViewSide extends AbstractView{
 		} catch (UnrecognisedAirfieldIntifierException e) {
 		}
 	}
-
-
-
-	private static final long serialVersionUID = 1L;
-
-	private AirfieldInterface airfield;
-	private DeclaredRunwayInterface runway;
-
-	private BufferedImage image;
 
 	public static int HEIGHT_OF_RUNWAY = 1; /* in m */
 	public static double PERCENTAGE_OF_SKY = 0.5; /* in % */
