@@ -156,7 +156,7 @@ public class ViewSide extends JPanel{
 		y2p = Ym_to_pixels(y2m);
 
 		g2.drawLine(x1p, y1p, x2p, y2p);
-	}
+}
 
 	private void drawRectangle_inM(Graphics2D g, double xm, double ym, double width_m, double height_m, Color fill){
 		Graphics2D g2 = (Graphics2D) g.create();
