@@ -59,6 +59,7 @@ public class ViewSide extends AbstractView{
 	}
 
 	public static int HEIGHT_OF_RUNWAY = 1; /* in m */
+	public static int PIXEL_BUFFER = 30;
 	public static double PERCENTAGE_OF_SKY = 0.5; /* in % */
 
 	public final static Color SKY_COLOUR = Color.cyan;
@@ -150,10 +151,10 @@ public class ViewSide extends AbstractView{
 
 		super.drawLine_inM(g2, leftTop, rightTop);
 
-		drawLargestFactor(g,locOfObs,vertToRunway()-heightOfObs);
+		drawLargestFactor(g,locOfObs,heightOfObs);
 	}
 
-	protected void drawLargestFactor(Graphics2D g, double locOfObs, double topOfObs){
+	protected void drawLargestFactor(Graphics2D g, double locOfObs, double heightOfObs){
 		Graphics2D g2 = (Graphics2D) g.create();
 
 
@@ -165,20 +166,21 @@ public class ViewSide extends AbstractView{
 
 		//find largest factor
 		if(getRunway().getRESA()+SE > ALS+SE &&  ALS+SE > getAirfield().getBlastAllowance()){
-			drawRESA(g, locOfObs, topOfObs);
+			drawRESA(g, locOfObs, heightOfObs);
 
 		}else if(ALS > getAirfield().getBlastAllowance()){
-			drawALS(g, locOfObs, topOfObs, ALS);
+			drawALS(g, locOfObs, heightOfObs, getRunway().getRESA());
 
 		}else{
-			drawBlastProt(g, locOfObs, topOfObs);
+			drawBlastProt(g, locOfObs);
 		}
 	}
 
-	private void drawALS(Graphics2D g, double locOfObs, double topOfObs, double ALS){
+	private void drawALS(Graphics2D g, double locOfObs, double heightOfObs, double ALS){
 		Graphics2D g2 = (Graphics2D) g.create();
+		Graphics2D g3 = (Graphics2D) g.create();
 
-		Point obsTop = new Point(locOfObs,topOfObs);
+		Point obsTop = new Point(locOfObs,vertToRunway()-heightOfObs);
 		Point alsPoint = new Point(locOfObs+ALS,this.vertToRunway());
 
 		g2.setColor(Color.RED);
@@ -189,17 +191,43 @@ public class ViewSide extends AbstractView{
 
 		super.drawLine_inM(g2, obsTop, alsPoint);
 
-		//TODO draw ALS Underneath
-		//TODO draw strip end underneath
+		Point start = new Point(locOfObs,vertToRunway()).offsetYByPixels(PIXEL_BUFFER);
+		Point end = start.offsetXByM(ALS);
+
+		g3.setColor(Color.BLACK);
+		//Horiz line
+		super.drawLine_inM(g3, start, end);
+
+		//Verticals
+		super.drawLine_inM(g3, start.offsetYByPixels(PIXEL_BUFFER/2), start.offsetYByPixels(-PIXEL_BUFFER));
+		super.drawLine_inM(g3, end.offsetYByPixels(PIXEL_BUFFER/2), end.offsetYByPixels(-PIXEL_BUFFER));
+
+		//TODO draw Strip end
+
+
 	}
 
-	private void drawRESA(Graphics2D g, double locOfObs, double topOfObs){
-		//TODO draw RESA underneath
+	private void drawRESA(Graphics2D g, double locOfObs, double RESA){
+		Graphics2D g2 = (Graphics2D) g.create();
+
+		Point start = new Point(locOfObs,vertToRunway()).offsetYByPixels(PIXEL_BUFFER);
+		Point end = start.offsetXByM(RESA);
+
+		//Verticals
+		super.drawLine_inM(g2, start.offsetYByPixels(PIXEL_BUFFER/2), start.offsetYByPixels(-PIXEL_BUFFER));
+		super.drawLine_inM(g2, end.offsetYByPixels(PIXEL_BUFFER/2), end.offsetYByPixels(-PIXEL_BUFFER));
+		
 		//TODO draw Strip end underneath
+
+
 	}
 
-	private void drawBlastProt(Graphics2D g, double locOfObs, double topOfObs){
+	private void drawBlastProt(Graphics2D g, double locOfObs){
+		Graphics2D g2 = (Graphics2D) g.create();
+
 		//TODO draw blast prot underneath
+
+
 	}
 
 	private void drawDistances(Graphics2D g) {
