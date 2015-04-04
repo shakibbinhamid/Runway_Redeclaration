@@ -159,7 +159,7 @@ public class ViewSide extends AbstractView{
 	}
 
 	protected void drawLargestFactor(Graphics2D g, double locOfObs, double heightOfObs){
-		double ALS = getRunway().getAscentAngle()*getAirfield().getPositionedObstacle().getHeight();
+		double ALS = getRunway().getDescentAngle()*getAirfield().getPositionedObstacle().getHeight();
 		double SE = getAirfield().getStripEnd();
 
 		//find largest factor
@@ -167,7 +167,7 @@ public class ViewSide extends AbstractView{
 			drawRESA(g, locOfObs, heightOfObs);
 
 		}else if(ALS > getAirfield().getBlastAllowance()){
-			drawALS(g, locOfObs, heightOfObs, getRunway().getRESA());
+			drawALS(g, locOfObs, heightOfObs, ALS);
 
 		}else{
 			drawBlastProt(g, locOfObs);
@@ -192,7 +192,11 @@ public class ViewSide extends AbstractView{
 		Point start = new Point(locOfObs,vertToRunway()).offsetYByPixels(PIXEL_BUFFER);
 		Point end = start.offsetXByM(s()*ALS);
 
-		g3.setColor(Color.BLACK);
+		g3.setColor(MAROON_COLOUR);
+		g3.setStroke(new BasicStroke(1f,
+				BasicStroke.CAP_BUTT,
+				BasicStroke.JOIN_BEVEL,
+				10.0f, new float[]{2}, 0.5f));
 		//Horiz line
 		super.drawLine_inM(g3, start, end);
 
@@ -211,6 +215,11 @@ public class ViewSide extends AbstractView{
 
 	private void drawRESA(Graphics2D g, double locOfObs, double RESA){
 		Graphics2D g2 = (Graphics2D) g.create();
+		g2.setColor(MAROON_COLOUR);
+		g2.setStroke(new BasicStroke(1f,
+				BasicStroke.CAP_BUTT,
+				BasicStroke.JOIN_BEVEL,
+				10.0f, new float[]{2}, 0.5f));
 
 		Point start = new Point(locOfObs,vertToRunway()).offsetYByPixels(PIXEL_BUFFER);
 		Point end = start.offsetXByM(s()*RESA);
@@ -234,7 +243,12 @@ public class ViewSide extends AbstractView{
 
 	private void drawBlastProt(Graphics2D g, double locOfObs){
 		Graphics2D g2 = (Graphics2D) g.create();
-
+		g2.setColor(MAROON_COLOUR);
+		g2.setStroke(new BasicStroke(1f,
+				BasicStroke.CAP_BUTT,
+				BasicStroke.JOIN_BEVEL,
+				10.0f, new float[]{2}, 0.5f));
+		
 		Point start = new Point(locOfObs,vertToRunway()).offsetYByPixels(PIXEL_BUFFER);
 		Point end = start.offsetXByM(s()*getAirfield().getBlastAllowance());
 
@@ -323,7 +337,7 @@ public class ViewSide extends AbstractView{
 		if(getRunway().isSmallEnd()){
 			return getAirfield().getStripEnd();			
 		}else{
-			return super.runwayWidth()-getAirfield().getStripEnd()-getRunway().getTORA();
+			return super.runwayWidth()-getAirfield().getStripEnd()-getAirfield().getDefaultLargeAngledRunway().getTORA();
 		}
 	}
 	private double rightOfRunway(){

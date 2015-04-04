@@ -44,6 +44,7 @@ public abstract class AbstractView extends JPanel {
 	private int IMAGE_WIDTH, IMAGE_HEIGHT;
 
 	public final static Color GRASS_COLOUR = new Color(95,245,22);
+	public final static Color MAROON_COLOUR = new Color(136,0,21);
 
 	public final static Font DIMENSION_FONT = new Font("Dialog", Font.PLAIN, 12);
 	
