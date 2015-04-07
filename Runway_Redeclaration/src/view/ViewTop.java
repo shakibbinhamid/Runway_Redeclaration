@@ -505,7 +505,7 @@ public class ViewTop extends JPanel{
 		FontMetrics fontMetrics = g2.getFontMetrics(font);
 		int titleLen = fontMetrics.stringWidth(dimensionName);
 
-
+		System.out.println("============="+g2.getFont().getFontName()+"  "+g2.getFont().getSize());
 		int startStart, startEnd, endStart, endEnd;
 		
 		startStart = VIEW_WIDTH/2 - direction*(defTora/2-startWhere);

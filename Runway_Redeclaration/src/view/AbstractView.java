@@ -1,11 +1,13 @@
 package view;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
-//import javafx.beans.binding.IntegerBinding;
+import javafx.beans.binding.IntegerBinding;
+
 
 import javax.swing.JPanel;
 
@@ -45,7 +47,10 @@ public abstract class AbstractView extends JPanel {
 	private int IMAGE_WIDTH, IMAGE_HEIGHT;
 
 	public final static Color GRASS_COLOUR = new Color(95,245,22);
+	public final static Color MAROON_COLOUR = new Color(136,0,21);
 
+	public final static Font DIMENSION_FONT = new Font("Dialog", Font.PLAIN, 12);
+	
 	public AbstractView (AirfieldInterface airfield, DeclaredRunwayInterface runway){
 		setAirfield(airfield);
 		setRunway(runway);
@@ -69,7 +74,7 @@ public abstract class AbstractView extends JPanel {
 
 		//TODO !IF NEEDED! add the special values **shouldn't be needed**
 	}
-	
+
 	public BufferedImage getImage(){
 		return this.image;
 	}
@@ -102,110 +107,109 @@ public abstract class AbstractView extends JPanel {
 
 	//----[ M to Pix ]----------------------------------------------------------------------------------------------------------
 	public int Xm_to_pixels(double xm){
-		double largestWidth = getAirfield().getTotalWidth();
-		int xPix = metersToPixels(xm, largestWidth, IMAGE_WIDTH);
-
-		System.out.println("X: "+xm+"m   to  "+xPix+"pixels");
+		int xPix = metersToPixels(xm, this.runwayWidth(), IMAGE_WIDTH);
 		return xPix;
 	}
 	public int Ym_to_pixels(double ym){
 		double largestHeight = largestHeight();
 		int yPix = metersToPixels(ym, largestHeight, IMAGE_HEIGHT);
-
-		System.out.println("Y: "+ym+"m   to  "+yPix+"pixels");
 		return yPix;
 	} 
 
 	//----[ Pix to M ]----------------------------------------------------------------------------------------------------------
 
 	public double Xpix_to_m(int xp){
-		int largestWidth = (int) getAirfield().getTotalWidth();
-		double xm = pixelsToMeters(xp, largestWidth, IMAGE_WIDTH);
-
-		System.out.println("X: "+xp+"pix   to "+xm+"m ");
+		double xm = pixelsToMeters(xp, this.runwayWidth(), IMAGE_WIDTH);
 		return xm;
 
 	}
 	public double Ypix_to_m(int yp){
 		double largestHeight = largestHeight();
 		double ym = pixelsToMeters(yp, largestHeight, IMAGE_WIDTH);
-
-		System.out.println("Y: "+yp+"pix   to "+ym+"m ");
 		return ym;
 	}
 
 	//===========================================================================================================================
 
-	
+
 	//======[ Rotation Methods ]================================================================================================
-	
+
 	private Point getPivot(){
 		double middleX = getAirfield().getTotalWidth()/2;
 		double middleY = largestHeight()/2;
 		return new Point(middleX,middleY);
 	}
-	
-	
+
+
 	//===========================================================================================================================
 
-	
+
 	//======[ Drawing the image ]================================================================================================
 	@Override
 	public void paint(Graphics g){
 		super.paint(g);
 		rescaleImageSize();
-		
+
 		drawImage(getImage().createGraphics());
 
 		/* @End */g.drawImage(getImage(), 0, 0, null);
 	}
 
 	protected abstract void drawImage(Graphics2D g);
-	
-	
-	//----[ Generic Drawing ]---------------------------------------------------------------------
-		protected void drawLine_inM(Graphics2D g, Point p1, Point p2){
-			Graphics2D g2 = (Graphics2D) g.create();
 
-			g2.drawLine(p1.x_pix(), p1.y_pix(), 
-					    p2.x_pix(), p2.y_pix());
+
+	//----[ Generic Drawing ]---------------------------------------------------------------------
+	protected void drawLine_inM(Graphics2D g, Point p1, Point p2){
+		Graphics2D g2 = (Graphics2D) g.create();
+
+		g2.drawLine(p1.x_pix(), p1.y_pix(), 
+				p2.x_pix(), p2.y_pix());
 	}
 
-		protected void drawRectangle_inM(Graphics2D g, Point start, Point size, Color fill){
-			Graphics2D g2 = (Graphics2D) g.create();
+	protected void drawRectangle_inM(Graphics2D g, Point start, Point size, Color fill){
+		Graphics2D g2 = (Graphics2D) g.create();
 
-			g2.drawRect(start.x_pix(), start.y_pix(),
-					    size.x_pix(), size.y_pix());
-			
-			if(fill != null){
-				g2.setColor(fill);
-				g2.fillRect(start.x_pix(), start.y_pix(), 
-						    size.x_pix(), size.y_pix());
-			}
+		g2.drawRect(start.x_pix(), start.y_pix(),
+				size.x_pix(), size.y_pix());
+
+		if(fill != null){
+			g2.setColor(fill);
+			g2.fillRect(start.x_pix(), start.y_pix(), 
+					size.x_pix(), size.y_pix());
+		}
+	}
+
+
+	protected void drawPolygon_inM(Graphics g, Point[] points, Color fill){
+		Graphics2D g2 = (Graphics2D) g.create();
+		int[] xs_p, ys_p;
+
+		xs_p = new int[points.length];
+		ys_p = new int[points.length];
+
+		int i = 0;
+		for(Point point : points){
+			xs_p[i] = point.x_pix();
+			ys_p[i] = point.y_pix();
+
+			i++;
 		}
 
-
-		protected void drawPolygon_inM(Graphics g, Point[] points, Color fill){
-			Graphics2D g2 = (Graphics2D) g.create();
-			int[] xs_p, ys_p;
-
-			xs_p = new int[points.length];
-			ys_p = new int[points.length];
-
-			int i = 0;
-			for(Point point : points){
-				xs_p[i] = point.x_pix();
-				ys_p[i] = point.y_pix();
-				
-				i++;
-			}
-
-			g2.drawPolygon(xs_p, ys_p, xs_p.length);
-			if(fill != null){
-				g2.setColor(fill);
-				g2.fillPolygon(xs_p, ys_p, xs_p.length);
-			}
+		g2.drawPolygon(xs_p, ys_p, xs_p.length);
+		if(fill != null){
+			g2.setColor(fill);
+			g2.fillPolygon(xs_p, ys_p, xs_p.length);
 		}
+	}
+
+	protected void drawString_inM(Graphics2D g, String text, Point topLeft){
+		Graphics2D g2 = (Graphics2D) g.create();
+		
+		g2.setFont(DIMENSION_FONT);
+		Point midLeft = topLeft.offsetYByPixels(3*g2.getFontMetrics().getHeight()/4);
+		
+		g2.drawString(text, midLeft.x_pix(), midLeft.y_pix());
+	}
 
 	//===========================================================================================================================
 
@@ -214,6 +218,21 @@ public abstract class AbstractView extends JPanel {
 	//======[ Misc/Distances ]=====================================================================================================
 
 	protected abstract double largestHeight();
+
+	protected double runwayWidth(){
+		double defTORA;
+		if(getRunway().isSmallEnd()){
+			defTORA = getAirfield().getDefaultSmallAngledRunway().getTODA();
+		}else{
+			defTORA = getAirfield().getDefaultLargeAngledRunway().getTODA();
+		}
+		return getAirfield().getStripEnd()+defTORA+getAirfield().getStripEnd();
+	}
+	
+	protected int s(){ 
+		if(getRunway().isSmallEnd()) return 1;
+		return -1;
+	}
 
 
 	class Point{
@@ -237,20 +256,33 @@ public abstract class AbstractView extends JPanel {
 
 		public double x_m(){ return this.xm; }
 		public int x_pix() { return Xm_to_pixels(this.xm); }
-		
+
 		public double y_m(){ return this.ym; }
 		public int y_pix() { return Ym_to_pixels(this.ym); }
 
-		
-		
+
+
 		public Point offsetXByPixels(int xPix){
 			return new Point(x_m() + Xpix_to_m(xPix),y_m());
 		}
 		public Point offsetYByPixels(int yPix){
 			return new Point(x_m(),y_m()+Ypix_to_m(yPix));
 		}
-		
-		
+
+		public Point offsetXByM(double xm){
+			return new Point(x_m() + xm, y_m());
+		}
+		public Point offsetYByM(double ym){
+			return new Point(x_m(), y_m()+ym);
+		}
+
+		public Point add(Point p){
+			return new Point(x_m()+p.x_m(), y_m()+p.y_m());
+		}
+		public Point minus(Point p){
+			return new Point(x_m()-p.x_m(), y_m()-p.y_m());
+		}
+
 		private double xRelativeToPivot(){
 			//TODO complete later
 			return 0d;

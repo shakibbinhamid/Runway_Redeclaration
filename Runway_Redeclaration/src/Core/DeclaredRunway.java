@@ -295,6 +295,8 @@ public class DeclaredRunway implements DeclaredRunwayInterface{
 			s.append("\nLargest Factor("+largeFactorName+"): "+ largestFactor);
 			s.append("\n\nLDA = LDA - Dis - "+largeFactorName);
 			s.append("\n    = "+original.getLDA()+" - "+distFromObs+" - "+ largestFactor);
+			s.append("\n     = "+getLDA());
+
 			
 			this.line();
 
@@ -325,6 +327,8 @@ public class DeclaredRunway implements DeclaredRunwayInterface{
 			s.append("\nStrip End: "+ parent.getStripEnd());
 			s.append("\n\nLDA = Dis - RESA - strip end");
 			s.append("\n    = "+distFromObs+" - "+resa+" - "+parent.getStripEnd());
+			s.append("\n     = "+getLDA());
+
 			this.line();
 			
 			setLDA(newLDA);
@@ -361,10 +365,14 @@ public class DeclaredRunway implements DeclaredRunwayInterface{
 			s.append("\nDisplaced Threshold (DT): "+ original.getDisplacedThreshold());
 			s.append("\n\nTORA = TORA - Blast - Dis - DT");
 			s.append("\n     = "+original.getTORA()+" - "+parent.getBlastAllowance()+" - "+distFromObs+" - "+getDisplacedThreshold());
+			s.append("\n     = "+getTORA());
 			s.append("\nASDA = (R)TORA + Stopway");
 			s.append("\n     = "+newTORA+" + "+original.getStopway());
+			s.append("\n     = "+getASDA());
 			s.append("\nTODA = (R)TORA + Clearway");
 			s.append("\n     = "+newTORA+" + "+original.getClearway());
+			s.append("\n     = "+getTODA());
+
 			this.line();
 		}
 
@@ -398,6 +406,7 @@ public class DeclaredRunway implements DeclaredRunwayInterface{
 			s.append("\nStrip End: "+ parent.getStripEnd()+"m");
 			s.append("\n\nTORA = Dis + DT - ALS - Strip End");
 			s.append("\n     = "+distFromObs+" + "+original.getDisplacedThreshold()+" - "+ALS+" - "+parent.getStripEnd());
+			s.append("\n     = "+getTORA());
 			s.append("\nASDA = (R)TORA");
 			s.append("\nTODA = (R)TORA");
 			this.line();
