@@ -8,6 +8,8 @@ import java.awt.image.BufferedImage;
 
 import javafx.beans.binding.IntegerBinding;
 
+import java.awt.image.BufferedImage;
+
 
 import javax.swing.JPanel;
 
