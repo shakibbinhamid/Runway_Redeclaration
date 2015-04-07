@@ -3,7 +3,7 @@ package listeners;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import view.FormAirfield;
+import view.FormCreateAirfield;
 import view.TopFrame;
 
 public class AirfieldListener implements ActionListener{
@@ -15,7 +15,7 @@ public class AirfieldListener implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		FormAirfield fa = new FormAirfield(topFrame);
+		FormCreateAirfield fa = new FormCreateAirfield(topFrame);
 		fa.init();
 	}
 	

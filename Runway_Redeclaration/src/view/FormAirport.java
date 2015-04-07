@@ -17,7 +17,7 @@ public class FormAirport extends FormGeneral {
 	TopFrame topFrame;
 
 	public FormAirport(TopFrame topFrame) {
-		super(topFrame, "Create Airport",true);
+		super(topFrame, "Create Airport");
 		this.topFrame = topFrame;
 		nameLabel = new JLabel("Insert Airport Name:");
 		name = new JTextField();
@@ -26,9 +26,9 @@ public class FormAirport extends FormGeneral {
 	}
 	
 	public void init(){
-		textFieldsPanel.setLayout(new BoxLayout(textFieldsPanel,BoxLayout.PAGE_AXIS));
-		textFieldsPanel.add(nameLabel);
-		textFieldsPanel.add(name);
+		centerPanel.setLayout(new BoxLayout(centerPanel,BoxLayout.PAGE_AXIS));
+		centerPanel.add(nameLabel);
+		centerPanel.add(name);
 		
 		setListener();
 		pack();
@@ -46,7 +46,7 @@ public class FormAirport extends FormGeneral {
 					Airport airport = new Airport(name.getText());
 					dispose();
 					topFrame.loadOrCreateAirport(airport);	
-					FormAirfield fa = new FormAirfield(topFrame);
+					FormCreateAirfield fa = new FormCreateAirfield(topFrame);
 					topFrame.loadOrCreateAirport(airport);					
 				}	
 			}

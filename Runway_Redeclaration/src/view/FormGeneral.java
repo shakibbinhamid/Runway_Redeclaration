@@ -10,17 +10,17 @@ import javax.swing.JPanel;
 
 
 public class FormGeneral extends JDialog {
-	protected JPanel textFieldsPanel;		
+	protected JPanel centerPanel;		
 	protected JPanel buttonPanel;	
 	protected JButton button;
 	
-	public FormGeneral(TopFrame topFrame, String title, boolean modality){
-		super(topFrame, title, modality);
-		textFieldsPanel = new JPanel();
+	public FormGeneral(TopFrame topFrame, String title){
+		super(topFrame, title, true);
+		centerPanel = new JPanel();
 		buttonPanel = new JPanel();
 		button = new JButton("Create");
 		
-		getContentPane().add(textFieldsPanel, BorderLayout.CENTER);
+		getContentPane().add(centerPanel, BorderLayout.CENTER);
 		buttonPanel.add(button);
 		getContentPane().add(buttonPanel, BorderLayout.SOUTH);
 		this.getRootPane().setDefaultButton(button);

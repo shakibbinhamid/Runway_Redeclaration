@@ -1,46 +1,24 @@
 package view;
 
-import java.awt.BorderLayout;
-import java.awt.Font;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import Core.Airfield;
-import Core.Airport;
 import CoreInterfaces.PositionedObstacleInterface;
 import Exceptions.VariableDeclarationException;
 
 public class FormEditAirfield extends FormAirfield{
 	Airfield currentAirfield;
-	/*
-	// TESTING 
-	public static void main(String[] args) {
-		test();
-	}
-	
-	public static void test(){
-		double[] testSmallValues = {3500,4000,4500,2500};
-		double[] testBigValues = {4000,4500,5000,3000};
-		TopFrame tf = new TopFrame();
-		Airport airp = new Airport("Gatwicked");
-		tf.loadOrCreateAirport(airp);
-		try {
-			tf.loadOrCreateField(90, 'L', testSmallValues, testBigValues);
-			tf.loadOrCreateAirport(airp);
-		} catch (VariableDeclarationException e) {
-			e.printStackTrace();
-		}
-		
-		FormEditAirfield fa = new FormEditAirfield(tf);
-	}*/
+	JLabel airfieldLabel;
+	JLabel airfieldNameLabel;
+	JLabel smallVLabel;
+	JLabel largeVLabel;
 	
 	public FormEditAirfield(TopFrame topFrame){
 		super(topFrame, "Edit airfield");
@@ -51,24 +29,36 @@ public class FormEditAirfield extends FormAirfield{
 	
 	public void setUpEditingForm(){
 		button.setText("Apply");
-		angleLabel = new JLabel("Airfield ");
-		angleLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-		angleTextBox.setText(currentAirfield.getName());
-		angleTextBox.setEditable(false);
-		sideLabel.setText(currentAirfield.getName());
-		sideComboBox.setSelectedItem(currentAirfield.getSmallAngledRunway().getSideLetter());
-		sideComboBox.setEditable(false);
+		airfieldLabel = new JLabel("Airfield ");
+		airfieldLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+		airfieldNameLabel = new JLabel(currentAirfield.getName());
 		
+		String smallTora = String.valueOf(topFrame.getTabbePanel().getActiveField().getDefaultSmallAngledRunway().getTORA());
+		String smallToda = String.valueOf(topFrame.getTabbePanel().getActiveField().getDefaultSmallAngledRunway().getTODA());
+		String smallAsda = String.valueOf(topFrame.getTabbePanel().getActiveField().getDefaultSmallAngledRunway().getASDA());
+		String smallLda = String.valueOf(topFrame.getTabbePanel().getActiveField().getDefaultSmallAngledRunway().getLDA());
+		String bigTora = String.valueOf(topFrame.getTabbePanel().getActiveField().getDefaultLargeAngledRunway().getTORA());
+		String bigToda = String.valueOf(topFrame.getTabbePanel().getActiveField().getDefaultLargeAngledRunway().getTODA());
+		String bigAsda = String.valueOf(topFrame.getTabbePanel().getActiveField().getDefaultLargeAngledRunway().getASDA());
+		String bigLda = String.valueOf(topFrame.getTabbePanel().getActiveField().getDefaultLargeAngledRunway().getLDA());
+		
+		bigTORATextBox.setText(bigTora);
+		bigTODATextBox.setText(bigToda);
+		bigASDATextBox.setText(bigAsda);
+		bigLDATextBox.setText(bigLda);
+		smallTORATextBox.setText(smallTora);
+		smallTODATextBox.setText(smallToda);
+		smallASDATextBox.setText(smallAsda);
+		smallLDATextBox.setText(smallLda);
+		
+		setPreferredSize(new Dimension(400,250));
 	}
+	
 public void init(){
-		
-		
 		upperPanel.setLayout(new GridLayout(3,2));
-		upperPanel.add(angleLabel);
-		upperPanel.add(sideLabel);
-		//upperPanel.add(angleTextBox);
+		upperPanel.add(airfieldLabel);
+		upperPanel.add(airfieldNameLabel);
 		upperPanel.add(new JLabel());
-//		upperPanel.add(sideComboBox);
 		upperPanel.add(new JLabel());
 		
 		String dan = topFrame.getTabbePanel().getActiveField().getDefaultSmallAngledRunway().getIdentifier();
@@ -80,142 +70,19 @@ public void init(){
 		largeValuesLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		upperPanel.add(largeValuesLabel);
 		
-		bottomPanel.setLayout(new GridLayout(5, 3));
-		
-		
-//		bottomPanel.add(smallTORALabel);
-//		bottomPanel.add(bigTORALabel);
-		bottomPanel.add(smallTORATextBox);
-		JLabel toraLabel = new JLabel("TORA");
-		toraLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		bottomPanel.add(toraLabel);
-		bottomPanel.add(bigTORATextBox);
-		
-//		bottomPanel.add(smallTODALabel);
-//		bottomPanel.add(bigTODALabel);
-		bottomPanel.add(smallTODATextBox);
-		JLabel todaLabel = new JLabel("TODA");
-		todaLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		bottomPanel.add(todaLabel);;
-		bottomPanel.add(bigTODATextBox);
-		
-//		bottomPanel.add(smallASDALabel);
-//		bottomPanel.add(bigASDALabel);
-		bottomPanel.add(smallASDATextBox);
-		JLabel asdaLabel = new JLabel("ASDA");
-		asdaLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		bottomPanel.add(asdaLabel);		
-		bottomPanel.add(bigASDATextBox);
-		
-//		bottomPanel.add(smallLDALabel);
-//		bottomPanel.add(bigLDALabel);
-		bottomPanel.add(smallLDATextBox);
-		JLabel ldaLabel = new JLabel("LDA");
-		ldaLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		bottomPanel.add(ldaLabel);
-		bottomPanel.add(bigLDATextBox);
-		
-		textFieldsPanel.setLayout(new BorderLayout());
-		textFieldsPanel.add(upperPanel, BorderLayout.NORTH);
-		textFieldsPanel.add(bottomPanel, BorderLayout.CENTER);
-		
-		smallValueTextFields.add(smallTORATextBox);
-		bigValueTextFields.add(bigTORATextBox);
-		smallValueTextFields.add(smallASDATextBox);
-		bigValueTextFields.add(bigASDATextBox);
-		smallValueTextFields.add(smallTODATextBox);
-		bigValueTextFields.add(bigTODATextBox);
-		smallValueTextFields.add(smallLDATextBox);
-		bigValueTextFields.add(bigLDATextBox);
-		
-		
-//		for(int i=0;i<4;i++){
-//			Font newTextFieldFont; 
-//			JTextField currentSmall =  smallValueTextFields.get(i);
-//			JTextField currentBig =  bigValueTextFields.get(i);
-//			newTextFieldFont = new Font(currentSmall.getFont().getName(),Font.ITALIC,currentSmall.getFont().getSize());
-//			currentSmall.setFont(newTextFieldFont);
-//			currentBig.setFont(newTextFieldFont);
-//		}
-		
-		
-		setTextfieldsListener();
-		setListener();
+		setButtonListener();
 		pack();
 		this.setResizable(false);
 		this.setVisible(true);
 	}
 	
-	public void setTextfieldsListener(){
-		
-		for(final JTextField jtf : smallValueTextFields){
-			jtf.addFocusListener(new FocusListener() {
-				Font newTextFieldFont=new Font(jtf.getFont().getName(),Font.ITALIC,jtf.getFont().getSize());
-				public void focusLost(FocusEvent e) {
-					if (jtf.getText().equals("")){
-						//jtf.setFont(newTextFieldFont);
-						if(smallValueTextFields.indexOf(jtf) == 0){
-							jtf.setText(String.valueOf(currentAirfield.getDefaultSmallAngledRunway().getTORA()));
-						}
-						if(smallValueTextFields.indexOf(jtf) == 2){
-							jtf.setText(String.valueOf(currentAirfield.getDefaultSmallAngledRunway().getTODA()));
-						}
-						if(smallValueTextFields.indexOf(jtf) == 1){
-							jtf.setText(String.valueOf(currentAirfield.getDefaultSmallAngledRunway().getASDA()));
-						}
-						if(smallValueTextFields.indexOf(jtf) == 3){
-							jtf.setText(String.valueOf(currentAirfield.getDefaultSmallAngledRunway().getLDA()));
-						}
-					}
-				}
-				public void focusGained(FocusEvent e) {
-					jtf.setFont(null);
-					//jtf.setText("");
-				}
-			});
-		}
-		
-		for(final JTextField jtf : bigValueTextFields){
-			jtf.addFocusListener(new FocusListener() {
-				Font newTextFieldFont=new Font(jtf.getFont().getName(),Font.ITALIC,jtf.getFont().getSize());
-				public void focusLost(FocusEvent e) {
-					if (jtf.getText().equals("")){
-						//jtf.setFont(newTextFieldFont);
-						if(bigValueTextFields.indexOf(jtf) == 0){
-							jtf.setText("dlkjfdlkjf ");
-						}
-						if(bigValueTextFields.indexOf(jtf) == 2){
-							jtf.setText(String.valueOf(currentAirfield.getDefaultLargeAngledRunway().getTODA()));
-						}
-						if(bigValueTextFields.indexOf(jtf) == 1){
-							jtf.setText(String.valueOf(currentAirfield.getDefaultLargeAngledRunway().getASDA()));
-						}
-						if(bigValueTextFields.indexOf(jtf) == 3){
-							jtf.setText(String.valueOf(currentAirfield.getDefaultLargeAngledRunway().getLDA()));
-						}
-					}
-				}
-				public void focusGained(FocusEvent e) {
-					jtf.setFont(null);
-					//jtf.setText("");
-				}
-			});
-		}
-	}
-	
-
-	public void setListener(){
-		
+	public void setButtonListener(){
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				boolean okToAdd = false;
-				
 				double[] smallInputs = new double[4];
 				double[] bigInputs = new double[4];
-				int angle ;
-				//String sideStrig= (String) sideComboBox.getSelectedItem();
-	;
-				
+				int angle;
 					for (int i = 0; i < 4; i++) {
 						try {
 							if (Double.parseDouble(smallValueTextFields.get(i).getText()) < 0

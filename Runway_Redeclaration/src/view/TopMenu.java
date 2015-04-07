@@ -100,7 +100,7 @@ public class TopMenu extends JMenuBar{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (frame.getAirport() != null)
-					new FormAirfield(frame);
+					new FormCreateAirfield(frame);
 				else 
 					JOptionPane.showMessageDialog(frame, "Please load or create an airport first!", "ERROR: Cannot make an airfield", JOptionPane.ERROR_MESSAGE);
 			}});

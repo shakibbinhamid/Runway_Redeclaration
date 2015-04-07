@@ -32,13 +32,12 @@ public class FormObstacle extends FormGeneral {
 	JTextField distFromLeftTextBox;
 	JLabel distFromRightLabel;
 	JTextField distFromRightTextBox;
-	
 	JLabel airfieldLabel;
 	JComboBox<String> airfieldComboBox;
 	
 	// constructor used for editing 
 	public FormObstacle(TopFrame topFrame, String title) {
-		super(topFrame, title, true);
+		super(topFrame, title);
 		this.topFrame = topFrame;
 		
 		nameLabel = new JLabel("Edit Name:");
@@ -87,7 +86,7 @@ public class FormObstacle extends FormGeneral {
 	}
 
 	public FormObstacle(TopFrame topFrame) {
-		super(topFrame, "Create Obstacle", true);
+		super(topFrame, "Create Obstacle");
 		this.topFrame = topFrame;
 		
 		nameLabel = new JLabel("Insert Name:");
@@ -106,21 +105,14 @@ public class FormObstacle extends FormGeneral {
 		
 		airfieldComboBox.addItemListener(new ItemListener(){
 
-			@Override
 			public void itemStateChanged(ItemEvent e) {
-
-				System.out.println("CRAZY");
-
 				distFromLeftLabel.setText("Edit Distance From "+ ((String)airfieldComboBox.getSelectedItem()).split("/")[0]);
 				distFromRightLabel.setText("Edit Distance From "+ ((String)airfieldComboBox.getSelectedItem()).split("/")[1]);
-
 				repaint();
 			}
-
 		});
 		
 		setPreferredSize(new Dimension(300,350));
-		
 		init();
 	}
 	
@@ -132,23 +124,23 @@ public class FormObstacle extends FormGeneral {
 	}
 	
 	public void init(){
-		textFieldsPanel.setLayout(new BoxLayout(textFieldsPanel, BoxLayout.Y_AXIS));
+		centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
 		
-		textFieldsPanel.add(nameLabel);
-		textFieldsPanel.add(nameTextBox);
-		textFieldsPanel.add(radiusLabel);
-		textFieldsPanel.add(radiusTextBox);
-		textFieldsPanel.add(heigthLabel);
-		textFieldsPanel.add(heigthTextBox);	
-		textFieldsPanel.add(distFromLeftLabel);
-		textFieldsPanel.add(distFromLeftTextBox);
-		textFieldsPanel.add(distFromRightLabel);
-		textFieldsPanel.add(distFromRightTextBox);
+		centerPanel.add(nameLabel);
+		centerPanel.add(nameTextBox);
+		centerPanel.add(radiusLabel);
+		centerPanel.add(radiusTextBox);
+		centerPanel.add(heigthLabel);
+		centerPanel.add(heigthTextBox);	
+		centerPanel.add(distFromLeftLabel);
+		centerPanel.add(distFromLeftTextBox);
+		centerPanel.add(distFromRightLabel);
+		centerPanel.add(distFromRightTextBox);
 		
 		populateAirfieldComboBox();
 		
-		textFieldsPanel.add(airfieldLabel);
-		textFieldsPanel.add(airfieldComboBox);
+		centerPanel.add(airfieldLabel);
+		centerPanel.add(airfieldComboBox);
 		
 		setListener();
 		pack();
