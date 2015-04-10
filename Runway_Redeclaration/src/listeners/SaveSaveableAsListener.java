@@ -9,6 +9,8 @@ import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
+import notification.Notification;
+import notification.NotificationPanel;
 import view.TopFrame;
 import CoreInterfaces.Savable;
 import Exceptions.NothingToSaveException;
@@ -90,6 +92,7 @@ public abstract class SaveSaveableAsListener implements ActionListener{
 						selectedFile = new File(selectedFile.getAbsolutePath() + getExt());
 					}
 					else{
+						NotificationPanel.notifyIt("Wrong file extension.", getExt() + " is not a valid file type.", Notification.ERROR);
 						throw new WrongFileExtensionException(selectedFile.getName(), type);
 					}
 				}

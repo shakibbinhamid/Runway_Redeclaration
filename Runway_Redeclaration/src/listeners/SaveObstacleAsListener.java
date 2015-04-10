@@ -1,6 +1,6 @@
 package listeners;
  
-import io.ObstacleFileFilter;
+import io.CustomFilter;
 
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -13,7 +13,7 @@ import Exceptions.NothingToSaveException;
  
 public class SaveObstacleAsListener extends SaveSaveableAsListener  implements ActionListener{
 	public SaveObstacleAsListener(TopFrame frame){
-    	super("obstacle", "Obstacle", new ObstacleFileFilter());
+    	super("obstacle", "Obstacle", CustomFilter.getObsFilter());
         this.frame = frame;
     }
 

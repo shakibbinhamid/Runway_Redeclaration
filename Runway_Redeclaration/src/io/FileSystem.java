@@ -19,14 +19,14 @@ import Exceptions.NothingToSaveException;
  */
 public class FileSystem {
 
-	private String wd = "./";
-	private String datDir = "/dat";
-	private String airDir = "/airports";
-	private String objDir = "/obs";
+	private static final String wd = "./";
+	private static final String datDir = "/dat";
+	private static final String airDir = "/airports";
+	private static final String objDir = "/obs";
 
-	private String xmlext = ".xml";
-	private String objext = ".obj";
-	private String airext = ".air";
+	private static final String xmlext = ".xml";
+	private static final String objext = ".obj";
+	private static final String airext = ".air";
 
 	private File dat, airports, obstacles;
 
@@ -170,6 +170,7 @@ public class FileSystem {
 		
 	}
 	
+	//Getters for standard values
 	public String getAirDir(){
 		return wd + datDir + airDir + "/";
 	}

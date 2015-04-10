@@ -1,24 +1,22 @@
 package listeners;
 
-import io.AirportFileFilter;
+
+import io.CustomFilter;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.FileFilter;
-
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 import view.TopFrame;
 
 public class LoadAirportListener implements ActionListener{
 
 	private TopFrame frame;
-	private AirportFileFilter filter;
+	private CustomFilter filter;
 	private String typeDir;
 	
 	public LoadAirportListener(TopFrame frame){
 		this.frame = frame;
-		filter = new AirportFileFilter(); 
+		filter = CustomFilter.getAirFilter(); 
 		typeDir = "airports/";
 
 	}

@@ -1,9 +1,6 @@
 package view;
 
-import io.ImageFilter;
-import io.JPGFilter;
-import io.PNGFilter;
-import io.Print;
+import io.CustomFilter;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -148,15 +145,15 @@ public class TopMenu extends JMenuBar{
 					
 					fc.setAcceptAllFileFilterUsed(false);
 					fc.setCurrentDirectory(new File("./"));
-					fc.addChoosableFileFilter(new JPGFilter());
-					fc.addChoosableFileFilter(new PNGFilter());
+					fc.addChoosableFileFilter(new CustomFilter("JPG", ".jpg", "JPEG Files"));
+					fc.addChoosableFileFilter(new CustomFilter("PNG", ".png", "PNG Files"));
 					int select = fc.showSaveDialog(frame);
 					if(select == JFileChooser.APPROVE_OPTION){
 						File fileToSave = fc.getSelectedFile();
 						try {
-							ImageFilter filter = (ImageFilter) fc.getFileFilter();
+							CustomFilter filter = (CustomFilter) fc.getFileFilter();
 							//Fix for Mac
-							if(filter == null) filter = new JPGFilter();
+							if(filter == null) filter = new CustomFilter("JPG", ".jpg", "JPEG Files");
 							frame.getTabbePanel().getActiveTab().saveTopView(fileToSave.getAbsolutePath() + filter.getExt(), filter.getName());
 							JOptionPane.showMessageDialog(frame, "Saved Successfully at "+ fileToSave.getAbsolutePath(), "SAVING DONE", JOptionPane.INFORMATION_MESSAGE);
 						} catch (IOException e1) {

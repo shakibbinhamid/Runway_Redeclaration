@@ -281,7 +281,8 @@ public class DeclaredRunway implements DeclaredRunwayInterface{
 			String largeFactorName = "Nope";
 			if(largestFactor ==  parent.getBlastAllowance()){
 				largeFactorName = "Blast Allowance";
-			}else if(largestFactor-parent.getStripEnd()==RESA){  
+			}else if(largestFactor-parent.getStripEnd()==RESA){
+				
 				largeFactorName = "RESA";
 			}else{
 				largeFactorName = "ALS";
@@ -322,12 +323,14 @@ public class DeclaredRunway implements DeclaredRunwayInterface{
 				newLDA = original.getLDA();
 			}
 			
+			setLDA(newLDA);
+			
 			s.append("Distance From Obs(Dis): "+distFromObs);
 			s.append("\nRESA: "+resa);
 			s.append("\nStrip End: "+ parent.getStripEnd());
 			s.append("\n\nLDA = Dis - RESA - strip end");
 			s.append("\n    = "+distFromObs+" - "+resa+" - "+parent.getStripEnd());
-			s.append("\n     = "+getLDA());
+			s.append("\n    = "+getLDA());
 
 			this.line();
 			

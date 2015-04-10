@@ -1,6 +1,6 @@
 package listeners;
 
-import io.ObstacleFileFilter;
+import io.CustomFilter;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,12 +12,12 @@ import view.TopFrame;
 public class LoadObstacleListener implements ActionListener{
 
 	private TopFrame frame;
-	private ObstacleFileFilter filter;
+	private CustomFilter filter;
 	private String typeDir;
 
 	public LoadObstacleListener(TopFrame frame){
 		this.frame = frame;
-		filter = new ObstacleFileFilter(); 
+		filter = CustomFilter.getObsFilter(); 
 		typeDir = "obs/";
 
 	}

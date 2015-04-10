@@ -1,6 +1,6 @@
 package view;
 
-import io.AirportFileFilter;
+import io.CustomFilter;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
@@ -101,7 +101,7 @@ public class WelcomePanel extends JPanel {
 		loadAirport.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new LoadListener(topframe, new AirportFileFilter(), "airports/");
+				new LoadListener(topframe, CustomFilter.getAirFilter(), "airports/");
 				topframe.switchToTabbedPanel();
 			}
 		});

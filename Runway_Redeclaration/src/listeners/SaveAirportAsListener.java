@@ -1,6 +1,6 @@
 package listeners;
  
-import io.AirportFileFilter;
+import io.CustomFilter;
 
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -12,7 +12,7 @@ import Exceptions.NothingToSaveException;
  
 public class SaveAirportAsListener extends SaveSaveableAsListener  implements ActionListener{
     public SaveAirportAsListener(TopFrame frame){
-    	super("airport", "Airport", new AirportFileFilter());
+    	super("airport", "Airport", CustomFilter.getAirFilter());
         this.frame = frame;
     }
 
