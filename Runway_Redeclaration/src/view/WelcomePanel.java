@@ -19,26 +19,13 @@ import listeners.LoadListener;
 /**
  * 
  * @author Stefan
- *
+ * @editor Shakib
  */
 public class WelcomePanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 
 	private JCheckBox helpingDevelopers;
 	private TopFrame topframe;
-
-//	public static void main(String[] args){
-//
-//		JFrame f = new JFrame("Test");
-//		f.setContentPane(new WelcomePanel());
-//
-//		f.setVisible(true);
-//		f.setSize(700, 300);
-//		f.setLocationRelativeTo(null);
-//	}
-//	public WelcomePanel(){
-//		this(null);
-//	}
 
 	public WelcomePanel(TopFrame top){
 		this.helpingDevelopers = new JCheckBox("Give permission to send log files to help development?", true);
@@ -58,8 +45,6 @@ public class WelcomePanel extends JPanel {
 		JLabel title2 = new JLabel("Welcome");
 		title1.setHorizontalAlignment(SwingConstants.CENTER);
 		title2.setHorizontalAlignment(SwingConstants.CENTER);
-		
-
 		
 		title1.setFont(new Font("Verdana",Font.BOLD,35));
 		title2.setFont(new Font("Verdana",Font.BOLD,35));
@@ -84,7 +69,6 @@ public class WelcomePanel extends JPanel {
 		buttons.setLayout(new GridLayout(2,1));
 		int gap = 50;
 		buttons.setBorder(BorderFactory.createEmptyBorder(0, gap, gap, gap*2));
-
 
 		JButton createAirport = new JButton("Create New Airport");
 		buttons.add(createAirport);

@@ -79,8 +79,8 @@ public class TopFrame extends JFrame{
 		
 		this.setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setTitle("Runway Redeclaration Tool v.0.81");
-		this.setMinimumSize(new Dimension(1200,600));
+		this.setTitle("Runway Redeclaration Tool v.0.91");
+		this.setMinimumSize(new Dimension(1200,630));
 		tabbedPanel.setMinimumSize(new Dimension(this.getMinimumSize().width - 300, 200));
 		this.pack();
 		this.setLocationRelativeTo(null);
@@ -91,18 +91,20 @@ public class TopFrame extends JFrame{
 	
 	/**
 	 * To be used by the airport loader or creator
+	 * Causes a Notification on the Notification Panel
 	 * @param airport the airport to be loaded or created
 	 */
 	public void loadOrCreateAirport(AirportInterface airport){
 		setAirport(airport);
 		logPanel.updateLabelText(airport.getName());
-		tabbedPanel.updateTabs(airport);
+		tabbedPanel.setAirport(airport);
 		NotificationPanel.notifyIt(airport.getName()+" Added", airport.getName() +" loaded.", Notification.FILE);
 		switchToTabbedPanel();
 	}
 	
 	/**
 	 * To be used by the airfield loader or creator
+	 * Causes a Notification on Notification Panel
 	 * @param parseInt the angle from north
 	 * @param physicalInputs physical dimensions of the runway
 	 * @param smallInputs parameters of small angled runway
@@ -122,6 +124,7 @@ public class TopFrame extends JFrame{
 
 	/**
 	 * To be used by the airfield loader or creator
+	 * Causes a Notification on Notification Panel
 	 * @param obs the obstacle to be loaded
 	 * @param field the airfield to be added to
 	 * @param distanceFromLeft distance from the left hand side
@@ -148,6 +151,10 @@ public class TopFrame extends JFrame{
 		return airport;
 	}
 	
+	/**
+	 * Returns true if there is an active airport, false otherwise
+	 * @return true if there is an airport, false otherwise
+	 */
 	public boolean hasAirport(){
 		return !(getAirport()==null);
 	}
@@ -176,10 +183,9 @@ public class TopFrame extends JFrame{
 		return logPanel;
 	}
 	
-	
 	protected void switchToTabbedPanel(){
 		if(hasAirport()){
-			this.remove(this.welcomePanel);;
+			this.remove(welcomePanel);
 			topPanel.setRightComponent(this.tabbedPanel);
 		}
 		repaint();
@@ -187,6 +193,6 @@ public class TopFrame extends JFrame{
 	}
 	
 	protected boolean isUserHelpingDeveloper(){
-		return this.welcomePanel.isHelpingDeveloper();
+		return welcomePanel.isHelpingDeveloper();
 	}
 }
