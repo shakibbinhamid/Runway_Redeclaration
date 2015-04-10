@@ -19,6 +19,7 @@ public class InfoPanel extends JPanel{
 
 	private static final String[] runwayColumnNames 	= 	{"Parameter","Default (m)", "Redeclared (m)"};
 	private static final String[] obstacleColumnNames 	= 	{"Parameter", "Value (m)"};
+	private static final String DEGREE  = "\u00b0";
 
 	private AirfieldInterface field;
 	private DeclaredRunwayInterface defaultRunway;
@@ -29,17 +30,17 @@ public class InfoPanel extends JPanel{
 	private TablePanel obstacleDataTable;
 	private TablePanel advancedDataTable;
 
-	public InfoPanel( AirfieldInterface field, DeclaredRunwayInterface[] runways, PositionedObstacleInterface obs){
+	public InfoPanel( AirfieldInterface field){
+		init();
+		
+		DeclaredRunwayInterface[] runways = new DeclaredRunwayInterface[]{field.getDefaultRunways()[0],field.getRunways()[0]};
 
 		this.field = field;
-		this.setRunway(runways[0]);
-		this.setRunway(runways[1]);
-		this.setObs(obs);
+		this.setRunway(runways);
+		this.setObs(field.getPositionedObstacle());
 
 		this.setPreferredSize(new Dimension(300,800));
-		init();
-
-		updateAllTables(runways, obs);
+		
 	}
 
 	public void init(){
@@ -61,24 +62,32 @@ public class InfoPanel extends JPanel{
 		return defaultRunway;
 	}
 
-	public void setDefaultRunway(DeclaredRunwayInterface defaultRunway) {
-		this.defaultRunway = defaultRunway;
-	}
-
 	public DeclaredRunwayInterface getRunway() {
 		return runway;
 	}
 
-	public void setRunway(DeclaredRunwayInterface runway) {
-		this.runway = runway;
+	/**
+	 * Setting a Runway will require the Default and the Current Runway both.
+	 * It will update the Runway Data Tables.
+	 * @param runways = {Default, Current}
+	 */
+	public void setRunway(DeclaredRunwayInterface[] runways) {
+		this.defaultRunway = runways[0];
+		this.runway = runways[1];
+		updateRunwayTables(runways);
 	}
 
 	public ObstacleInterface getObs() {
 		return obs;
 	}
 
+	/**
+	 * Setting a Obstacle will also update the Obstacle table.
+	 * @param obs
+	 */
 	public void setObs(PositionedObstacleInterface obs) {
 		this.obs = obs;
+		updateObstacleTable(obs);
 	}
 
 	/**
@@ -107,7 +116,6 @@ public class InfoPanel extends JPanel{
 		if(defaultRunway != null && runway != null){
 			populateRunwayTable(defaultRunway, runway);
 			populateAdvancedTable(defaultRunway, runway);
-
 		}
 	}
 
@@ -143,14 +151,15 @@ public class InfoPanel extends JPanel{
 	}
 
 	private void populateAdvancedTable(DeclaredRunwayInterface def, DeclaredRunwayInterface run) {
+		
 		String[] resa, blast, clear, stop, angleA, angleD;
 
 		stop = new String[]{"Stopway",getRunwayPara(def, "stop"), getRunwayPara(run, "stop")};
 		clear = new String[]{"Clearway",getRunwayPara(def, "clear"), getRunwayPara(run, "clear")};
 		blast= new String[]{"Blast Allowance", getRunwayPara(def, "blast"), getRunwayPara(run, "blast")};
 		resa = new String[]{"RESA", getRunwayPara(def, "resa"), getRunwayPara(run, "resa")};
-		angleA = new String[]{"Ascent Angle", getRunwayPara(def, "ascent"), getRunwayPara(run, "ascent")};
-		angleD = new String[]{"Descent Angle", getRunwayPara(def, "descent"), getRunwayPara(run, "descent")};
+		angleA = new String[]{"Ascent Angle", getRunwayPara(def, "ascent")+ DEGREE, getRunwayPara(run, "ascent") + DEGREE};
+		angleD = new String[]{"Descent Angle", getRunwayPara(def, "descent")+ DEGREE, getRunwayPara(run, "descent") + DEGREE};
 
 		updateAdvancedTable(new String[][]{stop, clear, blast, resa, angleA, angleD});
 	}
@@ -250,16 +259,18 @@ public class InfoPanel extends JPanel{
 		/*
 		 * Every string[] is a row of data of the table.
 		 */
-		private void redrawTable(String[][] data){;
-		int rowCount=tableModel.getRowCount();
-		for(int i = rowCount - 1; i >=0; i--){
-			tableModel.removeRow(i); 
+		private void redrawTable(String[][] data){
+			int rowCount=tableModel.getRowCount();
+			
+			for(int i = rowCount - 1; i >=0; i--){
+				tableModel.removeRow(i); 
+			}
+			
+			for(int i=0; i<data.length; i++){
+				tableModel.addRow(data[i]);
+			}
+			
+			table.revalidate();
 		}
-		for(int i=0; i<data.length; i++){
-			tableModel.addRow(data[i]);
-		}
-		table.revalidate();
-		}
-
 	}
 }

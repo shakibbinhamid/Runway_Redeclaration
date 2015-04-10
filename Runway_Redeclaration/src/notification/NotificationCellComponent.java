@@ -25,10 +25,10 @@ import javax.swing.text.StyleContext;
  */
 public class NotificationCellComponent extends JPanel {
 	
-	private static final Color FILE = new Color(128, 0, 0); 
-	private static final Color CALC = new Color(75, 0, 130); 
-	private static final Color DEFAULT = Color.BLACK; 
-	private static final Color ERROR = Color.RED; 
+	private static final Color FILE_COLOR = new Color(128, 0, 0); 
+	private static final Color CALC_COLOR = new Color(75, 0, 130); 
+	private static final Color DEFAULT_COLOR = Color.BLACK; 
+	private static final Color ERROR_COLOR = Color.RED; 
 
 	private Notification notification;
 
@@ -43,7 +43,7 @@ public class NotificationCellComponent extends JPanel {
 	private JButton print;
 	private JTextPane all;
 
-	public NotificationCellComponent(Notification n) {
+	protected NotificationCellComponent(Notification n) {
 		this.notification = n;
 		init();
 	}
@@ -113,20 +113,20 @@ public class NotificationCellComponent extends JPanel {
 	} 
 	
 	private void notifyDefault(String s){ 
-		addLog(s, DEFAULT); 
+		addLog(s, DEFAULT_COLOR); 
 	} 
 
 	private void notifyFile(String s){ 
-		addLog(s, FILE); 
+		addLog(s, FILE_COLOR); 
 	} 
 
 	private void notifyCalc(String s){ 
-		addLog(s, CALC); 
+		addLog(s, CALC_COLOR); 
 	} 
 	
 	private void addLog(String s, Color c){ 
 		all.setEditable(true); 
-		appendToPane(s, c); //TODO: Word wrap 
+		appendToPane(s, c);
 		all.setEditable(false); 
 	} 
 

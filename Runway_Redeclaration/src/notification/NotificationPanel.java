@@ -10,6 +10,12 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
+/**
+ * This is the Central Notificatin Panel.
+ * Primary method is notifyIt
+ * @author Shakib-Bin Hamid
+ *
+ */
 public class NotificationPanel extends JPanel{
 	
 	private static List<NotificationCellComponent> nots;
@@ -27,8 +33,8 @@ public class NotificationPanel extends JPanel{
 	}
 	
 	private void init(){
-		notsTable.setDefaultRenderer(NotificationCellComponent.class, new NotificationCellRenderer());
-		notsTable.setDefaultEditor(NotificationCellComponent.class, new NotificationCellEditor());
+		notsTable.setDefaultRenderer(NotificationCellComponent.class, new NotificationRendererEditor());
+		notsTable.setDefaultEditor(NotificationCellComponent.class, new NotificationRendererEditor());
 		notsTable.setFocusable(false);
 		notsTable.setRowSelectionAllowed(false);
 		model.addTableModelListener(new TableModelListener() {
@@ -49,12 +55,19 @@ public class NotificationPanel extends JPanel{
 		add(new JScrollPane(notsTable), BorderLayout.CENTER);
 	}
 	
+	/**
+	 * Creates a new Notification and updates the Notification panel.
+	 * 
+	 * @param title Headline of the Notification
+	 * @param details Details of the Notification
+	 * @param type Type can be <em> Notification.FILE, Notification.CALC, Notification.ERROR, Notification.DEFUALT </em>
+	 */
 	public static void notifyIt(String title, String details, String type){
 		nots.add(new NotificationCellComponent (new Notification(title, details, type)));
 		fire();
 	}
 	
-	public static void fire(){
+	protected static void fire(){
 		model.fireTableDataChanged();
 	}
 }

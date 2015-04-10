@@ -2,6 +2,7 @@ package view;
 
 import io.CustomFilter;
 
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -24,12 +25,21 @@ import listeners.SaveAirportListener;
 import listeners.SaveObjectListener;
 import listeners.SaveObstacleAsListener;
 
+/**
+ * Creates a TopMenu.
+ * 
+ * @author Shakib-Bin Hamid
+ *
+ */
 public class TopMenu extends JMenuBar{
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	private static final Font MENU_FONT = new Font("verdana", Font.PLAIN, 12);
+	private static final Font ITEM_FONT = new Font("verdana", Font.PLAIN, 12);
 
 	private JMenu edit, help;
 	private JMenu create, load, save, remove;
@@ -81,9 +91,9 @@ public class TopMenu extends JMenuBar{
 	private void createFileMenu(){
 		//================================CREATE MENU==============================================//
 		
-		createAirport = getItem("Create Airport", iairport, SwingConstants.LEFT);
-		createRunway = getItem("Create Airfield", iairfield, SwingConstants.LEFT);
-		createObstacle = getItem("Create Obstacle", iobstacle, SwingConstants.LEFT);
+		createAirport = getMenuItem("Create Airport", iairport, SwingConstants.LEFT);
+		createRunway = getMenuItem("Create Airfield", iairfield, SwingConstants.LEFT);
+		createObstacle = getMenuItem("Create Obstacle", iobstacle, SwingConstants.LEFT);
 		
 		createAirport.addActionListener(new ActionListener(){
 			@Override
@@ -110,20 +120,20 @@ public class TopMenu extends JMenuBar{
 		create = getMenu("Create", icreate, new JMenuItem[]{createAirport, createRunway, createObstacle});
 		
 		//================================LOAD MENU==============================================//
-		loadAirport = getItem("Load Airport", iairport, SwingConstants.LEFT);
-		loadObstacle = getItem("Load Obstacle", iobstacle, SwingConstants.LEFT);
+		loadAirport = getMenuItem("Load Airport", iairport, SwingConstants.LEFT);
+		loadObstacle = getMenuItem("Load Obstacle", iobstacle, SwingConstants.LEFT);
 		
 		load = getMenu("Load", iload, new JMenuItem[]{loadAirport, loadObstacle});
 		loadAirport.addActionListener(new LoadAirportListener(frame));
 		loadObstacle.addActionListener(new LoadObstacleListener(frame));
 		
 		//================================SAVE MENU==============================================//
-		saveAirport = getItem("Save Airport", iairport, SwingConstants.LEFT);
-		saveObstacle = getItem("Save Obstacle", iobstacle, SwingConstants.LEFT);
-		saveTopView = getItem("Save Topview", iview, SwingConstants.LEFT);
+		saveAirport = getMenuItem("Save Airport", iairport, SwingConstants.LEFT);
+		saveObstacle = getMenuItem("Save Obstacle", iobstacle, SwingConstants.LEFT);
+		saveTopView = getMenuItem("Save Topview", iview, SwingConstants.LEFT);
 		
-		saveAirportAs = getItem("Save Airport As", iairport, SwingConstants.LEFT);
-		saveObstacleAs = getItem("Save Obstacle As", iobstacle, SwingConstants.LEFT);
+		saveAirportAs = getMenuItem("Save Airport As", iairport, SwingConstants.LEFT);
+		saveObstacleAs = getMenuItem("Save Obstacle As", iobstacle, SwingConstants.LEFT);
 		
 		save = getMenu("Save", isave, new JMenuItem[]{saveAirport, saveObstacle, saveAirportAs, saveObstacleAs, saveTopView});
 		saveAirport.addActionListener(new SaveAirportListener(frame));
@@ -163,7 +173,7 @@ public class TopMenu extends JMenuBar{
 			}
 		});
 		
-		exit = getItem("Exit", iexit, SwingConstants.LEFT);
+		exit = getMenuItem("Exit", iexit, SwingConstants.LEFT);
 		exit.addActionListener(new ActionListener(){
 
 			@Override
@@ -174,8 +184,8 @@ public class TopMenu extends JMenuBar{
 	
 	private void createEditMenu(){
 		//================================EDIT MENU==============================================//
-		editRunway = getItem("Edit Runway", iairfield, SwingConstants.LEFT);
-		editObstacle = getItem("Edit Obstacles", iobstacle, SwingConstants.LEFT);
+		editRunway = getMenuItem("Edit Runway", iairfield, SwingConstants.LEFT);
+		editObstacle = getMenuItem("Edit Obstacles", iobstacle, SwingConstants.LEFT);
 		
 		editRunway.addActionListener(new ActionListener() {
 			
@@ -209,7 +219,7 @@ public class TopMenu extends JMenuBar{
 	}
 	
 	private void createRemoveMenu(){
-		removeObs = getItem("Remove Obstacle", iobstacle, SwingConstants.LEFT);
+		removeObs = getMenuItem("Remove Obstacle", iobstacle, SwingConstants.LEFT);
 		removeObs.addActionListener(new ActionListener(){
 
 			@Override
@@ -234,10 +244,15 @@ public class TopMenu extends JMenuBar{
 	
 	private void createHelpMenu(){
 		//================================HELP MENU==============================================//
-		about = getItem("About", iabout, SwingConstants.LEFT);
-		contact = getItem("Contact", icontact, SwingConstants.LEFT);
+		about = getMenuItem("About", iabout, SwingConstants.LEFT);
+		contact = getMenuItem("Contact", icontact, SwingConstants.LEFT);
 		
 		help = getMenu("Help", null, new JMenuItem[]{about, contact});
+	}
+	
+	private void addMenus(JMenu[] menus){
+		for(int i=0; i<menus.length; i++)
+			this.add(menus[i]);
 	}
 	
 	/**
@@ -247,11 +262,12 @@ public class TopMenu extends JMenuBar{
 	 * @param textAllignment text allignment of the menuitem
 	 * @return a jmenuitem with the settings
 	 */
-	private JMenuItem getItem(String text, Icon icon, int textAllignment){
-		
+	public static JMenuItem getMenuItem(String text, Icon icon, int textAllignment){
 		JMenuItem item = new JMenuItem(text);
 		item.setIcon(icon);
 		item.setHorizontalAlignment(textAllignment);
+		
+		item.setFont(ITEM_FONT);
 		
 		return item;
 	}
@@ -262,7 +278,6 @@ public class TopMenu extends JMenuBar{
 	 * @return an icon object based on the file
 	 */
 	public static ImageIcon getIcon(String location){
-		
 		return new ImageIcon(TopFrame.class.getResource(location));
 	}
 	
@@ -272,26 +287,15 @@ public class TopMenu extends JMenuBar{
 	 * @param items the jmenuitems to be added to it
 	 * @return a jmenu with the jmenuitems
 	 */
-	private JMenu getMenu(String text, Icon icon, JMenuItem[] items){
-		
+	public static JMenu getMenu(String text, Icon icon, JMenuItem[] items){
 		JMenu menu = new JMenu(text);
 		menu.setIcon(icon);
 		menu.setHorizontalAlignment(SwingConstants.LEFT);
 		for(int i=0; i<items.length; i++)
 			menu.add(items[i]);
+
+		menu.setFont(MENU_FONT);
 		
 		return menu;
 	}
-	
-	/**
-	 * 
-	 * @param menus the menus to be added
-	 */
-	private void addMenus(JMenu[] menus){
-		
-		for(int i=0; i<menus.length; i++)
-			this.add(menus[i]);
-		
-	}
-	
 }

@@ -6,7 +6,7 @@ import javax.swing.table.AbstractTableModel;
 public class NotificationModel extends AbstractTableModel {
 	List<NotificationCellComponent> feeds;
 
-	public NotificationModel(List<NotificationCellComponent> feeds) {
+	protected NotificationModel(List<NotificationCellComponent> feeds) {
 		this.feeds = feeds;
 	}
 

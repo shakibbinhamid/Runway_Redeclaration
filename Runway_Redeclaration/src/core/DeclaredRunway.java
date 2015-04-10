@@ -238,7 +238,7 @@ public class DeclaredRunway implements DeclaredRunwayInterface{
 		@Override
 		public void takeOffAwayLandOver(DeclaredRunwayInterface original, AirfieldInterface parent)throws VariableDeclarationException{
 			s.setLength(0);
-			s.append("\n-[ "+getIdentifier()+"Take Off Away & Land Over ]-\n");
+			s.append("\n-[ "+getIdentifier()+" Take Off Away & Land Over ]-\n");
 			this.line();
 			takeOffAwayFrom(original, parent);
 			landOver(original, parent);
@@ -248,7 +248,7 @@ public class DeclaredRunway implements DeclaredRunwayInterface{
 		@Override
 		public void takeOffTowardsLandTowards(DeclaredRunwayInterface original, AirfieldInterface parent)throws VariableDeclarationException{
 			s.setLength(0);
-			s.append("\n-[ "+getIdentifier()+"Take Off Towards & Land Towards ]-");
+			s.append("\n-[ "+getIdentifier()+" Take Off Towards & Land Towards ]-");
 			this.line();
 			takeOffTowardsOver(original, parent);
 			landTowards(original, parent);
@@ -296,7 +296,7 @@ public class DeclaredRunway implements DeclaredRunwayInterface{
 			s.append("\nLargest Factor("+largeFactorName+"): "+ largestFactor);
 			s.append("\n\nLDA = LDA - Dis - "+largeFactorName);
 			s.append("\n    = "+original.getLDA()+" - "+distFromObs+" - "+ largestFactor);
-			s.append("\n     = "+getLDA());
+			s.append("\n    = "+getLDA());
 
 			
 			this.line();
@@ -462,7 +462,7 @@ public class DeclaredRunway implements DeclaredRunwayInterface{
 		public void addToLog(String text){
 			log += text;
 			try{
-				NotificationPanel.notifyIt("Redeclaration on "+this.getIdentifier(),text, Notification.FILE);
+				NotificationPanel.notifyIt("Redeclaration on "+this.getIdentifier(),text, Notification.CALC);
 			}catch (NullPointerException np){
 				//External Logger not initialised
 			}

@@ -1,9 +1,14 @@
 package view;
 
 import java.awt.BorderLayout;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 
 import coreInterfaces.AirfieldInterface;
 import coreInterfaces.DeclaredRunwayInterface;
@@ -41,10 +46,10 @@ public class Tab extends JPanel{
 		dataPanel.setLayout(new BorderLayout());
 		this.add(dataPanel, BorderLayout.WEST);
 		
-		selectDirectionPanel = new ChooseRunwayPanel(this);
+		selectDirectionPanel = new ChooseRunwayPanel();
 		dataPanel.add(selectDirectionPanel, BorderLayout.NORTH);
 		
-		info = new InfoPanel(field, new DeclaredRunwayInterface[]{field.getDefaultRunways()[0], field.getRunways()[0]},obs);
+		info = new InfoPanel(field);
 		dataPanel.add(info, BorderLayout.CENTER);
 		
 		views = new ViewPanel(field, field.getSmallAngledRunway());
@@ -77,10 +82,6 @@ public class Tab extends JPanel{
 		this.views.getTopView().save(fullpath, ext);
 	}
 	
-	public void updateInfo(AirfieldInterface field){
-		
-	}
-	
 	/**
 	 * This is the method to call on a tab to switch between runways.
 	 * Note, obstacle will not be updated and will be removed
@@ -91,12 +92,47 @@ public class Tab extends JPanel{
 		views.updateView(another[1]);
 	}
 	
-	/**
-	 * This is the method to call on a tab to switch between obstacles
-	 * @param obs
-	 */
-	public void changeCurrentObstacle(PositionedObstacleInterface obs){
-		this.obs = obs;
-		info.updateObstacleTable(obs);
+	private class ChooseRunwayPanel extends JPanel{
+		
+		private JRadioButton smallAngled;
+		private JRadioButton bigAngled;
+		
+		private ChooseRunwayPanel(){
+			init();
+		}
+		
+		private void init(){
+			
+			String small = getField().getSmallAngledRunway().getIdentifier();
+			String big = getField().getLargeAngledRunway().getIdentifier();
+			
+			smallAngled = new JRadioButton(small);
+			bigAngled = new JRadioButton(big);
+			
+			ButtonGroup runwaySelection = new ButtonGroup();
+			runwaySelection.add(smallAngled);
+			runwaySelection.add(bigAngled);
+			
+			smallAngled.setSelected(true);
+			
+			smallAngled.addActionListener(new ActionListener(){
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					changeCurrentRunway(new DeclaredRunwayInterface[]{ getField().getDefaultSmallAngledRunway()
+																		, getField().getSmallAngledRunway()});
+				}});
+			bigAngled.addActionListener(new ActionListener(){
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					changeCurrentRunway(new DeclaredRunwayInterface[]{ getField().getDefaultLargeAngledRunway()
+																		, getField().getLargeAngledRunway()});
+				}});
+			this.setLayout(new GridLayout(1,0));
+			this.add(smallAngled);
+			this.add(bigAngled);
+		}
 	}
+
 }
+
+
