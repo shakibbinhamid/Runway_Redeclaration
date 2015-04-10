@@ -108,49 +108,6 @@ public class ViewTop extends JPanel{
 		startOfRoll = (int) getRunway().getStartOfRoll();
 		dt = (int) getRunway().getDisplacedThreshold();
 	}
-	/*
-	public static void main(String[] s){
-		SwingUtilities.invokeLater(new Runnable(){
-
-			@Override
-			public void run() {
-				
-				AirportInterface port = new Airport("Jim International");
-				AirfieldInterface air = null;
-				DeclaredRunwayInterface runway = null;
-				try {
-					port.addNewAirfield(90, 'L', new double[] {3902,3902,3902,3596}, new double[] {3884,3884,3962,3884});
-					air = port.getAirfield(port.getAirfieldNames().get(0));
-					runway = air.getSmallAngledRunway();
-					air.addObstacle(new Obstacle("Buggered A600 on fire",100,7), -50, 3646);//TODO I added an obstacle!
-					
-					
-				} catch (CannotMakeRunwayException | VariableDeclarationException e) {
-					e.printStackTrace();
-				} catch (UnrecognisedAirfieldIntifierException e) {
-					e.printStackTrace();
-				}
-				JPanel pane = new View(air, runway);
-				
-				JFrame frame = new JFrame();
-				frame.setMinimumSize(new Dimension (600,500));
-				frame.setContentPane(pane);
-				frame.setTitle("Testing");
-				frame.pack();
-				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				frame.setVisible(true);
-
-				pane.repaint();
-				
-				
-			}});
-		try {
-			Thread.sleep(60*1000);//60 secs
-			System.exit(0);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-	}*/
 	
 	public void save(String fullpath, String ext) throws IOException{
 		ImageIO.write(image, ext, new File(fullpath));
@@ -162,7 +119,7 @@ public class ViewTop extends JPanel{
 		VIEW_HEIGHT = this.getHeight() - 40;
 		image = new BufferedImage(VIEW_WIDTH, VIEW_HEIGHT, BufferedImage.TYPE_3BYTE_BGR);
 		doDrawing();
-		g.drawImage(image, 20, 20, null);
+		g.drawImage(image, 20, 25, null);
 	}
 
 	private Graphics getGraphicsComp(Graphics g, Color c){
@@ -498,14 +455,13 @@ public class ViewTop extends JPanel{
 	}
 
 
-	public void drawDimension(Graphics g, int lda,int dt, int direction, int startWhere, int defTora, String dimensionName, int dimensionLength, int howhighUp, int girth){
+	public void drawDimension(Graphics g, int lda, int dt, int direction, int startWhere, int defTora, String dimensionName, int dimensionLength, int howhighUp, int girth){
 		Graphics2D g2 = (Graphics2D) g.create();
 		
 		Font font = new Font("verdana", Font.BOLD, 10);
 		FontMetrics fontMetrics = g2.getFontMetrics(font);
 		int titleLen = fontMetrics.stringWidth(dimensionName);
 
-		System.out.println("============="+g2.getFont().getFontName()+"  "+g2.getFont().getSize());
 		int startStart, startEnd, endStart, endEnd;
 		
 		startStart = VIEW_WIDTH/2 - direction*(defTora/2-startWhere);
@@ -516,8 +472,8 @@ public class ViewTop extends JPanel{
  
 		int Y = VIEW_HEIGHT/2 - girth/2 - howhighUp;
 
-		drawArrow(g, startEnd, Y, startStart, Y);
-		drawArrow(g, endStart, Y, endEnd, Y);
+		g.drawLine(startEnd, Y, startStart, Y);
+		g.drawLine(endStart, Y, endEnd, Y);
 		//vertical line to edge of runway
 		g2.setStroke(new BasicStroke(0.75f));
 		g2.drawLine(startStart, Y, startStart, VIEW_HEIGHT/2-girth/2);
@@ -532,7 +488,7 @@ public class ViewTop extends JPanel{
 		final double GOING_LEFT = -Math.PI/2;
 		final double GOING_RIGHT = Math.PI/2;
 		
-		int x = VIEW_WIDTH/2;
+		int x = VIEW_WIDTH/2 + defGirth*3;
 		int y = 3*VIEW_HEIGHT/5 + defGirth*3;
 		
 		int planeDirection;
@@ -545,7 +501,7 @@ public class ViewTop extends JPanel{
 			planeDirection = 1;
 		}
 		int planeWingSpan = pixelsToScale(this.getHeight()/10);
-		int planex = x-planeDirection*defGirth*3;
+		int planex = x+planeDirection*defGirth*6;
 		int planey = y;
 		drawPlane(g, planeWingSpan, planex, planey, planeDirection);
 	}
@@ -573,23 +529,6 @@ public class ViewTop extends JPanel{
 		g2.setColor(outline);
 		g2.setStroke(new BasicStroke(0.35f));
 		g2.drawPolygon(xes, yses, xes.length);
-	}
-	
-	/** Whole single arrow */
-	private void drawArrow(Graphics g1, int x1, int y1, int x2, int y2) {
-		Graphics2D g2 = (Graphics2D) g1.create();
-
-		double dx = x2 - x1, dy = y2 - y1;
-		double angle = Math.atan2(dy, dx);
-		int len = (int) Math.sqrt(dx*dx + dy*dy);
-		AffineTransform at = AffineTransform.getTranslateInstance(x1, y1);
-		at.concatenate(AffineTransform.getRotateInstance(angle));
-		g2.transform(at);
-
-		// Draw horizontal arrow starting in (0, 0)
-		g2.drawLine(0, 0, len, 0);
-		g2.fillPolygon(new int[] {len, len-ARR_SIZE, len-ARR_SIZE, len},
-				new int[] {0, -ARR_SIZE, ARR_SIZE, 0}, 4);
 	}
 	
 	private void drawObstacle(Graphics2D g, int defSmalldt,int defLargedt, int defTora, double defGirth ) {

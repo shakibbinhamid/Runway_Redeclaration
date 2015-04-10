@@ -1,8 +1,8 @@
 <airport name="Gatwick">
    <airfields class="java.util.ArrayList">
-      <airfieldInterface class="Core.Airfield">
+      <airfieldInterface class="core.Airfield">
          <runways length="2">
-            <declaredRunwayInterface class="Core.DeclaredRunway">
+            <declaredRunwayInterface class="core.DeclaredRunway">
                <decTora>2565.0</decTora>
                <decLda>2243.0</decLda>
                <decAsda>2565.0</decAsda>
@@ -13,7 +13,7 @@
                <angle>80</angle>
                <direction>L</direction>
             </declaredRunwayInterface>
-            <declaredRunwayInterface class="Core.DeclaredRunway">
+            <declaredRunwayInterface class="core.DeclaredRunway">
                <decTora>2565.0</decTora>
                <decLda>2148.0</decLda>
                <decAsda>2565.0</decAsda>
@@ -26,7 +26,7 @@
             </declaredRunwayInterface>
          </runways>
          <defaultRunways length="2">
-            <declaredRunwayInterface class="Core.DeclaredRunway">
+            <declaredRunwayInterface class="core.DeclaredRunway">
                <decTora>2565.0</decTora>
                <decLda>2243.0</decLda>
                <decAsda>2565.0</decAsda>
@@ -37,7 +37,7 @@
                <angle>80</angle>
                <direction>L</direction>
             </declaredRunwayInterface>
-            <declaredRunwayInterface class="Core.DeclaredRunway">
+            <declaredRunwayInterface class="core.DeclaredRunway">
                <decTora>2565.0</decTora>
                <decLda>2148.0</decLda>
                <decAsda>2565.0</decAsda>

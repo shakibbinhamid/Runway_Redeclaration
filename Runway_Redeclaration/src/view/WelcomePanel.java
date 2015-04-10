@@ -60,7 +60,8 @@ public class WelcomePanel extends JPanel {
 
 		JPanel middle = new JPanel();
 		middle.setLayout(new GridLayout(2,1));
-		JLabel label = new JLabel("We noticed you have no airport loaded. Please choose an option from below");
+		JLabel label = new JLabel("<html> We noticed you have no airport loaded."
+								+ "<br> Please choose an option from below </html>");
 		label.setFont(new Font("verdana", Font.PLAIN, 20));
 		middle.add(label);
 		label.setHorizontalAlignment(SwingConstants.CENTER);
