@@ -25,7 +25,6 @@ import Exceptions.VariableDeclarationException;
  */
 public class TopFrame extends JFrame{
 	
-	
 	private JSplitPane topPanel;
 		private LogPanel logPanel;
 		private TabbedPanel tabbedPanel;

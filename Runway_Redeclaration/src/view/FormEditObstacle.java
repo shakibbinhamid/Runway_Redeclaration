@@ -7,10 +7,7 @@ import java.awt.event.FocusListener;
 
 import javax.swing.JTextField;
 
-import Core.Airport;
-import Core.Obstacle;
 import Core.PositionedObstacle;
-import Exceptions.VariableDeclarationException;
 
 public class FormEditObstacle extends FormObstacle{
 	PositionedObstacle currentObstacle;

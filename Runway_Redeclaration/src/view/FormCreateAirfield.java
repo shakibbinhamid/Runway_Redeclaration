@@ -1,22 +1,15 @@
 package view;
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.util.ArrayList;
 
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import Core.Airport;
 import Exceptions.VariableDeclarationException;
 
 public class FormCreateAirfield extends FormAirfield {
@@ -28,11 +21,16 @@ public class FormCreateAirfield extends FormAirfield {
 
 	public FormCreateAirfield(TopFrame topFrame) {
 		super(topFrame, "Create Airfield");
+		//setHeaderLabels("Insert Left Starting Runway values", "Insert Right Starting Runway values");
 		String[] sides = {" ","L","R","C"};
 		angleLabel = new JLabel("Insert Airfield Angle to the North:");
 		angleTextBox = new JTextField();
-		sideLabel = new JLabel("Choose the side of the runway:");
+		sideLabel = new JLabel("Choose the Side of the Runway:");
 		sideComboBox = new JComboBox<String>(sides);
+		
+		angleLabel.setFont(FormAirfield.VER_PL);
+		sideLabel.setFont(FormAirfield.VER_PL);
+		
 		setPreferredSize(new Dimension(500,300));
 		init();
 	}

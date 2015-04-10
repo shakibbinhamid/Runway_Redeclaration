@@ -2,17 +2,21 @@ package view;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Point;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 
-
 public class FormGeneral extends JDialog {
 	protected JPanel centerPanel;		
 	protected JPanel buttonPanel;	
 	protected JButton button;
+	
+	protected static final Font VER_PL = new Font("verdana", Font.PLAIN, 12);
+	protected static final Font VER_IT = new Font("verdana", Font.ITALIC, 12);
+	protected static final Font VER_BD = new Font("verdana", Font.BOLD, 12);
 	
 	public FormGeneral(TopFrame topFrame, String title){
 		super(topFrame, title, true);

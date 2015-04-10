@@ -72,13 +72,24 @@ public class FormAirfield extends FormGeneral{
 		upperPanel = new JPanel();
 		textFieldsPanel = new JPanel();
 		
-		smallValuesLabel = new JLabel("Insert Left Starting Runway values:");
-		largeValuesLabel = new JLabel("Insert Right Starting Runway values:");
+		smallValuesLabel = new JLabel("<html>"+"<i>"+" Left Starting Runway"+"</i>" +" values"+"</html>");
+		largeValuesLabel = new JLabel("<html>"+"<i>"+" Right Starting Runway"+"</i>" +" values"+"</html>");
 		
-		toraLabel = new JLabel("TORA");
-		todaLabel = new JLabel("TODA");
-		asdaLabel = new JLabel("ASDA");
-		ldaLabel = new JLabel("LDA");
+		smallValuesLabel.setHorizontalAlignment(SwingConstants.LEFT);
+		largeValuesLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+		
+		smallValuesLabel.setFont(FormAirfield.VER_PL);
+		largeValuesLabel.setFont(FormAirfield.VER_PL);
+		
+		toraLabel = new JLabel("------- TORA -------");
+		todaLabel = new JLabel("------- TODA -------");
+		asdaLabel = new JLabel("------- ASDA -------");
+		ldaLabel = new JLabel("------- LDA -------");
+		
+		toraLabel.setFont(FormAirfield.VER_IT);
+		todaLabel.setFont(FormAirfield.VER_IT);
+		asdaLabel.setFont(FormAirfield.VER_IT);
+		ldaLabel.setFont(FormAirfield.VER_IT);
 		
 		bigTORATextBox = new JTextField();
 		bigTODATextBox = new JTextField();
@@ -90,6 +101,11 @@ public class FormAirfield extends FormGeneral{
 		smallASDATextBox = new JTextField();
 		smallLDATextBox = new JTextField();
 		
+	}
+	
+	private void setHeaderLabels(String s1, String s2){
+		smallValuesLabel.setText(s1);
+		largeValuesLabel.setText(s2);
 	}
 	
 	private void storeUserInput(){

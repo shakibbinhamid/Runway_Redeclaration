@@ -30,8 +30,10 @@ public class FormEditAirfield extends FormAirfield{
 	public void setUpEditingForm(){
 		button.setText("Apply");
 		airfieldLabel = new JLabel("Airfield ");
+		airfieldLabel.setFont(FormAirfield.VER_PL);
 		airfieldLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 		airfieldNameLabel = new JLabel(currentAirfield.getName());
+		airfieldNameLabel.setFont(FormAirfield.VER_BD);
 		
 		String smallTora = String.valueOf(topFrame.getTabbePanel().getActiveField().getDefaultSmallAngledRunway().getTORA());
 		String smallToda = String.valueOf(topFrame.getTabbePanel().getActiveField().getDefaultSmallAngledRunway().getTODA());
@@ -62,12 +64,12 @@ public void init(){
 		upperPanel.add(new JLabel());
 		
 		String dan = topFrame.getTabbePanel().getActiveField().getDefaultSmallAngledRunway().getIdentifier();
-		smallValuesLabel.setText(dan + " Runway Parameters");
-		smallValuesLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		smallValuesLabel.setText(dan + " Runway Parameters(m)");
+		smallValuesLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		upperPanel.add(smallValuesLabel);
 		String charlie = topFrame.getTabbePanel().getActiveField().getDefaultLargeAngledRunway().getIdentifier();
-		largeValuesLabel.setText(charlie + " Runway Parameters");
-		largeValuesLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		largeValuesLabel.setText(charlie + " Runway Parameters(m)");
+		largeValuesLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 		upperPanel.add(largeValuesLabel);
 		
 		setButtonListener();
