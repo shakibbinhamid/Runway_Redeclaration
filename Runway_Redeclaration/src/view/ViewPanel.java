@@ -5,8 +5,8 @@ import java.awt.GridLayout;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
-import CoreInterfaces.AirfieldInterface;
-import CoreInterfaces.DeclaredRunwayInterface;
+import coreInterfaces.AirfieldInterface;
+import coreInterfaces.DeclaredRunwayInterface;
 
 public class ViewPanel extends JPanel{
 	

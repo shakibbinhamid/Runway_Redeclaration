@@ -17,10 +17,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import coreInterfaces.AirportInterface;
+import coreInterfaces.ObstacleInterface;
 import view.Tab;
 import view.TopFrame;
-import CoreInterfaces.AirportInterface;
-import CoreInterfaces.ObstacleInterface;
 
 public class LoadListener{
 

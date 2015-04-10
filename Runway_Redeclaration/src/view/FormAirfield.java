@@ -10,7 +10,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-import Core.Airport;
+import core.Airport;
 
 public class FormAirfield extends FormGeneral{
 	

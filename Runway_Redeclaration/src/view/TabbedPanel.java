@@ -5,8 +5,8 @@ import java.util.Collection;
 
 import javax.swing.JTabbedPane;
 
-import CoreInterfaces.AirfieldInterface;
-import CoreInterfaces.AirportInterface;
+import coreInterfaces.AirfieldInterface;
+import coreInterfaces.AirportInterface;
 /**
  * This is just a holder class for all the tabs.
  * 

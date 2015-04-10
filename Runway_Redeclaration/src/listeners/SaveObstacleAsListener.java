@@ -5,11 +5,11 @@ import io.CustomFilter;
 import java.awt.event.ActionListener;
 import java.io.File;
 
+import core.Obstacle;
+import coreInterfaces.Savable;
+import exceptions.NothingToSaveException;
 import view.Tab;
 import view.TopFrame;
-import Core.Obstacle;
-import CoreInterfaces.Savable;
-import Exceptions.NothingToSaveException;
  
 public class SaveObstacleAsListener extends SaveSaveableAsListener  implements ActionListener{
 	public SaveObstacleAsListener(TopFrame frame){

@@ -4,7 +4,7 @@ import java.io.File;
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
 
-import CoreInterfaces.Savable;
+import coreInterfaces.Savable;
 /**
  * 
  * Serialises objects with XML

@@ -2,14 +2,14 @@ package io;
 import java.io.File;
 import java.util.ArrayList;
 
+import core.Airport;
+import core.Obstacle;
+import coreInterfaces.AirportInterface;
+import coreInterfaces.ObstacleInterface;
+import coreInterfaces.Savable;
+import exceptions.NothingToSaveException;
 import notification.Notification;
 import notification.NotificationPanel;
-import Core.Airport;
-import Core.Obstacle;
-import CoreInterfaces.AirportInterface;
-import CoreInterfaces.ObstacleInterface;
-import CoreInterfaces.Savable;
-import Exceptions.NothingToSaveException;
 
 /**
  * Handles the saving and loading of objects

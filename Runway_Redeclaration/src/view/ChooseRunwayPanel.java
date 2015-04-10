@@ -8,7 +8,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
-import CoreInterfaces.DeclaredRunwayInterface;
+import coreInterfaces.DeclaredRunwayInterface;
 
 /**
  * This class will be responsible to change between the runways and 

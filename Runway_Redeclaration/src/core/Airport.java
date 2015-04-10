@@ -1,4 +1,4 @@
-package Core;
+package core;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,12 +7,12 @@ import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
 
-import CoreInterfaces.AirfieldInterface;
-import CoreInterfaces.AirportInterface;
-import CoreInterfaces.Savable;
-import Exceptions.CannotMakeRunwayException;
-import Exceptions.UnrecognisedAirfieldIntifierException;
-import Exceptions.VariableDeclarationException;
+import coreInterfaces.AirfieldInterface;
+import coreInterfaces.AirportInterface;
+import coreInterfaces.Savable;
+import exceptions.CannotMakeRunwayException;
+import exceptions.UnrecognisedAirfieldIntifierException;
+import exceptions.VariableDeclarationException;
 
 @Root
 /**

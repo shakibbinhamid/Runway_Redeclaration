@@ -7,14 +7,14 @@ import java.awt.Graphics2D;
 
 import javax.swing.JFrame;
 
-import Core.Airport;
-import Core.Obstacle;
-import CoreInterfaces.AirfieldInterface;
-import CoreInterfaces.AirportInterface;
-import CoreInterfaces.DeclaredRunwayInterface;
-import Exceptions.CannotMakeRunwayException;
-import Exceptions.UnrecognisedAirfieldIntifierException;
-import Exceptions.VariableDeclarationException;
+import core.Airport;
+import core.Obstacle;
+import coreInterfaces.AirfieldInterface;
+import coreInterfaces.AirportInterface;
+import coreInterfaces.DeclaredRunwayInterface;
+import exceptions.CannotMakeRunwayException;
+import exceptions.UnrecognisedAirfieldIntifierException;
+import exceptions.VariableDeclarationException;
 
 /**
  * 

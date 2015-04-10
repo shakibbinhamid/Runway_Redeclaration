@@ -10,13 +10,13 @@ import javax.swing.JSplitPane;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
+import coreInterfaces.AirfieldInterface;
+import coreInterfaces.AirportInterface;
+import coreInterfaces.ObstacleInterface;
+import exceptions.CannotMakeRunwayException;
+import exceptions.VariableDeclarationException;
 import notification.Notification;
 import notification.NotificationPanel;
-import CoreInterfaces.AirfieldInterface;
-import CoreInterfaces.AirportInterface;
-import CoreInterfaces.ObstacleInterface;
-import Exceptions.CannotMakeRunwayException;
-import Exceptions.VariableDeclarationException;
 
 /**
  * This is the entry point of our program
@@ -119,7 +119,7 @@ public class TopFrame extends JFrame{
 			JOptionPane.showMessageDialog(this, "You already have an airfield "+e.getInvalidRunway().getName(), "ERROR: Airfield Create Fail", JOptionPane.ERROR_MESSAGE);
 		}
 	}
-	
+
 	/**
 	 * To be used by the airfield loader or creator
 	 * @param obs the obstacle to be loaded
@@ -130,7 +130,11 @@ public class TopFrame extends JFrame{
 		try {
 			field.addObstacle(obs, distanceFromLeft, distanceFromRight);
 			tabbedPanel.updateTab(field);
-			NotificationPanel.notifyIt(obs.getName() + " Loaded", obs.getName() + " loaded.", Notification.FILE);
+			NotificationPanel.notifyIt(obs.getName() + " Loaded", obs.getName() + " placed on " + 
+																field.getName() + "\n"+
+																"Distance from "+field.getSmallAngledRunway().getIdentifier() +": "+ field.getPositionedObstacle().distanceFromSmallEnd() + " m"+"\n"+
+																"Distance from "+field.getLargeAngledRunway().getIdentifier() +": "+ field.getPositionedObstacle().distanceFromLargeEnd() + " m",
+																Notification.FILE);
 		} catch (VariableDeclarationException e) {
 			JOptionPane.showMessageDialog(this, "Your Obstacle has made the runway unusable --- " + e.getMessage(), "ERROR: Unusable Runway", JOptionPane.ERROR_MESSAGE);
 		}

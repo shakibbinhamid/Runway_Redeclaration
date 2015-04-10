@@ -1,8 +1,8 @@
 <airport name="Jim International">
    <airfields class="java.util.ArrayList">
-      <airfieldInterface class="Core.Airfield">
+      <airfieldInterface class="core.Airfield">
          <runways length="2">
-            <declaredRunwayInterface class="Core.DeclaredRunway">
+            <declaredRunwayInterface class="core.DeclaredRunway">
                <decTora>3902.0</decTora>
                <decLda>3596.0</decLda>
                <decAsda>3902.0</decAsda>
@@ -13,7 +13,7 @@
                <angle>90</angle>
                <direction>L</direction>
             </declaredRunwayInterface>
-            <declaredRunwayInterface class="Core.DeclaredRunway">
+            <declaredRunwayInterface class="core.DeclaredRunway">
                <decTora>3884.0</decTora>
                <decLda>3884.0</decLda>
                <decAsda>3884.0</decAsda>
@@ -26,7 +26,7 @@
             </declaredRunwayInterface>
          </runways>
          <defaultRunways length="2">
-            <declaredRunwayInterface class="Core.DeclaredRunway">
+            <declaredRunwayInterface class="core.DeclaredRunway">
                <decTora>3902.0</decTora>
                <decLda>3596.0</decLda>
                <decAsda>3902.0</decAsda>
@@ -37,7 +37,7 @@
                <angle>90</angle>
                <direction>L</direction>
             </declaredRunwayInterface>
-            <declaredRunwayInterface class="Core.DeclaredRunway">
+            <declaredRunwayInterface class="core.DeclaredRunway">
                <decTora>3884.0</decTora>
                <decLda>3884.0</decLda>
                <decAsda>3884.0</decAsda>
@@ -58,9 +58,9 @@
          <longLength>300.0</longLength>
          <blastProt>300.0</blastProt>
       </airfieldInterface>
-      <airfieldInterface class="Core.Airfield">
+      <airfieldInterface class="core.Airfield">
           <runways length="2">
-              <declaredRunwayInterface class="Core.DeclaredRunway">
+              <declaredRunwayInterface class="core.DeclaredRunway">
                   <decTora>3660.0</decTora>
                   <decLda>3353.0</decLda>
                   <decAsda>3660.0</decAsda>
@@ -71,7 +71,7 @@
                   <angle>90</angle>
                   <direction>R</direction>
               </declaredRunwayInterface>
-              <declaredRunwayInterface class="Core.DeclaredRunway">
+              <declaredRunwayInterface class="core.DeclaredRunway">
                   <decTora>3660.0</decTora>
                   <decLda>3660.0</decLda>
                   <decAsda>3660.0</decAsda>
@@ -84,7 +84,7 @@
               </declaredRunwayInterface>
           </runways>
           <defaultRunways length="2">
-              <declaredRunwayInterface class="Core.DeclaredRunway">
+              <declaredRunwayInterface class="core.DeclaredRunway">
                   <decTora>3660.0</decTora>
                   <decLda>3353.0</decLda>
                   <decAsda>3660.0</decAsda>
@@ -95,7 +95,7 @@
                   <angle>90</angle>
                   <direction>R</direction>
               </declaredRunwayInterface>
-              <declaredRunwayInterface class="Core.DeclaredRunway">
+              <declaredRunwayInterface class="core.DeclaredRunway">
                   <decTora>3660.0</decTora>
                   <decLda>3660.0</decLda>
                   <decAsda>3660.0</decAsda>

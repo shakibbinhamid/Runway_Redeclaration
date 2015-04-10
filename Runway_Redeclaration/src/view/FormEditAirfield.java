@@ -9,9 +9,9 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 
-import Core.Airfield;
-import CoreInterfaces.PositionedObstacleInterface;
-import Exceptions.VariableDeclarationException;
+import core.Airfield;
+import coreInterfaces.PositionedObstacleInterface;
+import exceptions.VariableDeclarationException;
 
 public class FormEditAirfield extends FormAirfield{
 	Airfield currentAirfield;

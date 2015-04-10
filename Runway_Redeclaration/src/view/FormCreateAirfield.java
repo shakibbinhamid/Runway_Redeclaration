@@ -10,7 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
-import Exceptions.VariableDeclarationException;
+import exceptions.VariableDeclarationException;
 
 public class FormCreateAirfield extends FormAirfield {
 	

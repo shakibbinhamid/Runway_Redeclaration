@@ -17,8 +17,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import CoreInterfaces.AirportInterface;
-import CoreInterfaces.ObstacleInterface;
+import coreInterfaces.AirportInterface;
+import coreInterfaces.ObstacleInterface;
 
 public class LoadListener{
 

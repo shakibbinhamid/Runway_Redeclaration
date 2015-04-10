@@ -1,14 +1,14 @@
-package Core;
+package core;
 
 import notification.Notification;
 import notification.NotificationPanel;
 
 import org.simpleframework.xml.Element;
 
-import CoreInterfaces.AirfieldInterface;
-import CoreInterfaces.DeclaredRunwayInterface;
-import CoreInterfaces.PositionedObstacleInterface;
-import Exceptions.VariableDeclarationException;
+import coreInterfaces.AirfieldInterface;
+import coreInterfaces.DeclaredRunwayInterface;
+import coreInterfaces.PositionedObstacleInterface;
+import exceptions.VariableDeclarationException;
 
 /**
  * When an airfield is made, the air traffic controller will declare a 'runway' which the planes will use to

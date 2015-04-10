@@ -16,13 +16,13 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 
+import coreInterfaces.AirfieldInterface;
 import listeners.LoadAirportListener;
 import listeners.LoadObstacleListener;
 import listeners.SaveAirportAsListener;
 import listeners.SaveAirportListener;
 import listeners.SaveObjectListener;
 import listeners.SaveObstacleAsListener;
-import CoreInterfaces.AirfieldInterface;
 
 public class TopMenu extends JMenuBar{
 
@@ -31,7 +31,7 @@ public class TopMenu extends JMenuBar{
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private JMenu edit, print, help;
+	private JMenu edit, help;
 	private JMenu create, load, save, remove;
 	
 	private JMenuItem createAirport, createRunway, createObstacle;
@@ -40,10 +40,9 @@ public class TopMenu extends JMenuBar{
 	
 	private JMenuItem exit;
 	private JMenuItem editRunway, editObstacle, removeObs;
-	private JMenuItem printCalculation;
 	private JMenuItem about, contact;
 	
-	private ImageIcon icreate, iload, isave, iedit, iview, iprint, icalc, iairport, iairfield, iobstacle, iabout, icontact, iexit, iremove;
+	static ImageIcon icreate, iload, isave, iedit, iview, icalc, iairport, iairfield, iobstacle, iabout, icontact, iexit, iremove;
 	
 	private TopFrame frame; 
 	
@@ -54,11 +53,10 @@ public class TopMenu extends JMenuBar{
 		createFileMenu();
 		createEditMenu();
 		createRemoveMenu();
-		createPrintMenu();
 		createHelpMenu();
 		
 		//================================Adding menus========================================//
-		addMenus(new JMenu[] {create, load, save, edit, remove ,print });//, help});
+		addMenus(new JMenu[] {create, load, save, edit, remove });//, help});
 		
 	}
 	
@@ -68,7 +66,6 @@ public class TopMenu extends JMenuBar{
 		icreate = getIcon("/NewIcon.png");
 		iload = getIcon("/open.png");
 		isave = getIcon("/save.png");
-		iprint = getIcon("/print.jpg");
 		iairport = getIcon("/airport.png");
 		iairfield = getIcon("/airfield.png");
 		iobstacle = getIcon("/obstacle.jpg");
@@ -235,22 +232,6 @@ public class TopMenu extends JMenuBar{
 		remove = getMenu("Remove", iremove, new JMenuItem[]{removeObs});
 	}
 	
-	private void createPrintMenu(){
-		//================================PRINT MENU==============================================//
-		printCalculation = getItem("Print Calculation", icalc, SwingConstants.LEFT);
-		printCalculation.addActionListener(new ActionListener(){
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				//TODO: Fix printing
-				//Print.print(frame.getLogPanel().getCalcTextPane().getText());
-			}
-			
-		});
-		
-		print = getMenu("Print", iprint, new JMenuItem[]{printCalculation});
-	}
-	
 	private void createHelpMenu(){
 		//================================HELP MENU==============================================//
 		about = getItem("About", iabout, SwingConstants.LEFT);
@@ -280,7 +261,7 @@ public class TopMenu extends JMenuBar{
 	 * @param location file location of the icon
 	 * @return an icon object based on the file
 	 */
-	private ImageIcon getIcon(String location){
+	public static ImageIcon getIcon(String location){
 		
 		return new ImageIcon(TopFrame.class.getResource(location));
 	}

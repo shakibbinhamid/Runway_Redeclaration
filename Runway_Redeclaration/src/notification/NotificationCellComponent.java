@@ -1,7 +1,10 @@
 package notification;
+import io.Print;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -32,10 +35,12 @@ public class NotificationCellComponent extends JPanel {
 	private boolean isExpanded;
 
 	private JPanel header;
+	private JPanel options;
 	private JPanel details;
 
 	private JLabel title;
 	private JButton expand;
+	private JButton print;
 	private JTextPane all;
 
 	public NotificationCellComponent(Notification n) {
@@ -50,13 +55,18 @@ public class NotificationCellComponent extends JPanel {
 		this.setLayout(new BorderLayout());
 		header = new JPanel(new BorderLayout());
 		details = new JPanel(new BorderLayout());
+		options = new JPanel(new GridLayout(1,2));
 
 		title = new JLabel();
 		expand = new JButton("More");
+		print = new JButton("Print");
 		all = new JTextPane();
 
 		header.add(title, BorderLayout.CENTER);
-		header.add(expand, BorderLayout.EAST);
+		header.add(options, BorderLayout.EAST);
+		
+		options.add(print);
+		options.add(expand);
 
 		details.add(new JScrollPane(all));
 		all.setBackground(new Color(191, 239, 255)); 
@@ -80,6 +90,12 @@ public class NotificationCellComponent extends JPanel {
 				}
 				NotificationPanel.fire();
 			}	
+		});
+		print.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Print.print(all.getText());
+			}
 		});
 	}
 	

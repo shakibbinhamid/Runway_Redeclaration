@@ -14,9 +14,9 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
-import Core.Obstacle;
-import CoreInterfaces.AirfieldInterface;
-import Exceptions.UnrecognisedAirfieldIntifierException;
+import core.Obstacle;
+import coreInterfaces.AirfieldInterface;
+import exceptions.UnrecognisedAirfieldIntifierException;
 
 public class FormObstacle extends FormGeneral {
 	TopFrame topFrame;

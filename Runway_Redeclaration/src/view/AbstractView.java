@@ -8,8 +8,8 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
 
-import CoreInterfaces.AirfieldInterface;
-import CoreInterfaces.DeclaredRunwayInterface;
+import coreInterfaces.AirfieldInterface;
+import coreInterfaces.DeclaredRunwayInterface;
 
 /**
  * [X] Version 1: Points 

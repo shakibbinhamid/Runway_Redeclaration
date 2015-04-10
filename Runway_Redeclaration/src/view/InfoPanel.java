@@ -10,10 +10,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-import CoreInterfaces.AirfieldInterface;
-import CoreInterfaces.DeclaredRunwayInterface;
-import CoreInterfaces.ObstacleInterface;
-import CoreInterfaces.PositionedObstacleInterface;
+import coreInterfaces.AirfieldInterface;
+import coreInterfaces.DeclaredRunwayInterface;
+import coreInterfaces.ObstacleInterface;
+import coreInterfaces.PositionedObstacleInterface;
 
 public class InfoPanel extends JPanel{
 

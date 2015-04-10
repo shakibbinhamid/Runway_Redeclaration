@@ -7,10 +7,10 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JOptionPane;
 
+import core.Obstacle;
+import coreInterfaces.Savable;
 import view.Tab;
 import view.TopFrame;
-import Core.Obstacle;
-import CoreInterfaces.Savable;
 
 public class SaveObjectListener implements ActionListener{
 	

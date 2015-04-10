@@ -5,10 +5,10 @@ import io.CustomFilter;
 import java.awt.event.ActionListener;
 import java.io.File;
 
+import core.Airport;
+import coreInterfaces.Savable;
+import exceptions.NothingToSaveException;
 import view.TopFrame;
-import Core.Airport;
-import CoreInterfaces.Savable;
-import Exceptions.NothingToSaveException;
  
 public class SaveAirportAsListener extends SaveSaveableAsListener  implements ActionListener{
     public SaveAirportAsListener(TopFrame frame){

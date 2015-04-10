@@ -5,9 +5,9 @@ import java.io.IOException;
 
 import javax.swing.JPanel;
 
-import CoreInterfaces.AirfieldInterface;
-import CoreInterfaces.DeclaredRunwayInterface;
-import CoreInterfaces.PositionedObstacleInterface;
+import coreInterfaces.AirfieldInterface;
+import coreInterfaces.DeclaredRunwayInterface;
+import coreInterfaces.PositionedObstacleInterface;
 
 /**
  * This is a Tab. A Tab holds is responsible for viewing all data and views of an airfield.

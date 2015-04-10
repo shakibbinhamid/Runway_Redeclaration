@@ -16,9 +16,9 @@ import java.math.BigDecimal;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
-import Core.PositionedObstacle;
-import CoreInterfaces.AirfieldInterface;
-import CoreInterfaces.DeclaredRunwayInterface;
+import core.PositionedObstacle;
+import coreInterfaces.AirfieldInterface;
+import coreInterfaces.DeclaredRunwayInterface;
 
 
 /**
