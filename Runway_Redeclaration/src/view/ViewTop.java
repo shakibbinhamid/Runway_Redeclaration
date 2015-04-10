@@ -23,7 +23,7 @@ import coreInterfaces.DeclaredRunwayInterface;
 
 /**
  * Preferred Size : 505 wide 275 tall
- * @author Shakib
+ * @author Shakib-Bin Hamid
  * @Editor Shakib Stefan
  *
  */
