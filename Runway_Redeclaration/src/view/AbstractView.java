@@ -99,8 +99,8 @@ public abstract class AbstractView extends JPanel {
 	/** Ensures the IMAGE_*dimensions* are correct for this round of painting,
 	 *  Resets the image to a blank canvas making it easier to use */
 	private void rescaleImageSize(){
-		this.IMAGE_WIDTH = this.getWidth();
-		this.IMAGE_HEIGHT = this.getHeight();
+		this.IMAGE_WIDTH = this.getWidth() - 40;
+		this.IMAGE_HEIGHT = this.getHeight() - 40;
 		this.image = new BufferedImage(IMAGE_WIDTH, IMAGE_HEIGHT, BufferedImage.TYPE_3BYTE_BGR);
 	}
 
@@ -213,7 +213,8 @@ public abstract class AbstractView extends JPanel {
 		drawImage(getImage().createGraphics());
 
 
-		/* @End */g2.drawImage(getImage(), 0, 0, null);
+		/* @End */
+		g2.drawImage(image, 20, 25, null);
 	}
 
 	protected abstract void drawImage(Graphics2D g);
