@@ -2,8 +2,8 @@ package view;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 
 import javax.swing.JFrame;
 
@@ -25,11 +25,11 @@ public class ViewSide extends AbstractView{
 	/**
 	 * [X] Version 0: Nada Complete
 	 * [X] Version 1: Points 
-	 * [ ] Version 2: Rotate Points 
+	 * [X] Version 2: Rotate Points 
 	 * [ ] Version 3: Scale/Zoom 
 	 * [ ] Version 4: Pan by focus points 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 
 
 
@@ -60,33 +60,39 @@ public class ViewSide extends AbstractView{
 	}
 
 	public static int HEIGHT_OF_RUNWAY = 1; /* in m */
-	public static int PIXEL_BUFFER = 40;
 	public static double PERCENTAGE_OF_SKY = 0.5; /* in % */
 	public static double PERCENTAGE_AIR_SPACER = 1.0; /* in % */
 
-
-	public final static Color SKY_COLOUR = Color.cyan;
-	public final static Color RUNWAY_COLOUR = Color.GRAY;
-
+	public final static Color SKY_COLOUR = new Color(128,255,255);//69,182,195);
 
 	public ViewSide(AirfieldInterface airfield, DeclaredRunwayInterface runway){
 		super(airfield, runway);
-
 	}
-
-
 
 	//======[ Drawing ]=====================================================================================================
 	@Override
 	protected void drawImage(Graphics2D g2) {
+		RenderingHints rh = new RenderingHints(RenderingHints.KEY_ANTIALIASING,
+				RenderingHints.VALUE_ANTIALIAS_ON);
+
+		rh.put(RenderingHints.KEY_RENDERING,
+				RenderingHints.VALUE_RENDER_QUALITY);
+		
+		g2.setRenderingHints(rh);
+		
 		drawBackground(g2);
 		drawRunway(g2);
 		drawDistances(g2);
 
 		if(getAirfield().hasObstacle())
 			drawObsacle(g2);
+
+		double distance = 1000d;
+		drawScale(g2,runwayWidth()/2-distance/2,vertToRunway()/10,distance);
 		
-		drawScale(g2);
+		drawThesholds(g2);
+		drawIdentifiers(g2,vertToRunway(),leftOfRunaway(),rightOfRunway());
+		drawFatArrow(g2);
 	}
 
 	//----[ Specific Distance ]-------------------------------------------------------------------
@@ -102,13 +108,10 @@ public class ViewSide extends AbstractView{
 		double heightOfGrass = (1-PERCENTAGE_OF_SKY) * largestHeight();
 
 		g2.setColor(GRASS_COLOUR);
-		System.out.println("--[ Grass ]--");
 		super.drawRectangle_inM(g2, new Point(0d, topOfGrass), width, topOfGrass+ heightOfGrass, GRASS_COLOUR);
 
 		g2.setColor(SKY_COLOUR);
-		System.out.println("--[ Sky ]--");
 		super.drawRectangle_inM(g2, new Point(0d, 0d),width, topOfGrass, SKY_COLOUR);
-		System.out.println("--------");
 	}
 
 	/** Grey Strip */
@@ -125,7 +128,6 @@ public class ViewSide extends AbstractView{
 	}
 
 	/** Red vertical with ALS gradient (if needed) and labels underneath */
-	//TODO include text to the labels
 	//TODO include a box making the radius on it
 	private void drawObsacle(Graphics2D g) {
 		if(!getAirfield().hasObstacle()) return;
@@ -175,13 +177,10 @@ public class ViewSide extends AbstractView{
 			drawBlastProt(g, locOfObs);
 		}
 	}
-	
+
 	private void drawALS(Graphics2D g, double locOfObs, double heightOfObs, double ALS){
 		Graphics2D g2 = (Graphics2D) g.create();
 		Graphics2D g3 = (Graphics2D) g.create();
-
-		Point obsTop = new Point(locOfObs,vertToRunway()-heightOfObs);
-		Point alsPoint = new Point(locOfObs+s()*ALS,this.vertToRunway());
 
 		g2.setColor(Color.RED);
 		g2.setStroke(new BasicStroke(1f,
@@ -189,20 +188,44 @@ public class ViewSide extends AbstractView{
 				BasicStroke.JOIN_BEVEL,
 				10.0f, new float[]{5}, 3.0f));
 
-		super.drawLine_inM(g2, obsTop, alsPoint);
-
-		Point start = new Point(locOfObs,vertToRunway()).offsetYByPixels(PIXEL_BUFFER);
-		Point end = start.offsetXByM(s()*ALS);
-
 		g3.setColor(MAROON_COLOUR);
 		g3.setStroke(new BasicStroke(1f,
 				BasicStroke.CAP_BUTT,
 				BasicStroke.JOIN_BEVEL,
 				10.0f, new float[]{2}, 0.5f));
 		
+		//if the object is off the runway then the ALS slop needs to point inwards!
+		//This handles that!
+		int o = 1;
+		if(getRunway().isSmallEnd() 
+				&& 
+				getAirfield().getPositionedObstacle().distanceFromSmallEnd() > getAirfield().getPositionedObstacle().distanceFromLargeEnd()){
+			//Then the obs is off the right hand side
+			o = -1;
+			
+		}else if(!getRunway().isSmallEnd()
+				&&
+				getAirfield().getPositionedObstacle().distanceFromSmallEnd() < getAirfield().getPositionedObstacle().distanceFromLargeEnd()){
+			//Then the obs is off the left hand side
+			o = -1;
+		}
+
+		Point obsTop = new Point(locOfObs,vertToRunway()-heightOfObs);
+		Point alsPoint = new Point(locOfObs+o*s()*ALS,this.vertToRunway());
+		Point alsPointOther = new Point(locOfObs-o*s()*ALS,this.vertToRunway());
+
+		super.drawLine_inM(g2, obsTop, alsPoint);
+		super.drawLine_inM(g2, obsTop, alsPointOther);
+
+		Point start = new Point(locOfObs,vertToRunway()).offsetYByPixels(PIXEL_BUFFER);
+		Point end = start.offsetXByM(o*s()*ALS);
+
+		//Shaded Triangle
 		g2.setColor(GLASS_COLOR);
 		super.drawPolygon_inM(g2, new Point[] {obsTop,new Point(locOfObs,vertToRunway()),alsPoint}, ALS_SHADE_COLOR);
-		//Horiz line
+		super.drawPolygon_inM(g2, new Point[] {obsTop,new Point(locOfObs,vertToRunway()),alsPointOther}, ALS_SHADE_COLOR);
+
+		//Horiz line bellow
 		super.drawLine_inM(g3, start, end);
 
 		//Verticals
@@ -210,12 +233,24 @@ public class ViewSide extends AbstractView{
 		super.drawLine_inM(g3, end.offsetYByPixels(PIXEL_BUFFER/2), end.offsetYByPixels(-PIXEL_BUFFER));
 
 		//Strip End
-		Point endSE = end.offsetXByM(s()*getAirfield().getStripEnd());
+		Point endSE = end.offsetXByM(o*s()*getAirfield().getStripEnd());
 
 		super.drawLine_inM(g3, end, endSE);
 
 		super.drawLine_inM(g3, end.offsetYByPixels(PIXEL_BUFFER/2), end.offsetYByPixels(-PIXEL_BUFFER));
 		super.drawLine_inM(g3, endSE.offsetYByPixels(PIXEL_BUFFER/2), endSE.offsetYByPixels(-PIXEL_BUFFER));
+
+		//Text
+		Point textStart = start.offsetYByPixels(PIXEL_BUFFER/2).offsetXByPixels(2);
+		super.drawString_inM(g3, "ALS", textStart);
+
+		//Ratio Text
+		Graphics2D g4 = (Graphics2D) g.create();
+		g4.setColor(DIMENSION_COLOR);
+		g4.setFont(DIMENSION_FONT);
+
+		Point midDiagonal = new Point(locOfObs+o*s()*ALS/2, vertToRunway()-heightOfObs/2).offsetYByPixels(-10);
+		super.drawString_inM(g4, "1:"+(int) getRunway().getDescentAngle() , midDiagonal);
 	}
 
 	private void drawRESA(Graphics2D g, double locOfObs, double RESA){
@@ -230,6 +265,7 @@ public class ViewSide extends AbstractView{
 		Point end = start.offsetXByM(s()*RESA);
 		//horiz
 		super.drawLine_inM(g2, start, end);
+
 		//Verticals
 		super.drawLine_inM(g2, start.offsetYByPixels(PIXEL_BUFFER/2), start.offsetYByPixels(-PIXEL_BUFFER));
 		super.drawLine_inM(g2, end.offsetYByPixels(PIXEL_BUFFER/2), end.offsetYByPixels(-PIXEL_BUFFER));
@@ -242,7 +278,9 @@ public class ViewSide extends AbstractView{
 		super.drawLine_inM(g2, end.offsetYByPixels(PIXEL_BUFFER/2), end.offsetYByPixels(-PIXEL_BUFFER));
 		super.drawLine_inM(g2, endSE.offsetYByPixels(PIXEL_BUFFER/2), endSE.offsetYByPixels(-PIXEL_BUFFER));
 
-
+		//Text
+		Point textStart = start.offsetYByPixels(PIXEL_BUFFER/2).offsetXByPixels(2);
+		super.drawString_inM(g2, "ALS", textStart);
 
 	}
 
@@ -253,7 +291,7 @@ public class ViewSide extends AbstractView{
 				BasicStroke.CAP_BUTT,
 				BasicStroke.JOIN_BEVEL,
 				10.0f, new float[]{2}, 0.5f));
-		
+
 		Point start = new Point(locOfObs,vertToRunway()).offsetYByPixels(PIXEL_BUFFER);
 		Point end = start.offsetXByM(s()*getAirfield().getBlastAllowance());
 
@@ -264,67 +302,45 @@ public class ViewSide extends AbstractView{
 		super.drawLine_inM(g2, start.offsetYByPixels(PIXEL_BUFFER/2), start.offsetYByPixels(-PIXEL_BUFFER));
 		super.drawLine_inM(g2, end.offsetYByPixels(PIXEL_BUFFER/2), end.offsetYByPixels(-PIXEL_BUFFER));
 
+		//Text
+		Point textStart = start.offsetYByPixels(PIXEL_BUFFER/2).offsetXByPixels(2);
+		super.drawString_inM(g2, "Blast Prot", textStart);
 	}
-	
+
 	/** Draws the TORA,ASDA,TODA,LDA */
 	private void drawDistances(Graphics2D g) {
 		int level = 2; 
-		drawDistance(g, "LDA", getRunway().getLDA(), getRunway().getDisplacedThreshold(), level++);
-		drawDistance(g, "TORA", getRunway().getTORA(), getRunway().getStartOfRoll(), level++);
-		drawDistance(g, "ASDA", getRunway().getASDA(), getRunway().getStartOfRoll(), level++);
-		drawDistance(g, "TODA", getRunway().getTODA(), getRunway().getStartOfRoll(), level++);
+		drawDistance(g, "LDA", getRunway().getLDA(), getRunway().getDisplacedThreshold(), level++, vertToRunway());
+		drawDistance(g, "TORA", getRunway().getTORA(), getRunway().getStartOfRoll(), level++, vertToRunway());
+		drawDistance(g, "ASDA", getRunway().getASDA(), getRunway().getStartOfRoll(), level++, vertToRunway());
+		drawDistance(g, "TODA", getRunway().getTODA(), getRunway().getStartOfRoll(), level++, vertToRunway());
 	}
 
-	private void drawDistance(Graphics2D g, String disName, double length, double begin, int heightLevel){
+	private void drawThesholds(Graphics2D g) {
 		Graphics2D g2 = (Graphics2D) g.create();
-		g2.setColor(DIMENSION_COLOR);
-		
-		FontMetrics fontMetrics = g2.getFontMetrics();
-		int titleLen = fontMetrics.stringWidth(disName);
+		Point leftThreshold = new Point(this.leftOfRunaway()+getAirfield().getSmallAngledRunway().getDisplacedThreshold(),vertToRunway());
+		Point rightThreshold = new Point(this.rightOfRunway()-getAirfield().getLargeAngledRunway().getDisplacedThreshold(),vertToRunway());
 
-		double startX;
-		if(getRunway().isSmallEnd()){
-			startX = leftOfRunaway() + begin;
-		}else{
-			startX = rightOfRunway() - begin; 
-		}
-
-		double endX = startX+s()*length;
-		int pixelOffset = heightLevel*PIXEL_BUFFER;
-
-		Point start = new Point(startX,vertToRunway()).offsetYByPixels(pixelOffset);
-		Point end = new Point(endX,vertToRunway()).offsetYByPixels(pixelOffset);
-
-		//These points make the gap for the text
-		Point midStart = start.offsetXByM(s()*length/2).offsetXByPixels(s()*-3*titleLen/4);
-		Point midEnd   = start.offsetXByM(s()*length/2).offsetXByPixels(s()* 3*titleLen/4);
-		
-		//Horiz
-		super.drawLine_inM(g2, start, midStart);
-		super.drawLine_inM(g2, end, midEnd);
-
-		//Verticals
-		super.drawLine_inM(g2, start.offsetYByPixels(PIXEL_BUFFER/2), start.offsetYByPixels(-pixelOffset));
-		super.drawLine_inM(g2, end.offsetYByPixels(PIXEL_BUFFER/2), end.offsetYByPixels(-pixelOffset));
-		
-		
-		//Placing the text on the left of the two mid points
-		Point pWithSmallerX;
-		if(midStart.x_m()<midEnd.x_m()){
-			pWithSmallerX = midStart;
-		}else{
-			pWithSmallerX = midEnd;
-		}
-		super.drawString_inM(g2, disName, pWithSmallerX.offsetXByPixels(titleLen/4));
-	}
-
-	/** The line that says how big the image is  */
-	private void drawScale(Graphics2D g2) {
-		// TODO Auto-generated method stub
-		
+		g2.setStroke(new BasicStroke(3));
+		g2.setColor(Color.RED);
+		super.drawLine_inM(g2, leftThreshold, leftThreshold);
+		super.drawLine_inM(g2, rightThreshold, rightThreshold);
 	}
 	
-	//======[ Common Distance Methods ]=======
+	private void drawFatArrow(Graphics2D g){
+		double fullHeight = vertToRunway()/PERCENTAGE_OF_SKY;
+		double width = runwayWidth()/10;
+		double startX =  runwayWidth()/2+width/2;
+		
+		double grassTallness = fullHeight*(1-PERCENTAGE_OF_SKY);
+		double remainingGrass = grassTallness-Ypix_to_m(PIXEL_BUFFER*5);
+		double startY = fullHeight-remainingGrass/2;
+		
+		
+		super.drawArrowAround(g, startX, startY, width, !getRunway().isSmallEnd(), Color.RED, MAROON_COLOUR);
+	}
+
+	//======[ Common Distance Methods ]===================================================================
 	@Override
 	protected double largestHeight(){
 		double highestPoint = getAirfield().getTotalHeight();
@@ -336,23 +352,25 @@ public class ViewSide extends AbstractView{
 		double totalHeight = skyHeight / PERCENTAGE_OF_SKY;
 		return totalHeight;
 	}
-
-	private double leftOfRunaway(){
+	@Override
+	protected double leftOfRunaway(){
 		if(getRunway().isSmallEnd()){
 			return getAirfield().getStripEnd();			
 		}else{
 			return super.runwayWidth()-getAirfield().getStripEnd()-getAirfield().getDefaultLargeAngledRunway().getTORA();
 		}
 	}
-	private double rightOfRunway(){
+	@Override
+	protected double rightOfRunway(){
 		if(getRunway().isSmallEnd()){
 			return getAirfield().getStripEnd()+getAirfield().getDefaultSmallAngledRunway().getTORA();			
 		}else{
 			return super.runwayWidth()-getAirfield().getStripEnd();
 		}
 	}
-
-	private double vertToRunway(){
+	
+	@Override
+	protected double vertToRunway(){
 		return largestHeight() * PERCENTAGE_OF_SKY;
 	}
 

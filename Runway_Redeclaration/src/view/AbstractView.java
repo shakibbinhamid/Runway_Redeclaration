@@ -1,11 +1,17 @@
 package view;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 import coreInterfaces.AirfieldInterface;
@@ -40,6 +46,7 @@ public abstract class AbstractView extends JPanel {
 	private DeclaredRunwayInterface runway;
 
 	private BufferedImage image;
+	protected boolean sameScaleAsX; 
 
 	private int IMAGE_WIDTH, IMAGE_HEIGHT;
 
@@ -49,9 +56,15 @@ public abstract class AbstractView extends JPanel {
 	public final static Color VERY_VERY_transparentRed = new Color(255, 0, 0, 50);
 	public final static Color ALS_SHADE_COLOR = VERY_VERY_transparentRed;
 	public final static Color GLASS_COLOR = new Color(255,255,255,0);
+	public final static Color RUNWAY_COLOUR = Color.GRAY;
 
+	public static int PIXEL_BUFFER = 40;
 
 	public final static Font DIMENSION_FONT = new Font("Dialog", Font.PLAIN, 12);
+
+	public final static Color IDENTIFIER_COLOR = Color.BLACK;
+	public final static String IDENTIFIER_FONT = "verdana";
+	public final static int IDENTIFIER_STYLE = Font.BOLD;
 
 	public AbstractView (AirfieldInterface airfield, DeclaredRunwayInterface runway){
 		setAirfield(airfield);
@@ -59,21 +72,20 @@ public abstract class AbstractView extends JPanel {
 
 		this.IMAGE_WIDTH = this.IMAGE_HEIGHT = 10;
 		this.image = new BufferedImage(IMAGE_WIDTH, IMAGE_HEIGHT, BufferedImage.TYPE_3BYTE_BGR);
-		
+
 		this.transformingAngle = (short) 0;
+		this.sameScaleAsX = false;
 	}
 
 	//======[ Core Objects ]=====================================================================================================
 	public AirfieldInterface getAirfield(){ return this.airfield; }
 	public void setAirfield(AirfieldInterface newAirfield){
 		this.airfield = newAirfield;
-
 	}
 
 	public DeclaredRunwayInterface getRunway(){ return this.runway; }
 	public void setRunway(DeclaredRunwayInterface newRunway){
 		this.runway = newRunway;
-
 	}
 
 	public BufferedImage getImage(){
@@ -106,10 +118,11 @@ public abstract class AbstractView extends JPanel {
 		return xPix;
 	}
 	public int Ym_to_pixels(double ym){
+		if(this.sameScaleAsX) return Xm_to_pixels(ym);
+
 		double largestHeight = largestHeight();
 		int yPix = metersToPixels(ym, largestHeight, IMAGE_HEIGHT);
-		return yPix;//*/
-//		return Xm_to_pixels(ym);
+		return yPix;
 	} 
 
 	//----[ Pix to M ]----------------------------------------------------------------------------------------------------------
@@ -119,10 +132,46 @@ public abstract class AbstractView extends JPanel {
 		return xm;
 	}
 	public double Ypix_to_m(int yp){
+		if(this.sameScaleAsX) return Xpix_to_m(yp);
+
 		double ym = pixelsToMeters(yp, largestHeight(), IMAGE_WIDTH);
 		return ym;
 	}
 
+	/** total height of arrow = */
+	protected void drawArrowAround(Graphics g, double pointX, double pointY, double width, boolean pointLeft, Color fill, Color outline){
+		Graphics2D g2 = (Graphics2D) g.create();
+		double radius = 3*width/8; 
+		double length = width;
+
+
+		radius = Ypix_to_m(Xm_to_pixels(radius));
+
+		int m = 1;
+		if(pointLeft) m = -1;
+
+		double midX = pointX-m*length/2;
+		double backX = pointX-m*length;
+		double eithBack = pointX-m*7*length/8;
+
+		//There is an issue with scaling the y axis
+
+		double thirdG = pointY+radius/3;		double negthirdG = pointY-radius/3;
+		double thirdG2 = pointY+2*radius/3;		double negthirdG2 = pointY-2*radius/3;
+		double halfG = pointY+radius; 			double neghalfG = pointY-radius;
+
+		double[] xes =  {pointX, midX,  midX,   backX,   eithBack, backX,      midX,      midX};
+		double[] yses = {pointY, halfG, thirdG, thirdG2, pointY,   negthirdG2, negthirdG, neghalfG};
+
+		Point[] points = new Point[xes.length];
+		for(int i = 0; i < xes.length; i++){
+			points[i] = new Point(xes[i],yses[i]);
+		}
+
+		g2.setColor(outline);
+		g2.setStroke(new BasicStroke(0.35f));
+		this.drawPolygon_inM(g2, points, fill);
+	}
 	//===========================================================================================================================
 
 
@@ -136,7 +185,7 @@ public abstract class AbstractView extends JPanel {
 
 	/** In degrees */
 	private short transformingAngle;
-	
+
 	public double getRotationTransformationAngle_Rad(){
 		return Math.toRadians(getRotationTransformationAngle_Deg()); 
 	}
@@ -156,13 +205,15 @@ public abstract class AbstractView extends JPanel {
 
 	//======[ Drawing the image ]================================================================================================
 	@Override
-	public void paint(Graphics g){
-		super.paint(g);
+	public final void paint(Graphics g){
+		Graphics2D g2 = (Graphics2D) g.create();
+		super.paint(g2);
 		rescaleImageSize();
 
 		drawImage(getImage().createGraphics());
 
-		/* @End */g.drawImage(getImage(), 0, 0, null);
+
+		/* @End */g2.drawImage(getImage(), 0, 0, null);
 	}
 
 	protected abstract void drawImage(Graphics2D g);
@@ -173,7 +224,7 @@ public abstract class AbstractView extends JPanel {
 		Graphics2D g2 = (Graphics2D) g.create();
 
 		g2.drawLine(p1.x_pix(), p1.y_pix(), 
-				    p2.x_pix(), p2.y_pix());
+				p2.x_pix(), p2.y_pix());
 	}
 
 	protected void drawRectangle_inM(Graphics2D g, Point start, double width, double height, Color fill){
@@ -184,7 +235,7 @@ public abstract class AbstractView extends JPanel {
 		fourCorners[3] = start.offsetYByM(height);
 
 		this.drawPolygon_inM(g, fourCorners, fill);
-		
+
 	}
 
 
@@ -213,10 +264,119 @@ public abstract class AbstractView extends JPanel {
 	protected void drawString_inM(Graphics2D g, String text, Point topLeft){
 		Graphics2D g2 = (Graphics2D) g.create();
 
-		g2.setFont(DIMENSION_FONT);
 		Point midLeft = topLeft.offsetYByPixels(3*g2.getFontMetrics().getHeight()/4);
 
 		g2.drawString(text, midLeft.x_pix(), midLeft.y_pix());
+	}
+	//----[ Specific Drawings ]-----------------------------------------------------------------------------
+	protected void drawIdentifiers(Graphics2D g, double yHeight, double leftTextPos, double rightTextPos) {
+		Graphics2D g2 = (Graphics2D) g.create();
+
+		String leftNum = getAirfield().getSmallAngledRunway().getIdentifier().substring(0,2);
+		String leftSide = ""+getAirfield().getSmallAngledRunway().getSideLetter();
+
+		String rightNum = getAirfield().getLargeAngledRunway().getIdentifier().substring(0,2);
+		String rightSide = ""+getAirfield().getLargeAngledRunway().getSideLetter();
+
+		int fontSize = 10;
+		Font resized = new Font(IDENTIFIER_FONT,IDENTIFIER_STYLE,fontSize);
+		g2.setFont(resized);
+		g2.setColor(IDENTIFIER_COLOR);
+
+		int fontPixelHeight = g2.getFontMetrics().getHeight();
+		int rightPixelWidth = g2.getFontMetrics().stringWidth(rightNum);
+		int qtrWdith = rightPixelWidth/4;
+
+		double yPos = yHeight/2;
+
+		Point leftPos = new Point(leftTextPos,yPos);
+		Point rightPos = new Point(rightTextPos,yPos).offsetXByPixels(-rightPixelWidth);
+
+		//Draw left identifier with side letter beneath
+		drawString_inM(g2, leftNum, leftPos);
+		drawString_inM(g2, leftSide, leftPos.offsetYByPixels(fontPixelHeight*2).offsetXByPixels(qtrWdith));
+
+		//Draw right identifier with side letter beneath
+		drawString_inM(g2, rightNum, rightPos);
+		drawString_inM(g2, rightSide, rightPos.offsetYByPixels(fontPixelHeight*2).offsetXByPixels(qtrWdith));
+	}
+
+
+	/** The line that says how big the image is  */
+	protected void drawScale(Graphics2D g2, double xStartOfScale, double yStartOfScale, double metresToScale) {
+		int bumpHeight = 30;//pixels
+
+		Point scaleStart = new Point(xStartOfScale,yStartOfScale);
+		Point scaleEnd = scaleStart.offsetXByM(metresToScale);
+		Point scaleMid = scaleStart.offsetXByM(metresToScale/2);
+
+		g2.setColor(Color.BLACK);
+
+		//skinny mid vert
+		this.drawLine_inM(g2, scaleMid, scaleMid.offsetYByPixels(bumpHeight/2));
+
+		g2.setStroke(new BasicStroke(2f));
+
+		//fat horiz
+		this.drawLine_inM(g2, scaleStart, scaleEnd);
+
+		//fat verts
+		this.drawLine_inM(g2, scaleStart, scaleStart.offsetYByPixels(bumpHeight));
+		this.drawLine_inM(g2, scaleEnd, scaleEnd.offsetYByPixels(bumpHeight));
+
+		//text labels
+		int fontHeightPix = g2.getFontMetrics().getHeight();
+		int disWdith = g2.getFontMetrics().stringWidth(""+(int) metresToScale+"m");
+		int zeroWidth = g2.getFontMetrics().stringWidth("0m");
+
+		Point bellowStartBump = scaleStart.offsetYByPixels(fontHeightPix*2+bumpHeight).offsetXByPixels(-zeroWidth/2);
+		Point bellowEndBump = scaleEnd.offsetYByPixels(fontHeightPix*2+bumpHeight).offsetXByPixels(-disWdith/2);
+
+		this.drawString_inM(g2, "0m", bellowStartBump);
+		this.drawString_inM(g2, ""+(int)metresToScale+"m", bellowEndBump);
+	}
+
+	protected void drawDistance(Graphics2D g, String disName, double length, double begin, int heightLevel, double basicHeight){
+		Graphics2D g2 = (Graphics2D) g.create();
+		g2.setColor(DIMENSION_COLOR);
+
+		FontMetrics fontMetrics = g2.getFontMetrics();
+		int titleLen = fontMetrics.stringWidth(disName);
+
+		double startX;
+		if(getRunway().isSmallEnd()){
+			startX = leftOfRunaway() + begin;
+		}else{
+			startX = rightOfRunway() - begin; 
+		}
+
+		double endX = startX+s()*length;
+		int pixelOffset = heightLevel*PIXEL_BUFFER;
+
+		Point start = new Point(startX,basicHeight).offsetYByPixels(pixelOffset);
+		Point end = new Point(endX,basicHeight).offsetYByPixels(pixelOffset);
+
+		//These points make the gap for the text
+		Point midStart = start.offsetXByM(s()*length/2).offsetXByPixels(s()*-3*titleLen/4);
+		Point midEnd   = start.offsetXByM(s()*length/2).offsetXByPixels(s()* 3*titleLen/4);
+
+		//Horiz
+		this.drawLine_inM(g2, start, midStart);
+		this.drawLine_inM(g2, end, midEnd);
+
+		//Verticals
+		this.drawLine_inM(g2, start.offsetYByPixels(0), start.offsetYByPixels(-pixelOffset));
+		this.drawLine_inM(g2, end.offsetYByPixels(0), end.offsetYByPixels(-pixelOffset));
+
+
+		//Placing the text on the left of the two mid points
+		Point pWithSmallerX;
+		if(midStart.x_m()<midEnd.x_m()){
+			pWithSmallerX = midStart;
+		}else{
+			pWithSmallerX = midEnd;
+		}
+		this.drawString_inM(g2, disName, pWithSmallerX.offsetXByPixels(titleLen/4));
 	}
 
 	//===========================================================================================================================
@@ -225,7 +385,17 @@ public abstract class AbstractView extends JPanel {
 
 	//======[ Misc/Distances ]=====================================================================================================
 
+	public void save(String fullpath, String ext) throws IOException{
+		ImageIO.write(image, ext, new File(fullpath));
+	}
+
 	protected abstract double largestHeight();
+
+	protected abstract double vertToRunway();
+
+	protected abstract double leftOfRunaway();
+
+	protected abstract double rightOfRunway();
 
 	protected double runwayWidth(){
 		double defTODA;
@@ -321,18 +491,19 @@ public abstract class AbstractView extends JPanel {
 			Point relative = new Point(x_M_RelativeToPivot(),y_M_RelativeToPivot());
 
 			double xbuf = relative.core_Xm()*Math.cos(getRotationTransformationAngle_Rad())
-					     -relative.core_Ym()*Math.sin(getRotationTransformationAngle_Rad());
+					-relative.core_Ym()*Math.sin(getRotationTransformationAngle_Rad());
 
 			double ybuf = relative.core_Xm()*Math.sin(getRotationTransformationAngle_Rad())
-					     +relative.core_Ym()*Math.cos(getRotationTransformationAngle_Rad());
+					+relative.core_Ym()*Math.cos(getRotationTransformationAngle_Rad());
 
 			Point result =  getPivot().offsetXByM(xbuf).offsetYByM(ybuf);
-			
-			
-			
-			System.out.println("Rotate("+getRotationTransformationAngle_Deg()+"): "+core_Xm()+","+core_Ym()+" -> "+result.core_Xm()+","+result.core_Ym());
-			if(result.core_Xm() != core_Xm() || result.core_Ym() != core_Ym()){
-				System.out.println("^---> Change: "+(result.core_Xm() - core_Xm()) +"   "+(result.core_Ym() - core_Ym()));
+
+
+			if(getRotationTransformationAngle_Deg()!=0){
+				System.out.println("Rotate("+getRotationTransformationAngle_Deg()+"): "+core_Xm()+","+core_Ym()+" -> "+result.core_Xm()+","+result.core_Ym());
+				if(result.core_Xm() != core_Xm() || result.core_Ym() != core_Ym()){
+					System.out.println("^---> Change: "+(result.core_Xm() - core_Xm()) +"   "+(result.core_Ym() - core_Ym()));
+				}
 			}
 			return result;
 		}
