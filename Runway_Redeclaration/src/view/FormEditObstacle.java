@@ -1,12 +1,13 @@
 package view;
 
+import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
 import javax.swing.JTextField;
 
+import core.Obstacle;
 import core.PositionedObstacle;
 
 public class FormEditObstacle extends FormObstacle{
@@ -48,8 +49,7 @@ public class FormEditObstacle extends FormObstacle{
 	public void setInitialTextfields(){
 		
 		for(JTextField jtf : textFields){
-			Font newTextFieldFont=new Font(jtf.getFont().getName(),Font.ITALIC,jtf.getFont().getSize());
-			//jtf.setFont(newTextFieldFont);
+			
 			if(textFields.indexOf(jtf) == 0){
 				jtf.setText(currentObstacle.getName());
 			}
@@ -72,10 +72,8 @@ public class FormEditObstacle extends FormObstacle{
 		
 		for(final JTextField jtf : textFields){
 			jtf.addFocusListener(new FocusListener() {
-				Font newTextFieldFont=new Font(jtf.getFont().getName(),Font.ITALIC,jtf.getFont().getSize());
 				public void focusLost(FocusEvent e) {
 					if (jtf.getText().equals("")){
-						//jtf.setFont(newTextFieldFont);
 						if(textFields.indexOf(jtf) == 0){
 							jtf.setText(currentObstacle.getName());
 						}
@@ -95,8 +93,6 @@ public class FormEditObstacle extends FormObstacle{
 				}
 				
 				public void focusGained(FocusEvent e) {
-					//jtf.setFont(null);
-					//jtf.setText("");
 				}
 			});
 		}
