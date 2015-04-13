@@ -1,6 +1,8 @@
 package view;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 
@@ -9,6 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 
 import coreInterfaces.AirfieldInterface;
 import coreInterfaces.DeclaredRunwayInterface;
@@ -242,8 +245,24 @@ public class InfoPanel extends JPanel{
 			for(int i=0; i<columnNames.length; i++){
 				tableModel.addColumn(columnNames[i]);
 			}
-			
 			table = new JTable(tableModel);
+			
+//			table = new JTable(tableModel){
+//				public Component prepareRenderer(TableCellRenderer renderer, int row, int column)
+//				{
+//					Component c = super.prepareRenderer(renderer, row, column);
+//
+//					//  Color row based on a cell value
+//						c.setBackground(getBackground());
+//						int modelRow = convertRowIndexToModel(row);
+//						String type = (String)getModel().getValueAt(modelRow, 0);
+//						if ("TORA".equals(type)) c.setBackground(Color.GREEN);
+//						if ("LDA".equals(type)) c.setBackground(Color.YELLOW);
+//
+//
+//					return c;
+//				}
+//			};
 
 			table.getTableHeader().setReorderingAllowed(false);
 
