@@ -47,7 +47,7 @@ public abstract class AbstractView extends JPanel {
 
 	private BufferedImage image;
 	protected boolean sameScaleAsX; 
-	
+
 	private int IMAGE_WIDTH, IMAGE_HEIGHT;
 
 	public final static Color GRASS_COLOUR = new Color(95,245,22);
@@ -59,20 +59,20 @@ public abstract class AbstractView extends JPanel {
 	public final static Color RUNWAY_COLOUR = Color.GRAY;
 
 	public static int PIXEL_BUFFER = 40;
-	
+
 	public final static Font DIMENSION_FONT = new Font("Dialog", Font.PLAIN, 12);
-	
+
 	public final static Color IDENTIFIER_COLOR = Color.BLACK;
 	public final static String IDENTIFIER_FONT = "verdana";
 	public final static int IDENTIFIER_STYLE = Font.BOLD;
-	
+
 	public AbstractView (AirfieldInterface airfield, DeclaredRunwayInterface runway){
 		setAirfield(airfield);
 		setRunway(runway);
 
 		this.IMAGE_WIDTH = this.IMAGE_HEIGHT = 10;
 		this.image = new BufferedImage(IMAGE_WIDTH, IMAGE_HEIGHT, BufferedImage.TYPE_3BYTE_BGR);
-		
+
 		this.transformingAngle = (short) 0;
 		this.sameScaleAsX = false;
 	}
@@ -119,7 +119,7 @@ public abstract class AbstractView extends JPanel {
 	}
 	public int Ym_to_pixels(double ym){
 		if(this.sameScaleAsX) return Xm_to_pixels(ym);
-		
+
 		double largestHeight = largestHeight();
 		int yPix = metersToPixels(ym, largestHeight, IMAGE_HEIGHT);
 		return yPix;
@@ -133,7 +133,7 @@ public abstract class AbstractView extends JPanel {
 	}
 	public double Ypix_to_m(int yp){
 		if(this.sameScaleAsX) return Xpix_to_m(yp);
-		
+
 		double ym = pixelsToMeters(yp, largestHeight(), IMAGE_WIDTH);
 		return ym;
 	}
@@ -143,31 +143,31 @@ public abstract class AbstractView extends JPanel {
 		Graphics2D g2 = (Graphics2D) g.create();
 		double radius = 3*width/8; 
 		double length = width;
-		
-		
+
+
 		radius = Ypix_to_m(Xm_to_pixels(radius));
 
 		int m = 1;
 		if(pointLeft) m = -1;
-		
+
 		double midX = pointX-m*length/2;
 		double backX = pointX-m*length;
 		double eithBack = pointX-m*7*length/8;
-		
+
 		//There is an issue with scaling the y axis
-		
+
 		double thirdG = pointY+radius/3;		double negthirdG = pointY-radius/3;
 		double thirdG2 = pointY+2*radius/3;		double negthirdG2 = pointY-2*radius/3;
 		double halfG = pointY+radius; 			double neghalfG = pointY-radius;
-		
+
 		double[] xes =  {pointX, midX,  midX,   backX,   eithBack, backX,      midX,      midX};
 		double[] yses = {pointY, halfG, thirdG, thirdG2, pointY,   negthirdG2, negthirdG, neghalfG};
-		
+
 		Point[] points = new Point[xes.length];
 		for(int i = 0; i < xes.length; i++){
 			points[i] = new Point(xes[i],yses[i]);
 		}
-		
+
 		g2.setColor(outline);
 		g2.setStroke(new BasicStroke(0.35f));
 		this.drawPolygon_inM(g2, points, fill);
@@ -185,7 +185,7 @@ public abstract class AbstractView extends JPanel {
 
 	/** In degrees */
 	private short transformingAngle;
-	
+
 	public double getRotationTransformationAngle_Rad(){
 		return Math.toRadians(getRotationTransformationAngle_Deg()); 
 	}
@@ -209,10 +209,10 @@ public abstract class AbstractView extends JPanel {
 		Graphics2D g2 = (Graphics2D) g.create();
 		super.paint(g2);
 		rescaleImageSize();
-		
+
 		drawImage(getImage().createGraphics());
 
-		
+
 		/* @End */g2.drawImage(getImage(), 0, 0, null);
 	}
 
@@ -224,7 +224,7 @@ public abstract class AbstractView extends JPanel {
 		Graphics2D g2 = (Graphics2D) g.create();
 
 		g2.drawLine(p1.x_pix(), p1.y_pix(), 
-				    p2.x_pix(), p2.y_pix());
+				p2.x_pix(), p2.y_pix());
 	}
 
 	protected void drawRectangle_inM(Graphics2D g, Point start, double width, double height, Color fill){
@@ -235,7 +235,7 @@ public abstract class AbstractView extends JPanel {
 		fourCorners[3] = start.offsetYByM(height);
 
 		this.drawPolygon_inM(g, fourCorners, fill);
-		
+
 	}
 
 
@@ -300,8 +300,8 @@ public abstract class AbstractView extends JPanel {
 		drawString_inM(g2, rightNum, rightPos);
 		drawString_inM(g2, rightSide, rightPos.offsetYByPixels(fontPixelHeight*2).offsetXByPixels(qtrWdith));
 	}
-	
-	
+
+
 	/** The line that says how big the image is  */
 	protected void drawScale(Graphics2D g2, double xStartOfScale, double yStartOfScale, double metresToScale) {
 		int bumpHeight = 30;//pixels
@@ -335,7 +335,7 @@ public abstract class AbstractView extends JPanel {
 		this.drawString_inM(g2, "0m", bellowStartBump);
 		this.drawString_inM(g2, ""+(int)metresToScale+"m", bellowEndBump);
 	}
-	
+
 	protected void drawDistance(Graphics2D g, String disName, double length, double begin, int heightLevel, double basicHeight){
 		Graphics2D g2 = (Graphics2D) g.create();
 		g2.setColor(DIMENSION_COLOR);
@@ -378,7 +378,7 @@ public abstract class AbstractView extends JPanel {
 		}
 		this.drawString_inM(g2, disName, pWithSmallerX.offsetXByPixels(titleLen/4));
 	}
-	
+
 	//===========================================================================================================================
 
 
@@ -388,13 +388,13 @@ public abstract class AbstractView extends JPanel {
 	public void save(String fullpath, String ext) throws IOException{
 		ImageIO.write(image, ext, new File(fullpath));
 	}
-	
+
 	protected abstract double largestHeight();
-	
+
 	protected abstract double vertToRunway();
-	
+
 	protected abstract double leftOfRunaway();
-	
+
 	protected abstract double rightOfRunway();
 
 	protected double runwayWidth(){
@@ -491,18 +491,19 @@ public abstract class AbstractView extends JPanel {
 			Point relative = new Point(x_M_RelativeToPivot(),y_M_RelativeToPivot());
 
 			double xbuf = relative.core_Xm()*Math.cos(getRotationTransformationAngle_Rad())
-					     -relative.core_Ym()*Math.sin(getRotationTransformationAngle_Rad());
+					-relative.core_Ym()*Math.sin(getRotationTransformationAngle_Rad());
 
 			double ybuf = relative.core_Xm()*Math.sin(getRotationTransformationAngle_Rad())
-					     +relative.core_Ym()*Math.cos(getRotationTransformationAngle_Rad());
+					+relative.core_Ym()*Math.cos(getRotationTransformationAngle_Rad());
 
 			Point result =  getPivot().offsetXByM(xbuf).offsetYByM(ybuf);
-			
-			
-			
-			System.out.println("Rotate("+getRotationTransformationAngle_Deg()+"): "+core_Xm()+","+core_Ym()+" -> "+result.core_Xm()+","+result.core_Ym());
-			if(result.core_Xm() != core_Xm() || result.core_Ym() != core_Ym()){
-				System.out.println("^---> Change: "+(result.core_Xm() - core_Xm()) +"   "+(result.core_Ym() - core_Ym()));
+
+
+			if(getRotationTransformationAngle_Deg()!=0){
+				System.out.println("Rotate("+getRotationTransformationAngle_Deg()+"): "+core_Xm()+","+core_Ym()+" -> "+result.core_Xm()+","+result.core_Ym());
+				if(result.core_Xm() != core_Xm() || result.core_Ym() != core_Ym()){
+					System.out.println("^---> Change: "+(result.core_Xm() - core_Xm()) +"   "+(result.core_Ym() - core_Ym()));
+				}
 			}
 			return result;
 		}

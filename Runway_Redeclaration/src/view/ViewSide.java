@@ -108,13 +108,10 @@ public class ViewSide extends AbstractView{
 		double heightOfGrass = (1-PERCENTAGE_OF_SKY) * largestHeight();
 
 		g2.setColor(GRASS_COLOUR);
-		System.out.println("--[ Grass ]--");
 		super.drawRectangle_inM(g2, new Point(0d, topOfGrass), width, topOfGrass+ heightOfGrass, GRASS_COLOUR);
 
 		g2.setColor(SKY_COLOUR);
-		System.out.println("--[ Sky ]--");
 		super.drawRectangle_inM(g2, new Point(0d, 0d),width, topOfGrass, SKY_COLOUR);
-		System.out.println("--------");
 	}
 
 	/** Grey Strip */
@@ -185,46 +182,48 @@ public class ViewSide extends AbstractView{
 		Graphics2D g2 = (Graphics2D) g.create();
 		Graphics2D g3 = (Graphics2D) g.create();
 
-		//if the object is off the runway then the ALS slop needs to point inwards!
-		//This handles that!
-		int o = 1;
-		if(getRunway().isSmallEnd() 
-				&& 
-				getAirfield().getPositionedObstacle().distanceFromSmallEnd() > getAirfield().getDefaultSmallAngledRunway().getTORA()){
-			//Then the obs is off the right hand side
-			o = -1;
-			
-		}else if(!getRunway().isSmallEnd()
-				&&
-				getAirfield().getPositionedObstacle().distanceFromLargeEnd() > getAirfield().getDefaultLargeAngledRunway().getTORA()){
-			//Then the obs is off the left hand side
-			o = -1;
-		}
-
-		Point obsTop = new Point(locOfObs,vertToRunway()-heightOfObs);
-		Point alsPoint = new Point(locOfObs+o*s()*ALS,this.vertToRunway());
-
 		g2.setColor(Color.RED);
 		g2.setStroke(new BasicStroke(1f,
 				BasicStroke.CAP_BUTT,
 				BasicStroke.JOIN_BEVEL,
 				10.0f, new float[]{5}, 3.0f));
 
-		super.drawLine_inM(g2, obsTop, alsPoint);
-
-		Point start = new Point(locOfObs,vertToRunway()).offsetYByPixels(PIXEL_BUFFER);
-		Point end = start.offsetXByM(o*s()*ALS);
-
 		g3.setColor(MAROON_COLOUR);
 		g3.setStroke(new BasicStroke(1f,
 				BasicStroke.CAP_BUTT,
 				BasicStroke.JOIN_BEVEL,
 				10.0f, new float[]{2}, 0.5f));
+		
+		//if the object is off the runway then the ALS slop needs to point inwards!
+		//This handles that!
+		int o = 1;
+		if(getRunway().isSmallEnd() 
+				&& 
+				getAirfield().getPositionedObstacle().distanceFromSmallEnd() > getAirfield().getPositionedObstacle().distanceFromLargeEnd()){
+			//Then the obs is off the right hand side
+			o = -1;
+			
+		}else if(!getRunway().isSmallEnd()
+				&&
+				getAirfield().getPositionedObstacle().distanceFromSmallEnd() < getAirfield().getPositionedObstacle().distanceFromLargeEnd()){
+			//Then the obs is off the left hand side
+			o = -1;
+		}
 
+		Point obsTop = new Point(locOfObs,vertToRunway()-heightOfObs);
+		Point alsPoint = new Point(locOfObs+o*s()*ALS,this.vertToRunway());
+		Point alsPointOther = new Point(locOfObs-o*s()*ALS,this.vertToRunway());
+
+		super.drawLine_inM(g2, obsTop, alsPoint);
+		super.drawLine_inM(g2, obsTop, alsPointOther);
+
+		Point start = new Point(locOfObs,vertToRunway()).offsetYByPixels(PIXEL_BUFFER);
+		Point end = start.offsetXByM(o*s()*ALS);
 
 		//Shaded Triangle
 		g2.setColor(GLASS_COLOR);
 		super.drawPolygon_inM(g2, new Point[] {obsTop,new Point(locOfObs,vertToRunway()),alsPoint}, ALS_SHADE_COLOR);
+		super.drawPolygon_inM(g2, new Point[] {obsTop,new Point(locOfObs,vertToRunway()),alsPointOther}, ALS_SHADE_COLOR);
 
 		//Horiz line bellow
 		super.drawLine_inM(g3, start, end);
@@ -330,18 +329,15 @@ public class ViewSide extends AbstractView{
 	
 	private void drawFatArrow(Graphics2D g){
 		double fullHeight = vertToRunway()/PERCENTAGE_OF_SKY;
-		System.out.println("Full height: "+fullHeight);
 		double width = runwayWidth()/10;
 		double startX =  runwayWidth()/2+width/2;
 		
 		double grassTallness = fullHeight*(1-PERCENTAGE_OF_SKY);
 		double remainingGrass = grassTallness-Ypix_to_m(PIXEL_BUFFER*5);
 		double startY = fullHeight-remainingGrass/2;
-		System.out.println("GrassT: "+grassTallness+"  rG: "+remainingGrass+"  strtY: "+startY);
 		
 		
 		super.drawArrowAround(g, startX, startY, width, !getRunway().isSmallEnd(), Color.RED, MAROON_COLOUR);
-		System.out.println("DRAWN");
 	}
 
 	//======[ Common Distance Methods ]===================================================================
