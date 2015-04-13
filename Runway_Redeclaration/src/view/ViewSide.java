@@ -102,11 +102,13 @@ public class ViewSide extends AbstractView{
 		double heightOfGrass = (1-PERCENTAGE_OF_SKY) * largestHeight();
 
 		g2.setColor(GRASS_COLOUR);
-		super.drawRectangle_inM(g2, new Point(0d, topOfGrass), new Point(width, topOfGrass+ heightOfGrass), GRASS_COLOUR);
+		System.out.println("--[ Grass ]--");
+		super.drawRectangle_inM(g2, new Point(0d, topOfGrass), width, topOfGrass+ heightOfGrass, GRASS_COLOUR);
 
 		g2.setColor(SKY_COLOUR);
-		super.drawRectangle_inM(g2, new Point(0d, 0d), new Point(width, topOfGrass), SKY_COLOUR);
-
+		System.out.println("--[ Sky ]--");
+		super.drawRectangle_inM(g2, new Point(0d, 0d),width, topOfGrass, SKY_COLOUR);
+		System.out.println("--------");
 	}
 
 	/** Grey Strip */
@@ -197,6 +199,9 @@ public class ViewSide extends AbstractView{
 				BasicStroke.CAP_BUTT,
 				BasicStroke.JOIN_BEVEL,
 				10.0f, new float[]{2}, 0.5f));
+		
+		g2.setColor(GLASS_COLOR);
+		super.drawPolygon_inM(g2, new Point[] {obsTop,new Point(locOfObs,vertToRunway()),alsPoint}, ALS_SHADE_COLOR);
 		//Horiz line
 		super.drawLine_inM(g3, start, end);
 
@@ -272,11 +277,10 @@ public class ViewSide extends AbstractView{
 
 	private void drawDistance(Graphics2D g, String disName, double length, double begin, int heightLevel){
 		Graphics2D g2 = (Graphics2D) g.create();
-		g2.setColor(Color.black);
+		g2.setColor(DIMENSION_COLOR);
 		
 		FontMetrics fontMetrics = g2.getFontMetrics();
 		int titleLen = fontMetrics.stringWidth(disName);
-		System.out.println(titleLen);
 
 		double startX;
 		if(getRunway().isSmallEnd()){

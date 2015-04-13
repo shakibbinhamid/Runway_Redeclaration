@@ -13,7 +13,7 @@ import coreInterfaces.DeclaredRunwayInterface;
 
 /**
  * [X] Version 1: Points 
- * [ ] Version 2: Rotate Points 
+ * [/] Version 2: Rotate Points 
  * [ ] Version 3: Scale/Zoom 
  * [ ] Version 4: Pan by focus points 
  * 
@@ -30,11 +30,11 @@ public abstract class AbstractView extends JPanel {
 	/**
 	 * [X] Version 0: Nada Complete
 	 * [X] Version 1: Points 
-	 * [ ] Version 2: Rotate Points 
+	 * [/] Version 2: Rotate Points 
 	 * [ ] Version 3: Scale/Zoom 
 	 * [ ] Version 4: Pan by focus points 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 15L;
 
 	private AirfieldInterface airfield;
 	private DeclaredRunwayInterface runway;
@@ -45,16 +45,22 @@ public abstract class AbstractView extends JPanel {
 
 	public final static Color GRASS_COLOUR = new Color(95,245,22);
 	public final static Color MAROON_COLOUR = new Color(136,0,21);
+	public final static Color DIMENSION_COLOR = Color.BLACK;
+	public final static Color VERY_VERY_transparentRed = new Color(255, 0, 0, 50);
+	public final static Color ALS_SHADE_COLOR = VERY_VERY_transparentRed;
+	public final static Color GLASS_COLOR = new Color(255,255,255,0);
+
 
 	public final static Font DIMENSION_FONT = new Font("Dialog", Font.PLAIN, 12);
-	
+
 	public AbstractView (AirfieldInterface airfield, DeclaredRunwayInterface runway){
 		setAirfield(airfield);
 		setRunway(runway);
 
 		this.IMAGE_WIDTH = this.IMAGE_HEIGHT = 10;
 		this.image = new BufferedImage(IMAGE_WIDTH, IMAGE_HEIGHT, BufferedImage.TYPE_3BYTE_BGR);
-
+		
+		this.transformingAngle = (short) 0;
 	}
 
 	//======[ Core Objects ]=====================================================================================================
@@ -62,14 +68,12 @@ public abstract class AbstractView extends JPanel {
 	public void setAirfield(AirfieldInterface newAirfield){
 		this.airfield = newAirfield;
 
-		//TODO !IF NEEDED! add the special values, **shouldn't be needed**
 	}
 
 	public DeclaredRunwayInterface getRunway(){ return this.runway; }
 	public void setRunway(DeclaredRunwayInterface newRunway){
 		this.runway = newRunway;
 
-		//TODO !IF NEEDED! add the special values **shouldn't be needed**
 	}
 
 	public BufferedImage getImage(){
@@ -96,12 +100,6 @@ public abstract class AbstractView extends JPanel {
 		return (int) (yourMeters * pixels/meters);
 	}
 
-	/*@Deprecated
-	 * protected static int generalScale (double howMuchWantToFit, int inHowMuch, double whatYouAreScaling){
-		BigDecimal value = new BigDecimal( whatYouAreScaling * inHowMuch/howMuchWantToFit);
-		return value.intValue();
-	}*/
-
 	//----[ M to Pix ]----------------------------------------------------------------------------------------------------------
 	public int Xm_to_pixels(double xm){
 		int xPix = metersToPixels(xm, this.runwayWidth(), IMAGE_WIDTH);
@@ -110,7 +108,8 @@ public abstract class AbstractView extends JPanel {
 	public int Ym_to_pixels(double ym){
 		double largestHeight = largestHeight();
 		int yPix = metersToPixels(ym, largestHeight, IMAGE_HEIGHT);
-		return yPix;
+		return yPix;//*/
+//		return Xm_to_pixels(ym);
 	} 
 
 	//----[ Pix to M ]----------------------------------------------------------------------------------------------------------
@@ -118,11 +117,9 @@ public abstract class AbstractView extends JPanel {
 	public double Xpix_to_m(int xp){
 		double xm = pixelsToMeters(xp, this.runwayWidth(), IMAGE_WIDTH);
 		return xm;
-
 	}
 	public double Ypix_to_m(int yp){
-		double largestHeight = largestHeight();
-		double ym = pixelsToMeters(yp, largestHeight, IMAGE_WIDTH);
+		double ym = pixelsToMeters(yp, largestHeight(), IMAGE_WIDTH);
 		return ym;
 	}
 
@@ -131,10 +128,26 @@ public abstract class AbstractView extends JPanel {
 
 	//======[ Rotation Methods ]================================================================================================
 
-	private Point getPivot(){
-		double middleX = getAirfield().getTotalWidth()/2;
+	protected final Point getPivot(){
+		double middleX = this.runwayWidth()/2;
 		double middleY = largestHeight()/2;
 		return new Point(middleX,middleY);
+	}
+
+	/** In degrees */
+	private short transformingAngle;
+	
+	public double getRotationTransformationAngle_Rad(){
+		return Math.toRadians(getRotationTransformationAngle_Deg()); 
+	}
+	public short getRotationTransformationAngle_Deg(){
+		return transformingAngle;
+	}
+	public void setRotationTransformationAngle_Deg(short rotation){
+		while(rotation < 0){
+			rotation += 180;
+		}
+		this.transformingAngle = (short) (rotation % 380); 
 	}
 
 
@@ -160,20 +173,18 @@ public abstract class AbstractView extends JPanel {
 		Graphics2D g2 = (Graphics2D) g.create();
 
 		g2.drawLine(p1.x_pix(), p1.y_pix(), 
-				p2.x_pix(), p2.y_pix());
+				    p2.x_pix(), p2.y_pix());
 	}
 
-	protected void drawRectangle_inM(Graphics2D g, Point start, Point size, Color fill){
-		Graphics2D g2 = (Graphics2D) g.create();
+	protected void drawRectangle_inM(Graphics2D g, Point start, double width, double height, Color fill){
+		Point[] fourCorners = new Point[4];
+		fourCorners[0] = start;
+		fourCorners[1] = start.offsetXByM(width);
+		fourCorners[2] = start.offsetXByM(width).offsetYByM(height);
+		fourCorners[3] = start.offsetYByM(height);
 
-		g2.drawRect(start.x_pix(), start.y_pix(),
-				size.x_pix(), size.y_pix());
-
-		if(fill != null){
-			g2.setColor(fill);
-			g2.fillRect(start.x_pix(), start.y_pix(), 
-					size.x_pix(), size.y_pix());
-		}
+		this.drawPolygon_inM(g, fourCorners, fill);
+		
 	}
 
 
@@ -201,10 +212,10 @@ public abstract class AbstractView extends JPanel {
 
 	protected void drawString_inM(Graphics2D g, String text, Point topLeft){
 		Graphics2D g2 = (Graphics2D) g.create();
-		
+
 		g2.setFont(DIMENSION_FONT);
 		Point midLeft = topLeft.offsetYByPixels(3*g2.getFontMetrics().getHeight()/4);
-		
+
 		g2.drawString(text, midLeft.x_pix(), midLeft.y_pix());
 	}
 
@@ -217,22 +228,34 @@ public abstract class AbstractView extends JPanel {
 	protected abstract double largestHeight();
 
 	protected double runwayWidth(){
-		double defTORA;
+		double defTODA;
 		if(getRunway().isSmallEnd()){
-			defTORA = getAirfield().getDefaultSmallAngledRunway().getTODA();
+			defTODA = getAirfield().getDefaultSmallAngledRunway().getTODA();
 		}else{
-			defTORA = getAirfield().getDefaultLargeAngledRunway().getTODA();
+			defTODA = getAirfield().getDefaultLargeAngledRunway().getTODA();
 		}
-		return getAirfield().getStripEnd()+defTORA+getAirfield().getStripEnd();
+		return getAirfield().getStripEnd()+defTODA+getAirfield().getStripEnd();
 	}
-	
+
 	protected int s(){ 
 		if(getRunway().isSmallEnd()) return 1;
 		return -1;
 	}
 
-
+	/** 
+	 * Everything on the abstractView is drawn via points, so they can be translated
+	 * 
+	 * 
+	 * Note: AngleFromNorth is like a queued angle, the point without applying a rotation
+	 * 		 Some internal points use the result of  the rotation hence the angle on them 
+	 * 		 is 0 (degrees).
+	 * Note: 90Degrees is horizontal and normal
+	 * 
+	 * @author Stefan
+	 *
+	 */
 	class Point{
+		/** In m */
 		private double xm, ym;
 
 		public Point(double x, double y){
@@ -251,43 +274,71 @@ public abstract class AbstractView extends JPanel {
 			}
 		}
 
-		public double x_m(){ return this.xm; }
-		public int x_pix() { return Xm_to_pixels(this.xm); }
+		/** These are used internally */
+		private double core_Xm(){ return this.xm; }
+		/** These are used internally */
+		private double core_Ym(){ return this.ym; }
 
-		public double y_m(){ return this.ym; }
-		public int y_pix() { return Ym_to_pixels(this.ym); }
+		public double x_m(){ return rotateXm(); }
+		public int x_pix() { return Xm_to_pixels(this.x_m()); }
 
+		public double y_m(){ return rotateYm(); }
+		public int y_pix() { return Ym_to_pixels(this.y_m()); }
 
 
 		public Point offsetXByPixels(int xPix){
-			return new Point(x_m() + Xpix_to_m(xPix),y_m());
+			return new Point(core_Xm() + Xpix_to_m(xPix), core_Ym());
 		}
 		public Point offsetYByPixels(int yPix){
-			return new Point(x_m(),y_m()+Ypix_to_m(yPix));
+			return new Point(core_Xm(),core_Ym()+Ypix_to_m(yPix));
 		}
 
 		public Point offsetXByM(double xm){
-			return new Point(x_m() + xm, y_m());
+			return new Point(core_Xm() + xm, core_Ym());
 		}
 		public Point offsetYByM(double ym){
-			return new Point(x_m(), y_m()+ym);
+			return new Point(core_Xm(), core_Ym()+ym);
 		}
 
-		public Point add(Point p){
-			return new Point(x_m()+p.x_m(), y_m()+p.y_m());
+
+		private double x_M_RelativeToPivot(){
+			return core_Xm()-getPivot().core_Xm();
 		}
-		public Point minus(Point p){
-			return new Point(x_m()-p.x_m(), y_m()-p.y_m());
+		private double y_M_RelativeToPivot(){
+			return  core_Ym()-getPivot().core_Ym();
 		}
 
-		private double xRelativeToPivot(){
-			//TODO complete later
-			return 0d;
+		private double rotateXm(){
+			return rotateMe().core_Xm();
 		}
-		private double yRelativeToPivot(){
-			//TODO complete later
-			return 0d;
+		private double rotateYm(){
+			return rotateMe().core_Ym();
 		}
+
+		/** Returns the point after applying the rotation,
+		 *  as the rotation is applied the angle is now 0 */
+		protected Point rotateMe(){
+			Point relative = new Point(x_M_RelativeToPivot(),y_M_RelativeToPivot());
+
+			double xbuf = relative.core_Xm()*Math.cos(getRotationTransformationAngle_Rad())
+					     -relative.core_Ym()*Math.sin(getRotationTransformationAngle_Rad());
+
+			double ybuf = relative.core_Xm()*Math.sin(getRotationTransformationAngle_Rad())
+					     +relative.core_Ym()*Math.cos(getRotationTransformationAngle_Rad());
+
+			Point result =  getPivot().offsetXByM(xbuf).offsetYByM(ybuf);
+			
+			
+			
+			System.out.println("Rotate("+getRotationTransformationAngle_Deg()+"): "+core_Xm()+","+core_Ym()+" -> "+result.core_Xm()+","+result.core_Ym());
+			if(result.core_Xm() != core_Xm() || result.core_Ym() != core_Ym()){
+				System.out.println("^---> Change: "+(result.core_Xm() - core_Xm()) +"   "+(result.core_Ym() - core_Ym()));
+			}
+			return result;
+		}
+
+
+
 	}
 
 }
