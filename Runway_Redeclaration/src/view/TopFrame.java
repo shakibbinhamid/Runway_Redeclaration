@@ -132,14 +132,24 @@ public class TopFrame extends JFrame{
 	public void loadOrCreateObstacle(ObstacleInterface obs, AirfieldInterface field, double distanceFromLeft, double distanceFromRight){
 		try {
 			field.addObstacle(obs, distanceFromLeft, distanceFromRight);
-			tabbedPanel.updateTab(field);
-			NotificationPanel.notifyIt(obs.getName() + " Loaded", obs.getName() + " placed on " + 
+			if(field.hasObstacle()){
+				tabbedPanel.updateTab(field);
+				NotificationPanel.notifyIt(obs.getName() + " Loaded", obs.getName() + " placed on " + 
 																field.getName() + "\n"+
 																"Distance from "+field.getSmallAngledRunway().getIdentifier() +": "+ field.getPositionedObstacle().distanceFromSmallEnd() + " m"+"\n"+
 																"Distance from "+field.getLargeAngledRunway().getIdentifier() +": "+ field.getPositionedObstacle().distanceFromLargeEnd() + " m",
 																Notification.FILE);
+			}
 		} catch (VariableDeclarationException e) {
 			JOptionPane.showMessageDialog(this, "Your Obstacle has made the runway unusable --- " + e.getMessage(), "ERROR: Unusable Runway", JOptionPane.ERROR_MESSAGE);
+			NotificationPanel.notifyIt(field.getName() + " Unusable",
+					obs.getName() + " placed on "+
+					field.getName() + "\n"+
+					"Distance from "+field.getSmallAngledRunway().getIdentifier() +": "+ field.getPositionedObstacle().distanceFromSmallEnd() + " m"+"\n"+
+					"Distance from "+field.getLargeAngledRunway().getIdentifier() +": "+ field.getPositionedObstacle().distanceFromLargeEnd() + " m" +"\n"+
+					"\n" + "It has made this runway unusable in the following way: "+e.getMessage(),
+					Notification.ERROR);
+			field.removeObstacle();
 		}
 	}
 

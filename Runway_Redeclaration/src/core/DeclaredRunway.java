@@ -262,10 +262,6 @@ public class DeclaredRunway implements DeclaredRunwayInterface{
 		 *  |________________
 		 */
 		public void landOver(DeclaredRunwayInterface original, AirfieldInterface parent) throws VariableDeclarationException {
-			if(outOfBounds(parent.getStripEnd(), parent.getPositionedObstacle())){
-				this.addToLog("Out of Bounds");
-				return;
-			}
 
 			double distFromObs = distanceFrom(parent.getPositionedObstacle()) + 2*parent.getPositionedObstacle().getRadius();
 			double RESA = getRESA();
@@ -310,10 +306,6 @@ public class DeclaredRunway implements DeclaredRunwayInterface{
 		 *  |________________
 		 */
 		public void landTowards(DeclaredRunwayInterface original, AirfieldInterface parent) throws VariableDeclarationException {
-			if(outOfBounds(parent.getStripEnd(), parent.getPositionedObstacle())){
-				this.addToLog("Out of Bounds");
-				return;
-			}
 
 			double distFromObs = distanceFrom(parent.getPositionedObstacle());
 			double resa = getRESA();
@@ -345,12 +337,7 @@ public class DeclaredRunway implements DeclaredRunwayInterface{
 		 *  |________________
 		 */
 		public void takeOffAwayFrom(DeclaredRunwayInterface original, AirfieldInterface parent) throws VariableDeclarationException {
-			//ASSUMPTION: stopway is part of clearway
-			if(outOfBounds(parent.getStripEnd(), parent.getPositionedObstacle())){
-				this.addToLog("Out of Bounds");
-				return;
-			}
-
+			
 			double distFromObs = distanceFrom(parent.getPositionedObstacle()) + parent.getPositionedObstacle().getRadius()*2;
 			double newTORA = original.getTORA() - parent.getBlastAllowance() - distFromObs - original.getDisplacedThreshold() ;
 			
@@ -386,10 +373,6 @@ public class DeclaredRunway implements DeclaredRunwayInterface{
 		 *  |________________
 		 */
 		public void takeOffTowardsOver(DeclaredRunwayInterface original, AirfieldInterface parent) throws VariableDeclarationException {
-			if(outOfBounds(parent.getStripEnd(), parent.getPositionedObstacle())){
-				this.addToLog("Out of Bounds");
-				return;
-			}
 			
 			double distFromObs = distanceFrom(parent.getPositionedObstacle());
 			double ALS = getAscentAngle()*parent.getPositionedObstacle().getHeight();
@@ -415,8 +398,8 @@ public class DeclaredRunway implements DeclaredRunwayInterface{
 			this.line();
 		}
 		
-		
-		private boolean outOfBounds(double stripEnd, PositionedObstacleInterface obs){
+		@Override
+		public boolean outOfBounds(double stripEnd, PositionedObstacleInterface obs){
 			if(distanceFrom(obs)<0){
 				if(-distanceFrom(obs) > (stripEnd+getDisplacedThreshold())){
 					return true;
@@ -465,6 +448,7 @@ public class DeclaredRunway implements DeclaredRunwayInterface{
 				NotificationPanel.notifyIt("Redeclaration on "+this.getIdentifier(),text, Notification.CALC);
 			}catch (NullPointerException np){
 				//External Logger not initialised
+				System.out.println(text);
 			}
 		}
 		

@@ -17,10 +17,24 @@ public class Notification {
 	private String details;
 	private String type;
 	
+	private boolean read;
+	
 	public Notification(String title, String details, String type){
 		setTitle(title);
 		setDetails(details);
 		setType(type);
+	}
+	
+	public void read(){
+		read = true;
+	}
+	
+	public void unread(){
+		read = false;
+	}
+	
+	public boolean hasRead(){
+		return read;
 	}
 
 	public String getTitle() {

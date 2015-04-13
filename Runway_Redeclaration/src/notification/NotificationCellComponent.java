@@ -4,10 +4,12 @@ import io.Print;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -78,6 +80,7 @@ public class NotificationCellComponent extends JPanel {
 		expand.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				
 				if (isExpanded){
 					expand.setText("More");
 					removeAll();
@@ -87,8 +90,11 @@ public class NotificationCellComponent extends JPanel {
 					expand.setText("Less");
 					add(details, BorderLayout.CENTER);
 					isExpanded = true;
+					notification.read();
 				}
+				
 				NotificationPanel.fire();
+				
 			}	
 		});
 		print.addActionListener(new ActionListener(){
@@ -99,18 +105,38 @@ public class NotificationCellComponent extends JPanel {
 		});
 	}
 	
+	public void paint(Graphics g){
+		if(!notification.hasRead()){
+			title.setForeground(Color.BLUE);
+			title.setText("*"+notification.getTitle()+"*");
+			title.setFont(new Font("verdana", Font.ITALIC, 11));
+		}else{
+			title.setForeground(Color.BLACK);
+			title.setText(notification.getTitle());
+			title.setFont(new Font("verdana", Font.PLAIN, 11));
+		}
+		super.paint(g);
+	}
+	
 	public void notify(String s, String c){ 
 		switch(c){ 
-		case "file": 
+		case Notification.FILE: 
 			notifyFile(s);
 			break; 
-		case "calc": 
+		case Notification.CALC: 
 			notifyCalc(s); 
-			break; 
+			break;
+		case Notification.ERROR:
+			notifyError(s);
+			break;
 		default: 
 			notifyDefault(s);; 
 		} 
 	} 
+	
+	public void notifyError(String s){
+		addLog(s, ERROR_COLOR);
+	}
 	
 	private void notifyDefault(String s){ 
 		addLog(s, DEFAULT_COLOR); 

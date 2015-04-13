@@ -8,10 +8,16 @@ import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 
+/**
+ * 
+ * @author Shakib-Bin Hamid
+ *
+ */
 class SelfCheckingField extends JTextField{
 	
 	private String regex;
-	private DocumentListener listener;
+	
+	private static final Color INPUT_ERROR = new Color(255, 69, 0);
 	
 	public SelfCheckingField(String re){
 		regex = re;
@@ -31,10 +37,12 @@ class SelfCheckingField extends JTextField{
         public void updateColor(DocumentEvent e, String action) {
             Document doc = (Document)e.getDocument();
             try {
-				if (doc.getText(0, doc.getLength()).matches(regex))
+				if (doc.getLength() == 0)
+					setBackground(Color.WHITE);
+				else if(doc.getText(0, doc.getLength()).trim().matches(regex))
 					setBackground(Color.WHITE);
 				else
-					setBackground(Color.RED);
+					setBackground(INPUT_ERROR);
 			} catch (BadLocationException e1) {
 				e1.printStackTrace();
 			}

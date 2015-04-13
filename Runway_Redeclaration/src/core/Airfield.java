@@ -1,5 +1,7 @@
 package core;
 
+import javax.swing.JOptionPane;
+
 import notification.Notification;
 import notification.NotificationPanel;
 
@@ -204,9 +206,6 @@ public class Airfield implements AirfieldInterface, Savable {
 		}
 		//ALL DEM CHANGES IS MADE MUN, Go chill dem plane drivers sort da rest of it out mun ;)
 		//Wait for the stewardesses, it's safe ;*
-		System.out.println( ((DeclaredRunway)getSmallAngledRunway()).getLog() );
-		System.out.println( ((DeclaredRunway)getLargeAngledRunway()).getLog() );
-
 	}
 
 	/**
@@ -245,8 +244,6 @@ public class Airfield implements AirfieldInterface, Savable {
 		}
 		//ALL DEM CHANGES IS MADE MUN, Go chill dem plane drivers sort da rest of it out mun ;)
 		//Wait for the stewardesses, it's safe ;*
-		System.out.println( ((DeclaredRunway)getSmallAngledRunway()).getLog() );
-		System.out.println( ((DeclaredRunway)getLargeAngledRunway()).getLog() );
 	}
 
 	@Override
@@ -315,8 +312,23 @@ public class Airfield implements AirfieldInterface, Savable {
 	public void addObstacle(ObstacleInterface obj,
 			double distanceFromSmall, double distanceFromLarge) throws VariableDeclarationException  {/**/
 
-		this.obstacle = new PositionedObstacle(obj, distanceFromSmall, distanceFromLarge);
-		this.redeclareRunways();
+		PositionedObstacle obs = new PositionedObstacle(obj, distanceFromSmall, distanceFromLarge);
+		
+		if(getSmallAngledRunway().outOfBounds(getStripEnd(), obs) ||
+			getLargeAngledRunway().outOfBounds(stripEnd, obs)){
+			JOptionPane.showMessageDialog(null, "Obstacle Out of Bounds","Redeclaration Cancelled",JOptionPane.WARNING_MESSAGE);
+			NotificationPanel.notifyIt(getName() + " Not Redeclared",
+					obs.getName() + " was to be placed on "+
+					getName() + " at :-\n\n"+
+					"Distance from "+getSmallAngledRunway().getIdentifier() +": "+ obs.distanceFromSmallEnd() + " m"+"\n"+
+					"Distance from "+getLargeAngledRunway().getIdentifier() +": "+ obs.distanceFromLargeEnd() + " m" +"\n"+
+					"\n" + "But it was found to be outside the Strip End of either side,"
+					+ "thus no Redeclaration was performed",
+					Notification.ERROR);
+		}else{
+			this.obstacle = obs;
+			this.redeclareRunways();
+		}
 
 	}
 

@@ -10,7 +10,7 @@ import coreInterfaces.Savable;
 /**
  * 
  * @author Stefan 
- * @Editor Stefan
+ * @Editor Stefan Shakib
  * @Tester Stefan
  */
 

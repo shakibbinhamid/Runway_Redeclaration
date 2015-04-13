@@ -105,7 +105,7 @@ public class LoadListener{
 					}catch(NumberFormatException nf){
 						JOptionPane.showMessageDialog(frame, "Enter a valid number for distances please!", "ERROR: Distance", JOptionPane.ERROR_MESSAGE);
 					}
-					ObjectFrame.this.dispose();
+					dispose();
 				}
 			});
 			

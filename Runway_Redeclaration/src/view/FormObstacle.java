@@ -1,6 +1,5 @@
 package view;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,15 +13,17 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.Document;
 
 import core.Obstacle;
 import coreInterfaces.AirfieldInterface;
 import exceptions.UnrecognisedAirfieldIntifierException;
 
+/**
+ * 
+ * @author Vlad Catrici
+ * @editor Shakib-Bin Hamid
+ *
+ */
 public class FormObstacle extends FormGeneral {
 	TopFrame topFrame;
 	ArrayList<JTextField> textFields;
@@ -124,11 +125,8 @@ public class FormObstacle extends FormGeneral {
 	
 	public void setListener(){
 		button.addActionListener(new ActionListener() {
-			
 			public void actionPerformed(ActionEvent e) {
-				
 				String name = nameTextBox.getText();
-				
 					try {
 						double radius = Double.parseDouble(radiusTextBox.getText());
 						double height = Double.parseDouble(heightTextBox.getText());
