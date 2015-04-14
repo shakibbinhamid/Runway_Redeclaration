@@ -10,6 +10,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
+import view.LogPanel;
+
 /**
  * This is the Central Notificatin Panel.
  * Primary method is notifyIt
@@ -65,6 +67,7 @@ public class NotificationPanel extends JPanel{
 	public static void notifyIt(String title, String details, String type){
 		nots.add(new NotificationCellComponent (new Notification(title, details, type)));
 		fire();
+		LogPanel.log(title+"\n"+details+"\n");
 	}
 	
 	protected static void fire(){

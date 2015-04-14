@@ -11,6 +11,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import core.Airport;
+import core.DeclaredRunway;
 
 public class FormAirfield extends FormGeneral{
 	
@@ -91,15 +92,15 @@ public class FormAirfield extends FormGeneral{
 		asdaLabel.setFont(FormAirfield.VER_IT);
 		ldaLabel.setFont(FormAirfield.VER_IT);
 		
-		bigTORATextBox = new JTextField();
-		bigTODATextBox = new JTextField();
-		bigASDATextBox = new JTextField();
-		bigLDATextBox = new JTextField();
+		bigTORATextBox = new SelfCheckingField(DeclaredRunway.DIST_REGEX);
+		bigTODATextBox = new SelfCheckingField(DeclaredRunway.DIST_REGEX);
+		bigASDATextBox = new SelfCheckingField(DeclaredRunway.DIST_REGEX);
+		bigLDATextBox = new SelfCheckingField(DeclaredRunway.DIST_REGEX);
 		
-		smallTORATextBox = new JTextField();
-		smallTODATextBox = new JTextField();
-		smallASDATextBox = new JTextField();
-		smallLDATextBox = new JTextField();
+		smallTORATextBox = new SelfCheckingField(DeclaredRunway.DIST_REGEX);
+		smallTODATextBox = new SelfCheckingField(DeclaredRunway.DIST_REGEX);
+		smallASDATextBox = new SelfCheckingField(DeclaredRunway.DIST_REGEX);
+		smallLDATextBox = new SelfCheckingField(DeclaredRunway.DIST_REGEX);
 		
 	}
 	

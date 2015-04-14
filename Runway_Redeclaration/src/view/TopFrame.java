@@ -2,6 +2,8 @@ package view;
 
 import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.List;
 
 import javax.swing.JFrame;
@@ -10,13 +12,13 @@ import javax.swing.JSplitPane;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
+import notification.Notification;
+import notification.NotificationPanel;
 import coreInterfaces.AirfieldInterface;
 import coreInterfaces.AirportInterface;
 import coreInterfaces.ObstacleInterface;
 import exceptions.CannotMakeRunwayException;
 import exceptions.VariableDeclarationException;
-import notification.Notification;
-import notification.NotificationPanel;
 
 /**
  * This is the entry point of our program
@@ -78,7 +80,25 @@ public class TopFrame extends JFrame{
 		topPanel.setDividerLocation(300);
 		
 		this.setLocationRelativeTo(null);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		addWindowListener(new WindowAdapter() {
+
+			@Override
+			public void windowClosing(WindowEvent we){ 
+				String ObjButtons[] = {"Yes","No"};
+				int promptResult = JOptionPane.showOptionDialog(null, 
+						"Are you sure you want to exit?", "Online Examination System", 
+						JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, 
+						ObjButtons,ObjButtons[1]);
+				if(promptResult==JOptionPane.YES_OPTION){
+					if(WelcomePanel.isHelpingDeveloper())
+						logPanel.saveLogToDeveloper();
+					System.exit(0);          
+				}
+			}
+		});
+		
 		this.setTitle("Runway Redeclaration Tool v.0.91");
 		this.setMinimumSize(new Dimension(1200,630));
 		tabbedPanel.setMinimumSize(new Dimension(this.getMinimumSize().width - 300, 200));
@@ -199,7 +219,6 @@ public class TopFrame extends JFrame{
 			topPanel.setRightComponent(this.tabbedPanel);
 		}
 		repaint();
-
 	}
 	
 	protected boolean isUserHelpingDeveloper(){

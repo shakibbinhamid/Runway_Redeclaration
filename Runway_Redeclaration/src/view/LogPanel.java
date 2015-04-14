@@ -3,10 +3,11 @@ package view;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -27,9 +28,11 @@ public class LogPanel extends JPanel{
 	private NotificationPanel notPanel;
 	
 	private File devLog;
+	private static String log; 
+	private static Logger LOGGER = Logger.getLogger("DevLogs");
 
 	public LogPanel(){
-		this.devLog = this.makeFile();
+		devLog = this.makeFile();
 		init();
 	}
 
@@ -58,35 +61,31 @@ public class LogPanel extends JPanel{
 	
 	private File makeFile(){
 		int i = 0;
-		File f = new File("./dat/devLog"+i);
-		while(f.exists() && !f.isDirectory()){
-			f = new File("./dat/devLog"+i);
+		File f = new File("./dat/devLog"+i+".txt");
+		while(f.exists()){
+			f = new File("./dat/devLog"+i+".txt");
 			i++;
-		}
-		 try {
-			this.devWriter = new BufferedWriter(new FileWriter(f));
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
 		return f;
 	}
 	
-	BufferedWriter devWriter; 
-	private void saveLogToDeveloper(String info){
-		try {
-		    devWriter.write(info);
-		    devWriter.flush();
-		} catch (IOException ex) {
-			ex.printStackTrace();
-		}
+	public File getDevFile(){
+		return devLog;
 	}
 	
-	@Override
-	public void finalize(){
+	public static void log(String info){
+		log += info;
+	}
+	
+	public void saveLogToDeveloper(){
 		try {
-			devWriter.flush();
-			devWriter.close();
+			devLog.createNewFile();
+			FileHandler fh = new FileHandler(devLog.getAbsolutePath());
+			fh.setFormatter(new SimpleFormatter());
+			LOGGER.addHandler(fh);
+			LOGGER.info(log);
 		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 }

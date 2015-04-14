@@ -37,6 +37,9 @@ public class DeclaredRunway implements DeclaredRunwayInterface{
 	
 	public static final double DEFAULT_RESA = 240;
 	
+	public static final String DIST_REGEX = "(^[0-9]*\\.[0-9]+$)|"
+			  								+ "(^[0-9]+$)";
+	
 	public static String log; 
 	
 	private StringBuilder s = new StringBuilder();

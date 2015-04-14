@@ -80,7 +80,6 @@ public class FileSystem {
 	}
 	
 	public boolean saveObs(Obstacle o, File savefile) throws NothingToSaveException{
-
 		checkNull(o);
 		String dir = savefile.getAbsolutePath();
 		if(XMLSaver.serialise(o, dir)){
@@ -104,7 +103,13 @@ public class FileSystem {
 	public boolean saveAir(Airport a, File savefile) throws NothingToSaveException{
 		checkNull(a);
 		String dir = savefile.getAbsolutePath();
-		return XMLSaver.serialise(a, dir);
+		if(XMLSaver.serialise(a, dir)){
+			NotificationPanel.notifyIt(a.getName()+" Saved", "Saving Airport "+a.getName()+ " to \n" + dir + "...", Notification.FILE);
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 	
 	private void checkNull(Savable a) throws NothingToSaveException {

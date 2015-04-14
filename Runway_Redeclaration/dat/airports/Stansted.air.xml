@@ -1,0 +1,62 @@
+<airport name="Stansted">
+   <airfields class="java.util.ArrayList">
+      <airfieldInterface class="core.Airfield">
+         <runways length="2">
+            <declaredRunwayInterface class="core.DeclaredRunway">
+               <decTora>3048.0</decTora>
+               <decLda>2750.0</decLda>
+               <decAsda>3048.0</decAsda>
+               <decToda>3338.0</decToda>
+               <disThresh>298.0</disThresh>
+               <resa>240.0</resa>
+               <startOfRofl>0.0</startOfRofl>
+               <angle>50</angle>
+               <direction>L</direction>
+            </declaredRunwayInterface>
+            <declaredRunwayInterface class="core.DeclaredRunway">
+               <decTora>3048.0</decTora>
+               <decLda>3048.0</decLda>
+               <decAsda>3048.0</decAsda>
+               <decToda>3316.0</decToda>
+               <disThresh>0.0</disThresh>
+               <resa>240.0</resa>
+               <startOfRofl>0.0</startOfRofl>
+               <angle>230</angle>
+               <direction>R</direction>
+            </declaredRunwayInterface>
+         </runways>
+         <defaultRunways length="2">
+            <declaredRunwayInterface class="core.DeclaredRunway">
+               <decTora>3048.0</decTora>
+               <decLda>2750.0</decLda>
+               <decAsda>3048.0</decAsda>
+               <decToda>3338.0</decToda>
+               <disThresh>298.0</disThresh>
+               <resa>240.0</resa>
+               <startOfRofl>0.0</startOfRofl>
+               <angle>50</angle>
+               <direction>L</direction>
+            </declaredRunwayInterface>
+            <declaredRunwayInterface class="core.DeclaredRunway">
+               <decTora>3048.0</decTora>
+               <decLda>3048.0</decLda>
+               <decAsda>3048.0</decAsda>
+               <decToda>3316.0</decToda>
+               <disThresh>0.0</disThresh>
+               <resa>240.0</resa>
+               <startOfRofl>0.0</startOfRofl>
+               <angle>230</angle>
+               <direction>R</direction>
+            </declaredRunwayInterface>
+         </defaultRunways>
+         <runGirth>100.0</runGirth>
+         <stripEnd>60.0</stripEnd>
+         <longSpacer>150.0</longSpacer>
+         <shortSpacer>75.0</shortSpacer>
+         <mediumSpacer>105.0</mediumSpacer>
+         <shortLength>150.0</shortLength>
+         <longLength>300.0</longLength>
+         <blastProt>300.0</blastProt>
+      </airfieldInterface>
+   </airfields>
+</airport>

@@ -24,11 +24,11 @@ import listeners.LoadListener;
 public class WelcomePanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 
-	private JCheckBox helpingDevelopers;
+	private static JCheckBox helpingDevelopers;
 	private TopFrame topframe;
 
 	public WelcomePanel(TopFrame top){
-		this.helpingDevelopers = new JCheckBox("Give permission to send log files to help development?", true);
+		helpingDevelopers = new JCheckBox("Give permission to send log files to help development?", true);
 		this.topframe = top;
 
 		this.setOpaque(true);
@@ -94,13 +94,13 @@ public class WelcomePanel extends JPanel {
 		this.add(middle, BorderLayout.CENTER);
 
 
-		this.helpingDevelopers.setBorder(null);
-		this.add(this.helpingDevelopers, BorderLayout.SOUTH);
+		helpingDevelopers.setBorder(null);
+		this.add(helpingDevelopers, BorderLayout.SOUTH);
 	}
 
 
-	public boolean isHelpingDeveloper(){
-		return this.helpingDevelopers.isSelected();
+	public static boolean isHelpingDeveloper(){
+		return helpingDevelopers.isSelected();
 	}
 
 }

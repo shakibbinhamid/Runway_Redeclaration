@@ -1,36 +1,47 @@
 package view;
 
-import java.awt.GridLayout;
+import java.awt.Graphics;
 
 import javax.swing.BorderFactory;
-import javax.swing.JPanel;
+import javax.swing.JSplitPane;
+import javax.swing.SwingUtilities;
 
 import coreInterfaces.AirfieldInterface;
 import coreInterfaces.DeclaredRunwayInterface;
 
-public class ViewPanel extends JPanel{
+public class ViewPanel extends JSplitPane{
 	
 	private AirfieldInterface field;
 	private DeclaredRunwayInterface runway;
-	private OldViewTop view1;
+	private ViewTop view1;
 	private ViewSide view2;
 
 	public ViewPanel(AirfieldInterface field, DeclaredRunwayInterface runway){
+		super(JSplitPane.VERTICAL_SPLIT);
+		
 		this.field = field;
 		this.runway = runway;
-		view1 = new OldViewTop(field, runway);
+		view1 = new ViewTop(field, runway);
 		view2 = new ViewSide(field, runway);
 		init();
 	}
 	
 	private void init(){
-		this.setLayout(new GridLayout(2,1));
-		this.add(view1);
-		this.add(view2);
+		setLeftComponent(view1);
+		setRightComponent(view2);
+		
+		setResizeWeight(0.5);
+		setOneTouchExpandable(true);
+		
+		SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                setDividerLocation(getSize().height /2);
+            }
+        });
 
 		view1.setBorder(BorderFactory.createTitledBorder("Top View"));
 		view2.setBorder(BorderFactory.createTitledBorder("Side View"));
-		//TODO gimme a border Shakib!
 	}
 	
 	public void updateView(DeclaredRunwayInterface run){
@@ -39,10 +50,9 @@ public class ViewPanel extends JPanel{
 		view1.repaint();
 		view2.setRunway(run);
 		view2.repaint();
-
 	}
 	
-	public OldViewTop getTopView(){
+	public ViewTop getTopView(){
 		return view1;
 	}
 }
