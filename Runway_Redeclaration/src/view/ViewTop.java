@@ -2,8 +2,10 @@ package view;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.util.Random;
 
 import javax.swing.JFrame;
 
@@ -56,7 +58,7 @@ public class ViewTop extends AbstractView{
 			AirfieldInterface air = port.getAirfield(port.getAirfieldNames().get(0));
 			DeclaredRunwayInterface runway = air.getSmallAngledRunway();
 
-			air.addObstacle(new Obstacle("Jim",100,13), 0, 3000);
+			air.addObstacle(new Obstacle("B69",100,13), 0, 3000);
 
 			System.out.println(air);
 
@@ -112,11 +114,15 @@ public class ViewTop extends AbstractView{
 		//Tora, lda, etc
 		drawDistances(g2);
 
+
 		if(getAirfield().hasObstacle())
 			drawObsacle(g2);
 
 		drawScale(g2, new Point(0,largestHeight()).offsetXByPixels(10).offsetYByPixels(-10), 500d,false);
+		
 		drawArrowAround(g2, new Point(runwayWidth()/2,4*largestHeight()/5), runwayWidth()/10, !getRunway().isSmallEnd(), Color.RED, MAROON_COLOUR);
+		int h = !getRunway().isSmallEnd()? -1 : 1;/* helper*/
+		drawPlane(g2, runwayWidth()/21, new Point(runwayWidth()/2-h*runwayWidth()/20,4*largestHeight()/5), !getRunway().isSmallEnd());
 	}
 
 
@@ -126,6 +132,8 @@ public class ViewTop extends AbstractView{
 		drawRunway(g2);
 		drawCentreLine(g2);
 		drawZebraCrossings(g2);
+		//09L etc		
+		drawIdentifiers(g2);
 	}
 	//----[ Specific Distance ]-------------------------------------------------------------------
 	private void drawBackground(Graphics2D g) {
@@ -154,7 +162,7 @@ public class ViewTop extends AbstractView{
 	/** Blue region */ 
 	private void drawClearedArea(Graphics2D g) {
 		Graphics2D g2 = (Graphics2D) g.create();
-		//stored for quick reference
+		//All finals are stored for quick reference
 		final double SE = getAirfield().getStripEnd();
 		final double sSpacer = getAirfield().getShortSpacer();
 		final double mSpacer = getAirfield().getMediumSpacer();
@@ -296,7 +304,7 @@ public class ViewTop extends AbstractView{
 	private void drawDistances(Graphics2D g) {
 		Graphics2D g2 = (Graphics2D) g.create();
 		int level = 2;
-		super.PIXEL_BUFFER = Ym_to_pixels(105);
+		super.PIXEL_BUFFER = Ym_to_pixels(largestHeight()/11);
 		super.DIMENSION_GAP = getAirfield().getRunwayGirth()/2;
 		//TODO allign to TORA
 		drawDistance(g2, "LDA", getRunway().getLDA(), getRunway().getDisplacedThreshold(), -level++, vertToRunway());
@@ -377,29 +385,45 @@ public class ViewTop extends AbstractView{
 
 		}
 
-		//~~[ The disance around the obstacle ]~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		//~~[ draw largest factor ]~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		//must include obs radius
 		double affectedRadius = radius + largestFactor;
 		g2.setColor(Color.RED);
 		super.drawCircle_inM(g2, centre, affectedRadius, getTransparant(g2.getColor(), 50));
 
+		//~~[ text of largest factor ]~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		g2.setColor(Color.BLACK);
+		int size = 10;
+		g2.setFont(new Font("verdana", Font.BOLD, size));
+
+		double heightOfText_M = Ypix_to_m(g2.getFontMetrics().getHeight());
+		Point textPoint = centre.offsetXByM(affectedRadius).offsetYByM(getAirfield().getLongSpacer()+heightOfText_M);
+
+		super.drawString_inM(g2, factorName, textPoint);
 
 		//~~[ planes ]~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		Graphics2D g4 = (Graphics2D) g.create();
 		if (getAirfield().getPositionedObstacle().getName().matches(".*[a-zA-Z][0-9]+.*")) {
-			drawPlane(g4, obj.getRadius(), centre, -1);
+			drawPlane(g4, obj.getRadius(), centre, new Random().nextBoolean());
 		}
 
 		//~~[ No Radius ]~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		//Draw X at spot
+		g2.setColor(Color.RED);
 		double l = getAirfield().getRunwayGirth()/6;
 		g2.setStroke(new BasicStroke(3));
 		super.drawLine_inM(g2, centre.offsetXByM(l).offsetYByM(l),  centre.offsetXByM(-l).offsetYByM(-l));
 		super.drawLine_inM(g2, centre.offsetXByM(l).offsetYByM(-l),  centre.offsetXByM(-l).offsetYByM(l));
 
 	}
+//TODO bookmark
+	private void drawIdentifiers(Graphics2D g2) {
+		double leftLoc = leftOfRunway()+getAirfield().getSmallAngledRunway().getDisplacedThreshold();
+		double rightLoc= rightOfRunway()+getAirfield().getLargeAngledRunway().getDisplacedThreshold();
+		drawIdentifiers(g2, vertToRunway(), leftLoc, rightLoc,true);
+		
+	}
 
-
-	
 
 	//======[ Common Distance Methods ]===================================================================
 	@Override

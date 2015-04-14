@@ -59,7 +59,7 @@ public class ViewSide extends AbstractView{
 		drawScale(g2,new Point(runwayWidth()/2-distance/2,vertToRunway()/10),distance,true);
 		
 		drawThesholds(g2);
-		drawIdentifiers(g2,vertToRunway(),leftOfRunway(),rightOfRunway());
+		drawIdentifiers(g2,vertToRunway()/2,leftOfRunway(),rightOfRunway(),false);
 		drawFatArrow(g2);
 	}
 

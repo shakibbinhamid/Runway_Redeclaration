@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -256,18 +257,18 @@ public abstract class AbstractView extends JPanel {
 		g2.drawOval(centre.x_pix(), centre.y_pix(), Xm_to_pixels(2*radius), Ym_to_pixels(2*radius));
 	}
 	
-	protected void drawPlane(Graphics2D g, double radius, Point centre, int direction) {
+	protected void drawPlane(Graphics2D g, double radius, Point centre, boolean pointLeft) {
 		Graphics2D g2 = (Graphics2D) g.create();
 
-		int m = (int) direction;
+		int m = pointLeft? 1 : -1;
 		
 		double x = centre.core_Xm();
 		double y = centre.core_Ym();
 		
-		x = x - m*7*radius/8;
-		radius *= 2;
+		x = x - m*radius;
+		radius *= 1.7;
 		//half width => sort of single wing span
-		double hwidth = radius*12/19;
+		double hwidth = radius*11/19;
 
 		double xUn = radius/19; double yUn = hwidth/12;
 
@@ -311,7 +312,7 @@ public abstract class AbstractView extends JPanel {
 	
 	
 	//----[ Specific Drawings ]-----------------------------------------------------------------------------
-	protected void drawIdentifiers(Graphics2D g, double yHeight, double leftTextPos, double rightTextPos) {
+	protected void drawIdentifiers(Graphics2D g, double yHeight, double leftTextPos, double rightTextPos, boolean rotate) {
 		Graphics2D g2 = (Graphics2D) g.create();
 
 		String leftNum = getAirfield().getSmallAngledRunway().getIdentifier().substring(0,2);
@@ -327,20 +328,33 @@ public abstract class AbstractView extends JPanel {
 
 		int fontPixelHeight = g2.getFontMetrics().getHeight();
 		int rightPixelWidth = g2.getFontMetrics().stringWidth(rightNum);
-		int qtrWdith = rightPixelWidth/4;
+		//Used to centre the letter
+		int qtrWdith = rightPixelWidth/2;
 
-		double yPos = yHeight/2;
-
-		Point leftPos = new Point(leftTextPos,yPos);
-		Point rightPos = new Point(rightTextPos,yPos).offsetXByPixels(-rightPixelWidth);
+		//a rotator helper 
+		int r = rotate? -1 : 1;
+		Point leftPos = new Point(yHeight,r*leftTextPos);
+		Point rightPos = new Point(r*yHeight,rightTextPos).offsetXByPixels(-rightPixelWidth);
 
 		//Draw left identifier with side letter beneath
+		AffineTransform old = g2.getTransform();
+		if(rotate){
+			AffineTransform at = new AffineTransform();
+			at.setToRotation(Math.PI / 2.0);
+			g2.setTransform(at);
+		}
 		drawString_inM(g2, leftNum, leftPos);
-		drawString_inM(g2, leftSide, leftPos.offsetYByPixels(fontPixelHeight*2).offsetXByPixels(qtrWdith));
+		drawString_inM(g2, leftSide, leftPos.offsetYByPixels(fontPixelHeight).offsetXByPixels(qtrWdith));
 
 		//Draw right identifier with side letter beneath
+		if(rotate){
+			AffineTransform at2 = new AffineTransform();
+			at2.setToRotation(-Math.PI / 2.0);
+			g2.setTransform(at2);
+		}
 		drawString_inM(g2, rightNum, rightPos);
-		drawString_inM(g2, rightSide, rightPos.offsetYByPixels(fontPixelHeight*2).offsetXByPixels(qtrWdith));
+		drawString_inM(g2, rightSide, rightPos.offsetYByPixels(fontPixelHeight).offsetXByPixels(qtrWdith));
+		g2.setTransform(old);
 	}
 
 

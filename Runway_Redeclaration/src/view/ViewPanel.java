@@ -12,13 +12,13 @@ public class ViewPanel extends JPanel{
 	
 	private AirfieldInterface field;
 	private DeclaredRunwayInterface runway;
-	private OldViewTop view1;
+	private ViewTop view1;
 	private ViewSide view2;
 
 	public ViewPanel(AirfieldInterface field, DeclaredRunwayInterface runway){
 		this.field = field;
 		this.runway = runway;
-		view1 = new OldViewTop(field, runway);
+		view1 = new ViewTop(field, runway);
 		view2 = new ViewSide(field, runway);
 		init();
 	}
@@ -42,7 +42,7 @@ public class ViewPanel extends JPanel{
 
 	}
 	
-	public OldViewTop getTopView(){
+	public ViewTop getTopView(){
 		return view1;
 	}
 }
