@@ -5,16 +5,8 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 
-import javax.swing.JFrame;
-
-import core.Airport;
-import core.Obstacle;
 import coreInterfaces.AirfieldInterface;
-import coreInterfaces.AirportInterface;
 import coreInterfaces.DeclaredRunwayInterface;
-import exceptions.CannotMakeRunwayException;
-import exceptions.UnrecognisedAirfieldIntifierException;
-import exceptions.VariableDeclarationException;
 
 /**
  * 
@@ -33,31 +25,7 @@ public class ViewSide extends AbstractView{
 
 
 
-	public static void main(String[] args){
-		try {
-			JFrame f = new JFrame("SideView Test");
-			AirportInterface port = new Airport("Jim International");
-			port.addNewAirfield(90, 'L', new double[] {3902,3902,3902,3596}, new double[] {3884,3884,3962,3884});
 
-			AirfieldInterface air = port.getAirfield(port.getAirfieldNames().get(0));
-			DeclaredRunwayInterface runway = air.getSmallAngledRunway();
-
-			air.addObstacle(new Obstacle("Jim",5,13), 0, 3884);
-
-			System.out.println(air);
-
-			f.setContentPane(new ViewSide(air, runway));
-
-			f.pack();
-			f.setVisible(true);
-			f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			f.setSize(600, 250);
-
-
-		} catch (CannotMakeRunwayException | VariableDeclarationException e) {
-		} catch (UnrecognisedAirfieldIntifierException e) {
-		}
-	}
 
 	public static int HEIGHT_OF_RUNWAY = 1; /* in m */
 	public static double PERCENTAGE_OF_SKY = 0.5; /* in % */
@@ -88,10 +56,10 @@ public class ViewSide extends AbstractView{
 			drawObsacle(g2);
 
 		double distance = 1000d;
-		drawScale(g2,runwayWidth()/2-distance/2,vertToRunway()/10,distance);
+		drawScale(g2,new Point(runwayWidth()/2-distance/2,vertToRunway()/10),distance,true);
 		
 		drawThesholds(g2);
-		drawIdentifiers(g2,vertToRunway(),leftOfRunaway(),rightOfRunway());
+		drawIdentifiers(g2,vertToRunway(),leftOfRunway(),rightOfRunway());
 		drawFatArrow(g2);
 	}
 
@@ -122,7 +90,7 @@ public class ViewSide extends AbstractView{
 
 		g2.setColor(RUNWAY_COLOUR);
 		g2.setStroke(new BasicStroke(3));
-		super.drawLine_inM(g2, new Point(leftOfRunaway(), y_m), new Point(rightOfRunway(),y_m));
+		super.drawLine_inM(g2, new Point(leftOfRunway(), y_m), new Point(rightOfRunway(),y_m));
 
 
 	}
@@ -138,7 +106,7 @@ public class ViewSide extends AbstractView{
 
 		if(getRunway().isSmallEnd()){
 			oldDT = getAirfield().getDefaultSmallAngledRunway().getDisplacedThreshold();
-			locOfObs = leftOfRunaway() + oldDT + getAirfield().getPositionedObstacle().distanceFromSmallEnd();
+			locOfObs = leftOfRunway() + oldDT + getAirfield().getPositionedObstacle().distanceFromSmallEnd();
 		}else{
 			oldDT = getAirfield().getDefaultLargeAngledRunway().getDisplacedThreshold();
 			locOfObs = rightOfRunway() - oldDT - getAirfield().getPositionedObstacle().distanceFromLargeEnd();
@@ -309,7 +277,7 @@ public class ViewSide extends AbstractView{
 
 	/** Draws the TORA,ASDA,TODA,LDA */
 	private void drawDistances(Graphics2D g) {
-		int level = 2; 
+		int level = 1;
 		drawDistance(g, "LDA", getRunway().getLDA(), getRunway().getDisplacedThreshold(), level++, vertToRunway());
 		drawDistance(g, "TORA", getRunway().getTORA(), getRunway().getStartOfRoll(), level++, vertToRunway());
 		drawDistance(g, "ASDA", getRunway().getASDA(), getRunway().getStartOfRoll(), level++, vertToRunway());
@@ -318,7 +286,7 @@ public class ViewSide extends AbstractView{
 
 	private void drawThesholds(Graphics2D g) {
 		Graphics2D g2 = (Graphics2D) g.create();
-		Point leftThreshold = new Point(this.leftOfRunaway()+getAirfield().getSmallAngledRunway().getDisplacedThreshold(),vertToRunway());
+		Point leftThreshold = new Point(this.leftOfRunway()+getAirfield().getSmallAngledRunway().getDisplacedThreshold(),vertToRunway());
 		Point rightThreshold = new Point(this.rightOfRunway()-getAirfield().getLargeAngledRunway().getDisplacedThreshold(),vertToRunway());
 
 		g2.setStroke(new BasicStroke(3));
@@ -337,7 +305,7 @@ public class ViewSide extends AbstractView{
 		double startY = fullHeight-remainingGrass/2;
 		
 		
-		super.drawArrowAround(g, startX, startY, width, !getRunway().isSmallEnd(), Color.RED, MAROON_COLOUR);
+		super.drawArrowAround(g, new Point(startX, startY), width, !getRunway().isSmallEnd(), Color.RED, MAROON_COLOUR);
 	}
 
 	//======[ Common Distance Methods ]===================================================================
@@ -353,7 +321,7 @@ public class ViewSide extends AbstractView{
 		return totalHeight;
 	}
 	@Override
-	protected double leftOfRunaway(){
+	protected double leftOfRunway(){
 		if(getRunway().isSmallEnd()){
 			return getAirfield().getStripEnd();			
 		}else{
