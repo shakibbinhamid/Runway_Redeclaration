@@ -37,8 +37,6 @@ public class ViewTop extends AbstractView{
 
 	public static final Color SURROUNDING_AREA_COLOR = new Color(128,128,255);
 	public static final Color CLEARED_BLUE_COLOR = new Color(0,128,255);
-	public static final Color CLEARWAY_COLOR = Color.YELLOW;
-	public static final Color STOPWAY_COLOR = Color.RED;
 
 
 	public ViewTop(AirfieldInterface airfield, DeclaredRunwayInterface runway) {
@@ -132,8 +130,6 @@ public class ViewTop extends AbstractView{
 		drawRunway(g2);
 		drawCentreLine(g2);
 		drawZebraCrossings(g2);
-		//09L etc		
-		drawIdentifiers(g2);
 	}
 	//----[ Specific Distance ]-------------------------------------------------------------------
 	private void drawBackground(Graphics2D g) {
@@ -219,9 +215,9 @@ public class ViewTop extends AbstractView{
 
 
 		//LeftSide
-		double startX = leftOfRunway()+getAirfield().getDefaultSmallAngledRunway().getDisplacedThreshold()+dtToBar;
+		double startXL = leftOfRunway()+getAirfield().getDefaultSmallAngledRunway().getDisplacedThreshold()+dtToBar;
 
-		Point startLine = new Point(startX,y+vertDrop/2);
+		Point startLine = new Point(startXL,y+vertDrop/2);
 		Point endLine;
 
 		for(int i = 0; i < noOfLines; i++){
@@ -231,15 +227,18 @@ public class ViewTop extends AbstractView{
 		}
 
 		//rightSide
-		startX = rightOfRunway()-(getAirfield().getDefaultLargeAngledRunway().getDisplacedThreshold()+dtToBar+zebraLength);
+		double startXR = rightOfRunway()-(getAirfield().getDefaultLargeAngledRunway().getDisplacedThreshold()+dtToBar+zebraLength);
 
-		startLine = new Point(startX,y+vertDrop/2);
+		startLine = new Point(startXR,y+vertDrop/2);
 		for(int i = 0; i < noOfLines; i++){
 			endLine = startLine.offsetXByM(zebraLength);
 			super.drawLine_inM(g2, startLine, endLine);
 			startLine = startLine.offsetYByM(vertDrop);
 		}
-
+		
+		IDENTIFIER_COLOR = Color.WHITE;
+		double textSpace = g2.getFontMetrics().getHeight()*2;
+		drawIdentifiers(g2, vertToRunway(), startXL+zebraLength+6*textSpace, startXR-zebraLength-textSpace,true);
 	}
 
 	private void drawCentreLine(Graphics2D g) {
@@ -263,7 +262,8 @@ public class ViewTop extends AbstractView{
 
 		double dtToBar = defTora/DT_TO_BARCODE_LENGTH_RATIO_TO_TORA;
 		double zebras = defTora/TORA_TO_ZEBRA_CODE_RATIO;
-		double buffer = 30;
+		int fontSize = Ym_to_pixels(3*getAirfield().getRunwayGirth()/4)-1;
+		double buffer = 30+Xpix_to_m(3*fontSize);
 
 		double startX = leftOfRunway()+getAirfield().getDefaultSmallAngledRunway().getDisplacedThreshold()+zebras+dtToBar+buffer;
 		double endX = rightOfRunway()-(getAirfield().getDefaultLargeAngledRunway().getDisplacedThreshold()+zebras+dtToBar+buffer);
@@ -290,7 +290,7 @@ public class ViewTop extends AbstractView{
 		Graphics2D g2 = (Graphics2D) g.create();
 
 		double leftThresh = leftOfRunway()+getAirfield().getSmallAngledRunway().getDisplacedThreshold();
-		double rightThresh = rightOfRunway()+getAirfield().getLargeAngledRunway().getDisplacedThreshold();
+		double rightThresh = rightOfRunway()-getAirfield().getLargeAngledRunway().getDisplacedThreshold();
 		double topOfRunway = vertToRunway()-getAirfield().getRunwayGirth()/2;
 
 		Point leftMarker = new Point(leftThresh, topOfRunway);
@@ -332,7 +332,7 @@ public class ViewTop extends AbstractView{
 			g2.setColor(CLEARWAY_COLOR);
 			super.drawRectangle_inM(g2, startClear, s()*getRunway().getClearway(), 2*girth, getTransparant(g2.getColor(), 200));
 
-			if(getRunway().getStopway()>0){
+			if(getRunway().getStopway() > 0){
 				g2.setColor(STOPWAY_COLOR);
 				super.drawRectangle_inM(g2, startStop,s()*getRunway().getStopway(),girth, getTransparant(g2.getColor(), 150));
 			}
@@ -416,14 +416,6 @@ public class ViewTop extends AbstractView{
 		super.drawLine_inM(g2, centre.offsetXByM(l).offsetYByM(-l),  centre.offsetXByM(-l).offsetYByM(l));
 
 	}
-//TODO bookmark
-	private void drawIdentifiers(Graphics2D g2) {
-		double leftLoc = leftOfRunway()+getAirfield().getSmallAngledRunway().getDisplacedThreshold();
-		double rightLoc= rightOfRunway()+getAirfield().getLargeAngledRunway().getDisplacedThreshold();
-		drawIdentifiers(g2, vertToRunway(), leftLoc, rightLoc,true);
-		
-	}
-
 
 	//======[ Common Distance Methods ]===================================================================
 	@Override

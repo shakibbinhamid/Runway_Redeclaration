@@ -57,7 +57,9 @@ public abstract class AbstractView extends JPanel {
 	public final static Color ALS_SHADE_COLOR = VERY_VERY_transparentRed;
 	public final static Color GLASS_COLOR = new Color(255,255,255,0);
 	public final static Color RUNWAY_COLOUR = Color.GRAY;
-	private static Color PLANE_COLOUR = new Color(175,175,175);
+	public static final Color CLEARWAY_COLOR = Color.YELLOW;
+	public static final Color STOPWAY_COLOR = Color.RED;
+	private static final Color PLANE_COLOUR = new Color(175,175,175);
 
 
 	public int PIXEL_BUFFER = 15;
@@ -66,7 +68,7 @@ public abstract class AbstractView extends JPanel {
 
 	public final static Font DIMENSION_FONT = new Font("Dialog", Font.PLAIN, 12);
 
-	public final static Color IDENTIFIER_COLOR = Color.BLACK;
+	public Color IDENTIFIER_COLOR = Color.BLACK;
 	public final static String IDENTIFIER_FONT = "verdana";
 	public final static int IDENTIFIER_STYLE = Font.BOLD;
 
@@ -321,7 +323,7 @@ public abstract class AbstractView extends JPanel {
 		String rightNum = getAirfield().getLargeAngledRunway().getIdentifier().substring(0,2);
 		String rightSide = ""+getAirfield().getLargeAngledRunway().getSideLetter();
 
-		int fontSize = 10;
+		int fontSize = Xm_to_pixels(3*getAirfield().getRunwayGirth()/4)-3;
 		Font resized = new Font(IDENTIFIER_FONT,IDENTIFIER_STYLE,fontSize);
 		g2.setFont(resized);
 		g2.setColor(IDENTIFIER_COLOR);
@@ -329,19 +331,25 @@ public abstract class AbstractView extends JPanel {
 		int fontPixelHeight = g2.getFontMetrics().getHeight();
 		int rightPixelWidth = g2.getFontMetrics().stringWidth(rightNum);
 		//Used to centre the letter
-		int qtrWdith = rightPixelWidth/2;
+		int qtrWdith = rightPixelWidth/4;
 
 		//a rotator helper 
-		int r = rotate? -1 : 1;
-		Point leftPos = new Point(yHeight,r*leftTextPos);
-		Point rightPos = new Point(r*yHeight,rightTextPos).offsetXByPixels(-rightPixelWidth);
-
+		Point leftPos, rightPos;
+		if(rotate){
+			 leftPos = new Point(yHeight,-leftTextPos);
+			 rightPos = new Point(-yHeight,rightTextPos).offsetXByPixels(-rightPixelWidth);
+		}else{
+			
+			 leftPos = new Point(leftTextPos,yHeight);
+			 rightPos = new Point(rightTextPos,yHeight).offsetXByPixels(-rightPixelWidth);
+		}
 		//Draw left identifier with side letter beneath
 		AffineTransform old = g2.getTransform();
 		if(rotate){
 			AffineTransform at = new AffineTransform();
 			at.setToRotation(Math.PI / 2.0);
 			g2.setTransform(at);
+			leftPos = leftPos.offsetXByM(-getAirfield().getRunwayGirth()/2).offsetXByPixels(2).offsetYByPixels(5);
 		}
 		drawString_inM(g2, leftNum, leftPos);
 		drawString_inM(g2, leftSide, leftPos.offsetYByPixels(fontPixelHeight).offsetXByPixels(qtrWdith));
@@ -351,6 +359,7 @@ public abstract class AbstractView extends JPanel {
 			AffineTransform at2 = new AffineTransform();
 			at2.setToRotation(-Math.PI / 2.0);
 			g2.setTransform(at2);
+			rightPos =rightPos.offsetXByM(getAirfield().getRunwayGirth()/2).offsetXByPixels(-2).offsetYByPixels(5);
 		}
 		drawString_inM(g2, rightNum, rightPos);
 		drawString_inM(g2, rightSide, rightPos.offsetYByPixels(fontPixelHeight).offsetXByPixels(qtrWdith));
