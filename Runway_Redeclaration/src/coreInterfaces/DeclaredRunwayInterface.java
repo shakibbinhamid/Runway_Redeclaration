@@ -35,7 +35,7 @@ public interface DeclaredRunwayInterface {
 	 */
 	String getIdentifier();
 	
-	boolean outOfBounds(double stripEnd, PositionedObstacleInterface obs);
+	boolean outOfBounds(double stripEnd, PositionedObstacleInterface obs, AirfieldInterface airfield);
 	
 	/**
 	 * Take-Off-Runway-Available

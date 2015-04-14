@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 
+import view.AbstractView.Point;
 import coreInterfaces.AirfieldInterface;
 import coreInterfaces.DeclaredRunwayInterface;
 
@@ -30,7 +31,8 @@ public class ViewSide extends AbstractView{
 	public static int HEIGHT_OF_RUNWAY = 1; /* in m */
 	public static double PERCENTAGE_OF_SKY = 0.5; /* in % */
 	public static double PERCENTAGE_AIR_SPACER = 1.0; /* in % */
-
+	
+	public final static Color OBSTACLE_RADIUS_COLOR = Color.WHITE;
 	public final static Color SKY_COLOUR = new Color(128,255,255);//69,182,195);
 
 	public ViewSide(AirfieldInterface airfield, DeclaredRunwayInterface runway){
@@ -50,6 +52,7 @@ public class ViewSide extends AbstractView{
 		
 		drawBackground(g2);
 		drawRunway(g2);
+		drawClearwayAndStopway(g2);
 		drawDistances(g2);
 
 		if(getAirfield().hasObstacle())
@@ -59,7 +62,7 @@ public class ViewSide extends AbstractView{
 		drawScale(g2,new Point(runwayWidth()/2-distance/2,vertToRunway()/10),distance,true);
 		
 		drawThesholds(g2);
-		drawIdentifiers(g2,vertToRunway(),leftOfRunway(),rightOfRunway());
+		drawIdentifiers(g2,vertToRunway()/2,leftOfRunway(),rightOfRunway(),false);
 		drawFatArrow(g2);
 	}
 
@@ -96,7 +99,6 @@ public class ViewSide extends AbstractView{
 	}
 
 	/** Red vertical with ALS gradient (if needed) and labels underneath */
-	//TODO include a box making the radius on it
 	private void drawObsacle(Graphics2D g) {
 		if(!getAirfield().hasObstacle()) return;
 
@@ -116,9 +118,16 @@ public class ViewSide extends AbstractView{
 
 		Point topPoint = new Point(locOfObs, vertToRunway()-heightOfObs);
 
+		//draw a box around the object
+		double radius = getAirfield().getPositionedObstacle().getRadius();
+		Point topLeft = topPoint.offsetXByM(-radius);
+		g2.setColor(OBSTACLE_RADIUS_COLOR);
+		super.drawRectangle_inM(g2, topLeft, radius*2, heightOfObs, getTransparant(g2.getColor(),100));
+		
+		
+		//Vert red line
 		g2.setColor(Color.red);
 		g2.setStroke(new BasicStroke(2));
-		//Vert red line
 		super.drawLine_inM(g2, new Point(locOfObs, vertToRunway()), topPoint);
 
 		//The horiz bit at the top
@@ -128,6 +137,7 @@ public class ViewSide extends AbstractView{
 
 		//draws ALS/Blast/RESA Beneath
 		drawLargestFactor(g,locOfObs,heightOfObs);
+		
 	}
 
 	protected void drawLargestFactor(Graphics2D g, double locOfObs, double heightOfObs){
@@ -306,6 +316,29 @@ public class ViewSide extends AbstractView{
 		
 		
 		super.drawArrowAround(g, new Point(startX, startY), width, !getRunway().isSmallEnd(), Color.RED, MAROON_COLOUR);
+	}
+	
+	private void drawClearwayAndStopway(Graphics2D g) {
+		Graphics2D g2 = (Graphics2D) g.create();
+
+		Point start;
+
+		if(getRunway().isSmallEnd()){
+			start = new Point(rightOfRunway(),vertToRunway());
+		}else{
+			start = new Point(leftOfRunway(),vertToRunway());
+		}
+
+		if(getRunway().getClearway()>0){
+
+			g2.setColor(CLEARWAY_COLOR);
+			super.drawRectangle_inM(g2, start, s()*getRunway().getClearway(),-2*largestHeight()/40 , getTransparant(g2.getColor(), 200));
+
+			if(getRunway().getStopway()>0){
+				g2.setColor(STOPWAY_COLOR);
+				super.drawRectangle_inM(g2, start,s()*getRunway().getStopway(),-largestHeight()/40, getTransparant(g2.getColor(), 150));
+			}
+		}
 	}
 
 	//======[ Common Distance Methods ]===================================================================

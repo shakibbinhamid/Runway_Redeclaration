@@ -2,13 +2,16 @@ package view;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.util.Random;
 
 import javax.swing.JFrame;
 
 import core.Airport;
 import core.Obstacle;
+import core.PositionedObstacle;
 import coreInterfaces.AirfieldInterface;
 import coreInterfaces.AirportInterface;
 import coreInterfaces.DeclaredRunwayInterface;
@@ -34,8 +37,6 @@ public class ViewTop extends AbstractView{
 
 	public static final Color SURROUNDING_AREA_COLOR = new Color(128,128,255);
 	public static final Color CLEARED_BLUE_COLOR = new Color(0,128,255);
-	public static final Color CLEARWAY_COLOR = Color.YELLOW;
-	public static final Color STOPWAY_COLOR = Color.RED;
 
 
 	public ViewTop(AirfieldInterface airfield, DeclaredRunwayInterface runway) {
@@ -55,7 +56,7 @@ public class ViewTop extends AbstractView{
 			AirfieldInterface air = port.getAirfield(port.getAirfieldNames().get(0));
 			DeclaredRunwayInterface runway = air.getSmallAngledRunway();
 
-			air.addObstacle(new Obstacle("Jim",5,13), 0, 3000);
+			air.addObstacle(new Obstacle("B69",100,13), 0, 3000);
 
 			System.out.println(air);
 
@@ -99,7 +100,7 @@ public class ViewTop extends AbstractView{
 		g2.setColor(Color.BLACK);
 
 
-		//~~[ Begin Drawing ]~~
+		//~~[ Begin Drawing ]~~~~~~~~~~~~~~~~~~~~~
 		drawBackground(g2);
 
 		//Blue, Purple & runway
@@ -111,14 +112,18 @@ public class ViewTop extends AbstractView{
 		//Tora, lda, etc
 		drawDistances(g2);
 
+
 		if(getAirfield().hasObstacle())
 			drawObsacle(g2);
 
 		drawScale(g2, new Point(0,largestHeight()).offsetXByPixels(10).offsetYByPixels(-10), 500d,false);
+		
 		drawArrowAround(g2, new Point(runwayWidth()/2,4*largestHeight()/5), runwayWidth()/10, !getRunway().isSmallEnd(), Color.RED, MAROON_COLOUR);
+		int h = !getRunway().isSmallEnd()? -1 : 1;/* helper*/
+		drawPlane(g2, runwayWidth()/21, new Point(runwayWidth()/2-h*runwayWidth()/20,4*largestHeight()/5), !getRunway().isSmallEnd());
 	}
-	
-	
+
+
 	private void drawAirfield(Graphics2D g2) {
 		drawSurroundingArea(g2);
 		drawClearedArea(g2);
@@ -153,7 +158,7 @@ public class ViewTop extends AbstractView{
 	/** Blue region */ 
 	private void drawClearedArea(Graphics2D g) {
 		Graphics2D g2 = (Graphics2D) g.create();
-		//stored for quick reference
+		//All finals are stored for quick reference
 		final double SE = getAirfield().getStripEnd();
 		final double sSpacer = getAirfield().getShortSpacer();
 		final double mSpacer = getAirfield().getMediumSpacer();
@@ -210,9 +215,9 @@ public class ViewTop extends AbstractView{
 
 
 		//LeftSide
-		double startX = leftOfRunway()+getAirfield().getDefaultSmallAngledRunway().getDisplacedThreshold()+dtToBar;
+		double startXL = leftOfRunway()+getAirfield().getDefaultSmallAngledRunway().getDisplacedThreshold()+dtToBar;
 
-		Point startLine = new Point(startX,y+vertDrop/2);
+		Point startLine = new Point(startXL,y+vertDrop/2);
 		Point endLine;
 
 		for(int i = 0; i < noOfLines; i++){
@@ -222,15 +227,18 @@ public class ViewTop extends AbstractView{
 		}
 
 		//rightSide
-		startX = rightOfRunway()-(getAirfield().getDefaultLargeAngledRunway().getDisplacedThreshold()+dtToBar+zebraLength);
+		double startXR = rightOfRunway()-(getAirfield().getDefaultLargeAngledRunway().getDisplacedThreshold()+dtToBar+zebraLength);
 
-		startLine = new Point(startX,y+vertDrop/2);
+		startLine = new Point(startXR,y+vertDrop/2);
 		for(int i = 0; i < noOfLines; i++){
 			endLine = startLine.offsetXByM(zebraLength);
 			super.drawLine_inM(g2, startLine, endLine);
 			startLine = startLine.offsetYByM(vertDrop);
 		}
-
+		
+		IDENTIFIER_COLOR = Color.WHITE;
+		double textSpace = g2.getFontMetrics().getHeight()*2;
+		drawIdentifiers(g2, vertToRunway(), startXL+zebraLength+6*textSpace, startXR-zebraLength-textSpace,true);
 	}
 
 	private void drawCentreLine(Graphics2D g) {
@@ -254,7 +262,8 @@ public class ViewTop extends AbstractView{
 
 		double dtToBar = defTora/DT_TO_BARCODE_LENGTH_RATIO_TO_TORA;
 		double zebras = defTora/TORA_TO_ZEBRA_CODE_RATIO;
-		double buffer = 30;
+		int fontSize = Ym_to_pixels(3*getAirfield().getRunwayGirth()/4)-1;
+		double buffer = 30+Xpix_to_m(3*fontSize);
 
 		double startX = leftOfRunway()+getAirfield().getDefaultSmallAngledRunway().getDisplacedThreshold()+zebras+dtToBar+buffer;
 		double endX = rightOfRunway()-(getAirfield().getDefaultLargeAngledRunway().getDisplacedThreshold()+zebras+dtToBar+buffer);
@@ -281,7 +290,7 @@ public class ViewTop extends AbstractView{
 		Graphics2D g2 = (Graphics2D) g.create();
 
 		double leftThresh = leftOfRunway()+getAirfield().getSmallAngledRunway().getDisplacedThreshold();
-		double rightThresh = rightOfRunway()+getAirfield().getLargeAngledRunway().getDisplacedThreshold();
+		double rightThresh = rightOfRunway()-getAirfield().getLargeAngledRunway().getDisplacedThreshold();
 		double topOfRunway = vertToRunway()-getAirfield().getRunwayGirth()/2;
 
 		Point leftMarker = new Point(leftThresh, topOfRunway);
@@ -295,7 +304,7 @@ public class ViewTop extends AbstractView{
 	private void drawDistances(Graphics2D g) {
 		Graphics2D g2 = (Graphics2D) g.create();
 		int level = 2;
-		super.PIXEL_BUFFER = Ym_to_pixels(105);
+		super.PIXEL_BUFFER = Ym_to_pixels(largestHeight()/11);
 		super.DIMENSION_GAP = getAirfield().getRunwayGirth()/2;
 		//TODO allign to TORA
 		drawDistance(g2, "LDA", getRunway().getLDA(), getRunway().getDisplacedThreshold(), -level++, vertToRunway());
@@ -310,7 +319,7 @@ public class ViewTop extends AbstractView{
 		double topOfrunway = vertToRunway()-girth/2;
 
 		Point startStop,startClear;
-		
+
 		if(getRunway().isSmallEnd()){
 			startStop = new Point(rightOfRunway(),topOfrunway);
 		}else{
@@ -318,23 +327,95 @@ public class ViewTop extends AbstractView{
 		}
 		startClear = startStop.offsetYByM(-girth/2);
 
-		if(getRunway().getStopway()>0){
-			if(getRunway().getClearway()>0){
-				g2.setColor(CLEARWAY_COLOR);
-				super.drawRectangle_inM(g2, startClear, s()*getRunway().getClearway(), 2*girth, getTransparant(g2.getColor(), 200));
-			}
-			g2.setColor(STOPWAY_COLOR);
-			super.drawRectangle_inM(g2, startStop,s()*getRunway().getStopway(),girth, getTransparant(g2.getColor(), 150));
+		if(getRunway().getClearway()>0){
 
+			g2.setColor(CLEARWAY_COLOR);
+			super.drawRectangle_inM(g2, startClear, s()*getRunway().getClearway(), 2*girth, getTransparant(g2.getColor(), 200));
+
+			if(getRunway().getStopway() > 0){
+				g2.setColor(STOPWAY_COLOR);
+				super.drawRectangle_inM(g2, startStop,s()*getRunway().getStopway(),girth, getTransparant(g2.getColor(), 150));
+			}
 		}
 	}
 
 	private void drawObsacle(Graphics2D g) {
 		Graphics2D g2 = (Graphics2D) g.create();
-		// TODO Auto-generated method stub
+
+		PositionedObstacle obj = (PositionedObstacle) getAirfield().getPositionedObstacle();
+		if (obj==null) return;
+
+		double xPos;
+		if(getRunway().isSmallEnd()){
+			xPos = leftOfRunway() + getAirfield().getDefaultSmallAngledRunway().getDisplacedThreshold()
+					+ obj.distanceFromSmallEnd();
+		}else{
+			xPos = leftOfRunway() + getAirfield().getDefaultLargeAngledRunway().getDisplacedThreshold()
+					+ obj.distanceFromLargeEnd();
+		}
+
+		Point centre = new Point(xPos,vertToRunway());
+
+		//~~[ Has Radius ]~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		double radius = obj.getRadius();
+		if(radius>0){
+			g2.setColor(Color.RED);
+			super.drawCircle_inM(g2, centre, radius, getTransparant(g2.getColor(), 100));
+		}
+
+		//~~[ Determining if RESA/ALS/Blast ]~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		double largestFactor; 
+		String factorName;
+
+		double ALS = getRunway().getAscentAngle()*getAirfield().getPositionedObstacle().getHeight();
+		double SE = getAirfield().getStripEnd();
+
+		//find largest factor
+		if(getRunway().getRESA()+SE > ALS+SE &&  ALS+SE > getAirfield().getBlastAllowance()){
+			largestFactor = getRunway().getRESA()+SE;
+			factorName = "RESA";
+
+		}else if(ALS > getAirfield().getBlastAllowance()){
+			largestFactor =  ALS;
+			factorName = "ALS";
+
+		}else{
+			largestFactor = getAirfield().getBlastAllowance()+SE;
+			factorName = "Blast Zone";
+
+		}
+
+		//~~[ draw largest factor ]~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		//must include obs radius
+		double affectedRadius = radius + largestFactor;
+		g2.setColor(Color.RED);
+		super.drawCircle_inM(g2, centre, affectedRadius, getTransparant(g2.getColor(), 50));
+
+		//~~[ text of largest factor ]~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		g2.setColor(Color.BLACK);
+		int size = 10;
+		g2.setFont(new Font("verdana", Font.BOLD, size));
+
+		double heightOfText_M = Ypix_to_m(g2.getFontMetrics().getHeight());
+		Point textPoint = centre.offsetXByM(affectedRadius).offsetYByM(getAirfield().getLongSpacer()+heightOfText_M);
+
+		super.drawString_inM(g2, factorName, textPoint);
+
+		//~~[ planes ]~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		Graphics2D g4 = (Graphics2D) g.create();
+		if (getAirfield().getPositionedObstacle().getName().matches(".*[a-zA-Z][0-9]+.*")) {
+			drawPlane(g4, obj.getRadius(), centre, new Random().nextBoolean());
+		}
+
+		//~~[ No Radius ]~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		//Draw X at spot
+		g2.setColor(Color.RED);
+		double l = getAirfield().getRunwayGirth()/6;
+		g2.setStroke(new BasicStroke(3));
+		super.drawLine_inM(g2, centre.offsetXByM(l).offsetYByM(l),  centre.offsetXByM(-l).offsetYByM(-l));
+		super.drawLine_inM(g2, centre.offsetXByM(l).offsetYByM(-l),  centre.offsetXByM(-l).offsetYByM(l));
 
 	}
-
 
 	//======[ Common Distance Methods ]===================================================================
 	@Override

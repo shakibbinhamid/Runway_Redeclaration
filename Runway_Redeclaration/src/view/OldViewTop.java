@@ -27,6 +27,7 @@ import coreInterfaces.DeclaredRunwayInterface;
  * @Editor Shakib Stefan
  *
  */
+@Deprecated
 public class OldViewTop extends JPanel{
 	private static final long serialVersionUID = 1L;
 	
@@ -535,7 +536,7 @@ public class OldViewTop extends JPanel{
 		g2.setStroke(new BasicStroke(0.35f));
 		g2.drawPolygon(xes, yses, xes.length);
 	}
-	
+	@Deprecated
 	private void drawObstacle(Graphics2D g, int defSmalldt,int defLargedt, int defTora, double defGirth ) {
 		Graphics2D g2 = (Graphics2D) g.create();
 		Graphics2D g3 = (Graphics2D) g.create();
@@ -588,7 +589,7 @@ public class OldViewTop extends JPanel{
 
 		}
 		int maxRadius = radius + largestFactor;
-
+//TODO bookmark
 		//Body
 		g3.setColor(VERY_VERY_transparentRed);
 		g3.fillOval(x-maxRadius, y-maxRadius, maxRadius*2, maxRadius*2);
@@ -612,7 +613,7 @@ public class OldViewTop extends JPanel{
 		g2.drawLine(x+h, y+h, x-h, y-h);
 		g2.drawLine(x-h, y+h, x+h, y-h);
 	}
-	
+	@Deprecated
 	private void drawLargestFactorOnCircle(Graphics g, String factor ,int largeRadius, int direction, int objX, int objY, Color textColor){
 		Graphics2D g2 = (Graphics2D) g.create();
 		
@@ -629,6 +630,7 @@ public class OldViewTop extends JPanel{
 	/**
 	 * @param direction 1 = heading left,    -1 = heading right
 	 */
+	@Deprecated
 	private void drawPlane(Graphics g, int radius, int x, int y, double direction) {
 		Graphics2D g2 = (Graphics2D) g.create();
 		int m = (int) direction;

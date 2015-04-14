@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -56,6 +57,10 @@ public abstract class AbstractView extends JPanel {
 	public final static Color ALS_SHADE_COLOR = VERY_VERY_transparentRed;
 	public final static Color GLASS_COLOR = new Color(255,255,255,0);
 	public final static Color RUNWAY_COLOUR = Color.GRAY;
+	public static final Color CLEARWAY_COLOR = Color.YELLOW;
+	public static final Color STOPWAY_COLOR = Color.RED;
+	private static final Color PLANE_COLOUR = new Color(175,175,175);
+
 
 	public int PIXEL_BUFFER = 15;
 	public double DIMENSION_GAP = 0;
@@ -63,7 +68,7 @@ public abstract class AbstractView extends JPanel {
 
 	public final static Font DIMENSION_FONT = new Font("Dialog", Font.PLAIN, 12);
 
-	public final static Color IDENTIFIER_COLOR = Color.BLACK;
+	public Color IDENTIFIER_COLOR = Color.BLACK;
 	public final static String IDENTIFIER_FONT = "verdana";
 	public final static int IDENTIFIER_STYLE = Font.BOLD;
 
@@ -239,8 +244,77 @@ public abstract class AbstractView extends JPanel {
 
 		g2.drawString(text, midLeft.x_pix(), midLeft.y_pix());
 	}
+	
+	protected void drawCircle_inM(Graphics2D g, Point centre, double radius, Color fill){
+		Graphics2D g2 = (Graphics2D) g.create();
+
+		centre = centre.offsetXByM(-radius).offsetYByM(-radius);
+		
+		Color previous = g2.getColor();
+		if(fill != null){
+			g2.setColor(fill);
+			g2.fillOval(centre.x_pix(), centre.y_pix(), Xm_to_pixels(2*radius), Ym_to_pixels(2*radius));
+			g2.setColor(previous);
+		}
+		g2.drawOval(centre.x_pix(), centre.y_pix(), Xm_to_pixels(2*radius), Ym_to_pixels(2*radius));
+	}
+	
+	protected void drawPlane(Graphics2D g, double radius, Point centre, boolean pointLeft) {
+		Graphics2D g2 = (Graphics2D) g.create();
+
+		int m = pointLeft? 1 : -1;
+		
+		double x = centre.core_Xm();
+		double y = centre.core_Ym();
+		
+		x = x - m*radius;
+		radius *= 1.7;
+		//half width => sort of single wing span
+		double hwidth = radius*11/19;
+
+		double xUn = radius/19; double yUn = hwidth/12;
+
+		double hOneX = 		x+m*xUn/2;
+		double twoX = 			x+m*2*xUn;
+		double wingStartX=  (x+m*7*xUn);
+		double wingCurveX = 	x+m*11*xUn;
+		double wingEndX =  (x+m*11.5*xUn);
+		double wingEndX2 = 	x+m*13*xUn;
+		double dipStartX = 	x+m*14*xUn;
+		double dipBotX = 		x+m*15*xUn;
+		double tailStartX = 	x+m*17*xUn;
+		double tailEndX = 		x+m*19*xUn;
+		double buttX =   (x+m*17.5*xUn);
+
+		double hOneY = 		y+yUn/2;
+		double oneY = 			y+yUn;
+		double wingCurveY = (y+10.5*yUn);
+		double wingEndY =(y+11*xUn);
+		double tailY = 		y+4*yUn;
+
+		double nhOneY = 			y-yUn/2;
+		double noneY = 			y-yUn;
+		double nwingCurveY = 	(y-10.5*yUn);
+		double nwingEndY =  (y-11*xUn);
+		double ntailY = 			y-4*yUn;
+
+		double[] xes  = {x, hOneX, twoX, wingStartX, wingCurveX, wingEndX, wingEndX2, wingCurveX, dipStartX, dipBotX, tailStartX, tailEndX, tailStartX, buttX, /* other side */ tailStartX, tailEndX, tailStartX, dipBotX, dipStartX, wingCurveX, wingEndX2, wingEndX, wingCurveX, wingStartX, twoX, hOneX};  
+
+		double[] yses = {y, hOneY, oneY, oneY,       wingCurveY, wingEndY, wingEndY,  oneY, 	   oneY,      hOneY,   tailY, 	   tailY,    hOneY,      y, /* other side */ nhOneY, ntailY, ntailY, nhOneY, noneY, noneY, nwingEndY, nwingEndY, nwingCurveY, noneY, noneY, nhOneY};
+
+		
+		Point[] points = new Point[xes.length];
+		for(int i = 0; i < xes.length; i++){
+			points[i] = new Point(xes[i],yses[i]);
+		}
+		g2.setColor(Color.BLACK);
+		g2.setStroke(new BasicStroke(0.15f));
+		drawPolygon_inM(g2, points, PLANE_COLOUR);
+	}
+	
+	
 	//----[ Specific Drawings ]-----------------------------------------------------------------------------
-	protected void drawIdentifiers(Graphics2D g, double yHeight, double leftTextPos, double rightTextPos) {
+	protected void drawIdentifiers(Graphics2D g, double yHeight, double leftTextPos, double rightTextPos, boolean rotate) {
 		Graphics2D g2 = (Graphics2D) g.create();
 
 		String leftNum = getAirfield().getSmallAngledRunway().getIdentifier().substring(0,2);
@@ -249,27 +323,47 @@ public abstract class AbstractView extends JPanel {
 		String rightNum = getAirfield().getLargeAngledRunway().getIdentifier().substring(0,2);
 		String rightSide = ""+getAirfield().getLargeAngledRunway().getSideLetter();
 
-		int fontSize = 10;
+		int fontSize = Xm_to_pixels(3*getAirfield().getRunwayGirth()/4)-3;
 		Font resized = new Font(IDENTIFIER_FONT,IDENTIFIER_STYLE,fontSize);
 		g2.setFont(resized);
 		g2.setColor(IDENTIFIER_COLOR);
 
 		int fontPixelHeight = g2.getFontMetrics().getHeight();
 		int rightPixelWidth = g2.getFontMetrics().stringWidth(rightNum);
+		//Used to centre the letter
 		int qtrWdith = rightPixelWidth/4;
 
-		double yPos = yHeight/2;
-
-		Point leftPos = new Point(leftTextPos,yPos);
-		Point rightPos = new Point(rightTextPos,yPos).offsetXByPixels(-rightPixelWidth);
-
+		//a rotator helper 
+		Point leftPos, rightPos;
+		if(rotate){
+			 leftPos = new Point(yHeight,-leftTextPos);
+			 rightPos = new Point(-yHeight,rightTextPos).offsetXByPixels(-rightPixelWidth);
+		}else{
+			
+			 leftPos = new Point(leftTextPos,yHeight);
+			 rightPos = new Point(rightTextPos,yHeight).offsetXByPixels(-rightPixelWidth);
+		}
 		//Draw left identifier with side letter beneath
+		AffineTransform old = g2.getTransform();
+		if(rotate){
+			AffineTransform at = new AffineTransform();
+			at.setToRotation(Math.PI / 2.0);
+			g2.setTransform(at);
+			leftPos = leftPos.offsetXByM(-getAirfield().getRunwayGirth()/2).offsetXByPixels(2).offsetYByPixels(5);
+		}
 		drawString_inM(g2, leftNum, leftPos);
-		drawString_inM(g2, leftSide, leftPos.offsetYByPixels(fontPixelHeight*2).offsetXByPixels(qtrWdith));
+		drawString_inM(g2, leftSide, leftPos.offsetYByPixels(fontPixelHeight).offsetXByPixels(qtrWdith));
 
 		//Draw right identifier with side letter beneath
+		if(rotate){
+			AffineTransform at2 = new AffineTransform();
+			at2.setToRotation(-Math.PI / 2.0);
+			g2.setTransform(at2);
+			rightPos =rightPos.offsetXByM(getAirfield().getRunwayGirth()/2).offsetXByPixels(-2).offsetYByPixels(5);
+		}
 		drawString_inM(g2, rightNum, rightPos);
-		drawString_inM(g2, rightSide, rightPos.offsetYByPixels(fontPixelHeight*2).offsetXByPixels(qtrWdith));
+		drawString_inM(g2, rightSide, rightPos.offsetYByPixels(fontPixelHeight).offsetXByPixels(qtrWdith));
+		g2.setTransform(old);
 	}
 
 
