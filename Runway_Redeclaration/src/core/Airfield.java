@@ -314,8 +314,11 @@ public class Airfield implements AirfieldInterface, Savable {
 
 		PositionedObstacle obs = new PositionedObstacle(obj, distanceFromSmall, distanceFromLarge);
 		
-		if(getSmallAngledRunway().outOfBounds(getStripEnd(), obs) ||
-			getLargeAngledRunway().outOfBounds(stripEnd, obs)){
+		if(getDefaultSmallAngledRunway().outOfBounds(getStripEnd(), obs, this) ||
+			getDefaultLargeAngledRunway().outOfBounds(getStripEnd(), obs, this)){
+			System.out.println(getSmallAngledRunway().outOfBounds(getStripEnd(), obs, this));
+			System.out.println(getLargeAngledRunway().outOfBounds(getStripEnd(), obs, this));
+
 			JOptionPane.showMessageDialog(null, "Obstacle Out of Bounds","Redeclaration Cancelled",JOptionPane.WARNING_MESSAGE);
 			NotificationPanel.notifyIt(getName() + " Not Redeclared",
 					obs.getName() + " was to be placed on "+

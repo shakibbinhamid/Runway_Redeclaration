@@ -56,6 +56,8 @@ public abstract class AbstractView extends JPanel {
 	public final static Color ALS_SHADE_COLOR = VERY_VERY_transparentRed;
 	public final static Color GLASS_COLOR = new Color(255,255,255,0);
 	public final static Color RUNWAY_COLOUR = Color.GRAY;
+	private static Color PLANE_COLOUR = new Color(175,175,175);
+
 
 	public int PIXEL_BUFFER = 15;
 	public double DIMENSION_GAP = 0;
@@ -239,6 +241,75 @@ public abstract class AbstractView extends JPanel {
 
 		g2.drawString(text, midLeft.x_pix(), midLeft.y_pix());
 	}
+	
+	protected void drawCircle_inM(Graphics2D g, Point centre, double radius, Color fill){
+		Graphics2D g2 = (Graphics2D) g.create();
+
+		centre = centre.offsetXByM(-radius).offsetYByM(-radius);
+		
+		Color previous = g2.getColor();
+		if(fill != null){
+			g2.setColor(fill);
+			g2.fillOval(centre.x_pix(), centre.y_pix(), Xm_to_pixels(2*radius), Ym_to_pixels(2*radius));
+			g2.setColor(previous);
+		}
+		g2.drawOval(centre.x_pix(), centre.y_pix(), Xm_to_pixels(2*radius), Ym_to_pixels(2*radius));
+	}
+	
+	protected void drawPlane(Graphics2D g, double radius, Point centre, int direction) {
+		Graphics2D g2 = (Graphics2D) g.create();
+
+		int m = (int) direction;
+		
+		double x = centre.core_Xm();
+		double y = centre.core_Ym();
+		
+		x = x - m*7*radius/8;
+		radius *= 2;
+		//half width => sort of single wing span
+		double hwidth = radius*12/19;
+
+		double xUn = radius/19; double yUn = hwidth/12;
+
+		double hOneX = 		x+m*xUn/2;
+		double twoX = 			x+m*2*xUn;
+		double wingStartX=  (x+m*7*xUn);
+		double wingCurveX = 	x+m*11*xUn;
+		double wingEndX =  (x+m*11.5*xUn);
+		double wingEndX2 = 	x+m*13*xUn;
+		double dipStartX = 	x+m*14*xUn;
+		double dipBotX = 		x+m*15*xUn;
+		double tailStartX = 	x+m*17*xUn;
+		double tailEndX = 		x+m*19*xUn;
+		double buttX =   (x+m*17.5*xUn);
+
+		double hOneY = 		y+yUn/2;
+		double oneY = 			y+yUn;
+		double wingCurveY = (y+10.5*yUn);
+		double wingEndY =(y+11*xUn);
+		double tailY = 		y+4*yUn;
+
+		double nhOneY = 			y-yUn/2;
+		double noneY = 			y-yUn;
+		double nwingCurveY = 	(y-10.5*yUn);
+		double nwingEndY =  (y-11*xUn);
+		double ntailY = 			y-4*yUn;
+
+		double[] xes  = {x, hOneX, twoX, wingStartX, wingCurveX, wingEndX, wingEndX2, wingCurveX, dipStartX, dipBotX, tailStartX, tailEndX, tailStartX, buttX, /* other side */ tailStartX, tailEndX, tailStartX, dipBotX, dipStartX, wingCurveX, wingEndX2, wingEndX, wingCurveX, wingStartX, twoX, hOneX};  
+
+		double[] yses = {y, hOneY, oneY, oneY,       wingCurveY, wingEndY, wingEndY,  oneY, 	   oneY,      hOneY,   tailY, 	   tailY,    hOneY,      y, /* other side */ nhOneY, ntailY, ntailY, nhOneY, noneY, noneY, nwingEndY, nwingEndY, nwingCurveY, noneY, noneY, nhOneY};
+
+		
+		Point[] points = new Point[xes.length];
+		for(int i = 0; i < xes.length; i++){
+			points[i] = new Point(xes[i],yses[i]);
+		}
+		g2.setColor(Color.BLACK);
+		g2.setStroke(new BasicStroke(0.15f));
+		drawPolygon_inM(g2, points, PLANE_COLOUR);
+	}
+	
+	
 	//----[ Specific Drawings ]-----------------------------------------------------------------------------
 	protected void drawIdentifiers(Graphics2D g, double yHeight, double leftTextPos, double rightTextPos) {
 		Graphics2D g2 = (Graphics2D) g.create();

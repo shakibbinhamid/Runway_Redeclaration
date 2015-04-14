@@ -399,9 +399,17 @@ public class DeclaredRunway implements DeclaredRunwayInterface{
 		}
 		
 		@Override
-		public boolean outOfBounds(double stripEnd, PositionedObstacleInterface obs){
-			if(distanceFrom(obs)<0){
-				if(-distanceFrom(obs) > (stripEnd+getDisplacedThreshold())){
+		public boolean outOfBounds(double stripEnd, PositionedObstacleInterface obs, AirfieldInterface airfield){
+			if(isSmallEnd()){
+				if(obs.distanceFromSmallEnd()<0 
+						&& 
+					-obs.distanceFromSmallEnd() >  stripEnd+airfield.getDefaultSmallAngledRunway().getDisplacedThreshold()){
+					return true;
+				}
+			}else{
+				if(obs.distanceFromSmallEnd()<0
+						&& 
+					-obs.distanceFromLargeEnd() >  stripEnd+airfield.getDefaultLargeAngledRunway().getDisplacedThreshold()){
 					return true;
 				}
 			}

@@ -588,7 +588,7 @@ public class OldViewTop extends JPanel{
 
 		}
 		int maxRadius = radius + largestFactor;
-
+//TODO bookmark
 		//Body
 		g3.setColor(VERY_VERY_transparentRed);
 		g3.fillOval(x-maxRadius, y-maxRadius, maxRadius*2, maxRadius*2);
