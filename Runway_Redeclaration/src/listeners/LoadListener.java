@@ -8,6 +8,7 @@ import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 import view.FormObstacle;
 import view.TopFrame;
@@ -81,6 +82,13 @@ public class LoadListener{
 				}
 				if(getTextFields().indexOf(jtf) == 2){
 					jtf.setText(String.valueOf(currentObstacle.getHeight()));
+				}
+				if(getTextFields().indexOf(jtf) == 3){
+					SwingUtilities.invokeLater(new Runnable() {
+					      public void run() {
+					        jtf.requestFocus();
+					      }
+					});
 				}
 			}
 		}

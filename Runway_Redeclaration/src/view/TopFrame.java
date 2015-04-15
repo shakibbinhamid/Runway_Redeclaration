@@ -9,6 +9,7 @@ import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JSplitPane;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
@@ -18,6 +19,7 @@ import coreInterfaces.AirfieldInterface;
 import coreInterfaces.AirportInterface;
 import coreInterfaces.ObstacleInterface;
 import exceptions.CannotMakeRunwayException;
+import exceptions.UnrecognisedAirfieldIntifierException;
 import exceptions.VariableDeclarationException;
 
 /**
@@ -88,7 +90,7 @@ public class TopFrame extends JFrame{
 			public void windowClosing(WindowEvent we){ 
 				String ObjButtons[] = {"Yes","No"};
 				int promptResult = JOptionPane.showOptionDialog(null, 
-						"Are you sure you want to exit?", "Online Examination System", 
+						"Are you sure you want to exit?", "Confirmation for Exit", 
 						JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, 
 						ObjButtons,ObjButtons[1]);
 				if(promptResult==JOptionPane.YES_OPTION){
@@ -141,6 +143,15 @@ public class TopFrame extends JFrame{
 			JOptionPane.showMessageDialog(this, "You already have an airfield "+e.getInvalidRunway().getName(), "ERROR: Airfield Create Fail", JOptionPane.ERROR_MESSAGE);
 		}
 	}
+	
+	public void removeField(AirfieldInterface field){
+		try {
+			airport.removeAirfield(field.getName());
+			getTabbePanel().removeTab(field);
+		} catch (UnrecognisedAirfieldIntifierException e) {
+			e.printStackTrace();
+		}
+	}
 
 	/**
 	 * To be used by the airfield loader or creator
@@ -170,6 +181,12 @@ public class TopFrame extends JFrame{
 					"\n" + "It has made this runway unusable in the following way: "+e.getMessage(),
 					Notification.ERROR);
 			field.removeObstacle();
+			SwingUtilities.invokeLater(new Runnable(){
+				@Override
+				public void run() {
+					revalidate();
+				}
+			});
 		}
 	}
 

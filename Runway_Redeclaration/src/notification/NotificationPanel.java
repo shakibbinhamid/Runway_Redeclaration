@@ -65,9 +65,10 @@ public class NotificationPanel extends JPanel{
 	 * @param type Type can be <em> Notification.FILE, Notification.CALC, Notification.ERROR, Notification.DEFUALT </em>
 	 */
 	public static void notifyIt(String title, String details, String type){
-		nots.add(new NotificationCellComponent (new Notification(title, details, type)));
+		Notification not = new Notification(title, details, type);
+		nots.add(new NotificationCellComponent (not));
 		fire();
-		LogPanel.log(title+"\n"+details+"\n");
+		LogPanel.log(title+" @ "+not.getDetails()+"\n*********************************\n");
 	}
 	
 	protected static void fire(){

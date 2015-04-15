@@ -24,6 +24,10 @@ public class SelfCheckingField extends JTextField{
 		this.getDocument().addDocumentListener(new MyDocumentListener());
 	}
 	
+	public String getRegex(){
+		return regex;
+	}
+	
 	private class MyDocumentListener implements DocumentListener {
 
         public void insertUpdate(DocumentEvent e) {

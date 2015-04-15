@@ -3,6 +3,7 @@ package view;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 
 import coreInterfaces.AirfieldInterface;
@@ -55,6 +56,22 @@ public class TabbedPanel extends JTabbedPane{
 			tabs.add(new Tab(airfield));
 			this.addTab(airfield.getName(), new Tab(airfield));
 		}
+	}
+	
+	public void removeTab(AirfieldInterface field){
+		
+		int index = this.indexOfTab(field.getName());
+		
+		tabs.removeIf( x -> x.getField().getName().equals(field.getName()));
+		this.removeAll();
+		for(Tab tab: tabs){
+			this.addTab(tab.getField().getName(), tab);
+		}
+		
+		if(index == 0)
+			this.setSelectedIndex(0);
+		else
+			this.setSelectedIndex(index - 1);
 	}
 	
 	/**
