@@ -56,7 +56,7 @@ public class FormEditAirfield extends FormAirfield{
 		setPreferredSize(new Dimension(400,250));
 	}
 	
-public void init(){
+	public void init(){
 		upperPanel.setLayout(new GridLayout(3,2));
 		upperPanel.add(airfieldLabel);
 		upperPanel.add(airfieldNameLabel);
@@ -73,6 +73,7 @@ public void init(){
 		upperPanel.add(largeValuesLabel);
 		
 		setButtonListener();
+		button.setEnabled(true);
 		pack();
 		this.setResizable(false);
 		this.setVisible(true);

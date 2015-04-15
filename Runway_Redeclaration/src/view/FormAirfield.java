@@ -5,10 +5,14 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.util.ArrayList;
 
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.text.Document;
 
 import core.Airport;
 import core.DeclaredRunway;
@@ -54,8 +58,9 @@ public class FormAirfield extends FormGeneral{
 		
 		initialiseStuff();
 		setToolTips();
-		setLayout();
 		storeUserInput();
+		setButtonDeactivated();
+		setLayout();
 		//init();
 	}
 	
@@ -65,6 +70,22 @@ public class FormAirfield extends FormGeneral{
 		this.setResizable(false);
 		this.setVisible(true);
 	}
+	
+	
+	private void setButtonDeactivated(){
+		button.setEnabled(false);
+		JButtonStateController jbsc = new JButtonStateController(button);
+		setTextFieldListeners(smallValueTextFields, jbsc);
+		setTextFieldListeners(bigValueTextFields, jbsc);
+	}
+	
+	public void setTextFieldListeners(ArrayList<JTextField> textFields, DocumentListener docListener){
+		for(JTextField jtf : textFields){
+			Document doc = jtf.getDocument();
+			doc.addDocumentListener(docListener);
+		}
+	}
+
 	
 	private void initialiseStuff(){
 		smallValueTextFields = new ArrayList<JTextField>(10);
@@ -155,4 +176,37 @@ public class FormAirfield extends FormGeneral{
 		textFieldsPanel.add(bigLDATextBox);
 	}
 
+	// Listener used to active/deactivate main button if the text fields are empty
+	class JButtonStateController implements DocumentListener {
+		JButton button; 
+
+		JButtonStateController(JButton button) {
+			this.button = button;
+		}
+
+		public void changedUpdate(DocumentEvent e) {
+			change(e);
+		}
+
+		public void insertUpdate(DocumentEvent e) {
+			change(e);
+		}
+
+		public void removeUpdate(DocumentEvent e) {
+			change(e);
+		}
+
+		public void change(DocumentEvent e) {
+
+			boolean enabled = true;
+			for (int i = 0; i < smallValueTextFields.size(); i++) {
+				if (smallValueTextFields.get(i).getText().isEmpty()
+						|| bigValueTextFields.get(i).getText().isEmpty()) {
+					enabled = false;
+					break;
+				}
+			}
+			button.setEnabled(enabled);
+		}
+	}
 }
