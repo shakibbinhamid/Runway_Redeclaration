@@ -346,13 +346,8 @@ public class ViewTop extends AbstractView{
 		if (obj==null) return;
 
 		double xPos;
-		if(getRunway().isSmallEnd()){
-			xPos = leftOfRunway() + getAirfield().getDefaultSmallAngledRunway().getDisplacedThreshold()
-					+ obj.distanceFromSmallEnd();
-		}else{
-			xPos = leftOfRunway() + getAirfield().getDefaultLargeAngledRunway().getDisplacedThreshold()
-					+ obj.distanceFromLargeEnd();
-		}
+		xPos = leftOfRunway() + getAirfield().getDefaultSmallAngledRunway().getDisplacedThreshold()
+				+ obj.distanceFromSmallEnd();
 
 		Point centre = new Point(xPos,vertToRunway());
 
