@@ -222,6 +222,6 @@ public class TopFrame extends JFrame{
 	}
 	
 	protected boolean isUserHelpingDeveloper(){
-		return welcomePanel.isHelpingDeveloper();
+		return WelcomePanel.isHelpingDeveloper();
 	}
 }
