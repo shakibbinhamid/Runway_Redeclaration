@@ -8,8 +8,11 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GridLayout;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
@@ -20,13 +23,12 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JSlider;
 import javax.swing.JViewport;
-import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -36,8 +38,8 @@ import coreInterfaces.DeclaredRunwayInterface;
 /**
  * [X] Version 1: Points 
  * [X] Version 2: Rotate Points 
- * [ ] Version 3: Scale/Zoom 
- * [ ] Version 4: Pan by focus points 
+ * [X] Version 3: Scale/Zoom 
+ * [X] Version 4: Pan by focus points 
  * 
  * 
  * We use Points so that they can be translated!
@@ -53,16 +55,17 @@ public abstract class AbstractView extends JPanel implements ChangeListener{
 	 * [X] Version 0: Nada Complete
 	 * [X] Version 1: Points 
 	 * [X] Version 2: Rotate Points 
-	 * [ ] Version 3: Scale/Zoom 
-	 * [ ] Version 4: Pan by focus points 
+	 * [X] Version 3: Scale/Zoom 
+	 * [X] Version 4: Pan by focus points 
 	 */
-	private static final long serialVersionUID = 2L;
+	private static final long serialVersionUID = 4L;
 
 	private AirfieldInterface airfield;
 	private DeclaredRunwayInterface runway;
 
 	private BufferedImage image;
 	protected boolean sameScaleAsX; 
+	private double scale;
 
 	private int IMAGE_WIDTH, IMAGE_HEIGHT;
 
@@ -77,7 +80,6 @@ public abstract class AbstractView extends JPanel implements ChangeListener{
 	public static final Color STOPWAY_COLOR = Color.RED;
 	private static final Color PLANE_COLOUR = new Color(175,175,175);
 
-
 	public int PIXEL_BUFFER = 15;
 	public double DIMENSION_GAP = 0;
 
@@ -87,76 +89,107 @@ public abstract class AbstractView extends JPanel implements ChangeListener{
 	public Color IDENTIFIER_COLOR = Color.BLACK;
 	public final static String IDENTIFIER_FONT = "verdana";
 	public final static int IDENTIFIER_STYLE = Font.BOLD;
-	
+
 	private JScrollPane scroll;
-	private JSlider slider ; 
 	private JLabel label;
-	
-	private static final int MIN_ZOOM = 80;
-	private static final int MAX_ZOOM = 120;
-	private static final int DEFAULT_ZOOM = 100;
+	private JButton zoomIn, zoomOut, zoomRefresh;
+
+	private static final double SCALE_INCREMENT = 0.02;
 
 	public AbstractView (AirfieldInterface airfield, DeclaredRunwayInterface runway, String title){
 		setAirfield(airfield);
 		setRunway(runway);
 
 		this.setPreferredSize(new Dimension(300 , 200));
-		
+
 		this.IMAGE_WIDTH = 10;
 		this.IMAGE_HEIGHT = 10;
-		
+
 		this.image = new BufferedImage(IMAGE_WIDTH, IMAGE_HEIGHT, BufferedImage.TYPE_3BYTE_BGR);
 
 		this.transformingAngle = (short) 0;
 		this.sameScaleAsX = false;
-		
+		this.scale = 1;
+
 		this.setBorder(BorderFactory.createTitledBorder(title));
 		init();
 	}
-	
+
 	private void init(){
-		
+
 		this.setLayout(new BorderLayout());
-		
-		slider = new JSlider(JSlider.VERTICAL, MIN_ZOOM, MAX_ZOOM, DEFAULT_ZOOM);  
-		slider.setMajorTickSpacing(20);  
-		slider.setMinorTickSpacing(5);  
-		slider.setPaintTicks(true);  
-		slider.setPaintLabels(true);  
-		slider.addChangeListener(this);
-		this.add(slider, BorderLayout.EAST);
-		
+		zoomIn = new JButton("+");
+		zoomRefresh = new JButton("*");
+		zoomOut = new JButton("-");
+
+		JPanel zoomZoom = new JPanel();
+		zoomZoom.setLayout(new GridLayout(3,1));
+		zoomZoom.add(zoomIn);
+		zoomZoom.add(zoomRefresh);
+		zoomZoom.add(zoomOut);
+		this.add(zoomZoom, BorderLayout.EAST);
+
+		zoomIn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				zoomIn();
+			}
+		});
+		zoomRefresh.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				resetZoom();
+			}
+		});
+		zoomOut.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				zoomOut();
+			}
+		});
+
 		label = new JLabel();
-		
+		label.setHorizontalAlignment(JLabel.CENTER);
+		label.setVerticalAlignment(JLabel.CENTER);
+
 		scroll = new JScrollPane(label);
 		scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
 		scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		this.add(scroll, BorderLayout.CENTER);
-		
+
 		JViewport vport = scroll.getViewport();
 		MouseAdapter ma = new HandScrollListener();
 		vport.addMouseMotionListener(ma);
 		vport.addMouseListener(ma);
-		
 	}
-	
+
+	@Override
 	public void stateChanged(ChangeEvent e) {  
 		repaint();
 	}  
 
 	private BufferedImage getScaledImage(double scale) {  
-		int w = (int)(scale*image.getWidth());  
-		int h = (int)(scale*image.getHeight());  
-		BufferedImage bi = new BufferedImage(w, h, image.getType());  
+		int w = (int)(scale*this.getImage().getWidth());  
+		int h = (int)(scale*this.getImage().getHeight());  
+		
+		BufferedImage previous = new BufferedImage(IMAGE_WIDTH,IMAGE_HEIGHT, this.getImage().getType());  
+		drawImage(previous.createGraphics());
+
+		BufferedImage bi = new BufferedImage(w, h, this.getImage().getType());  
 		Graphics2D g2 = bi.createGraphics();  
+
 		g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION,  
 				RenderingHints.VALUE_INTERPOLATION_BICUBIC);  
+
 		AffineTransform at = AffineTransform.getScaleInstance(scale, scale);  
-		g2.drawRenderedImage(image, at);  
+		g2.drawRenderedImage(this.getImage(), at);  
 		g2.dispose();  
+		
+		this.image = previous;
+		
 		return bi;  
 	}  
-	
+
 	private static class HandScrollListener extends MouseAdapter {
 
 		private final java.awt.Point pp = new java.awt.Point();
@@ -199,7 +232,7 @@ public abstract class AbstractView extends JPanel implements ChangeListener{
 	public BufferedImage getImage(){
 		return this.image;
 	}
-	
+
 	protected int getIMAGE_WIDTH() { return this.IMAGE_WIDTH;  }
 	protected int getIMAGE_HEIGHT(){ return this.IMAGE_HEIGHT; }
 	//===========================================================================================================================
@@ -210,9 +243,24 @@ public abstract class AbstractView extends JPanel implements ChangeListener{
 	/** Ensures the IMAGE_*dimensions* are correct for this round of painting,
 	 *  Resets the image to a blank canvas making it easier to use */
 	private void rescaleImageSize(){
-		this.IMAGE_WIDTH = label.getWidth();
-		this.IMAGE_HEIGHT = label.getHeight();
-		this.image = new BufferedImage(IMAGE_WIDTH, IMAGE_HEIGHT, BufferedImage.TYPE_3BYTE_BGR);
+		System.out.println((label.getWidth()==this.IMAGE_WIDTH)+"  L"+label.getWidth()+"   I"+this.IMAGE_WIDTH);
+		System.out.println((label.getHeight() == this.IMAGE_HEIGHT)+"   L"+label.getHeight()+"   I"+ this.IMAGE_HEIGHT);
+		
+		if(label.getWidth()==this.IMAGE_WIDTH 
+				&&
+		   label.getHeight() == this.IMAGE_HEIGHT){
+			
+			System.out.println("^No scale\n");
+			
+		}else{
+			
+			System.out.println("^Rescaling\n");
+			this.IMAGE_WIDTH = scroll.getWidth();
+			this.IMAGE_HEIGHT = scroll.getHeight();
+			this.image = new BufferedImage(IMAGE_WIDTH, IMAGE_HEIGHT, BufferedImage.TYPE_3BYTE_BGR);
+			drawImage(getImage().createGraphics());
+
+		}
 	}
 
 	protected static double pixelsToMeters(int yourPixels, double meters, int pixels){
@@ -278,19 +326,33 @@ public abstract class AbstractView extends JPanel implements ChangeListener{
 	//===========================================================================================================================
 
 
+	//======[ Zooming ]================================================================================================
+	public void zoomIn(){
+		zoom(+SCALE_INCREMENT);
+	}
+	public void zoomOut(){
+		zoom(-SCALE_INCREMENT);
+	}
+	public void resetZoom(){
+		zoom(1-this.scale);
+	}
+	public void zoom(double extraScale){
+		scale += extraScale;
+		System.out.println(scale);
+		repaint();
+		revalidate();
+	}
+	//===========================================================================================================================
+
+
 	//======[ Drawing the image ]================================================================================================
 	@Override
 	public final void paint(Graphics g){
 		Graphics2D g2 = (Graphics2D) g.create();
 
 		rescaleImageSize();
-		drawImage(getImage().createGraphics());
-		
-		int value = slider.getValue();
-		double scale = value / 100.0;
-		image = getScaledImage(scale);
-		label.setIcon(new ImageIcon(image));
-		
+		label.setIcon(new ImageIcon(getScaledImage(this.scale)));
+
 		super.paint(g2);
 	}
 
@@ -348,12 +410,12 @@ public abstract class AbstractView extends JPanel implements ChangeListener{
 
 		g2.drawString(text, midLeft.x_pix(), midLeft.y_pix());
 	}
-	
+
 	protected void drawCircle_inM(Graphics2D g, Point centre, double radius, Color fill){
 		Graphics2D g2 = (Graphics2D) g.create();
 
 		centre = centre.offsetXByM(-radius).offsetYByM(-radius);
-		
+
 		Color previous = g2.getColor();
 		if(fill != null){
 			g2.setColor(fill);
@@ -362,15 +424,15 @@ public abstract class AbstractView extends JPanel implements ChangeListener{
 		}
 		g2.drawOval(centre.x_pix(), centre.y_pix(), Xm_to_pixels(2*radius), Ym_to_pixels(2*radius));
 	}
-	
+
 	protected void drawPlane(Graphics2D g, double radius, Point centre, boolean pointLeft) {
 		Graphics2D g2 = (Graphics2D) g.create();
 
 		int m = pointLeft? 1 : -1;
-		
+
 		double x = centre.core_Xm();
 		double y = centre.core_Ym();
-		
+
 		x = x - m*radius;
 		radius *= 1.7;
 		//half width => sort of single wing span
@@ -406,7 +468,7 @@ public abstract class AbstractView extends JPanel implements ChangeListener{
 
 		double[] yses = {y, hOneY, oneY, oneY,       wingCurveY, wingEndY, wingEndY,  oneY, 	   oneY,      hOneY,   tailY, 	   tailY,    hOneY,      y, /* other side */ nhOneY, ntailY, ntailY, nhOneY, noneY, noneY, nwingEndY, nwingEndY, nwingCurveY, noneY, noneY, nhOneY};
 
-		
+
 		Point[] points = new Point[xes.length];
 		for(int i = 0; i < xes.length; i++){
 			points[i] = new Point(xes[i],yses[i]);
@@ -415,8 +477,8 @@ public abstract class AbstractView extends JPanel implements ChangeListener{
 		g2.setStroke(new BasicStroke(0.15f));
 		drawPolygon_inM(g2, points, PLANE_COLOUR);
 	}
-	
-	
+
+
 	//----[ Specific Drawings ]-----------------------------------------------------------------------------
 	protected void drawIdentifiers(Graphics2D g, double yHeight, double leftTextPos, double rightTextPos, boolean rotate) {
 		Graphics2D g2 = (Graphics2D) g.create();
@@ -440,12 +502,12 @@ public abstract class AbstractView extends JPanel implements ChangeListener{
 		//a rotator helper 
 		Point leftPos, rightPos;
 		if(rotate){
-			 leftPos = new Point(yHeight,-leftTextPos);
-			 rightPos = new Point(-yHeight,rightTextPos).offsetXByPixels(-rightPixelWidth);
+			leftPos = new Point(yHeight,-leftTextPos);
+			rightPos = new Point(-yHeight,rightTextPos).offsetXByPixels(-rightPixelWidth);
 		}else{
-			
-			 leftPos = new Point(leftTextPos,yHeight);
-			 rightPos = new Point(rightTextPos,yHeight).offsetXByPixels(-rightPixelWidth);
+
+			leftPos = new Point(leftTextPos,yHeight);
+			rightPos = new Point(rightTextPos,yHeight).offsetXByPixels(-rightPixelWidth);
 		}
 		//Draw left identifier with side letter beneath
 		AffineTransform old = g2.getTransform();
@@ -475,7 +537,7 @@ public abstract class AbstractView extends JPanel implements ChangeListener{
 	protected void drawScale(Graphics2D g2, Point scaleStart, double metresToScale, boolean valuesBelow) {
 		int bumpHeight = 10;
 		int m = valuesBelow? 1 : -1;
-		
+
 		Point scaleEnd = scaleStart.offsetXByM(metresToScale);
 		Point scaleMid = scaleStart.offsetXByM(metresToScale/2);
 
@@ -547,13 +609,13 @@ public abstract class AbstractView extends JPanel implements ChangeListener{
 		}
 		this.drawString_inM(g2, disName, pWithSmallerX.offsetXByPixels(titleLen/4));
 	}
-	
+
 	/** total height of arrow = */
 	protected void drawArrowAround(Graphics g, Point start, double width, boolean pointLeft, Color fill, Color outline){
 		Graphics2D g2 = (Graphics2D) g.create();
 		int m = 1;
 		if(pointLeft) m = -1;
-		
+
 		double radius = 1*width/4; //height
 		double length = width;
 
@@ -561,7 +623,7 @@ public abstract class AbstractView extends JPanel implements ChangeListener{
 		radius = Ypix_to_m(Xm_to_pixels(radius));
 		double pointX = start.core_Xm()+m*width;
 		double pointY = start.core_Ym();
-				
+
 		double midX = pointX-m*length/2;
 		double backX = pointX-m*length;
 		double eithBack = pointX-m*7*length/8;
@@ -592,13 +654,13 @@ public abstract class AbstractView extends JPanel implements ChangeListener{
 	//======[ Misc/Distances ]=====================================================================================================
 
 	public void save(String fullpath, String ext) throws IOException{
-		ImageIO.write(image, ext, new File(fullpath));
+		ImageIO.write(this.getImage(), ext, new File(fullpath));
 	}
 
 	public static final Color getTransparant(Color color, int transparency){
 		return new Color(color.getRed(),color.getGreen(),color.getBlue(),transparency);
 	}
-	
+
 	protected abstract double largestHeight();
 
 	protected abstract double vertToRunway();
@@ -622,7 +684,7 @@ public abstract class AbstractView extends JPanel implements ChangeListener{
 		return -1;
 	}
 
-	
+
 	//----[ Point Class ]---------------------------------------------------------------------------------------
 	/** 
 	 * Everything on the abstractView is drawn via points, so they can be translated
