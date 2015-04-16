@@ -93,6 +93,7 @@ public abstract class AbstractView extends JPanel implements ChangeListener{
 	private JScrollPane scroll;
 	private JLabel label;
 	private JButton zoomIn, zoomOut, zoomRefresh;
+	protected boolean allowRotation;
 
 	private static final double SCALE_INCREMENT = 0.02;
 
@@ -109,6 +110,7 @@ public abstract class AbstractView extends JPanel implements ChangeListener{
 
 		this.transformingAngle = (short) 0;
 		this.sameScaleAsX = false;
+		this.allowRotation = false;
 		this.scale = 1;
 
 		this.setBorder(BorderFactory.createTitledBorder(title));
@@ -118,11 +120,11 @@ public abstract class AbstractView extends JPanel implements ChangeListener{
 	private void init(){
 
 		this.setLayout(new BorderLayout());
-		
+
 		zoomIn = new JButton();
 		zoomRefresh = new JButton();
 		zoomOut = new JButton();
-		
+
 		try {
 			zoomIn.setIcon(new ImageIcon(ImageIO.read(AbstractView.class.getResource("/zoomin.png"))));
 			zoomOut.setIcon(new ImageIcon(ImageIO.read(AbstractView.class.getResource("/zoomout.png"))));
@@ -147,7 +149,8 @@ public abstract class AbstractView extends JPanel implements ChangeListener{
 		zoomRefresh.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				resetZoom();
+				setRotationTransformationAngle_Deg((short)(getRotationTransformationAngle_Deg()+10));
+				repaint();
 			}
 		});
 		zoomOut.addActionListener(new ActionListener() {
@@ -180,7 +183,7 @@ public abstract class AbstractView extends JPanel implements ChangeListener{
 	private BufferedImage getScaledImage(double scale) {  
 		int w = (int)(scale*this.getImage().getWidth());  
 		int h = (int)(scale*this.getImage().getHeight());  
-		
+
 		BufferedImage previous = new BufferedImage(IMAGE_WIDTH,IMAGE_HEIGHT, this.getImage().getType());  
 		drawImage(previous.createGraphics());
 
@@ -193,12 +196,13 @@ public abstract class AbstractView extends JPanel implements ChangeListener{
 		AffineTransform at = AffineTransform.getScaleInstance(scale, scale);  
 		g2.drawRenderedImage(this.getImage(), at);  
 		g2.dispose();  
-		
+
 		this.image = previous;
-		
+
 		return bi;  
 	}  
 
+	/** Panning */
 	private static class HandScrollListener extends MouseAdapter {
 
 		private final java.awt.Point pp = new java.awt.Point();
@@ -311,10 +315,14 @@ public abstract class AbstractView extends JPanel implements ChangeListener{
 		return transformingAngle;
 	}
 	public void setRotationTransformationAngle_Deg(short rotation){
-		while(rotation < 0){
-			rotation += 180;
+		if(!allowRotation) {
+			this.transformingAngle = 0; 
+			return;
 		}
-		this.transformingAngle = (short) (rotation % 380); 
+		while(rotation < 0){
+			rotation += 360;
+		}
+		this.transformingAngle = (short) (rotation % 360); 
 	}
 
 
@@ -401,8 +409,27 @@ public abstract class AbstractView extends JPanel implements ChangeListener{
 		Graphics2D g2 = (Graphics2D) g.create();
 
 		Point midLeft = topLeft.offsetYByPixels(5*g2.getFontMetrics().getHeight()/16);
+		Point midmid = midLeft.offsetXByPixels(g2.getFontMetrics().stringWidth(text)/2);
+		g2.translate(midmid.x_pix(), midmid.y_pix());
+		g2.rotate(getRotationTransformationAngle_Rad());
+		
+		int extra = 1;
+		if(getRotationTransformationAngle_Deg()>89) extra=4;
+		if(getRotationTransformationAngle_Deg()>271) extra=1;
+		g2.drawString(text, -extra*g2.getFontMetrics().stringWidth(text)/2, 0);
 
-		g2.drawString(text, midLeft.x_pix(), midLeft.y_pix());
+
+	}
+
+	protected void drawString_inM(Graphics2D g, String text, Point topLeft, double rotation){
+		Graphics2D g2 = (Graphics2D) g.create();
+
+		Point midLeft = topLeft.offsetYByPixels(5*g2.getFontMetrics().getHeight()/16);
+		Point midmid = midLeft.offsetXByPixels(g2.getFontMetrics().stringWidth(text)/2);
+		g2.translate(midmid.x_pix(), midmid.y_pix());
+		g2.rotate(getRotationTransformationAngle_Rad()+rotation);
+		
+		g2.drawString(text, -g2.getFontMetrics().stringWidth(text)/2, 0);
 	}
 
 	protected void drawCircle_inM(Graphics2D g, Point centre, double radius, Color fill){
@@ -419,58 +446,6 @@ public abstract class AbstractView extends JPanel implements ChangeListener{
 		g2.drawOval(centre.x_pix(), centre.y_pix(), Xm_to_pixels(2*radius), Ym_to_pixels(2*radius));
 	}
 
-	protected void drawPlane(Graphics2D g, double radius, Point centre, boolean pointLeft) {
-		Graphics2D g2 = (Graphics2D) g.create();
-
-		int m = pointLeft? 1 : -1;
-
-		double x = centre.core_Xm();
-		double y = centre.core_Ym();
-
-		x = x - m*radius;
-		radius *= 1.7;
-		//half width => sort of single wing span
-		double hwidth = radius*11/19;
-
-		double xUn = radius/19; double yUn = hwidth/12;
-
-		double hOneX = 		x+m*xUn/2;
-		double twoX = 			x+m*2*xUn;
-		double wingStartX=  (x+m*7*xUn);
-		double wingCurveX = 	x+m*11*xUn;
-		double wingEndX =  (x+m*11.5*xUn);
-		double wingEndX2 = 	x+m*13*xUn;
-		double dipStartX = 	x+m*14*xUn;
-		double dipBotX = 		x+m*15*xUn;
-		double tailStartX = 	x+m*17*xUn;
-		double tailEndX = 		x+m*19*xUn;
-		double buttX =   (x+m*17.5*xUn);
-
-		double hOneY = 		y+yUn/2;
-		double oneY = 			y+yUn;
-		double wingCurveY = (y+10.5*yUn);
-		double wingEndY =(y+11*xUn);
-		double tailY = 		y+4*yUn;
-
-		double nhOneY = 			y-yUn/2;
-		double noneY = 			y-yUn;
-		double nwingCurveY = 	(y-10.5*yUn);
-		double nwingEndY =  (y-11*xUn);
-		double ntailY = 			y-4*yUn;
-
-		double[] xes  = {x, hOneX, twoX, wingStartX, wingCurveX, wingEndX, wingEndX2, wingCurveX, dipStartX, dipBotX, tailStartX, tailEndX, tailStartX, buttX, /* other side */ tailStartX, tailEndX, tailStartX, dipBotX, dipStartX, wingCurveX, wingEndX2, wingEndX, wingCurveX, wingStartX, twoX, hOneX};  
-
-		double[] yses = {y, hOneY, oneY, oneY,       wingCurveY, wingEndY, wingEndY,  oneY, 	   oneY,      hOneY,   tailY, 	   tailY,    hOneY,      y, /* other side */ nhOneY, ntailY, ntailY, nhOneY, noneY, noneY, nwingEndY, nwingEndY, nwingCurveY, noneY, noneY, nhOneY};
-
-
-		Point[] points = new Point[xes.length];
-		for(int i = 0; i < xes.length; i++){
-			points[i] = new Point(xes[i],yses[i]);
-		}
-		g2.setColor(Color.BLACK);
-		g2.setStroke(new BasicStroke(0.15f));
-		drawPolygon_inM(g2, points, PLANE_COLOUR);
-	}
 
 
 	//----[ Specific Drawings ]-----------------------------------------------------------------------------
@@ -495,35 +470,22 @@ public abstract class AbstractView extends JPanel implements ChangeListener{
 
 		//a rotator helper 
 		Point leftPos, rightPos;
+		leftPos = new Point(leftTextPos,yHeight);
+		rightPos = new Point(rightTextPos,yHeight).offsetXByPixels(-rightPixelWidth);
+
+		
 		if(rotate){
-			leftPos = new Point(yHeight,-leftTextPos);
-			rightPos = new Point(-yHeight,rightTextPos).offsetXByPixels(-rightPixelWidth);
+			drawString_inM(g2, leftNum, leftPos, Math.PI / 2.0);
+			drawString_inM(g2, leftSide, leftPos.offsetXByPixels(-fontPixelHeight).offsetYByPixels(qtrWdith), Math.PI / 2.0);
+			drawString_inM(g2, rightNum, rightPos, -Math.PI / 2.0);
+			drawString_inM(g2, rightSide, rightPos.offsetXByPixels(fontPixelHeight).offsetYByPixels(qtrWdith), -Math.PI / 2.0);
 		}else{
+			drawString_inM(g2, leftNum, leftPos);
+			drawString_inM(g2, leftSide, leftPos.offsetYByPixels(-fontPixelHeight).offsetXByPixels(qtrWdith));
+			drawString_inM(g2, rightNum, rightPos);
+			drawString_inM(g2, rightSide, rightPos.offsetYByPixels(fontPixelHeight).offsetXByPixels(qtrWdith));
 
-			leftPos = new Point(leftTextPos,yHeight);
-			rightPos = new Point(rightTextPos,yHeight).offsetXByPixels(-rightPixelWidth);
 		}
-		//Draw left identifier with side letter beneath
-		AffineTransform old = g2.getTransform();
-		if(rotate){
-			AffineTransform at = new AffineTransform();
-			at.setToRotation(Math.PI / 2.0);
-			g2.setTransform(at);
-			leftPos = leftPos.offsetXByM(-getAirfield().getRunwayGirth()/2).offsetXByPixels(2).offsetYByPixels(5);
-		}
-		drawString_inM(g2, leftNum, leftPos);
-		drawString_inM(g2, leftSide, leftPos.offsetYByPixels(fontPixelHeight).offsetXByPixels(qtrWdith));
-
-		//Draw right identifier with side letter beneath
-		if(rotate){
-			AffineTransform at2 = new AffineTransform();
-			at2.setToRotation(-Math.PI / 2.0);
-			g2.setTransform(at2);
-			rightPos =rightPos.offsetXByM(getAirfield().getRunwayGirth()/2).offsetXByPixels(-2).offsetYByPixels(5);
-		}
-		drawString_inM(g2, rightNum, rightPos);
-		drawString_inM(g2, rightSide, rightPos.offsetYByPixels(fontPixelHeight).offsetXByPixels(qtrWdith));
-		g2.setTransform(old);
 	}
 
 
@@ -640,7 +602,58 @@ public abstract class AbstractView extends JPanel implements ChangeListener{
 		g2.setStroke(new BasicStroke(0.35f));
 		this.drawPolygon_inM(g2, points, fill);
 	}
+	protected void drawPlane(Graphics2D g, double radius, Point centre, boolean pointLeft) {
+		Graphics2D g2 = (Graphics2D) g.create();
 
+		int m = pointLeft? 1 : -1;
+
+		double x = centre.core_Xm();
+		double y = centre.core_Ym();
+
+		x = x - m*radius;
+		radius *= 1.7;
+		//half width => sort of single wing span
+		double hwidth = radius*11/19;
+
+		double xUn = radius/19; double yUn = hwidth/12;
+
+		double hOneX = 		x+m*xUn/2;
+		double twoX = 			x+m*2*xUn;
+		double wingStartX=  (x+m*7*xUn);
+		double wingCurveX = 	x+m*11*xUn;
+		double wingEndX =  (x+m*11.5*xUn);
+		double wingEndX2 = 	x+m*13*xUn;
+		double dipStartX = 	x+m*14*xUn;
+		double dipBotX = 		x+m*15*xUn;
+		double tailStartX = 	x+m*17*xUn;
+		double tailEndX = 		x+m*19*xUn;
+		double buttX =   (x+m*17.5*xUn);
+
+		double hOneY = 		y+yUn/2;
+		double oneY = 			y+yUn;
+		double wingCurveY = (y+10.5*yUn);
+		double wingEndY =(y+11*xUn);
+		double tailY = 		y+4*yUn;
+
+		double nhOneY = 			y-yUn/2;
+		double noneY = 			y-yUn;
+		double nwingCurveY = 	(y-10.5*yUn);
+		double nwingEndY =  (y-11*xUn);
+		double ntailY = 			y-4*yUn;
+
+		double[] xes  = {x, hOneX, twoX, wingStartX, wingCurveX, wingEndX, wingEndX2, wingCurveX, dipStartX, dipBotX, tailStartX, tailEndX, tailStartX, buttX, /* other side */ tailStartX, tailEndX, tailStartX, dipBotX, dipStartX, wingCurveX, wingEndX2, wingEndX, wingCurveX, wingStartX, twoX, hOneX};  
+
+		double[] yses = {y, hOneY, oneY, oneY,       wingCurveY, wingEndY, wingEndY,  oneY, 	   oneY,      hOneY,   tailY, 	   tailY,    hOneY,      y, /* other side */ nhOneY, ntailY, ntailY, nhOneY, noneY, noneY, nwingEndY, nwingEndY, nwingCurveY, noneY, noneY, nhOneY};
+
+
+		Point[] points = new Point[xes.length];
+		for(int i = 0; i < xes.length; i++){
+			points[i] = new Point(xes[i],yses[i]);
+		}
+		g2.setColor(Color.BLACK);
+		g2.setStroke(new BasicStroke(0.15f));
+		drawPolygon_inM(g2, points, PLANE_COLOUR);
+	}
 	//===========================================================================================================================
 
 
@@ -767,12 +780,12 @@ public abstract class AbstractView extends JPanel implements ChangeListener{
 			Point result =  getPivot().offsetXByM(xbuf).offsetYByM(ybuf);
 
 
-			if(getRotationTransformationAngle_Deg()!=0){
-				System.out.println("Rotate("+getRotationTransformationAngle_Deg()+"): "+core_Xm()+","+core_Ym()+" -> "+result.core_Xm()+","+result.core_Ym());
-				if(result.core_Xm() != core_Xm() || result.core_Ym() != core_Ym()){
-					System.out.println("^---> Change: "+(result.core_Xm() - core_Xm()) +"   "+(result.core_Ym() - core_Ym()));
-				}
-			}
+//			if(getRotationTransformationAngle_Deg()!=0){
+//				System.out.println("Rotate("+getRotationTransformationAngle_Deg()+"): "+core_Xm()+","+core_Ym()+" -> "+result.core_Xm()+","+result.core_Ym());
+//				if(result.core_Xm() != core_Xm() || result.core_Ym() != core_Ym()){
+//					System.out.println("^---> Change: "+(result.core_Xm() - core_Xm()) +"   "+(result.core_Ym() - core_Ym()));
+//				}
+//			}
 			return result;
 		}
 
