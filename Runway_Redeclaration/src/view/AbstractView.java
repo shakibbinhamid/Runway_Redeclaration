@@ -1,18 +1,34 @@
 package view;
 
 import java.awt.BasicStroke;
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSlider;
+import javax.swing.JViewport;
+import javax.swing.SwingUtilities;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import coreInterfaces.AirfieldInterface;
 import coreInterfaces.DeclaredRunwayInterface;
@@ -32,7 +48,7 @@ import coreInterfaces.DeclaredRunwayInterface;
  * @author Stefan
  *
  */
-public abstract class AbstractView extends JPanel {
+public abstract class AbstractView extends JPanel implements ChangeListener{
 	/**
 	 * [X] Version 0: Nada Complete
 	 * [X] Version 1: Points 
@@ -71,17 +87,103 @@ public abstract class AbstractView extends JPanel {
 	public Color IDENTIFIER_COLOR = Color.BLACK;
 	public final static String IDENTIFIER_FONT = "verdana";
 	public final static int IDENTIFIER_STYLE = Font.BOLD;
+	
+	private JScrollPane scroll;
+	private JSlider slider ; 
+	private JLabel label;
+	
+	private static final int MIN_ZOOM = 80;
+	private static final int MAX_ZOOM = 120;
+	private static final int DEFAULT_ZOOM = 100;
 
-	public AbstractView (AirfieldInterface airfield, DeclaredRunwayInterface runway){
+	public AbstractView (AirfieldInterface airfield, DeclaredRunwayInterface runway, String title){
 		setAirfield(airfield);
 		setRunway(runway);
 
-		this.IMAGE_WIDTH = this.IMAGE_HEIGHT = 10;
+		this.setPreferredSize(new Dimension(300 , 200));
+		
+		this.IMAGE_WIDTH = 10;
+		this.IMAGE_HEIGHT = 10;
+		
 		this.image = new BufferedImage(IMAGE_WIDTH, IMAGE_HEIGHT, BufferedImage.TYPE_3BYTE_BGR);
 
 		this.transformingAngle = (short) 0;
 		this.sameScaleAsX = false;
+		
+		this.setBorder(BorderFactory.createTitledBorder(title));
+		init();
 	}
+	
+	private void init(){
+		
+		this.setLayout(new BorderLayout());
+		
+		slider = new JSlider(JSlider.VERTICAL, MIN_ZOOM, MAX_ZOOM, DEFAULT_ZOOM);  
+		slider.setMajorTickSpacing(20);  
+		slider.setMinorTickSpacing(5);  
+		slider.setPaintTicks(true);  
+		slider.setPaintLabels(true);  
+		slider.addChangeListener(this);
+		this.add(slider, BorderLayout.EAST);
+		
+		label = new JLabel();
+		
+		scroll = new JScrollPane(label);
+		scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+		scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		this.add(scroll, BorderLayout.CENTER);
+		
+		JViewport vport = scroll.getViewport();
+		MouseAdapter ma = new HandScrollListener();
+		vport.addMouseMotionListener(ma);
+		vport.addMouseListener(ma);
+		
+	}
+	
+	public void stateChanged(ChangeEvent e) {  
+		repaint();
+	}  
+
+	private BufferedImage getScaledImage(double scale) {  
+		int w = (int)(scale*image.getWidth());  
+		int h = (int)(scale*image.getHeight());  
+		BufferedImage bi = new BufferedImage(w, h, image.getType());  
+		Graphics2D g2 = bi.createGraphics();  
+		g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION,  
+				RenderingHints.VALUE_INTERPOLATION_BICUBIC);  
+		AffineTransform at = AffineTransform.getScaleInstance(scale, scale);  
+		g2.drawRenderedImage(image, at);  
+		g2.dispose();  
+		return bi;  
+	}  
+	
+	private static class HandScrollListener extends MouseAdapter {
+
+		private final java.awt.Point pp = new java.awt.Point();
+
+		@Override 
+		public void mouseDragged(MouseEvent e) {
+
+			JViewport vport = (JViewport)e.getSource();
+			JComponent label = (JComponent)vport.getView();
+
+			java.awt.Point cp = e.getPoint();
+			java.awt.Point vp = vport.getViewPosition();
+
+			vp.translate(pp.x-cp.x, pp.y-cp.y);
+			label.scrollRectToVisible(new Rectangle(vp, vport.getSize()));
+
+			pp.setLocation(cp);
+
+		}
+		@Override 
+		public void mousePressed(MouseEvent e) {
+
+			pp.setLocation(e.getPoint());
+
+		}
+	}
+
 
 	//======[ Core Objects ]=====================================================================================================
 	public AirfieldInterface getAirfield(){ return this.airfield; }
@@ -108,8 +210,8 @@ public abstract class AbstractView extends JPanel {
 	/** Ensures the IMAGE_*dimensions* are correct for this round of painting,
 	 *  Resets the image to a blank canvas making it easier to use */
 	private void rescaleImageSize(){
-		this.IMAGE_WIDTH = this.getWidth() - 40;
-		this.IMAGE_HEIGHT = this.getHeight() - 40;
+		this.IMAGE_WIDTH = label.getWidth();
+		this.IMAGE_HEIGHT = label.getHeight();
 		this.image = new BufferedImage(IMAGE_WIDTH, IMAGE_HEIGHT, BufferedImage.TYPE_3BYTE_BGR);
 	}
 
@@ -180,14 +282,16 @@ public abstract class AbstractView extends JPanel {
 	@Override
 	public final void paint(Graphics g){
 		Graphics2D g2 = (Graphics2D) g.create();
-		super.paint(g2);
+
 		rescaleImageSize();
-
 		drawImage(getImage().createGraphics());
-
-
-		/* @End */
-		g2.drawImage(image, 20, 25, null);
+		
+		int value = slider.getValue();
+		double scale = value / 100.0;
+		image = getScaledImage(scale);
+		label.setIcon(new ImageIcon(image));
+		
+		super.paint(g2);
 	}
 
 	protected abstract void drawImage(Graphics2D g);

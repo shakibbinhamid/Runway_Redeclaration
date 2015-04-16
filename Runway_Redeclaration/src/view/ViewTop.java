@@ -39,8 +39,8 @@ public class ViewTop extends AbstractView{
 	public static final Color CLEARED_BLUE_COLOR = new Color(0,128,255);
 
 
-	public ViewTop(AirfieldInterface airfield, DeclaredRunwayInterface runway) {
-		super(airfield, runway);
+	public ViewTop(AirfieldInterface airfield, DeclaredRunwayInterface runway, String title) {
+		super(airfield, runway, title);
 
 		super.sameScaleAsX = true;
 
@@ -60,7 +60,7 @@ public class ViewTop extends AbstractView{
 
 			System.out.println(air);
 
-			f.setContentPane(new ViewTop(air, runway));
+			f.setContentPane(new ViewTop(air, runway, "Top"));
 
 			f.pack();
 			f.setVisible(true);

@@ -1,6 +1,5 @@
 package view;
 
-import javax.swing.BorderFactory;
 import javax.swing.JSplitPane;
 
 import coreInterfaces.AirfieldInterface;
@@ -10,6 +9,7 @@ public class ViewPanel extends JSplitPane{
 	
 	private AirfieldInterface field;
 	private DeclaredRunwayInterface runway;
+	
 	private ViewTop view1;
 	private ViewSide view2;
 
@@ -18,8 +18,10 @@ public class ViewPanel extends JSplitPane{
 		
 		this.field = field;
 		this.runway = runway;
-		view1 = new ViewTop(field, runway);
-		view2 = new ViewSide(field, runway);
+		
+		view1 = new ViewTop(field, runway, "Top");
+		view2 = new ViewSide(field, runway, "Bottom");
+		
 		init();
 	}
 	
@@ -29,9 +31,6 @@ public class ViewPanel extends JSplitPane{
 		
 		setResizeWeight(0.5);
 		setOneTouchExpandable(true);
-
-		view1.setBorder(BorderFactory.createTitledBorder("Top View"));
-		view2.setBorder(BorderFactory.createTitledBorder("Side View"));
 	}
 	
 	public void updateView(DeclaredRunwayInterface run){

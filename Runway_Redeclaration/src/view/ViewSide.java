@@ -35,8 +35,8 @@ public class ViewSide extends AbstractView{
 	public final static Color OBSTACLE_RADIUS_COLOR = Color.WHITE;
 	public final static Color SKY_COLOUR = new Color(128,255,255);//69,182,195);
 
-	public ViewSide(AirfieldInterface airfield, DeclaredRunwayInterface runway){
-		super(airfield, runway);
+	public ViewSide(AirfieldInterface airfield, DeclaredRunwayInterface runway, String title){
+		super(airfield, runway, title);
 	}
 
 	//======[ Drawing ]=====================================================================================================
