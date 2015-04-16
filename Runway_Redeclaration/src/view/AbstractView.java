@@ -118,9 +118,18 @@ public abstract class AbstractView extends JPanel implements ChangeListener{
 	private void init(){
 
 		this.setLayout(new BorderLayout());
-		zoomIn = new JButton("+");
-		zoomRefresh = new JButton("*");
-		zoomOut = new JButton("-");
+		
+		zoomIn = new JButton();
+		zoomRefresh = new JButton();
+		zoomOut = new JButton();
+		
+		try {
+			zoomIn.setIcon(new ImageIcon(ImageIO.read(AbstractView.class.getResource("/zoomin.png"))));
+			zoomOut.setIcon(new ImageIcon(ImageIO.read(AbstractView.class.getResource("/zoomout.png"))));
+			zoomRefresh.setIcon(new ImageIcon(ImageIO.read(AbstractView.class.getResource("/refresh.png"))));
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
 
 		JPanel zoomZoom = new JPanel();
 		zoomZoom.setLayout(new GridLayout(3,1));
@@ -243,24 +252,10 @@ public abstract class AbstractView extends JPanel implements ChangeListener{
 	/** Ensures the IMAGE_*dimensions* are correct for this round of painting,
 	 *  Resets the image to a blank canvas making it easier to use */
 	private void rescaleImageSize(){
-		System.out.println((label.getWidth()==this.IMAGE_WIDTH)+"  L"+label.getWidth()+"   I"+this.IMAGE_WIDTH);
-		System.out.println((label.getHeight() == this.IMAGE_HEIGHT)+"   L"+label.getHeight()+"   I"+ this.IMAGE_HEIGHT);
-		
-		if(label.getWidth()==this.IMAGE_WIDTH 
-				&&
-		   label.getHeight() == this.IMAGE_HEIGHT){
-			
-			System.out.println("^No scale\n");
-			
-		}else{
-			
-			System.out.println("^Rescaling\n");
-			this.IMAGE_WIDTH = scroll.getWidth();
-			this.IMAGE_HEIGHT = scroll.getHeight();
-			this.image = new BufferedImage(IMAGE_WIDTH, IMAGE_HEIGHT, BufferedImage.TYPE_3BYTE_BGR);
-			drawImage(getImage().createGraphics());
-
-		}
+		this.IMAGE_WIDTH = scroll.getWidth()-10;
+		this.IMAGE_HEIGHT = scroll.getHeight()-10;
+		this.image = new BufferedImage(IMAGE_WIDTH, IMAGE_HEIGHT, BufferedImage.TYPE_3BYTE_BGR);
+		drawImage(getImage().createGraphics());
 	}
 
 	protected static double pixelsToMeters(int yourPixels, double meters, int pixels){
@@ -338,7 +333,6 @@ public abstract class AbstractView extends JPanel implements ChangeListener{
 	}
 	public void zoom(double extraScale){
 		scale += extraScale;
-		System.out.println(scale);
 		repaint();
 		revalidate();
 	}
