@@ -82,6 +82,7 @@ public abstract class AbstractView extends JPanel implements ChangeListener{
 
 	public int PIXEL_BUFFER = 15;
 	public double DIMENSION_GAP = 0;
+	public double INITIAL_BUFFER = 0;
 
 
 	public final static Font DIMENSION_FONT = new Font("Dialog", Font.PLAIN, 12);
@@ -540,8 +541,8 @@ public abstract class AbstractView extends JPanel implements ChangeListener{
 		double endX = startX+s()*length;
 		int pixelOffset = heightLevel*PIXEL_BUFFER;
 
-		Point start = new Point(startX,basicHeight).offsetYByPixels(pixelOffset);
-		Point end = new Point(endX,basicHeight).offsetYByPixels(pixelOffset);
+		Point start = new Point(startX,basicHeight).offsetYByPixels(pixelOffset).offsetYByM(-INITIAL_BUFFER);
+		Point end = new Point(endX,basicHeight).offsetYByPixels(pixelOffset).offsetYByM(-INITIAL_BUFFER);
 
 		//These points make the gap for the text
 		Point midStart = start.offsetXByM(s()*length/2).offsetXByPixels(s()*-3*titleLen/4);
@@ -552,8 +553,8 @@ public abstract class AbstractView extends JPanel implements ChangeListener{
 		this.drawLine_inM(g2, end, midEnd);
 
 		//Verticals
-		this.drawLine_inM(g2, start.offsetYByPixels(0), start.offsetYByPixels(-pixelOffset-Ym_to_pixels(DIMENSION_GAP)));
-		this.drawLine_inM(g2, end.offsetYByPixels(0), end.offsetYByPixels(-pixelOffset-Ym_to_pixels(DIMENSION_GAP)));
+		this.drawLine_inM(g2, start.offsetYByPixels(0), start.offsetYByPixels(-pixelOffset-Ym_to_pixels(DIMENSION_GAP-INITIAL_BUFFER)));
+		this.drawLine_inM(g2, end.offsetYByPixels(0), end.offsetYByPixels(-pixelOffset-Ym_to_pixels(DIMENSION_GAP-INITIAL_BUFFER)));
 
 
 		//Placing the text on the left of the two mid points

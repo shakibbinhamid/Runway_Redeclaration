@@ -306,9 +306,11 @@ public class ViewTop extends AbstractView{
 
 	private void drawDistances(Graphics2D g) {
 		Graphics2D g2 = (Graphics2D) g.create();
-		int level = 2;
-		super.PIXEL_BUFFER = Ym_to_pixels(largestHeight()/11);
+		int level = 1;
 		super.DIMENSION_GAP = getAirfield().getRunwayGirth()/2;
+		super.INITIAL_BUFFER = getAirfield().getLongSpacer();
+		super.PIXEL_BUFFER = Ym_to_pixels((largestHeight()-INITIAL_BUFFER)/11);
+
 		//TODO allign to TORA
 		drawDistance(g2, "LDA", getRunway().getLDA(), getRunway().getDisplacedThreshold(), -level++, vertToRunway());
 		drawDistance(g2, "TORA", getRunway().getTORA(), getRunway().getStartOfRoll(), -level++, vertToRunway());
