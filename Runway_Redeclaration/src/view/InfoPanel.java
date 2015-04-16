@@ -1,8 +1,6 @@
 package view;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 
@@ -11,7 +9,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
 
 import coreInterfaces.AirfieldInterface;
 import coreInterfaces.DeclaredRunwayInterface;
@@ -161,8 +158,8 @@ public class InfoPanel extends JPanel{
 		clear = new String[]{"Clearway",getRunwayPara(def, "clear"), getRunwayPara(run, "clear")};
 		blast= new String[]{"Blast Allowance", getRunwayPara(def, "blast"), getRunwayPara(run, "blast")};
 		resa = new String[]{"RESA", getRunwayPara(def, "resa"), getRunwayPara(run, "resa")};
-		angleA = new String[]{"Ascent Angle", getRunwayPara(def, "ascent")+ DEGREE, getRunwayPara(run, "ascent") + DEGREE};
-		angleD = new String[]{"Descent Angle", getRunwayPara(def, "descent")+ DEGREE, getRunwayPara(run, "descent") + DEGREE};
+		angleA = new String[]{"Ascent Angle", "1:"+getRunwayPara(def, "ascent"), "1:"+getRunwayPara(run, "ascent")};
+		angleD = new String[]{"Descent Angle", "1:"+getRunwayPara(def, "descent"), "1:"+getRunwayPara(run, "descent")};
 
 		updateAdvancedTable(new String[][]{stop, clear, blast, resa, angleA, angleD});
 	}
@@ -246,23 +243,6 @@ public class InfoPanel extends JPanel{
 				tableModel.addColumn(columnNames[i]);
 			}
 			table = new JTable(tableModel);
-			
-//			table = new JTable(tableModel){
-//				public Component prepareRenderer(TableCellRenderer renderer, int row, int column)
-//				{
-//					Component c = super.prepareRenderer(renderer, row, column);
-//
-//					//  Color row based on a cell value
-//						c.setBackground(getBackground());
-//						int modelRow = convertRowIndexToModel(row);
-//						String type = (String)getModel().getValueAt(modelRow, 0);
-//						if ("TORA".equals(type)) c.setBackground(Color.GREEN);
-//						if ("LDA".equals(type)) c.setBackground(Color.YELLOW);
-//
-//
-//					return c;
-//				}
-//			};
 
 			table.getTableHeader().setReorderingAllowed(false);
 

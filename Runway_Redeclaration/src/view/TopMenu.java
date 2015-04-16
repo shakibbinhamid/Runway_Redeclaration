@@ -3,6 +3,7 @@ package view;
 import io.CustomFilter;
 
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -41,15 +42,15 @@ public class TopMenu extends JMenuBar{
 	private static final Font MENU_FONT = new Font("verdana", Font.PLAIN, 12);
 	private static final Font ITEM_FONT = new Font("verdana", Font.PLAIN, 12);
 
-	private JMenu edit, help;
-	private JMenu create, load, save, remove;
+	private JMenu help;
+	private JMenu create, load, save, edit, remove;
 	
 	private JMenuItem createAirport, createRunway, createObstacle;
 	private JMenuItem loadAirport, loadObstacle;
 	private JMenuItem saveAirport, saveObstacle, saveTopView, saveAirportAs, saveObstacleAs;
 	
 	private JMenuItem exit;
-	private JMenuItem editRunway, editObstacle, removeObs;
+	private JMenuItem editRunway, editObstacle, removeObs, removeField;
 	private JMenuItem about, contact;
 	
 	static ImageIcon icreate, iload, isave, iedit, iview, icalc, iairport, iairfield, iobstacle, iabout, icontact, iexit, iremove;
@@ -69,6 +70,42 @@ public class TopMenu extends JMenuBar{
 		addMenus(new JMenu[] {create, load, save, edit, remove });//, help});
 		
 	}
+	
+	public void paint(Graphics g){
+		if (frame.getAirport() == null){
+			save.setEnabled(false);
+			edit.setEnabled(false);
+			remove.setEnabled(false);
+			
+			loadObstacle.setEnabled(false);
+			createRunway.setEnabled(false);
+			createObstacle.setEnabled(false);
+		}else{
+			save.setEnabled(true);
+			edit.setEnabled(true);
+			remove.setEnabled(true);
+			
+			loadObstacle.setEnabled(true);
+			createRunway.setEnabled(true);
+			createObstacle.setEnabled(true);
+			
+			if(frame.getTabbePanel().getActiveField().getPositionedObstacle() == null){
+				editObstacle.setEnabled(false);
+				
+				saveObstacle.setEnabled(false);
+				saveObstacleAs.setEnabled(false);
+				removeObs.setEnabled(false);
+			}else{
+				editObstacle.setEnabled(true);
+				
+				saveObstacle.setEnabled(true);
+				saveObstacleAs.setEnabled(true);
+				removeObs.setEnabled(true);
+			}
+		}
+		super.paint(g);
+	}
+	
 	
 	private void loadIcons(){	
 		//================================ICONS==============================================//
@@ -239,7 +276,28 @@ public class TopMenu extends JMenuBar{
 			
 		});
 		
-		remove = getMenu("Remove", iremove, new JMenuItem[]{removeObs});
+		removeField = getMenuItem("Remove Airfield", iairfield, SwingConstants.LEFT);
+		removeField.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(frame.getAirport().getAirfields().size() == 1)
+					JOptionPane.showMessageDialog(frame, "Must Have At Least One Airfield", "Cannot Delete Airfield", JOptionPane.ERROR_MESSAGE);
+				else{
+					AirfieldInterface field = frame.getTabbePanel().getActiveField();
+					String ObjButtons[] = {"Yes","No"};
+					int promptResult = JOptionPane.showOptionDialog(null, 
+							"Are you sure you want to remove "+field.getName()+" ?", "Remove Airfield", 
+							JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, 
+							ObjButtons,ObjButtons[1]);
+					if(promptResult==JOptionPane.YES_OPTION)
+						frame.removeField(field);
+				}
+			}
+			
+		});
+		
+		remove = getMenu("Remove", iremove, new JMenuItem[]{removeObs, removeField});
 	}
 	
 	private void createHelpMenu(){

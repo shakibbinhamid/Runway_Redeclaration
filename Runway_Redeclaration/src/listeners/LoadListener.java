@@ -2,25 +2,18 @@ package listeners;
 
 import io.FileSystem;
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 
-import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JFileChooser;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
+import view.FormObstacle;
+import view.TopFrame;
 import coreInterfaces.AirportInterface;
 import coreInterfaces.ObstacleInterface;
-import view.Tab;
-import view.TopFrame;
 
 public class LoadListener{
 
@@ -54,7 +47,7 @@ public class LoadListener{
 					JOptionPane.showMessageDialog(null, "You cannot load an obstacle before loading an airport.", "Error",JOptionPane.ERROR_MESSAGE);
 				}
 				else{
-					new ObjectFrame(frame, "Object Location", true);
+					new FormLoadObstacle(frame);
 				}
 			}
 			else{
@@ -66,56 +59,39 @@ public class LoadListener{
 			}
 		}
 	}
-	class ObjectFrame extends JDialog{
-		JLabel directionLeft, directionRight;
-		JTextField distanceFromLeft, distanceFromRight;
-		JButton ok;
-		
-		ObjectFrame(TopFrame topFrame, String title, boolean modality){
-			super(topFrame, title, modality);
-			directionLeft = new JLabel("Please Enter the Distance from "+frame.getTabbePanel().getActiveField().getDefaultSmallAngledRunway().getIdentifier());
-			directionRight = new JLabel("Please Enter the Distances from "+frame.getTabbePanel().getActiveField().getDefaultLargeAngledRunway().getIdentifier());
-			distanceFromLeft = new JTextField();
-			distanceFromRight = new JTextField();
-			ok = new JButton("OK");
-			
-			JPanel top = new JPanel();
-			JPanel pane = new JPanel();
-			JPanel buttonPane = new JPanel();
-			
-			this.setContentPane(top);
-			top.setLayout(new BorderLayout ());
-			
-			top.add(pane, BorderLayout.CENTER);
-			top.add(buttonPane, BorderLayout.SOUTH);
-			
-			pane.setLayout(new GridLayout(2,2));
-			pane.add(directionLeft); pane.add(directionRight);
-			pane.add(distanceFromLeft); pane.add(distanceFromRight);
-			
-			buttonPane.add(ok);
-			
-			ok.addActionListener(new ActionListener(){
+	
+	class FormLoadObstacle extends FormObstacle{
+		private ObstacleInterface currentObstacle;
 
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					ObstacleInterface obs = fs.loadObs(chosen);
-					try{
-						frame.loadOrCreateObstacle(obs, ((Tab)frame.getTabbePanel().getSelectedComponent()).getField(), Double.parseDouble(distanceFromLeft.getText()), Double.parseDouble(distanceFromRight.getText()));
-					}catch(NumberFormatException nf){
-						JOptionPane.showMessageDialog(frame, "Enter a valid number for distances please!", "ERROR: Distance", JOptionPane.ERROR_MESSAGE);
-					}
-					dispose();
-				}
-			});
-			
-			setPreferredSize(new Dimension(500,120));
-			setLocation(frame.getLocation().x + frame.getWidth() / 4, frame.getLocation().y + frame.getHeight() / 4);
-			this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-			this.setResizable(false);
-			this.pack();
-			this.setVisible(true);
+		public FormLoadObstacle(TopFrame tf){
+			super(tf, "Load obstacle");
+			currentObstacle = fs.loadObs(chosen);
+			setInitialTextfields();
+			setPreferredSize(new Dimension(300,350));
+			button.setText("Load");
+			init();
 		}
-}
+		
+		public void setInitialTextfields(){
+			for(JTextField jtf : getTextFields()){
+				if(getTextFields().indexOf(jtf) == 0){
+					jtf.setText(currentObstacle.getName());
+				}
+				if(getTextFields().indexOf(jtf) == 1){
+					jtf.setText(String.valueOf(currentObstacle.getRadius()));
+				}
+				if(getTextFields().indexOf(jtf) == 2){
+					jtf.setText(String.valueOf(currentObstacle.getHeight()));
+				}
+				if(getTextFields().indexOf(jtf) == 3){
+					SwingUtilities.invokeLater(new Runnable() {
+					      public void run() {
+					        jtf.requestFocus();
+					      }
+					});
+				}
+			}
+		}
+	}
 }
 

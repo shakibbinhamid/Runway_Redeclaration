@@ -69,6 +69,7 @@ public interface AirportInterface {
 	 * e.g. "Heathrowe Airport"
 	 */
 	String getName();
-	
+
+	void removeAirfield(String fieldId) throws UnrecognisedAirfieldIntifierException;
 	
 }

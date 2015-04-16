@@ -13,7 +13,7 @@ import javax.swing.text.Document;
  * @author Shakib-Bin Hamid
  *
  */
-class SelfCheckingField extends JTextField{
+public class SelfCheckingField extends JTextField{
 	
 	private String regex;
 	
@@ -22,6 +22,10 @@ class SelfCheckingField extends JTextField{
 	public SelfCheckingField(String re){
 		regex = re;
 		this.getDocument().addDocumentListener(new MyDocumentListener());
+	}
+	
+	public String getRegex(){
+		return regex;
 	}
 	
 	private class MyDocumentListener implements DocumentListener {

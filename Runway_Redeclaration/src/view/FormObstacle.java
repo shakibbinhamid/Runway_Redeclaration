@@ -26,7 +26,7 @@ import exceptions.UnrecognisedAirfieldIntifierException;
  */
 public class FormObstacle extends FormGeneral {
 	TopFrame topFrame;
-	ArrayList<JTextField> textFields;
+	private ArrayList<JTextField> textFields;
 	
 	JLabel nameLabel;
 	JTextField nameTextBox;
@@ -83,12 +83,12 @@ public class FormObstacle extends FormGeneral {
 	}
 	
 	private void populateTextfields(){		
-		textFields = new ArrayList<JTextField>();
-		textFields.add(nameTextBox);
-		textFields.add(radiusTextBox);
-		textFields.add(heightTextBox);
-		textFields.add(distFromLeftTextBox);
-		textFields.add(distFromRightTextBox);
+		setTextFields(new ArrayList<JTextField>());
+		getTextFields().add(nameTextBox);
+		getTextFields().add(radiusTextBox);
+		getTextFields().add(heightTextBox);
+		getTextFields().add(distFromLeftTextBox);
+		getTextFields().add(distFromRightTextBox);
 	}
 	
 	private void populateAirfieldComboBox(){
@@ -150,6 +150,14 @@ public class FormObstacle extends FormGeneral {
 					}
 				}
 		});
+	}
+
+	public ArrayList<JTextField> getTextFields() {
+		return textFields;
+	}
+
+	public void setTextFields(ArrayList<JTextField> textFields) {
+		this.textFields = textFields;
 	}
 	
 }

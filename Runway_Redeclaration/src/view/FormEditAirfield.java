@@ -9,6 +9,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 
+import notification.Notification;
+import notification.NotificationPanel;
 import core.Airfield;
 import coreInterfaces.PositionedObstacleInterface;
 import exceptions.VariableDeclarationException;
@@ -124,7 +126,7 @@ public class FormEditAirfield extends FormAirfield{
 								f.addObstacle(o, o.distanceFromSmallEnd(), o.distanceFromLargeEnd());
 							}
 							topFrame.getTabbePanel().updateTab(f);
-
+							NotificationPanel.notifyIt(f.getName()+" Edited", "Current Values Are: \n\n", Notification.DEFAULT);
 							dispose();
 						} catch (NumberFormatException e) {
 							JOptionPane.showMessageDialog(null, e.getMessage(),

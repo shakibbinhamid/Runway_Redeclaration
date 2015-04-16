@@ -1,4 +1,8 @@
 package notification;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 /**
  * This is a backbone of a Notification
  * A Notification has a title, details.
@@ -21,7 +25,7 @@ public class Notification {
 	
 	public Notification(String title, String details, String type){
 		setTitle(title);
-		setDetails(details);
+		setDetails(new SimpleDateFormat("dd/MM/yy HH:mm:ss").format(Calendar.getInstance().getTime()) +"\n\n"+ details);
 		setType(type);
 	}
 	

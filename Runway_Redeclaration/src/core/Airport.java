@@ -3,6 +3,9 @@ package core;
 import java.util.ArrayList;
 import java.util.List;
 
+import notification.Notification;
+import notification.NotificationPanel;
+
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
@@ -85,10 +88,15 @@ public class Airport implements AirportInterface, Savable {
 		
 		}
 		this.airfields.add(newAirfield);
-//		NotificationPanel.notifyIt(newAirfield.getName() + " created", newAirfield.getName() + " added to "+ this.getName(), Notification.FILE);
-		
+		NotificationPanel.notifyIt(newAirfield.getName() + " created", newAirfield.getName() + " added to "+ this.getName() +"\n", Notification.FILE);
 	}
 	
+	@Override
+	public void removeAirfield(String fieldId) throws UnrecognisedAirfieldIntifierException{
+		AirfieldInterface field = getAirfield(fieldId);
+		this.airfields.remove(field);
+		NotificationPanel.notifyIt(field.getName()+" Removed", field.getName() + " Removed from "+getName(), Notification.FILE);
+	}
 	
 	public String toString(){
 		String out = getName()+": [";

@@ -54,8 +54,6 @@ public class Airfield implements AirfieldInterface, Savable {
 		setMediumSpacer (dimensions[4]);
 		setShortLength  (dimensions[5]);
 		setLongLength   (dimensions[6]);
-		//TODO Check these values against CAA stuff in INCREMENT 2
-
 		setBlastAllowance(BLAST_PROT_RADIUS);
 
 		this.obstacle = null;
@@ -337,7 +335,7 @@ public class Airfield implements AirfieldInterface, Savable {
 
 	@Override
 	public void removeObstacle() {
-		NotificationPanel.notifyIt(this.getPositionedObstacle().getName() + " Removed", this.getPositionedObstacle().getName() + " Removed From "+ this.getName(), Notification.FILE);
+		NotificationPanel.notifyIt(this.getPositionedObstacle().getName() + " Removed", this.getPositionedObstacle().getName() + " Removed From "+ this.getName(), Notification.DEFAULT);
 		this.obstacle = null;
 		try {
 			this.getSmallAngledRunway().resetToNoObstacle(getDefaultSmallAngledRunway());

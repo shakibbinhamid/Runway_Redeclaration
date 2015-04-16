@@ -28,8 +28,8 @@ public class FormAirfield extends FormGeneral{
 	}
 	
 	TopFrame topFrame;
-	ArrayList<JTextField> smallValueTextFields;
-	ArrayList<JTextField> bigValueTextFields;
+	ArrayList<SelfCheckingField> smallValueTextFields;
+	ArrayList<SelfCheckingField> bigValueTextFields;
 	
 	JPanel upperPanel;
 		JPanel textFieldsPanel;
@@ -37,20 +37,20 @@ public class FormAirfield extends FormGeneral{
 	JLabel smallValuesLabel;
 	JLabel largeValuesLabel;
 	
-	JTextField smallTORATextBox;
-	JTextField smallTODATextBox;
-	JTextField smallASDATextBox;
-	JTextField smallLDATextBox;
+	SelfCheckingField smallTORATextBox;
+	SelfCheckingField smallTODATextBox;
+	SelfCheckingField smallASDATextBox;
+	SelfCheckingField smallLDATextBox;
 	
 	JLabel toraLabel;
 	JLabel todaLabel;
 	JLabel asdaLabel;
 	JLabel ldaLabel;
 	
-	JTextField bigTORATextBox;
-	JTextField bigTODATextBox;
-	JTextField bigASDATextBox;
-	JTextField bigLDATextBox;
+	SelfCheckingField bigTORATextBox;
+	SelfCheckingField bigTODATextBox;
+	SelfCheckingField bigASDATextBox;
+	SelfCheckingField bigLDATextBox;
 	
 	public FormAirfield(TopFrame topFrame, String title) {
 		super(topFrame, title);
@@ -79,8 +79,8 @@ public class FormAirfield extends FormGeneral{
 		setTextFieldListeners(bigValueTextFields, jbsc);
 	}
 	
-	public void setTextFieldListeners(ArrayList<JTextField> textFields, DocumentListener docListener){
-		for(JTextField jtf : textFields){
+	public void setTextFieldListeners(ArrayList<SelfCheckingField> smallValueTextFields2, DocumentListener docListener){
+		for(JTextField jtf : smallValueTextFields2){
 			Document doc = jtf.getDocument();
 			doc.addDocumentListener(docListener);
 		}
@@ -88,8 +88,8 @@ public class FormAirfield extends FormGeneral{
 
 	
 	private void initialiseStuff(){
-		smallValueTextFields = new ArrayList<JTextField>(10);
-		bigValueTextFields = new ArrayList<JTextField>(10);
+		smallValueTextFields = new ArrayList<>(10);
+		bigValueTextFields = new ArrayList<>(10);
 		
 		upperPanel = new JPanel();
 		textFieldsPanel = new JPanel();
@@ -200,8 +200,9 @@ public class FormAirfield extends FormGeneral{
 
 			boolean enabled = true;
 			for (int i = 0; i < smallValueTextFields.size(); i++) {
-				if (smallValueTextFields.get(i).getText().isEmpty()
-						|| bigValueTextFields.get(i).getText().isEmpty()) {
+				SelfCheckingField f1 = smallValueTextFields.get(i);
+				SelfCheckingField f2 = bigValueTextFields.get(i);
+				if (!f1.getText().trim().matches(f1.getRegex()) || !f2.getText().trim().matches(f2.getRegex())){
 					enabled = false;
 					break;
 				}
