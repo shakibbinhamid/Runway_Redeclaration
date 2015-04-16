@@ -43,7 +43,7 @@ public class ViewTop extends AbstractView{
 		super(airfield, runway, title);
 
 		super.sameScaleAsX = true;
-
+		super.allowRotation = true;
 
 	}
 
@@ -116,7 +116,10 @@ public class ViewTop extends AbstractView{
 		if(getAirfield().hasObstacle())
 			drawObsacle(g2);
 
+		short previousAngle = getRotationTransformationAngle_Deg();
+		setRotationTransformationAngle_Deg((short)0);
 		drawScale(g2, new Point(0,largestHeight()).offsetXByPixels(10).offsetYByPixels(-10), 500d,false);
+		setRotationTransformationAngle_Deg(previousAngle);
 		
 		drawArrowAround(g2, new Point(runwayWidth()/2,4*largestHeight()/5), runwayWidth()/10, !getRunway().isSmallEnd(), Color.RED, MAROON_COLOUR);
 		int h = !getRunway().isSmallEnd()? -1 : 1;/* helper*/
@@ -238,7 +241,7 @@ public class ViewTop extends AbstractView{
 		
 		IDENTIFIER_COLOR = Color.WHITE;
 		double textSpace = g2.getFontMetrics().getHeight()*2;
-		drawIdentifiers(g2, vertToRunway(), startXL+zebraLength+6*textSpace, startXR-zebraLength-textSpace,true);
+		drawIdentifiers(g2, vertToRunway()-Ym_to_pixels(30), startXL+zebraLength+4*textSpace, startXR-zebraLength/2,true);
 	}
 
 	private void drawCentreLine(Graphics2D g) {
