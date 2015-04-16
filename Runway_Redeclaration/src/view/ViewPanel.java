@@ -44,4 +44,8 @@ public class ViewPanel extends JSplitPane{
 	public ViewTop getTopView(){
 		return view1;
 	}
+	
+	public ViewSide getSideView(){
+		return view2;
+	}
 }

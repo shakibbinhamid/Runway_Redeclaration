@@ -47,7 +47,7 @@ public class TopMenu extends JMenuBar{
 	
 	private JMenuItem createAirport, createRunway, createObstacle;
 	private JMenuItem loadAirport, loadObstacle;
-	private JMenuItem saveAirport, saveObstacle, saveTopView, saveAirportAs, saveObstacleAs;
+	private JMenuItem saveAirport, saveObstacle, saveTopView, saveSideView, saveAirportAs, saveObstacleAs;
 	
 	private JMenuItem exit;
 	private JMenuItem editRunway, editObstacle, removeObs, removeField;
@@ -97,6 +97,9 @@ public class TopMenu extends JMenuBar{
 					saveObstacle.setEnabled(false);
 					saveObstacleAs.setEnabled(false);
 					removeObs.setEnabled(false);
+					
+					saveTopView.setEnabled(true);
+					saveSideView.setEnabled(true);
 				}else{
 					editObstacle.setEnabled(true);
 
@@ -108,9 +111,12 @@ public class TopMenu extends JMenuBar{
 				edit.setEnabled(false);
 				remove.setEnabled(false);
 				
+				createObstacle.setEnabled(false);
+				loadObstacle.setEnabled(false);
 				saveObstacle.setEnabled(false);
 				saveObstacleAs.setEnabled(false);
 				saveTopView.setEnabled(false);
+				saveSideView.setEnabled(false);
 				
 				createRunway.setEnabled(true);
 			}
@@ -180,11 +186,12 @@ public class TopMenu extends JMenuBar{
 		saveAirport = getMenuItem("Save Airport", iairport, SwingConstants.LEFT);
 		saveObstacle = getMenuItem("Save Obstacle", iobstacle, SwingConstants.LEFT);
 		saveTopView = getMenuItem("Save Topview", iview, SwingConstants.LEFT);
+		saveSideView = getMenuItem("Save Sideview", iview, SwingConstants.LEFT);
 		
 		saveAirportAs = getMenuItem("Save Airport As", iairport, SwingConstants.LEFT);
 		saveObstacleAs = getMenuItem("Save Obstacle As", iobstacle, SwingConstants.LEFT);
 		
-		save = getMenu("Save", isave, new JMenuItem[]{saveAirport, saveObstacle, saveAirportAs, saveObstacleAs, saveTopView});
+		save = getMenu("Save", isave, new JMenuItem[]{saveAirport, saveObstacle, saveAirportAs, saveObstacleAs, saveTopView, saveSideView});
 		saveAirport.addActionListener(new SaveAirportListener(frame));
 		saveObstacle.addActionListener(new SaveObjectListener(frame));
 		saveAirportAs.addActionListener(new SaveAirportAsListener(frame));
@@ -211,6 +218,39 @@ public class TopMenu extends JMenuBar{
 							//Fix for Mac
 							if(filter == null) filter = new CustomFilter("JPG", ".jpg", "JPEG Files");
 							frame.getTabbePanel().getActiveTab().saveTopView(fileToSave.getAbsolutePath() + filter.getExt(), filter.getName());
+							JOptionPane.showMessageDialog(frame, "Saved Successfully at "+ fileToSave.getAbsolutePath(), "SAVING DONE", JOptionPane.INFORMATION_MESSAGE);
+						} catch (IOException e1) {
+							JOptionPane.showMessageDialog(frame, "Could not save!", "SAVING FAILED", JOptionPane.ERROR_MESSAGE);
+							e1.printStackTrace();
+						}
+					}
+				}else
+					JOptionPane.showMessageDialog(frame, "Nothing to save!", "SAVING FAILED", JOptionPane.ERROR_MESSAGE);
+			}
+		});
+		
+		saveSideView.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				if(frame.getAirport() != null){
+
+					JFileChooser fc = new JFileChooser();
+					fc.setDialogTitle("Save TopDown View");
+					
+					fc.setAcceptAllFileFilterUsed(false);
+					fc.setCurrentDirectory(new File("./"));
+					fc.addChoosableFileFilter(new CustomFilter("JPG", ".jpg", "JPEG Files"));
+					fc.addChoosableFileFilter(new CustomFilter("PNG", ".png", "PNG Files"));
+					int select = fc.showSaveDialog(frame);
+					if(select == JFileChooser.APPROVE_OPTION){
+						File fileToSave = fc.getSelectedFile();
+						try {
+							CustomFilter filter = (CustomFilter) fc.getFileFilter();
+							//Fix for Mac
+							if(filter == null) filter = new CustomFilter("JPG", ".jpg", "JPEG Files");
+							frame.getTabbePanel().getActiveTab().saveSideView(fileToSave.getAbsolutePath() + filter.getExt(), filter.getName());
 							JOptionPane.showMessageDialog(frame, "Saved Successfully at "+ fileToSave.getAbsolutePath(), "SAVING DONE", JOptionPane.INFORMATION_MESSAGE);
 						} catch (IOException e1) {
 							JOptionPane.showMessageDialog(frame, "Could not save!", "SAVING FAILED", JOptionPane.ERROR_MESSAGE);

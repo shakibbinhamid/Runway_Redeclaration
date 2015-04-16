@@ -82,6 +82,10 @@ public class Tab extends JPanel{
 		this.views.getTopView().save(fullpath, ext);
 	}
 	
+	public void saveSideView(String fullpath, String ext) throws IOException{
+		this.views.getSideView().save(fullpath, ext);
+	}
+	
 	/**
 	 * This is the method to call on a tab to switch between runways.
 	 * Note, obstacle will not be updated and will be removed

@@ -105,14 +105,21 @@ public class FormCreateAirfield extends FormAirfield {
 		}
 
 		public void change(DocumentEvent e) {
-			super.change(e);
-			
-			button.setEnabled(false);
-
-			if (angleTextBox.getText().trim().matches(angleTextBox.getRegex()) && !sideComboBox.getSelectedItem().equals(null) ){
-				System.out.println(sideComboBox.getSelectedItem());
-				button.setEnabled(true);
+			boolean enabled = true;
+			for (int i = 0; i < smallValueTextFields.size(); i++) {
+				SelfCheckingField f1 = smallValueTextFields.get(i);
+				SelfCheckingField f2 = bigValueTextFields.get(i);
+				if (!f1.getText().trim().matches(f1.getRegex()) || !f2.getText().trim().matches(f2.getRegex())){
+					enabled = false;
+					break;
+				}
 			}
+
+			if (!angleTextBox.getText().trim().matches(angleTextBox.getRegex())){
+				enabled = false;
+			}
+			
+			button.setEnabled(enabled);
 		}
 	}
 	
