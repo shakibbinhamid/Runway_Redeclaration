@@ -1,13 +1,18 @@
 package view;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import exceptions.VariableDeclarationException;
@@ -18,6 +23,9 @@ public class FormCreateAirfield extends FormAirfield {
 	JTextField angleTextBox;
 	JLabel sideLabel;
 	JComboBox<String> sideComboBox;	
+	
+	JPanel mainPanel;
+	JPanel helpImgPanel;
 
 	public FormCreateAirfield(TopFrame topFrame) {
 		super(topFrame, "Create Airfield");
@@ -28,11 +36,35 @@ public class FormCreateAirfield extends FormAirfield {
 		sideLabel = new JLabel("Choose the Side of the Runway:");
 		sideComboBox = new JComboBox<String>(sides);
 		
+		try {
+			addRightImage();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		angleLabel.setFont(FormAirfield.VER_PL);
 		sideLabel.setFont(FormAirfield.VER_PL);
 		
-		setPreferredSize(new Dimension(500,300));
+		setPreferredSize(new Dimension(1150,300));
 		init();
+	}
+	
+	protected void addRightImage() throws IOException{
+		mainPanel = new JPanel();
+		mainPanel.setLayout(new BorderLayout());
+		helpImgPanel = new JPanel();
+		
+		getContentPane().setLayout(new GridLayout(1,1));
+		mainPanel.add(centerPanel, BorderLayout.CENTER);
+		buttonPanel.add(button);
+		mainPanel.add(buttonPanel, BorderLayout.SOUTH);
+		getContentPane().add(mainPanel);
+		
+		JLabel picLabel = new JLabel(new ImageIcon(TopFrame.class.getResource("/Help.jpg")));
+		helpImgPanel.add(picLabel);
+		helpImgPanel.setBorder(BorderFactory.createTitledBorder("All controls and views are intuitive and clear, even to novice/untrained users."));
+		getContentPane().add(helpImgPanel);
 	}
 	
 	public void init(){
@@ -51,41 +83,7 @@ public class FormCreateAirfield extends FormAirfield {
 		this.setVisible(true);
 	}
 	
-//	public void setTextfieldsListener(final ArrayList<JTextField> textFields){
-//		for(final JTextField jtf : textFields){
-//			jtf.addFocusListener(new FocusListener() {
-//				Font newTextFieldFont=new Font(jtf.getFont().getName(),Font.ITALIC,jtf.getFont().getSize());
-//				public void focusLost(FocusEvent e) {
-//					if (jtf.getText().equals("")){
-//						//jtf.setFont(newTextFieldFont);
-//						if(textFields.indexOf(jtf) == 0){
-//							jtf.setText("TORA");
-//						}
-//						if(textFields.indexOf(jtf) == 2){
-//							jtf.setText("TODA");
-//						}
-//						if(textFields.indexOf(jtf) == 1){
-//							jtf.setText("ASDA");
-//						}
-//						if(textFields.indexOf(jtf) == 3){
-//							jtf.setText("LDA");
-//						}
-//					}
-//				}
-//				public void focusGained(FocusEvent e) {
-//					if (jtf.getText().equals("TORA")
-//							|| jtf.getText().equals("TODA")
-//							|| jtf.getText().equals("ASDA")
-//							|| jtf.getText().equals("LDA")) {
-//						jtf.setText("");
-//					}
-//				}
-//			});
-//		}
-//	}
-	
 	public void setButtonListener(){
-		
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				boolean okToAdd = false;
