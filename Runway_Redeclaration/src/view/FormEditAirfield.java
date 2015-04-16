@@ -75,6 +75,7 @@ public class FormEditAirfield extends FormAirfield{
 		upperPanel.add(largeValuesLabel);
 		
 		setButtonListener();
+		setButtonDeactivated();
 		button.setEnabled(true);
 		pack();
 		this.setResizable(false);

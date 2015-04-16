@@ -44,8 +44,7 @@ public class FormAirport extends FormGeneral {
 				}
 				else{
 					Airport airport = new Airport(name.getText());
-					dispose();
-					topFrame.loadOrCreateAirport(airport);	
+					dispose();	
 					FormCreateAirfield fa = new FormCreateAirfield(topFrame);
 					topFrame.loadOrCreateAirport(airport);					
 				}	

@@ -27,7 +27,7 @@ public class FormAirfield extends FormGeneral{
 		//FormObstacle fo = new FormObstacle(tf);
 	}
 	
-	TopFrame topFrame;
+	protected TopFrame topFrame;
 	ArrayList<SelfCheckingField> smallValueTextFields;
 	ArrayList<SelfCheckingField> bigValueTextFields;
 	
@@ -59,7 +59,6 @@ public class FormAirfield extends FormGeneral{
 		initialiseStuff();
 		setToolTips();
 		storeUserInput();
-		setButtonDeactivated();
 		setLayout();
 		//init();
 	}
@@ -71,8 +70,7 @@ public class FormAirfield extends FormGeneral{
 		this.setVisible(true);
 	}
 	
-	
-	private void setButtonDeactivated(){
+	protected void setButtonDeactivated(){
 		button.setEnabled(false);
 		JButtonStateController jbsc = new JButtonStateController(button);
 		setTextFieldListeners(smallValueTextFields, jbsc);

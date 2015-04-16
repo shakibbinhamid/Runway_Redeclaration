@@ -9,18 +9,24 @@ import java.io.IOException;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
+import view.FormAirfield.JButtonStateController;
+import core.Airfield;
+import core.DeclaredRunway;
 import exceptions.VariableDeclarationException;
 
 public class FormCreateAirfield extends FormAirfield {
 	
 	JLabel angleLabel;
-	JTextField angleTextBox;
+	SelfCheckingField angleTextBox;
 	JLabel sideLabel;
 	JComboBox<String> sideComboBox;	
 	
@@ -32,14 +38,13 @@ public class FormCreateAirfield extends FormAirfield {
 		//setHeaderLabels("Insert Left Starting Runway values", "Insert Right Starting Runway values");
 		String[] sides = {" ","L","R","C"};
 		angleLabel = new JLabel("Insert Airfield Angle to the North:");
-		angleTextBox = new JTextField();
+		angleTextBox = new SelfCheckingField(DeclaredRunway.ANGLE_REGEX);
 		sideLabel = new JLabel("Choose the Side of the Runway:");
 		sideComboBox = new JComboBox<String>(sides);
 		
 		try {
 			addRightImage();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -61,9 +66,9 @@ public class FormCreateAirfield extends FormAirfield {
 		mainPanel.add(buttonPanel, BorderLayout.SOUTH);
 		getContentPane().add(mainPanel);
 		
-		JLabel picLabel = new JLabel(new ImageIcon(TopFrame.class.getResource("/Help.jpg")));
+		JLabel picLabel = new JLabel(new ImageIcon(TopFrame.class.getResource("/Help.jpg")), JLabel.CENTER);
 		helpImgPanel.add(picLabel);
-		helpImgPanel.setBorder(BorderFactory.createTitledBorder("All controls and views are intuitive and clear, even to novice/untrained users."));
+		helpImgPanel.setBorder(BorderFactory.createTitledBorder("Example Airfield"));
 		getContentPane().add(helpImgPanel);
 	}
 	
@@ -78,9 +83,37 @@ public class FormCreateAirfield extends FormAirfield {
 		upperPanel.add(largeValuesLabel);
 		
 		setButtonListener();
+		setButtonDeactivated();
+		
 		pack();
+		this.setLocationRelativeTo(topFrame);
 		this.setResizable(false);
 		this.setVisible(true);
+	}
+	
+	protected void setButtonDeactivated(){
+		button.setEnabled(false);
+		JButtonStateController jbsc = new JButtonStateControllerExtra(button);
+		angleTextBox.getDocument().addDocumentListener(jbsc);
+		setTextFieldListeners(smallValueTextFields, jbsc);
+		setTextFieldListeners(bigValueTextFields, jbsc);
+	}
+	
+	class JButtonStateControllerExtra extends JButtonStateController {
+		JButtonStateControllerExtra(JButton button) {
+			super(button);
+		}
+
+		public void change(DocumentEvent e) {
+			super.change(e);
+			
+			button.setEnabled(false);
+
+			if (angleTextBox.getText().trim().matches(angleTextBox.getRegex()) && !sideComboBox.getSelectedItem().equals(null) ){
+				System.out.println(sideComboBox.getSelectedItem());
+				button.setEnabled(true);
+			}
+		}
 	}
 	
 	public void setButtonListener(){

@@ -85,22 +85,34 @@ public class TopMenu extends JMenuBar{
 			edit.setEnabled(true);
 			remove.setEnabled(true);
 			
-			loadObstacle.setEnabled(true);
-			createRunway.setEnabled(true);
-			createObstacle.setEnabled(true);
+			if(frame.getTabbePanel().getActiveField() != null){
 			
-			if(frame.getTabbePanel().getActiveField().getPositionedObstacle() == null){
-				editObstacle.setEnabled(false);
+				loadObstacle.setEnabled(true);
+				createRunway.setEnabled(true);
+				createObstacle.setEnabled(true);
+
+				if(frame.getTabbePanel().getActiveField().getPositionedObstacle() == null){
+					editObstacle.setEnabled(false);
+
+					saveObstacle.setEnabled(false);
+					saveObstacleAs.setEnabled(false);
+					removeObs.setEnabled(false);
+				}else{
+					editObstacle.setEnabled(true);
+
+					saveObstacle.setEnabled(true);
+					saveObstacleAs.setEnabled(true);
+					removeObs.setEnabled(true);
+				}
+			}else{
+				edit.setEnabled(false);
+				remove.setEnabled(false);
 				
 				saveObstacle.setEnabled(false);
 				saveObstacleAs.setEnabled(false);
-				removeObs.setEnabled(false);
-			}else{
-				editObstacle.setEnabled(true);
+				saveTopView.setEnabled(false);
 				
-				saveObstacle.setEnabled(true);
-				saveObstacleAs.setEnabled(true);
-				removeObs.setEnabled(true);
+				createRunway.setEnabled(true);
 			}
 		}
 		super.paint(g);
