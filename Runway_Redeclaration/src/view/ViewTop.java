@@ -24,10 +24,10 @@ public class ViewTop extends AbstractView{
 	 * [X] Version 0: Nada Complete
 	 * [X] Version 1: Points 
 	 * [X] Version 2: Rotate Points 
-	 * [ ] Version 3: Scale/Zoom 
-	 * [ ] Version 4: Pan by focus points 
+	 * [X] Version 3: Scale/Zoom 
+	 * [X] Version 4: Pan by focus points 
 	 */
-	private static final long serialVersionUID = 2L;
+	private static final long serialVersionUID = 4L;
 
 	public static final double SIDE_BUFFER_M = 60d;
 
@@ -40,10 +40,8 @@ public class ViewTop extends AbstractView{
 
 
 	public ViewTop(AirfieldInterface airfield, DeclaredRunwayInterface runway, String title) {
-		super(airfield, runway, title);
+		super(airfield, runway, title, true, true);
 
-		super.sameScaleAsX = true;
-		super.allowRotation = true;
 
 	}
 

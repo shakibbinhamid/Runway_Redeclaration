@@ -5,7 +5,6 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 
-import view.AbstractView.Point;
 import coreInterfaces.AirfieldInterface;
 import coreInterfaces.DeclaredRunwayInterface;
 
@@ -19,10 +18,10 @@ public class ViewSide extends AbstractView{
 	 * [X] Version 0: Nada Complete
 	 * [X] Version 1: Points 
 	 * [X] Version 2: Rotate Points 
-	 * [ ] Version 3: Scale/Zoom 
-	 * [ ] Version 4: Pan by focus points 
+	 * [X] Version 3: Scale/Zoom 
+	 * [X] Version 4: Pan by focus points 
 	 */
-	private static final long serialVersionUID = 2L;
+	private static final long serialVersionUID = 4L;
 
 
 
@@ -36,7 +35,7 @@ public class ViewSide extends AbstractView{
 	public final static Color SKY_COLOUR = new Color(128,255,255);//69,182,195);
 
 	public ViewSide(AirfieldInterface airfield, DeclaredRunwayInterface runway, String title){
-		super(airfield, runway, title);
+		super(airfield, runway, title,false,false);
 	}
 
 	//======[ Drawing ]=====================================================================================================
