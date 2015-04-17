@@ -24,10 +24,10 @@ public class ViewTop extends AbstractView{
 	 * [X] Version 0: Nada Complete
 	 * [X] Version 1: Points 
 	 * [X] Version 2: Rotate Points 
-	 * [ ] Version 3: Scale/Zoom 
-	 * [ ] Version 4: Pan by focus points 
+	 * [X] Version 3: Scale/Zoom 
+	 * [X] Version 4: Pan by focus points 
 	 */
-	private static final long serialVersionUID = 2L;
+	private static final long serialVersionUID = 4L;
 
 	public static final double SIDE_BUFFER_M = 60d;
 
@@ -40,10 +40,8 @@ public class ViewTop extends AbstractView{
 
 
 	public ViewTop(AirfieldInterface airfield, DeclaredRunwayInterface runway, String title) {
-		super(airfield, runway, title);
+		super(airfield, runway, title, true, true);
 
-		super.sameScaleAsX = true;
-		super.allowRotation = true;
 
 	}
 
@@ -306,9 +304,11 @@ public class ViewTop extends AbstractView{
 
 	private void drawDistances(Graphics2D g) {
 		Graphics2D g2 = (Graphics2D) g.create();
-		int level = 2;
-		super.PIXEL_BUFFER = Ym_to_pixels(largestHeight()/11);
+		int level = 1;
 		super.DIMENSION_GAP = getAirfield().getRunwayGirth()/2;
+		super.INITIAL_BUFFER = getAirfield().getLongSpacer();
+		super.PIXEL_BUFFER = Ym_to_pixels((largestHeight()-INITIAL_BUFFER)/11);
+
 		//TODO allign to TORA
 		drawDistance(g2, "LDA", getRunway().getLDA(), getRunway().getDisplacedThreshold(), -level++, vertToRunway());
 		drawDistance(g2, "TORA", getRunway().getTORA(), getRunway().getStartOfRoll(), -level++, vertToRunway());

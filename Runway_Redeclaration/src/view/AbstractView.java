@@ -48,6 +48,7 @@ import coreInterfaces.DeclaredRunwayInterface;
  * Using Points we can be sure of this!
  * 
  * @author Stefan
+ * @Editor Shakib Stefan
  *
  */
 public abstract class AbstractView extends JPanel implements ChangeListener{
@@ -82,6 +83,7 @@ public abstract class AbstractView extends JPanel implements ChangeListener{
 
 	public int PIXEL_BUFFER = 15;
 	public double DIMENSION_GAP = 0;
+	public double INITIAL_BUFFER = 0;
 
 
 	public final static Font DIMENSION_FONT = new Font("Dialog", Font.PLAIN, 12);
@@ -92,12 +94,12 @@ public abstract class AbstractView extends JPanel implements ChangeListener{
 
 	private JScrollPane scroll;
 	private JLabel label;
-	private JButton zoomIn, zoomOut, zoomRefresh;
+	private JButton zoomIn, zoomOut, zoomRefresh, rotateClockwise, rotateAnti;
 	protected boolean allowRotation;
 
 	private static final double SCALE_INCREMENT = 0.02;
 
-	public AbstractView (AirfieldInterface airfield, DeclaredRunwayInterface runway, String title){
+	public AbstractView (AirfieldInterface airfield, DeclaredRunwayInterface runway, String title, boolean equalScaling, boolean roatationEnabled){
 		setAirfield(airfield);
 		setRunway(runway);
 
@@ -105,13 +107,13 @@ public abstract class AbstractView extends JPanel implements ChangeListener{
 
 		this.IMAGE_WIDTH = 10;
 		this.IMAGE_HEIGHT = 10;
-
 		this.image = new BufferedImage(IMAGE_WIDTH, IMAGE_HEIGHT, BufferedImage.TYPE_3BYTE_BGR);
 
-		this.transformingAngle = (short) 0;
-		this.sameScaleAsX = false;
-		this.allowRotation = false;
 		this.scale = 1;
+		this.transformingAngle = (short) 0;
+
+		this.sameScaleAsX = equalScaling;
+		this.allowRotation = roatationEnabled;
 
 		this.setBorder(BorderFactory.createTitledBorder(title));
 		init();
@@ -124,19 +126,30 @@ public abstract class AbstractView extends JPanel implements ChangeListener{
 		zoomIn = new JButton();
 		zoomRefresh = new JButton();
 		zoomOut = new JButton();
+		rotateClockwise = new JButton("->");
+		rotateAnti = new JButton("<-");
 
 		try {
 			zoomIn.setIcon(new ImageIcon(ImageIO.read(AbstractView.class.getResource("/zoomin.png"))));
 			zoomOut.setIcon(new ImageIcon(ImageIO.read(AbstractView.class.getResource("/zoomout.png"))));
 			zoomRefresh.setIcon(new ImageIcon(ImageIO.read(AbstractView.class.getResource("/refresh.png"))));
+			
+			//TODO add icons
+//			rotateClockwise.setIcon(new ImageIcon());
+//			rotateAnti.setIcon(new ImageIcon());
+
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
 
 		JPanel zoomZoom = new JPanel();
-		zoomZoom.setLayout(new GridLayout(3,1));
+		zoomZoom.setLayout(new GridLayout(3,2));
 		zoomZoom.add(zoomIn);
+		if(allowRotation) {
+			zoomZoom.add(rotateClockwise);
+		}
 		zoomZoom.add(zoomRefresh);
+		if(allowRotation) zoomZoom.add(rotateAnti);
 		zoomZoom.add(zoomOut);
 		this.add(zoomZoom, BorderLayout.EAST);
 
@@ -149,8 +162,7 @@ public abstract class AbstractView extends JPanel implements ChangeListener{
 		zoomRefresh.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				setRotationTransformationAngle_Deg((short)(getRotationTransformationAngle_Deg()+10));
-				repaint();
+				resetZoom();
 			}
 		});
 		zoomOut.addActionListener(new ActionListener() {
@@ -159,7 +171,22 @@ public abstract class AbstractView extends JPanel implements ChangeListener{
 				zoomOut();
 			}
 		});
-
+		rotateClockwise.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				incrementRotation(true);
+			}
+		});
+		rotateAnti.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				incrementRotation(false);
+			}
+		});
+		
+		
+		
+		
 		label = new JLabel();
 		label.setHorizontalAlignment(JLabel.CENTER);
 		label.setVerticalAlignment(JLabel.CENTER);
@@ -178,28 +205,6 @@ public abstract class AbstractView extends JPanel implements ChangeListener{
 	@Override
 	public void stateChanged(ChangeEvent e) {  
 		repaint();
-	}  
-
-	private BufferedImage getScaledImage(double scale) {  
-		int w = (int)(scale*this.getImage().getWidth());  
-		int h = (int)(scale*this.getImage().getHeight());  
-
-		BufferedImage previous = new BufferedImage(IMAGE_WIDTH,IMAGE_HEIGHT, this.getImage().getType());  
-		drawImage(previous.createGraphics());
-
-		BufferedImage bi = new BufferedImage(w, h, this.getImage().getType());  
-		Graphics2D g2 = bi.createGraphics();  
-
-		g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION,  
-				RenderingHints.VALUE_INTERPOLATION_BICUBIC);  
-
-		AffineTransform at = AffineTransform.getScaleInstance(scale, scale);  
-		g2.drawRenderedImage(this.getImage(), at);  
-		g2.dispose();  
-
-		this.image = previous;
-
-		return bi;  
 	}  
 
 	/** Panning */
@@ -324,6 +329,18 @@ public abstract class AbstractView extends JPanel implements ChangeListener{
 		}
 		this.transformingAngle = (short) (rotation % 360); 
 	}
+	
+	protected static final boolean CLOCKWISE = true;
+	protected static final boolean ANTI_CLOCKWISE = false;
+	protected static final short ROTATION_INCREMENT = 10;
+	
+	protected void incrementRotation(boolean clockwise){
+		int m = clockwise? 1 : -1;
+		
+		setRotationTransformationAngle_Deg((short) (getRotationTransformationAngle_Deg()+m*ROTATION_INCREMENT));
+		repaint();
+		revalidate();
+	}
 
 
 	//===========================================================================================================================
@@ -344,6 +361,28 @@ public abstract class AbstractView extends JPanel implements ChangeListener{
 		repaint();
 		revalidate();
 	}
+	
+	private BufferedImage getScaledImage(double scale) {  
+		int w = (int)(scale*this.getImage().getWidth());  
+		int h = (int)(scale*this.getImage().getHeight());  
+
+		BufferedImage previous = new BufferedImage(IMAGE_WIDTH,IMAGE_HEIGHT, this.getImage().getType());  
+		drawImage(previous.createGraphics());
+
+		BufferedImage bi = new BufferedImage(w, h, this.getImage().getType());  
+		Graphics2D g2 = bi.createGraphics();  
+
+		g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION,  
+				RenderingHints.VALUE_INTERPOLATION_BICUBIC);  
+
+		AffineTransform at = AffineTransform.getScaleInstance(scale, scale);  
+		g2.drawRenderedImage(this.getImage(), at);  
+		g2.dispose();  
+
+		this.image = previous;
+
+		return bi;  
+	}  
 	//===========================================================================================================================
 
 
@@ -540,8 +579,8 @@ public abstract class AbstractView extends JPanel implements ChangeListener{
 		double endX = startX+s()*length;
 		int pixelOffset = heightLevel*PIXEL_BUFFER;
 
-		Point start = new Point(startX,basicHeight).offsetYByPixels(pixelOffset);
-		Point end = new Point(endX,basicHeight).offsetYByPixels(pixelOffset);
+		Point start = new Point(startX,basicHeight).offsetYByPixels(pixelOffset).offsetYByM(-INITIAL_BUFFER);
+		Point end = new Point(endX,basicHeight).offsetYByPixels(pixelOffset).offsetYByM(-INITIAL_BUFFER);
 
 		//These points make the gap for the text
 		Point midStart = start.offsetXByM(s()*length/2).offsetXByPixels(s()*-3*titleLen/4);
@@ -552,8 +591,8 @@ public abstract class AbstractView extends JPanel implements ChangeListener{
 		this.drawLine_inM(g2, end, midEnd);
 
 		//Verticals
-		this.drawLine_inM(g2, start.offsetYByPixels(0), start.offsetYByPixels(-pixelOffset-Ym_to_pixels(DIMENSION_GAP)));
-		this.drawLine_inM(g2, end.offsetYByPixels(0), end.offsetYByPixels(-pixelOffset-Ym_to_pixels(DIMENSION_GAP)));
+		this.drawLine_inM(g2, start.offsetYByPixels(0), start.offsetYByPixels(-pixelOffset-Ym_to_pixels(DIMENSION_GAP-INITIAL_BUFFER)));
+		this.drawLine_inM(g2, end.offsetYByPixels(0), end.offsetYByPixels(-pixelOffset-Ym_to_pixels(DIMENSION_GAP-INITIAL_BUFFER)));
 
 
 		//Placing the text on the left of the two mid points
