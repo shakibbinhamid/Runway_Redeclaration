@@ -88,7 +88,18 @@ public class Airport implements AirportInterface, Savable {
 		
 		}
 		this.airfields.add(newAirfield);
-		NotificationPanel.notifyIt(newAirfield.getName() + " created", newAirfield.getName() + " added to "+ this.getName() +"\n", Notification.FILE);
+	}
+	
+	@Override
+	public boolean replaceAirfield(AirfieldInterface replacer){
+		for(AirfieldInterface field: airfields){
+			if (field.getName().equals(replacer.getName())){
+				int index = airfields.indexOf(field);
+				airfields.set(index, replacer);
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	@Override

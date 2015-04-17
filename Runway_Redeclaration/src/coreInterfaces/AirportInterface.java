@@ -71,5 +71,7 @@ public interface AirportInterface {
 	String getName();
 
 	void removeAirfield(String fieldId) throws UnrecognisedAirfieldIntifierException;
+
+	boolean replaceAirfield(AirfieldInterface replacer);
 	
 }

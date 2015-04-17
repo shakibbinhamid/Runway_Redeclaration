@@ -13,6 +13,8 @@ import notification.Notification;
 import notification.NotificationPanel;
 import core.Airfield;
 import coreInterfaces.PositionedObstacleInterface;
+import exceptions.CannotMakeRunwayException;
+import exceptions.UnrecognisedAirfieldIntifierException;
 import exceptions.VariableDeclarationException;
 
 public class FormEditAirfield extends FormAirfield{
@@ -126,8 +128,16 @@ public class FormEditAirfield extends FormAirfield{
 								PositionedObstacleInterface o = currentAirfield.getPositionedObstacle();
 								f.addObstacle(o, o.distanceFromSmallEnd(), o.distanceFromLargeEnd());
 							}
-							topFrame.getTabbePanel().updateTab(f);
-							NotificationPanel.notifyIt(f.getName()+" Edited", "Current Values Are: \n\n", Notification.DEFAULT);
+							if(topFrame.getAirport().replaceAirfield(f)){
+								try {
+									topFrame.getTabbePanel().updateTab(topFrame.getAirport().getAirfield(f.getName()));
+								} catch (UnrecognisedAirfieldIntifierException e) {
+									e.printStackTrace();
+								}
+								NotificationPanel.notifyIt(f.getName()+" Edited", "Current Values Are: \n\n", Notification.DEFAULT);
+							}else{
+								JOptionPane.showMessageDialog(topFrame, "OOps! Something went wrong :(", "Runway Edit Failed", JOptionPane.ERROR_MESSAGE);
+							}
 							dispose();
 						} catch (NumberFormatException e) {
 							JOptionPane.showMessageDialog(null, e.getMessage(),
