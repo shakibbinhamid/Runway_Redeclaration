@@ -80,6 +80,8 @@ public abstract class AbstractView extends JPanel implements ChangeListener {
 	public static final Color CLEARWAY_COLOR = Color.YELLOW;
 	public static final Color STOPWAY_COLOR = Color.RED;
 	private static final Color PLANE_COLOUR = new Color(175,175,175);
+	public final static Color OBSTACLE_RADIUS_COLOR = Color.WHITE;
+	public final static Color SKY_COLOUR = new Color(128,255,255);//69,182,195);
 
 	//For Distances
 	public int PIXEL_BUFFER = 15;
@@ -97,23 +99,23 @@ public abstract class AbstractView extends JPanel implements ChangeListener {
 	private JLabel label;
 
 	private double zoomingFactor;
-	private static final double ZOOM_SCALE_INCREMENT = 0.02;
+	private static final double ZOOM_SCALE_INCREMENT = 0.06;
 
 	protected boolean allowRotation;
 
 	private int IMAGE_WIDTH, IMAGE_HEIGHT;
 	private boolean sameScaleAsX;
-	
+
 	private int toolSelected;
-	
+
 	private ToolBar toolbar;
-	
+
 	private static BufferedImage iselect, izoomIn, izoomOut, irotateClockwise, irotateAnti, izoomRefresh;
-	
+
 	private JToggleButton select, zoomIn, zoomOut;
-	
+
 	private JButton zoomRefresh, rotateClockwise, rotateAnti;
-	
+
 	public static final int SELECTION = 0;
 	public static final int ZOOM_IN = 1;
 	public static final int ZOOM_OUT = 2;
@@ -141,7 +143,7 @@ public abstract class AbstractView extends JPanel implements ChangeListener {
 
 	}
 
-	private void init(){
+	protected void init(){
 
 		this.setLayout(new BorderLayout());
 
@@ -151,7 +153,7 @@ public abstract class AbstractView extends JPanel implements ChangeListener {
 		irotateClockwise = readImage("/clock.png");
 		irotateAnti = readImage("/anticlock.png");
 		iselect = readImage("/pointer.png");
-		
+
 		select = new JToggleButton(new ImageIcon(iselect));
 		zoomIn = new JToggleButton(new ImageIcon(izoomIn));
 		zoomOut = new JToggleButton(new ImageIcon(izoomOut));
@@ -161,22 +163,23 @@ public abstract class AbstractView extends JPanel implements ChangeListener {
 		toolbar = new ToolBar(JToolBar.VERTICAL);
 		toolbar.setFloatable(true);
 		toolbar.setRollover(true);
-		
+
 		toolbar.addButtonGroup("ZOOMING_TOOLS", new ButtonGroup(), Arrays.asList(new JToggleButton[]{select, zoomIn, zoomOut}));
-		
+
 		toolbar.addSeparator();
-		
+
 		if(allowRotation){
 			toolbar.add(rotateClockwise);
 			toolbar.add(rotateAnti);
 		}
-		
+
 		zoomRefresh = new JButton(new ImageIcon(izoomRefresh));
-		
+		JToggleButton dontYouRotateBaby = new JToggleButton("R");
+
 		toolbar.add(zoomRefresh);
-		
+		toolbar.add(dontYouRotateBaby);
 		this.add(toolbar, BorderLayout.EAST);
-		
+
 		select.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -213,7 +216,19 @@ public abstract class AbstractView extends JPanel implements ChangeListener {
 				incrementRotation(false);
 			}
 		});
-		
+		dontYouRotateBaby.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent itemEvent) {
+				int state = itemEvent.getStateChange();
+				if (state == ItemEvent.SELECTED) {
+					setRotationToMatchRunway();
+				} else {
+					resetRotation();
+				}
+			}
+		});
+
+
 		zoomIn.addItemListener(new ChangeCursorListener(izoomIn));
 		zoomOut.addItemListener(new ChangeCursorListener(izoomOut));
 
@@ -232,7 +247,7 @@ public abstract class AbstractView extends JPanel implements ChangeListener {
 		//Allows MouseWheel zooming
 		ZoomController zC = new ZoomController();
 		this.runwayView.addMouseWheelListener(zC);
-		
+
 		runwayView.addMouseListener(new MouseListener() {
 			public void mouseReleased(MouseEvent e) {}
 			public void mousePressed(MouseEvent e) {}
@@ -243,10 +258,10 @@ public abstract class AbstractView extends JPanel implements ChangeListener {
 				case SELECTION:
 					break;
 				case ZOOM_IN:
-					zoomIn();
+					zoomIn(e.getX(),e.getY());
 					break;
 				case ZOOM_OUT:
-					zoomOut();
+					zoomOut(e.getX(),e.getY());
 					break;
 				}
 			}
@@ -254,9 +269,9 @@ public abstract class AbstractView extends JPanel implements ChangeListener {
 
 		this.add(runwayView,BorderLayout.CENTER);
 	}
-	
+
 	class ChangeCursorListener implements ItemListener{
-		
+
 		private BufferedImage image;
 
 		public ChangeCursorListener(BufferedImage image) {
@@ -274,17 +289,17 @@ public abstract class AbstractView extends JPanel implements ChangeListener {
 			}
 		}
 	}
-	
+
 	private void changeViewCursor(BufferedImage image){
 		Cursor cursor = createTransparentCursor(20,image);
 		runwayView.setCursor(cursor);
 	}
-	
+
 	public static synchronized Cursor createTransparentCursor(final int size, BufferedImage image ) {
-		final java.awt.Point hotSpot = new java.awt.Point( size / 2, size / 2 );
+		final java.awt.Point hotSpot = new java.awt.Point(0, 0);
 		return Toolkit.getDefaultToolkit().createCustomCursor( image, hotSpot, "Trans" );
 	}
-	
+
 	private static BufferedImage readImage(String path){
 		try {
 			return ImageIO.read(AbstractView.class.getResource(path));
@@ -293,12 +308,12 @@ public abstract class AbstractView extends JPanel implements ChangeListener {
 		}
 		return null;
 	}
-	
+
 	public int setTool(int tool){
 		this.toolSelected = tool;
 		return this.toolSelected;
 	}
-	
+
 	public int getSelectedTool(){
 		return this.toolSelected;
 	}
@@ -351,7 +366,7 @@ public abstract class AbstractView extends JPanel implements ChangeListener {
 	//======[ Scaling ]=====================================================================================================
 	/** Ensures the IMAGE_*dimensions* are correct for this round of painting,
 	 *  Resets the image to a blank canvas making it easier to use */
-	private void rescaleImageSize(){
+	protected void rescaleImageSize(){
 		this.IMAGE_WIDTH = getZOOMED_IMAGE_WIDTH();
 		this.IMAGE_HEIGHT = getZOOMED_IMAGE_HEIGHT();
 
@@ -438,6 +453,10 @@ public abstract class AbstractView extends JPanel implements ChangeListener {
 	public void resetRotation(){
 		setRotationTransformationAngle_Deg((short)0);
 	}
+
+	public void setRotationToMatchRunway(){
+		setRotationTransformationAngle_Deg((short)(90-getRunway().getAngle()));
+	}
 	//===========================================================================================================================
 
 	//======[ Zooming & Panning Methods ]================================================================================================
@@ -446,17 +465,29 @@ public abstract class AbstractView extends JPanel implements ChangeListener {
 		return this.zoomingFactor;
 	}
 	public void setZoomTo(double z){
-		if(z<0.5) return;
+		if(z<0.2) return;
+		System.out.println(z);
 		this.zoomingFactor = z;
 		repaintMe();
+	}
+
+	public void increaseZoomBy(double littleZoom, int pointerX, int pointerY){
+		int panX = pointerX - runwayView.getWidth()/2;
+		int panY = pointerY - runwayView.getHeight()/2;
+		java.awt.Point centrePoint = runwayView.getViewPosition();
+		centrePoint.translate(panX, panY);
+		getLabel().scrollRectToVisible(new Rectangle(centrePoint, runwayView.getSize()));
+
+		increaseZoomBy(littleZoom);
 	}
 	public void increaseZoomBy(double littleZoom){
 		int previousWidth = getImage().getWidth();
 		int previousHeight = getImage().getHeight();
-		
+
 		setZoomTo(this.zoomingFactor+littleZoom);
-		
-		moveViewportWithZoom(previousWidth,previousHeight);
+
+		//		moveViewportWithZoom(previousWidth,previousHeight);
+		repaint();
 	}
 	private void moveViewportWithZoom(int previousWidth, int previousHeight) {
 		java.awt.Point centrePoint = runwayView.getViewPosition();
@@ -473,10 +504,15 @@ public abstract class AbstractView extends JPanel implements ChangeListener {
 	public void zoomOut(){
 		increaseZoomBy(-ZOOM_SCALE_INCREMENT);
 	}
+	public void zoomIn(int pointerX, int pointerY){
+		increaseZoomBy(+ZOOM_SCALE_INCREMENT,pointerX, pointerY);
+	}
+	public void zoomOut(int pointerX, int pointerY){
+		increaseZoomBy(-ZOOM_SCALE_INCREMENT,pointerX, pointerY);
+	}
 	public void resetZoom(){
 		setZoomTo(1);
 	}
-
 
 	//----[ Listener Controllers ]---------------------------------------------------------------------
 	protected void repaintMe(){
@@ -484,14 +520,22 @@ public abstract class AbstractView extends JPanel implements ChangeListener {
 		revalidate();
 	}
 
-	class ZoomController implements MouseWheelListener{
+	class ZoomController extends MouseAdapter implements MouseWheelListener{
+		private final java.awt.Point pp = new java.awt.Point();
 		@Override
 		public void mouseWheelMoved(MouseWheelEvent e) {
 			int whellRotations = -e.getWheelRotation();
 			increaseZoomBy(whellRotations*0.1);
-		}
-	}
 
+			//			java.awt.Point cp = e.getPoint();
+			//			java.awt.Point vp = runwayView.getViewPosition();
+			//			vp.translate(cp.x-pp.x, cp.y-pp.y);
+			//			getLabel().scrollRectToVisible(new Rectangle(vp, runwayView.getSize()));
+			//
+			//			pp.setLocation(cp);
+		}
+
+	}
 	//===========================================================================================================================
 
 	//====[ Panning ]=================================================================================================================
@@ -542,7 +586,7 @@ public abstract class AbstractView extends JPanel implements ChangeListener {
 	@Override
 	public final void paintComponent(Graphics g){
 		Graphics2D g2 = (Graphics2D) g.create();
-		
+
 		rescaleImageSize();
 		drawImage(getImage().createGraphics());
 		label.setIcon(new ImageIcon(getImage()));
@@ -605,7 +649,7 @@ public abstract class AbstractView extends JPanel implements ChangeListener {
 	protected void drawString_inM(Graphics2D g, String text, Point topLeft){
 		Graphics2D g2 = (Graphics2D) g.create();
 
-		Point midLeft = topLeft.offsetYByPixels(0);//5*g2.getFontMetrics().getHeight()/16);
+		Point midLeft = topLeft.offsetYByPixels(5*g2.getFontMetrics().getHeight()/16);
 		Point midmid = midLeft.offsetXByPixels(g2.getFontMetrics().stringWidth(text)/2);
 		g2.translate(midmid.x_pix(), midmid.y_pix());
 		g2.rotate(getRotationTransformationAngle_Rad());
@@ -623,8 +667,8 @@ public abstract class AbstractView extends JPanel implements ChangeListener {
 		Point midmid = midLeft.offsetXByPixels(g2.getFontMetrics().stringWidth(text)/2);
 		g2.translate(midmid.x_pix(), midmid.y_pix());
 		g2.rotate(getRotationTransformationAngle_Rad()+rotation);
-//		int m = (rotation<0)? 1 : -1;
-//		g2.translate(m, 0);
+		//		int m = (rotation<0)? 1 : -1;
+		//		g2.translate(m, 0);
 
 		g2.drawString(text, -g2.getFontMetrics().stringWidth(text)/2, 0);
 	}
@@ -656,10 +700,10 @@ public abstract class AbstractView extends JPanel implements ChangeListener {
 		String rightNum = getAirfield().getLargeAngledRunway().getIdentifier().substring(0,2);
 		String rightSide = ""+getAirfield().getLargeAngledRunway().getSideLetter();
 
-		int fontSize = Xm_to_pixels(5*getAirfield().getRunwayGirth()/8)-4;
+		int fontSize = Xm_to_pixels(5*getAirfield().getRunwayGirth()/8)-2;
 		Font resized = new Font(IDENTIFIER_FONT,IDENTIFIER_STYLE,fontSize);
 		while(g2.getFontMetrics(resized).stringWidth(rightNum) > Xm_to_pixels(getAirfield().getRunwayGirth())){
-			fontSize--;
+			fontSize-=2;
 			resized = new Font(IDENTIFIER_FONT,IDENTIFIER_STYLE,fontSize);
 		}
 		g2.setFont(resized);
@@ -980,6 +1024,16 @@ public abstract class AbstractView extends JPanel implements ChangeListener {
 
 		@Override
 		public void paint(Graphics g){
+			int height = getHeight();
+			int startY = 0;
+			if(!sameScaleAsX){
+				startY = (int) (getHeight()*ViewSide.PERCENTAGE_OF_SKY);
+				height = (int) (getHeight()*(1-ViewSide.PERCENTAGE_OF_SKY));
+				g.setColor(SKY_COLOUR);
+				g.fillRect(0, 0, getWidth(), startY);
+			}
+			g.setColor(GRASS_COLOUR);
+			g.fillRect(0, startY, getWidth(), height);
 			super.paint(g);
 			Graphics2D g_prime = (Graphics2D) g.create();
 			paintOverlays(g_prime);

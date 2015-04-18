@@ -69,10 +69,11 @@ public class ViewTop extends AbstractView{
 		if(getAirfield().hasObstacle())
 			drawObsacle(g2);
 
-
-		drawArrowAround(g2, new Point(runwayWidth()/2,4*largestHeight()/5), runwayWidth()/10, !getRunway().isSmallEnd(), Color.RED, MAROON_COLOUR);
+		double distanceBetweenThem = 30d;
 		int h = !getRunway().isSmallEnd()? -1 : 1;/* helper*/
-		drawPlane(g2, runwayWidth()/21, new Point(runwayWidth()/2-h*runwayWidth()/20,4*largestHeight()/5), !getRunway().isSmallEnd());
+
+		drawArrowAround(g2, new Point(runwayWidth()/2+h*distanceBetweenThem,vertToRunway()+getAirfield().getLongSpacer()+2*runwayWidth()/21), runwayWidth()/10, !getRunway().isSmallEnd(), Color.RED, MAROON_COLOUR);
+		drawPlane(g2, runwayWidth()/21, new Point(runwayWidth()/2-h*runwayWidth()/20-h*distanceBetweenThem,vertToRunway()+getAirfield().getLongSpacer()+2*runwayWidth()/21), !getRunway().isSmallEnd());
 
 	}
 
@@ -256,10 +257,10 @@ public class ViewTop extends AbstractView{
 	private void drawDistances(Graphics2D g) {
 		Graphics2D g2 = (Graphics2D) g.create();
 		int level = 1;
-		super.PIXEL_BUFFER = Ym_to_pixels(largestHeight()/11);
 		super.DIMENSION_GAP = getAirfield().getRunwayGirth()/2;
-		super.INITIAL_BUFFER = getAirfield().getLongSpacer();
-		super.PIXEL_BUFFER = Ym_to_pixels((largestHeight()-INITIAL_BUFFER)/11);
+		super.INITIAL_BUFFER = getAirfield().getLongSpacer()+10;
+		super.PIXEL_BUFFER = Ym_to_pixels((vertToRunway()-INITIAL_BUFFER)/6);
+		super.PIXEL_BUFFER = Math.max(super.PIXEL_BUFFER, 12);
 		
 		//TODO allign to TORA
 		drawDistance(g2, "LDA", getRunway().getLDA(), getRunway().getDisplacedThreshold(), -level++, vertToRunway());

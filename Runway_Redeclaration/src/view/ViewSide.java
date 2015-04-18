@@ -24,11 +24,9 @@ public class ViewSide extends AbstractView{
 	private static final long serialVersionUID = 2L;
 
 	public static int HEIGHT_OF_RUNWAY = 1; /* in m */
-	public static double PERCENTAGE_OF_SKY = 0.5; /* in % */
+	public static final double PERCENTAGE_OF_SKY = 0.5; /* in % */
 	public static double PERCENTAGE_AIR_SPACER = 1.0; /* in % */
 	
-	public final static Color OBSTACLE_RADIUS_COLOR = Color.WHITE;
-	public final static Color SKY_COLOUR = new Color(128,255,255);//69,182,195);
 
 	public ViewSide(AirfieldInterface airfield, DeclaredRunwayInterface runway){
 		super(airfield, runway, "Side View", false, false);
