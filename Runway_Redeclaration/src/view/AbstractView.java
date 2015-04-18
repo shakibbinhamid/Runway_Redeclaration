@@ -15,19 +15,24 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JToggleButton;
+import javax.swing.JToolBar;
 import javax.swing.JViewport;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -94,10 +99,29 @@ public abstract class AbstractView extends JPanel implements ChangeListener{
 
 	private JScrollPane scroll;
 	private JLabel label;
-	private JButton zoomIn, zoomOut, zoomRefresh, rotateClockwise, rotateAnti;
+	
 	protected boolean allowRotation;
 
 	private static final double SCALE_INCREMENT = 0.02;
+	
+	//===============================  TOOLBAR   =====================================//
+	private int toolSelected;
+	
+	private ToolBar toolbar;
+	
+	private static BufferedImage iselect, izoomIn, izoomOut, irotateClockwise, irotateAnti, izoomRefresh;
+	
+	private JToggleButton select, zoomIn, zoomOut, rotateClockwise, rotateAnti;
+	
+	private JButton zoomRefresh;
+	
+	public static final int SELECTION = 0;
+	public static final int ZOOM_IN = 1;
+	public static final int ZOOM_OUT = 2;
+	public static final int ROTATE_CLOCKWISE = 3;
+	public static final int ROTATE_ANTI_CLOCKWISE = 4;
+	
+	//===============================  TOOLBAR   =====================================//
 
 	public AbstractView (AirfieldInterface airfield, DeclaredRunwayInterface runway, String title, boolean equalScaling, boolean roatationEnabled){
 		setAirfield(airfield);
@@ -118,45 +142,71 @@ public abstract class AbstractView extends JPanel implements ChangeListener{
 		this.setBorder(BorderFactory.createTitledBorder(title));
 		init();
 	}
+	
+	//===============================  TOOLBAR   =====================================//
+
+	private static BufferedImage readImage(String path){
+		try {
+			return ImageIO.read(AbstractView.class.getResource(path));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public int setTool(int tool){
+		this.toolSelected = tool;
+		return this.toolSelected;
+	}
+	
+	public int getSelectedTool(){
+		return this.toolSelected;
+	}
+	//===============================  TOOLBAR   =====================================//
+
 
 	private void init(){
 
 		this.setLayout(new BorderLayout());
 
-		zoomIn = new JButton();
-		zoomRefresh = new JButton();
-		zoomOut = new JButton();
-		rotateClockwise = new JButton("->");
-		rotateAnti = new JButton("<-");
+		//===============================  TOOLBAR   =====================================//
+		
+		izoomIn = readImage("/zoomin.gif");
+		izoomOut = readImage("/zoomout.gif");
+		izoomRefresh = readImage("/refresh.gif");
+		irotateClockwise = readImage("/clock.png");
+		irotateAnti = readImage("/anticlock.png");
+		iselect = readImage("/pointer.png");
+		
+		select = new JToggleButton(new ImageIcon(iselect));
+		zoomIn = new JToggleButton(new ImageIcon(izoomIn));
+		zoomOut = new JToggleButton(new ImageIcon(izoomOut));
+		rotateClockwise = new JToggleButton(new ImageIcon(irotateClockwise));
+		rotateAnti = new JToggleButton(new ImageIcon(irotateAnti));
 
-		try {
-			zoomIn.setIcon(new ImageIcon(ImageIO.read(AbstractView.class.getResource("/zoomin.png"))));
-			zoomOut.setIcon(new ImageIcon(ImageIO.read(AbstractView.class.getResource("/zoomout.png"))));
-			zoomRefresh.setIcon(new ImageIcon(ImageIO.read(AbstractView.class.getResource("/refresh.png"))));
-			
-			//TODO add icons
-//			rotateClockwise.setIcon(new ImageIcon());
-//			rotateAnti.setIcon(new ImageIcon());
-
-		} catch (IOException e1) {
-			e1.printStackTrace();
+		toolbar = new ToolBar(JToolBar.VERTICAL);
+		
+		if(allowRotation){
+			toolbar.addButtonGroup("ZOOMING_TOOLS", new ButtonGroup(), Arrays.asList(new JToggleButton[]{select, zoomIn, zoomOut, rotateClockwise, rotateAnti}));
+		}else{
+			toolbar.addButtonGroup("ZOOMING_TOOLS", new ButtonGroup(), Arrays.asList(new JToggleButton[]{select, zoomIn, zoomOut}));
 		}
-
-		JPanel zoomZoom = new JPanel();
-		zoomZoom.setLayout(new GridLayout(3,2));
-		zoomZoom.add(zoomIn);
-		if(allowRotation) {
-			zoomZoom.add(rotateClockwise);
-		}
-		zoomZoom.add(zoomRefresh);
-		if(allowRotation) zoomZoom.add(rotateAnti);
-		zoomZoom.add(zoomOut);
-		this.add(zoomZoom, BorderLayout.EAST);
+		
+		toolbar.setFloatable(true);
+		toolbar.setRollover(true);
+		
+		toolbar.addSeparator();
+		
+		zoomRefresh = new JButton(new ImageIcon(izoomRefresh));
+		
+		toolbar.add(zoomRefresh);
+		
+		this.add(toolbar, BorderLayout.EAST);
 
 		zoomIn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				zoomIn();
+				setTool(ZOOM_IN);
 			}
 		});
 		zoomRefresh.addActionListener(new ActionListener() {
@@ -168,23 +218,23 @@ public abstract class AbstractView extends JPanel implements ChangeListener{
 		zoomOut.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				zoomOut();
+				setTool(ZOOM_OUT);
 			}
 		});
 		rotateClockwise.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				incrementRotation(true);
+				setTool(ROTATE_CLOCKWISE);
 			}
 		});
 		rotateAnti.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				incrementRotation(false);
+				setTool(ROTATE_ANTI_CLOCKWISE);
 			}
 		});
 		
-		
+		//===============================  TOOLBAR   =====================================//
 		
 		
 		label = new JLabel();
@@ -200,6 +250,35 @@ public abstract class AbstractView extends JPanel implements ChangeListener{
 		MouseAdapter ma = new HandScrollListener();
 		vport.addMouseMotionListener(ma);
 		vport.addMouseListener(ma);
+		
+		
+		//===============================  TOOLBAR   =====================================//
+		vport.addMouseListener(new MouseListener() {
+			public void mouseReleased(MouseEvent e) {}
+			public void mousePressed(MouseEvent e) {}
+			public void mouseExited(MouseEvent e) {}
+			public void mouseEntered(MouseEvent e) {}
+			public void mouseClicked(MouseEvent e) {
+				switch(getSelectedTool()){
+				case SELECTION:
+					break;
+				case ZOOM_IN:
+					zoomIn();
+					break;
+				case ZOOM_OUT:
+					zoomOut();
+					break;
+				case ROTATE_CLOCKWISE:
+					incrementRotation(true);
+					break;
+				case ROTATE_ANTI_CLOCKWISE:
+					incrementRotation(true);
+					break;
+				}
+			}
+		});
+		
+		//===============================  TOOLBAR   =====================================//
 	}
 
 	@Override
