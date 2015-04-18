@@ -19,8 +19,8 @@ public class ViewPanel extends JSplitPane{
 		this.field = field;
 		this.runway = runway;
 		
-		view1 = new ViewTop(field, runway, "Top");
-		view2 = new ViewSide(field, runway, "Bottom");
+		view1 = new ViewTop(field, runway);
+		view2 = new ViewSide(field, runway);
 		
 		init();
 	}

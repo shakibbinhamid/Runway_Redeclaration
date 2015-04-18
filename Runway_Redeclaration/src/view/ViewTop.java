@@ -7,17 +7,9 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.util.Random;
 
-import javax.swing.JFrame;
-
-import core.Airport;
-import core.Obstacle;
 import core.PositionedObstacle;
 import coreInterfaces.AirfieldInterface;
-import coreInterfaces.AirportInterface;
 import coreInterfaces.DeclaredRunwayInterface;
-import exceptions.CannotMakeRunwayException;
-import exceptions.UnrecognisedAirfieldIntifierException;
-import exceptions.VariableDeclarationException;
 
 public class ViewTop extends AbstractView{
 	/**
@@ -25,11 +17,10 @@ public class ViewTop extends AbstractView{
 	 * [X] Version 1: Points 
 	 * [X] Version 2: Rotate Points 
 	 * [X] Version 3: Scale/Zoom 
-	 * [X] Version 4: Pan by focus points 
+	 * [/] Version 4: Pan by focus points 
 	 */
-	private static final long serialVersionUID = 4L;
+	private static final long serialVersionUID = 35L;
 
-	public static final double SIDE_BUFFER_M = 60d;
 
 	private static int DT_TO_BARCODE_LENGTH_RATIO_TO_TORA = 100;
 	private static int TORA_TO_DASH_RATIO = 100;
@@ -39,50 +30,14 @@ public class ViewTop extends AbstractView{
 	public static final Color CLEARED_BLUE_COLOR = new Color(0,128,255);
 
 
-	public ViewTop(AirfieldInterface airfield, DeclaredRunwayInterface runway, String title) {
-		super(airfield, runway, title, true, true);
-
-
+	public ViewTop(AirfieldInterface airfield, DeclaredRunwayInterface runway) {
+		super(airfield, runway, "Top View", true, true);
 	}
 
-	public static void main(String[] args){
-		try {
-			JFrame f = new JFrame("SideView Test");
-			AirportInterface port = new Airport("Jim International");
-			port.addNewAirfield(90, 'L', new double[] {3000,3100,3200,3000}, new double[] {3000,3000,3000,3000});
-
-			AirfieldInterface air = port.getAirfield(port.getAirfieldNames().get(0));
-			DeclaredRunwayInterface runway = air.getSmallAngledRunway();
-
-			air.addObstacle(new Obstacle("B69",100,13), 0, 3000);
-
-			System.out.println(air);
-
-			f.setContentPane(new ViewTop(air, runway, "Top"));
-
-			f.pack();
-			f.setVisible(true);
-			f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			f.setSize(600, 250);
-
-
-		} catch (CannotMakeRunwayException | VariableDeclarationException e) {
-		} catch (UnrecognisedAirfieldIntifierException e) {
-		}
-	}
-
-
-
-
-
-
-
-
-
-
-
-
-
+	protected double init_LEFT_SIDE_BUFFER_M(){ return 60d; }
+	protected double init_RIGHT_SIDE_BUFFER_M(){ return 60d; }
+	protected double init_TOP_SIDE_BUFFER_M(){ return 0d; }
+	protected double init_BOTTOM_SIDE_BUFFER_M(){ return 0d; }
 
 	//======[ Drawing ]=====================================================================================================
 	@Override
@@ -114,14 +69,11 @@ public class ViewTop extends AbstractView{
 		if(getAirfield().hasObstacle())
 			drawObsacle(g2);
 
-		short previousAngle = getRotationTransformationAngle_Deg();
-		setRotationTransformationAngle_Deg((short)0);
-		drawScale(g2, new Point(0,largestHeight()).offsetXByPixels(10).offsetYByPixels(-10), 500d,false);
-		setRotationTransformationAngle_Deg(previousAngle);
-		
+
 		drawArrowAround(g2, new Point(runwayWidth()/2,4*largestHeight()/5), runwayWidth()/10, !getRunway().isSmallEnd(), Color.RED, MAROON_COLOUR);
 		int h = !getRunway().isSmallEnd()? -1 : 1;/* helper*/
 		drawPlane(g2, runwayWidth()/21, new Point(runwayWidth()/2-h*runwayWidth()/20,4*largestHeight()/5), !getRunway().isSmallEnd());
+
 	}
 
 
@@ -138,8 +90,8 @@ public class ViewTop extends AbstractView{
 
 		//We draw in raw pixels so that the grass is unaffected by rotation
 		g2.setColor(GRASS_COLOUR);
-		g2.drawRect(0, 0, getIMAGE_WIDTH(), getIMAGE_HEIGHT());
-		g2.fillRect(0, 0, getIMAGE_WIDTH(), getIMAGE_HEIGHT());
+		g2.drawRect(0, 0, getImage().getWidth(), getImage().getHeight());
+		g2.fillRect(0, 0, getImage().getWidth(), getImage().getHeight());
 
 	}
 	/** Purple region */
@@ -236,10 +188,10 @@ public class ViewTop extends AbstractView{
 			super.drawLine_inM(g2, startLine, endLine);
 			startLine = startLine.offsetYByM(vertDrop);
 		}
-		
+
 		IDENTIFIER_COLOR = Color.WHITE;
 		double textSpace = g2.getFontMetrics().getHeight()*2;
-		drawIdentifiers(g2, vertToRunway()-Ym_to_pixels(30), startXL+zebraLength+4*textSpace, startXR-zebraLength/2,true);
+		drawIdentifiers(g2, vertToRunway()-1, startXL+zebraLength+6*textSpace, startXR-zebraLength-textSpace,true);
 	}
 
 	private void drawCentreLine(Graphics2D g) {
@@ -253,9 +205,9 @@ public class ViewTop extends AbstractView{
 			defTora =getAirfield().getDefaultLargeAngledRunway().getTORA();			
 		}
 
-		final float dash1[] = {Xm_to_pixels(defTora)/TORA_TO_DASH_RATIO};
+		final float dash1[] = {Xm_to_pixels(defTora)/TORA_TO_DASH_RATIO+1};
 		final BasicStroke dashed =
-				new BasicStroke(defGirthPix/25f,
+				new BasicStroke(defGirthPix/25f+0.0001f,
 						BasicStroke.CAP_BUTT,
 						BasicStroke.JOIN_MITER,
 						10.0f, dash1, 0.0f);
@@ -264,7 +216,7 @@ public class ViewTop extends AbstractView{
 		double dtToBar = defTora/DT_TO_BARCODE_LENGTH_RATIO_TO_TORA;
 		double zebras = defTora/TORA_TO_ZEBRA_CODE_RATIO;
 		int fontSize = Ym_to_pixels(3*getAirfield().getRunwayGirth()/4)-1;
-		double buffer = 30+Xpix_to_m(3*fontSize);
+		double buffer = 30+Xpix_to_m(4*fontSize);
 
 		double startX = leftOfRunway()+getAirfield().getDefaultSmallAngledRunway().getDisplacedThreshold()+zebras+dtToBar+buffer;
 		double endX = rightOfRunway()-(getAirfield().getDefaultLargeAngledRunway().getDisplacedThreshold()+zebras+dtToBar+buffer);
@@ -273,8 +225,8 @@ public class ViewTop extends AbstractView{
 
 		g2.setColor(Color.WHITE);
 		super.drawLine_inM(g2, start, end);
-
 	}
+
 	private void drawRunway(Graphics2D g) {
 		Graphics2D g2 = (Graphics2D) g.create();
 
@@ -301,20 +253,19 @@ public class ViewTop extends AbstractView{
 		super.drawLine_inM(g2, leftMarker, leftMarker.offsetYByM(getAirfield().getRunwayGirth()));
 		super.drawLine_inM(g2, rightMarker, rightMarker.offsetYByM(getAirfield().getRunwayGirth()));
 	}
-
 	private void drawDistances(Graphics2D g) {
 		Graphics2D g2 = (Graphics2D) g.create();
 		int level = 1;
+		super.PIXEL_BUFFER = Ym_to_pixels(largestHeight()/11);
 		super.DIMENSION_GAP = getAirfield().getRunwayGirth()/2;
 		super.INITIAL_BUFFER = getAirfield().getLongSpacer();
 		super.PIXEL_BUFFER = Ym_to_pixels((largestHeight()-INITIAL_BUFFER)/11);
-
+		
 		//TODO allign to TORA
 		drawDistance(g2, "LDA", getRunway().getLDA(), getRunway().getDisplacedThreshold(), -level++, vertToRunway());
 		drawDistance(g2, "TORA", getRunway().getTORA(), getRunway().getStartOfRoll(), -level++, vertToRunway());
 		drawDistance(g2, "ASDA", getRunway().getASDA(), getRunway().getStartOfRoll(), -level++, vertToRunway());
 		drawDistance(g2, "TODA", getRunway().getTODA(), getRunway().getStartOfRoll(), -level++, vertToRunway());
-
 	}
 	private void drawClearwayAndStopway(Graphics2D g) {
 		Graphics2D g2 = (Graphics2D) g.create();
@@ -349,8 +300,13 @@ public class ViewTop extends AbstractView{
 		if (obj==null) return;
 
 		double xPos;
-		xPos = leftOfRunway() + getAirfield().getDefaultSmallAngledRunway().getDisplacedThreshold()
-				+ obj.distanceFromSmallEnd();
+		if(getRunway().isSmallEnd()){
+			xPos = leftOfRunway() + getAirfield().getDefaultSmallAngledRunway().getDisplacedThreshold()
+					+ obj.distanceFromSmallEnd();
+		}else{
+			xPos = leftOfRunway() + getAirfield().getDefaultLargeAngledRunway().getDisplacedThreshold()
+					+ obj.distanceFromLargeEnd();
+		}
 
 		Point centre = new Point(xPos,vertToRunway());
 
@@ -424,12 +380,12 @@ public class ViewTop extends AbstractView{
 		}else{
 			defTODA = getAirfield().getDefaultLargeAngledRunway().getTODA();
 		}
-		return SIDE_BUFFER_M+getAirfield().getStripEnd()+defTODA+getAirfield().getStripEnd()+SIDE_BUFFER_M;
+		return getAirfield().getStripEnd()+defTODA+getAirfield().getStripEnd();
 	}
 
 	@Override
 	protected double largestHeight() {
-		return super.Ypix_to_m(super.getIMAGE_HEIGHT());
+		return super.Xpix_to_m(super.getSUB_IMAGE_HEIGHT());
 	}
 
 	@Override
@@ -441,19 +397,35 @@ public class ViewTop extends AbstractView{
 	@Override
 	protected double leftOfRunway() {
 		if(getRunway().isSmallEnd()){
-			return SIDE_BUFFER_M+getAirfield().getStripEnd();			
+			return getAirfield().getStripEnd();			
 		}else{
-			return runwayWidth()-SIDE_BUFFER_M-getAirfield().getStripEnd()-getAirfield().getDefaultLargeAngledRunway().getTORA();
+			return runwayWidth()-getAirfield().getStripEnd()-getAirfield().getDefaultLargeAngledRunway().getTORA();
 		}
 	}
 
 	@Override
 	protected double rightOfRunway(){
 		if(getRunway().isSmallEnd()){
-			return SIDE_BUFFER_M+getAirfield().getStripEnd()+getAirfield().getDefaultSmallAngledRunway().getTORA();			
+			return getAirfield().getStripEnd()+getAirfield().getDefaultSmallAngledRunway().getTORA();			
 		}else{
-			return runwayWidth()-SIDE_BUFFER_M-getAirfield().getStripEnd();
+			return runwayWidth()-getAirfield().getStripEnd();
 		}
+	}
+
+	@Override
+	protected int[] getScaleLocation() {
+		int bottomOfScreen = getSUB_IMAGE_HEIGHT();
+		return new int[]{10,bottomOfScreen-10};
+	}
+
+	@Override
+	protected boolean doesScalePointDown() {
+		return false;
+	}
+
+	@Override
+	protected double metresToScale() {
+		return 500d;
 	}
 
 }

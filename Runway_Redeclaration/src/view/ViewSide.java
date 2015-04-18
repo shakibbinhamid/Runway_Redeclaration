@@ -18,14 +18,10 @@ public class ViewSide extends AbstractView{
 	 * [X] Version 0: Nada Complete
 	 * [X] Version 1: Points 
 	 * [X] Version 2: Rotate Points 
-	 * [X] Version 3: Scale/Zoom 
-	 * [X] Version 4: Pan by focus points 
+	 * [ ] Version 3: Scale/Zoom 
+	 * [ ] Version 4: Pan by focus points 
 	 */
-	private static final long serialVersionUID = 4L;
-
-
-
-
+	private static final long serialVersionUID = 2L;
 
 	public static int HEIGHT_OF_RUNWAY = 1; /* in m */
 	public static double PERCENTAGE_OF_SKY = 0.5; /* in % */
@@ -34,9 +30,14 @@ public class ViewSide extends AbstractView{
 	public final static Color OBSTACLE_RADIUS_COLOR = Color.WHITE;
 	public final static Color SKY_COLOUR = new Color(128,255,255);//69,182,195);
 
-	public ViewSide(AirfieldInterface airfield, DeclaredRunwayInterface runway, String title){
-		super(airfield, runway, title,false,false);
+	public ViewSide(AirfieldInterface airfield, DeclaredRunwayInterface runway){
+		super(airfield, runway, "Side View", false, false);
 	}
+
+	protected double init_LEFT_SIDE_BUFFER_M(){ return 0d; }
+	protected double init_RIGHT_SIDE_BUFFER_M(){ return 0d; }
+	protected double init_TOP_SIDE_BUFFER_M(){ return 0d; }
+	protected double init_BOTTOM_SIDE_BUFFER_M(){ return 0d; }
 
 	//======[ Drawing ]=====================================================================================================
 	@Override
@@ -57,9 +58,6 @@ public class ViewSide extends AbstractView{
 		if(getAirfield().hasObstacle())
 			drawObsacle(g2);
 
-		double distance = 1000d;
-		drawScale(g2,new Point(runwayWidth()/2-distance/2,vertToRunway()/10),distance,true);
-		
 		drawThesholds(g2);
 		drawIdentifiers(g2,vertToRunway()/2,leftOfRunway(),rightOfRunway(),false);
 		drawFatArrow(g2);
@@ -72,16 +70,18 @@ public class ViewSide extends AbstractView{
 		Graphics2D g2 = (Graphics2D) g.create();
 
 		//The extra on each side in case of future panning and zooming
-		double width = getAirfield().getTotalWidth();
+		int topOfGrass, heightOfGrass, heightOfSky;
+		heightOfSky = topOfGrass = (int) (PERCENTAGE_OF_SKY * getImage().getHeight());
+		heightOfGrass = (int) ((1-PERCENTAGE_OF_SKY) * getImage().getHeight());
 
-		double topOfGrass = vertToRunway();
-		double heightOfGrass = (1-PERCENTAGE_OF_SKY) * largestHeight();
+		//We draw in raw pixels so that the grass is unaffected by rotation
+		g2.setColor(SKY_COLOUR);
+		g2.fillRect(0, 0, getImage().getWidth(), heightOfSky);
+		g2.drawRect(0, 0, getImage().getWidth(), heightOfSky);
 
 		g2.setColor(GRASS_COLOUR);
-		super.drawRectangle_inM(g2, new Point(0d, topOfGrass), width, topOfGrass+ heightOfGrass, GRASS_COLOUR);
-
-		g2.setColor(SKY_COLOUR);
-		super.drawRectangle_inM(g2, new Point(0d, 0d),width, topOfGrass, SKY_COLOUR);
+		g2.fillRect(0, topOfGrass, getImage().getWidth(), heightOfGrass);
+		g2.drawRect(0, topOfGrass, getImage().getWidth(), heightOfGrass);
 	}
 
 	/** Grey Strip */
@@ -224,7 +224,7 @@ public class ViewSide extends AbstractView{
 		//Ratio Text
 		Graphics2D g4 = (Graphics2D) g.create();
 		g4.setColor(DIMENSION_COLOR);
-		g4.setFont(DIMENSION_FONT);
+		g4.setFont(DISTANCE_FONT);
 
 		Point midDiagonal = new Point(locOfObs+o*s()*ALS/2, vertToRunway()-heightOfObs/2).offsetYByPixels(-10);
 		super.drawString_inM(g4, "1:"+(int) getRunway().getDescentAngle() , midDiagonal);
@@ -372,6 +372,22 @@ public class ViewSide extends AbstractView{
 	@Override
 	protected double vertToRunway(){
 		return largestHeight() * PERCENTAGE_OF_SKY;
+	}
+
+	@Override
+	protected int[] getScaleLocation() {
+		int middleX = getSUB_IMAGE_WIDTH()/2-Xm_to_pixels(metresToScale())/2;
+		return new int[]{middleX,10};
+	}
+
+	@Override
+	protected boolean doesScalePointDown() {
+		return true;
+	}
+
+	@Override
+	protected double metresToScale() {
+		return 1000d;
 	}
 
 
