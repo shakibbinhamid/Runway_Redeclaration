@@ -3,16 +3,19 @@ package view;
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.GridLayout;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -111,9 +114,9 @@ public abstract class AbstractView extends JPanel implements ChangeListener{
 	
 	private static BufferedImage iselect, izoomIn, izoomOut, irotateClockwise, irotateAnti, izoomRefresh;
 	
-	private JToggleButton select, zoomIn, zoomOut, rotateClockwise, rotateAnti;
+	private JToggleButton select, zoomIn, zoomOut;
 	
-	private JButton zoomRefresh;
+	private JButton zoomRefresh, rotateClockwise, rotateAnti;
 	
 	public static final int SELECTION = 0;
 	public static final int ZOOM_IN = 1;
@@ -181,28 +184,34 @@ public abstract class AbstractView extends JPanel implements ChangeListener{
 		select = new JToggleButton(new ImageIcon(iselect));
 		zoomIn = new JToggleButton(new ImageIcon(izoomIn));
 		zoomOut = new JToggleButton(new ImageIcon(izoomOut));
-		rotateClockwise = new JToggleButton(new ImageIcon(irotateClockwise));
-		rotateAnti = new JToggleButton(new ImageIcon(irotateAnti));
+		rotateClockwise = new JButton(new ImageIcon(irotateClockwise));
+		rotateAnti = new JButton(new ImageIcon(irotateAnti));
 
 		toolbar = new ToolBar(JToolBar.VERTICAL);
-		
-		if(allowRotation){
-			toolbar.addButtonGroup("ZOOMING_TOOLS", new ButtonGroup(), Arrays.asList(new JToggleButton[]{select, zoomIn, zoomOut, rotateClockwise, rotateAnti}));
-		}else{
-			toolbar.addButtonGroup("ZOOMING_TOOLS", new ButtonGroup(), Arrays.asList(new JToggleButton[]{select, zoomIn, zoomOut}));
-		}
-		
 		toolbar.setFloatable(true);
 		toolbar.setRollover(true);
 		
+		toolbar.addButtonGroup("ZOOMING_TOOLS", new ButtonGroup(), Arrays.asList(new JToggleButton[]{select, zoomIn, zoomOut}));
+		
 		toolbar.addSeparator();
+		
+		if(allowRotation){
+			toolbar.add(rotateClockwise);
+			toolbar.add(rotateAnti);
+		}
 		
 		zoomRefresh = new JButton(new ImageIcon(izoomRefresh));
 		
 		toolbar.add(zoomRefresh);
 		
 		this.add(toolbar, BorderLayout.EAST);
-
+		
+		select.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				setTool(SELECTION);
+			}
+		});
 		zoomIn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -224,18 +233,20 @@ public abstract class AbstractView extends JPanel implements ChangeListener{
 		rotateClockwise.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				setTool(ROTATE_CLOCKWISE);
+				incrementRotation(true);
 			}
 		});
 		rotateAnti.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				setTool(ROTATE_ANTI_CLOCKWISE);
+				incrementRotation(false);
 			}
 		});
 		
-		//===============================  TOOLBAR   =====================================//
+		zoomIn.addItemListener(new ChangeCursorListener(izoomIn));
+		zoomOut.addItemListener(new ChangeCursorListener(izoomOut));
 		
+		//===============================  TOOLBAR   =====================================//
 		
 		label = new JLabel();
 		label.setHorizontalAlignment(JLabel.CENTER);
@@ -268,18 +279,46 @@ public abstract class AbstractView extends JPanel implements ChangeListener{
 				case ZOOM_OUT:
 					zoomOut();
 					break;
-				case ROTATE_CLOCKWISE:
-					incrementRotation(true);
-					break;
-				case ROTATE_ANTI_CLOCKWISE:
-					incrementRotation(true);
-					break;
 				}
 			}
 		});
 		
 		//===============================  TOOLBAR   =====================================//
 	}
+	
+	
+	//===============================  TOOLBAR   =====================================//
+	class ChangeCursorListener implements ItemListener{
+		
+		private BufferedImage image;
+
+		public ChangeCursorListener(BufferedImage image) {
+			super();
+			this.image = image;
+		}
+
+		@Override
+		public void itemStateChanged(ItemEvent itemEvent) {
+			int state = itemEvent.getStateChange();
+			if (state == ItemEvent.SELECTED) {
+				changeViewCursor(image);
+			} else {
+				scroll.getViewport().setCursor(Cursor.getDefaultCursor());
+			}
+		}
+	}
+	
+	private void changeViewCursor(BufferedImage image){
+		Cursor cursor = createTransparentCursor(20,image);
+		scroll.getViewport().setCursor(cursor);
+	}
+	
+	public static synchronized Cursor createTransparentCursor(final int size, BufferedImage image ) {
+		final java.awt.Point hotSpot = new java.awt.Point( size / 2, size / 2 );
+		return Toolkit.getDefaultToolkit().createCustomCursor( image, hotSpot, "Trans" );
+	}
+	
+	//===============================  TOOLBAR   =====================================//
 
 	@Override
 	public void stateChanged(ChangeEvent e) {  
