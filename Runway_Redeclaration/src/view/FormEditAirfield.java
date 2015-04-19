@@ -18,11 +18,8 @@ import exceptions.UnrecognisedAirfieldIntifierException;
 import exceptions.VariableDeclarationException;
 
 public class FormEditAirfield extends FormAirfield{
-	Airfield currentAirfield;
-	JLabel airfieldLabel;
-	JLabel airfieldNameLabel;
-	JLabel smallVLabel;
-	JLabel largeVLabel;
+	protected Airfield currentAirfield;
+	protected JLabel airfieldLabel, airfieldNameLabel, smallVLabel, largeVLabel;
 	
 	public FormEditAirfield(TopFrame topFrame){
 		super(topFrame, "Edit airfield");

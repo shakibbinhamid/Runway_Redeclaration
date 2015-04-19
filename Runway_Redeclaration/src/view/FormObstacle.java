@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -24,59 +25,71 @@ import exceptions.UnrecognisedAirfieldIntifierException;
  * @editor Shakib-Bin Hamid
  *
  */
+
 public class FormObstacle extends FormGeneral {
-	TopFrame topFrame;
+	protected TopFrame topFrame;
 	private ArrayList<JTextField> textFields;
 	
-	JLabel nameLabel;
-	JTextField nameTextBox;
-	JLabel radiusLabel;
-	JTextField radiusTextBox;
-	JLabel heigthLabel;
-	JTextField heightTextBox;
-	JLabel distFromLeftLabel;
-	JTextField distFromLeftTextBox;
-	JLabel distFromRightLabel;
-	JTextField distFromRightTextBox;
-	JLabel airfieldLabel;
-	JComboBox<String> airfieldComboBox;
+	protected JLabel nameLabel;
+	protected JTextField nameTextBox;
+	protected JLabel radiusLabel;
+	protected JTextField radiusTextBox;
+	protected JLabel heigthLabel;
+	protected JTextField heigthTextBox;
+	protected JLabel distFromLeftLabel;
+	protected JTextField distFromLeftTextBox;
+	protected JLabel distFromRightLabel;
+	protected JTextField distFromRightTextBox;
+	protected JLabel airfieldLabel;
+	protected JComboBox<String> airfieldComboBox;
 	
-	// constructor used for editing 
+	// Constructor used for obstacle editing 
 	protected FormObstacle(TopFrame topFrame, String title) {
 		super(topFrame, title);
 		this.topFrame = topFrame;
 		
-		nameLabel = new JLabel("Edit Name:");
-		nameTextBox = new SelfCheckingField(Obstacle.NAME_REGEX);
-		radiusLabel = new JLabel("Edit Radius:");
-		radiusTextBox = new SelfCheckingField(Obstacle.RADIUS_REGEX);
-		heigthLabel = new JLabel("Edit Height:");
-		heightTextBox = new SelfCheckingField(Obstacle.HEIGHT_REGEX);
-		distFromLeftLabel = new JLabel("Edit Distance From "+ topFrame.getTabbePanel().getActiveField().getDefaultSmallAngledRunway().getIdentifier());
-		distFromLeftTextBox = new SelfCheckingField(Obstacle.DIST_REGEX);
-		distFromRightLabel = new JLabel("Edit Distance From "+ topFrame.getTabbePanel().getActiveField().getDefaultLargeAngledRunway().getIdentifier());
-		distFromRightTextBox = new SelfCheckingField(Obstacle.DIST_REGEX);
-		
-		airfieldLabel = new JLabel("Pick Airfield:");
-		
-		airfieldComboBox = new JComboBox<String>();
+		initialiseStuff();
 		populateTextfields();
+		setToolTips();
 		
 		airfieldComboBox.addItemListener(new ItemListener(){
-
 			@Override
 			public void itemStateChanged(ItemEvent e) {
 				distFromLeftLabel.setText("Edit Distance From "+ ((String)airfieldComboBox.getSelectedItem()).split("/")[0]);
 				distFromRightLabel.setText("Edit Distance From "+ ((String)airfieldComboBox.getSelectedItem()).split("/")[1]);
 				repaint();
 			}
-
 		});
-		
+		Dimension parentSize = topFrame.getSize(); 
+	    Point p = topFrame.getLocation(); 
+	    setLocation(p.x + parentSize.width / 4, p.y + (parentSize.height / 2 - parentSize.height / 10 ));
 		setPreferredSize(new Dimension(300,350));
-		
 	}
 	
+	private void initialiseStuff(){
+		nameLabel = new JLabel("Edit Name:");
+		nameTextBox = new SelfCheckingField(Obstacle.NAME_REGEX);
+		radiusLabel = new JLabel("Edit Radius (m):");
+		radiusTextBox = new SelfCheckingField(Obstacle.RADIUS_REGEX);
+		heigthLabel = new JLabel("Edit Height (m):");
+		heigthTextBox = new SelfCheckingField(Obstacle.HEIGHT_REGEX);
+		distFromLeftLabel = new JLabel("Edit Distance From "+ topFrame.getTabbePanel().getActiveField().getDefaultSmallAngledRunway().getIdentifier() + "(m)");
+		distFromLeftTextBox = new SelfCheckingField(Obstacle.DIST_REGEX);
+		distFromRightLabel = new JLabel("Edit Distance From "+ topFrame.getTabbePanel().getActiveField().getDefaultLargeAngledRunway().getIdentifier()+ "(m)");
+		distFromRightTextBox = new SelfCheckingField(Obstacle.DIST_REGEX);
+		airfieldLabel = new JLabel("Pick Airfield:");
+		airfieldComboBox = new JComboBox<String>();
+	}
+	
+	private void setToolTips(){
+		nameLabel.setToolTipText("A name must start with a letter.");
+		radiusLabel.setToolTipText("The value must be a positive whole or fractionary number.");
+		heigthLabel.setToolTipText("The value must be a positive whole or fractionary number.");
+		distFromLeftLabel.setToolTipText("The value must be a positive whole or fractionary number.");
+		distFromRightLabel.setToolTipText("The value must be a positive whole or fractionary number.");
+	}
+	
+	// Contructor used for obstacle creation
 	public FormObstacle(TopFrame topFrame) {
 		this(topFrame, "Create Obstacle");
 		init();
@@ -86,7 +99,7 @@ public class FormObstacle extends FormGeneral {
 		setTextFields(new ArrayList<JTextField>());
 		getTextFields().add(nameTextBox);
 		getTextFields().add(radiusTextBox);
-		getTextFields().add(heightTextBox);
+		getTextFields().add(heigthTextBox);
 		getTextFields().add(distFromLeftTextBox);
 		getTextFields().add(distFromRightTextBox);
 	}
@@ -100,13 +113,12 @@ public class FormObstacle extends FormGeneral {
 	
 	public void init(){
 		centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
-		
 		centerPanel.add(nameLabel);
 		centerPanel.add(nameTextBox);
 		centerPanel.add(radiusLabel);
 		centerPanel.add(radiusTextBox);
 		centerPanel.add(heigthLabel);
-		centerPanel.add(heightTextBox);	
+		centerPanel.add(heigthTextBox);	
 		centerPanel.add(distFromLeftLabel);
 		centerPanel.add(distFromLeftTextBox);
 		centerPanel.add(distFromRightLabel);
@@ -129,7 +141,7 @@ public class FormObstacle extends FormGeneral {
 				String name = nameTextBox.getText();
 					try {
 						double radius = Double.parseDouble(radiusTextBox.getText());
-						double height = Double.parseDouble(heightTextBox.getText());
+						double height = Double.parseDouble(heigthTextBox.getText());
 						if(radius < 0 || height <0 ){
 							throw new NumberFormatException();
 						}

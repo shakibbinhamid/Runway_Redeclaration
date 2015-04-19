@@ -34,7 +34,7 @@ public class FormGeneral extends JDialog {
 		      Point p = topFrame.getLocation(); 
 		      setLocation(p.x + parentSize.width / 4, p.y + parentSize.height / 4);
 		      setPreferredSize(new Dimension(300,450));
-		    }
+		}
 	}
 	
 	public void init(){}
