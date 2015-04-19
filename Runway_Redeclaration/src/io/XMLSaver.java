@@ -26,7 +26,8 @@ public class XMLSaver {
 		}
 	}
 	
-	public static Savable deserialise(Class classType, File xmlFile){
+	@SuppressWarnings("unchecked")
+	public static Savable deserialise(@SuppressWarnings("rawtypes") Class classType, File xmlFile){
 		Serializer serializer = new Persister();
 		try {
 			return (Savable) serializer.read(classType, xmlFile);

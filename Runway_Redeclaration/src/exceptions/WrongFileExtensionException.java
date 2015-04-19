@@ -2,7 +2,12 @@ package exceptions;
  
 public class WrongFileExtensionException extends Exception {
  
-    public String getFilename() {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public String getFilename() {
         return filename;
     }
  
