@@ -240,6 +240,7 @@ public abstract class AbstractView extends JPanel implements ChangeListener {
 
 		runwayView = new ViewPort_withOverlay();
 		runwayView.setView(label);
+		runwayView.init();
 
 		//Allows panning
 		MouseAdapter ma = new HandScrollListener();
@@ -533,19 +534,24 @@ public abstract class AbstractView extends JPanel implements ChangeListener {
 	//===========================================================================================================================
 
 	//====[ Panning ]=================================================================================================================
-	/** Panning */
 	private  class HandScrollListener extends MouseAdapter  {
 
 		private final java.awt.Point pp = new java.awt.Point();
-
+		private boolean movingScale = false;
+		
 		@Override 
 		public void mouseDragged(MouseEvent e) {
 			java.awt.Point cp = e.getPoint();
 			java.awt.Point vp = runwayView.getViewPosition();
 
+			if(movingScale){
+				runwayView.scaleStartX = (int) cp.getX();
+				runwayView.scaleStartY = (int) cp.getY();
+				return;
+			}
+
+			
 			vp.translate(pp.x-cp.x, pp.y-cp.y);
-
-
 			getLabel().scrollRectToVisible(new Rectangle(vp, runwayView.getSize()));
 
 			pp.setLocation(cp);
@@ -553,16 +559,32 @@ public abstract class AbstractView extends JPanel implements ChangeListener {
 		}
 		@Override 
 		public void mousePressed(MouseEvent e) {
-			pp.setLocation(e.getPoint());
+			if(runwayView.isOnScale(e.getX(), e.getY())){
+				movingScale = true;
+				System.out.println("movingScale set true");
+			}else{
+				System.out.println("nada");
+				pp.setLocation(e.getPoint());
+			}
 		}
+
 		
 		@Override
 		public void mouseMoved(MouseEvent e){
-			if(runwayView.isOnCompass(e.getX(), e.getY())){
+			if(runwayView.isOnCompass(e.getX(), e.getY()) && getSelectedTool()==SELECTION_TOOL){
 				runwayView.activeCompass = true;
+				runwayView.heighlightScale = false;
+
 				repaint();
+				
+			}else if(runwayView.isOnScale(e.getX(), e.getY())&& getSelectedTool()==SELECTION_TOOL){
+				runwayView.activeCompass = false;
+				runwayView.heighlightScale = true;
+				repaint();
+				
 			}else{
 				runwayView.activeCompass = false;
+				runwayView.heighlightScale = false;
 				super.mouseMoved(e);
 			}
 		}
@@ -570,11 +592,18 @@ public abstract class AbstractView extends JPanel implements ChangeListener {
 		public void mouseClicked(MouseEvent e){
 			if(runwayView.isOnCompass(e.getX(), e.getY()) && getSelectedTool()==SELECTION_TOOL){
 				setRotationToMatchRunway();
-
+			
 			}else{
 				super.mouseClicked(e);
 			}
-
+		}
+		
+		@Override
+		public void mouseReleased(MouseEvent e){
+			if (movingScale) {
+				System.out.println("movingScale set false");
+				movingScale = false;
+			}
 		}
 	}
 
@@ -589,13 +618,13 @@ public abstract class AbstractView extends JPanel implements ChangeListener {
 		java.awt.Point centrePoint = new java.awt.Point(centreX, centreY);
 
 		SwingUtilities.invokeLater(new Runnable() {
-			
+
 			@Override
 			public void run() {
 				getLabel().scrollRectToVisible(new Rectangle(centrePoint, runwayView.getSize()));
 			}
 		});
-		
+
 		repaintMe();
 	}
 	//===========================================================================================================================
@@ -1030,21 +1059,26 @@ public abstract class AbstractView extends JPanel implements ChangeListener {
 
 	class ViewPort_withOverlay extends JViewport{
 		private static final long serialVersionUID = 1L;
-
-		boolean activeCompass;
+		public static final int bumpHeight = 10;
+		boolean activeCompass, heighlightScale;
 		int compassCentreX, compassCentreY, compassDiameter;
 		int scaleStartX, scaleStartY, scaleEndX, scaleHeight;
-		
+
 		public ViewPort_withOverlay(){
 			super();
 			setOpaque(false);
-			this.activeCompass = false;
+			this.activeCompass = this.heighlightScale = false;
+		}
+
+		public void init(){
+
 		}
 
 		@Override
 		public void paint(Graphics g){
 			int height = getHeight();
 			int startY = 0;
+			
 			if(!sameScaleAsX){
 				startY = (int) (getHeight()*ViewSide.PERCENTAGE_OF_SKY);
 				height = (int) (getHeight()*(1-ViewSide.PERCENTAGE_OF_SKY));
@@ -1053,19 +1087,30 @@ public abstract class AbstractView extends JPanel implements ChangeListener {
 			}
 			g.setColor(GRASS_COLOUR);
 			g.fillRect(0, startY, getWidth(), height);
+			
 			super.paint(g);
+			
 			Graphics2D g_prime = (Graphics2D) g.create();
 			paintOverlays(g_prime);
 		}
 
+		private boolean firstPaint = true;
 		//TODO bookmark
 		/** Draws all the graphics that appear the runway and do not move with panning, zooming or rotation */
 		private void paintOverlays(Graphics2D g){
-			this.scaleStartX = getScaleLocation()[0];
-			this.scaleStartY = getScaleLocation()[1];
-
+			if (this.firstPaint) {
+				this.firstPaint = false;
+				this.scaleStartX = getScaleLocation()[0];
+				this.scaleStartY = getScaleLocation()[1];
+			}
+			this.scaleEndX = this.scaleStartX+Xm_to_pixels(metresToScale());
+			this.scaleHeight = bumpHeight+g.getFontMetrics().getHeight();
+			
 			drawScale(g, metresToScale(), doesScalePointDown());
-
+			
+			if(this.heighlightScale){
+				heighlightScale(g);
+			}
 			if(allowRotation){
 				int diameter = 40;
 				drawCompass(g,this.getWidth()-3*diameter/4,this.getHeight()-3*diameter/4,diameter,this.activeCompass);
@@ -1076,7 +1121,7 @@ public abstract class AbstractView extends JPanel implements ChangeListener {
 			this.compassCentreX = centreX;
 			this.compassCentreY = centreY;
 			this.compassDiameter = diameter;
-			
+
 			RenderingHints rh = new RenderingHints(RenderingHints.KEY_ANTIALIASING,
 					RenderingHints.VALUE_ANTIALIAS_ON);
 
@@ -1086,7 +1131,7 @@ public abstract class AbstractView extends JPanel implements ChangeListener {
 			g.setRenderingHints(rh);
 			Graphics2D g2 = (Graphics2D) g.create();
 			Graphics2D g3 = (Graphics2D) g.create();
-			
+
 			float compasswdith = 2f;
 			int transparancy = isActive? 255:100;
 
@@ -1097,7 +1142,7 @@ public abstract class AbstractView extends JPanel implements ChangeListener {
 			Color south = getTransparant(Color.BLUE, transparancy);
 			Color centreDot = getTransparant(Color.WHITE, isActive? 255:175);
 			Color black = getTransparant(Color.BLACK, transparancy);
-			
+
 			//Compass Background
 			g2.setColor(compassBackground);
 			g2.fillOval(centreX-diameter/2, centreY-diameter/2, diameter, diameter);
@@ -1110,14 +1155,14 @@ public abstract class AbstractView extends JPanel implements ChangeListener {
 			//Preparing g3 for being the outlining graphics
 			g3.setColor(black);
 			g3.setStroke(new BasicStroke(0.5f));
-			
+
 			//bobble
 			g2.setColor(compassBorder);
 			int bobbleDiamter = diameter/5;
 			int bobbleY = centreY-diameter/2-bobbleDiamter/2;
 			g2.fillOval(centreX-bobbleDiamter/2, bobbleY-bobbleDiamter/2, bobbleDiamter, bobbleDiamter);
 			g3.drawOval(centreX-bobbleDiamter/2, bobbleY-bobbleDiamter/2, bobbleDiamter, bobbleDiamter);
-			
+
 			//North head & South head
 			double angle = getRotationTransformationAngle_Rad()-Math.toRadians(90-getAirfield().getSmallAngledRunway().getAngle());
 			g2.translate(centreX, centreY);
@@ -1127,10 +1172,10 @@ public abstract class AbstractView extends JPanel implements ChangeListener {
 
 			int headHeight =  diameter/2-1;
 			int headRadius = diameter/10;
-			
+
 			int[] xes  = new int[]{-headRadius,0,headRadius};
 			int[] yses = new int[]{0,0-headHeight,0};
-			
+
 			g2.setColor(north);
 			g2.fillPolygon(xes,yses,xes.length);
 			g3.drawPolygon(xes,yses,xes.length);
@@ -1140,7 +1185,7 @@ public abstract class AbstractView extends JPanel implements ChangeListener {
 			g2.fillPolygon(xes,yses,xes.length);
 			g3.drawPolygon(xes,yses,xes.length);
 
-			
+
 			//centre dot
 			g2.setColor(centreDot);
 			int dotDiamter = diameter/10;
@@ -1154,14 +1199,12 @@ public abstract class AbstractView extends JPanel implements ChangeListener {
 			int xStart = this.scaleStartX;
 			int yStart = this.scaleStartY;
 			Graphics2D g2 = (Graphics2D) g.create();
-			
+
 			//the bumpHeight is the verticals on each end and mid
-			int bumpHeight = 10;
 			int m = valuesBelow? -1 : 1;
 
 			int pixelatedMeteresToScale = Xm_to_pixels(metresToScale);
-			this.scaleEndX = this.scaleStartX+pixelatedMeteresToScale;
-			
+
 			int scaleEnd = xStart + pixelatedMeteresToScale;
 			int scaleMid = xStart + pixelatedMeteresToScale/2;
 
@@ -1194,22 +1237,30 @@ public abstract class AbstractView extends JPanel implements ChangeListener {
 			int xValue = scaleEnd-disWdith/2;
 			int yValue = yZero;
 			g2.drawString(""+(int)metresToScale+"m", xValue, yValue);
-			
-			this.scaleHeight = bumpHeight+fontHeightPix;
 		}
-		
+
 		public boolean isOnCompass(int x, int y){
 			int radius = this.compassDiameter/2;
 			return (x - this.compassCentreX)*(x - this.compassCentreX) + (y - this.compassCentreY)*(y - this.compassCentreY) < radius*radius;
 		}
-		
+
+		int buff = 10;
 		public boolean isOnScale(int x, int y){
-			int buff = 1;
 			return((scaleStartX-buff <= x && x <= scaleEndX+buff)
 					&&
-					(scaleStartY <= y && y <= scaleStartY+scaleHeight));
+					(scaleStartY-scaleHeight/2 <= y && y <= scaleStartY+scaleHeight/2));
 		}
 
+		public void heighlightScale(Graphics2D g){
+			Graphics2D g2 = (Graphics2D) g.create();
+			
+			g2.setColor(Color.PINK);
+			g2.setStroke(new BasicStroke(1f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10f, new float[]{2}, 0.5f));
+			g2.drawRect(scaleStartX-buff, scaleStartY-scaleHeight, scaleEndX-scaleStartX+buff*2, scaleHeight*2);
+
+
+		}
+		
 	}
 
 }
