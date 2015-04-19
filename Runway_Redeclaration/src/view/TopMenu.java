@@ -132,8 +132,6 @@ public class TopMenu extends JMenuBar{
 	
 	
 	private void loadIcons(){	
-		//================================ICONS==============================================//
-		
 		icreate = getIcon("/NewIcon.png");
 		iload = getIcon("/open.png");
 		isave = getIcon("/save.png");
@@ -197,7 +195,13 @@ public class TopMenu extends JMenuBar{
 		saveAirportAs = getMenuItem("Save Airport As", iairport, SwingConstants.LEFT);
 		saveObstacleAs = getMenuItem("Save Obstacle As", iobstacle, SwingConstants.LEFT);
 		
-		save = getMenu("Save", isave, new JMenuItem[]{saveAirport, saveObstacle, saveAirportAs, saveObstacleAs, saveTopView, saveSideView});
+		save = getMenu("Save", isave, new JMenuItem[]{saveAirport, saveAirportAs});
+		save.addSeparator();
+		save.add(saveObstacle);
+		save.add(saveObstacleAs);
+		save.addSeparator();
+		save.add(saveTopView);
+		save.add(saveSideView);
 		saveAirport.addActionListener(new SaveAirportListener(frame));
 		saveObstacle.addActionListener(new SaveObjectListener(frame));
 		saveAirportAs.addActionListener(new SaveAirportAsListener(frame));

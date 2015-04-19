@@ -11,7 +11,7 @@ import core.interfaces.DeclaredRunwayInterface;
 /**
  * 
  * @author Stefan
- * @Editor Stefan Shakib
+ * @Editor Stefan Shakib-Bin Hamid
  */
 public class ViewSide extends AbstractView{
 	/**
@@ -91,8 +91,6 @@ public class ViewSide extends AbstractView{
 		g2.setColor(RUNWAY_COLOUR);
 		g2.setStroke(new BasicStroke(3));
 		super.drawLine_inM(g2, new Point(leftOfRunway(), y_m), new Point(rightOfRunway(),y_m));
-
-
 	}
 
 	/** Red vertical with ALS gradient (if needed) and labels underneath */
@@ -134,7 +132,6 @@ public class ViewSide extends AbstractView{
 
 		//draws ALS/Blast/RESA Beneath
 		drawLargestFactor(g,locOfObs,heightOfObs);
-		
 	}
 
 	protected void drawLargestFactor(Graphics2D g, double locOfObs, double heightOfObs){
@@ -256,7 +253,6 @@ public class ViewSide extends AbstractView{
 		//Text
 		Point textStart = start.offsetYByPixels(PIXEL_BUFFER/2).offsetXByPixels(2);
 		super.drawString_inM(g2, "ALS", textStart);
-
 	}
 
 	private void drawBlastProt(Graphics2D g, double locOfObs){
@@ -350,6 +346,7 @@ public class ViewSide extends AbstractView{
 		double totalHeight = skyHeight / PERCENTAGE_OF_SKY;
 		return totalHeight;
 	}
+	
 	@Override
 	protected double leftOfRunway(){
 		if(getRunway().isSmallEnd()){
@@ -358,6 +355,7 @@ public class ViewSide extends AbstractView{
 			return super.runwayWidth()-getAirfield().getStripEnd()-getAirfield().getDefaultLargeAngledRunway().getTORA();
 		}
 	}
+	
 	@Override
 	protected double rightOfRunway(){
 		if(getRunway().isSmallEnd()){
@@ -387,6 +385,5 @@ public class ViewSide extends AbstractView{
 	protected double metresToScale() {
 		return 1000d;
 	}
-
 
 }

@@ -60,7 +60,7 @@ import core.interfaces.DeclaredRunwayInterface;
  * Using Points we can be sure of this!
  * 
  * @author Stefan
- *
+ * @editor Shakib-Bin Hamid
  */
 public abstract class AbstractView extends JPanel implements ChangeListener {
 	/**
@@ -169,8 +169,8 @@ public abstract class AbstractView extends JPanel implements ChangeListener {
 		rotateAnti = new JButton(new ImageIcon(irotateAnti));
 
 		toolbar = new ToolBar(JToolBar.VERTICAL);
-		toolbar.setFloatable(true);
-		toolbar.setRollover(true);
+		toolbar.setFloatable(false);
+		toolbar.setRollover(false);
 
 		toolbar.addButtonGroup("ZOOMING_TOOLS", new ButtonGroup(), Arrays.asList(new JToggleButton[]{select, zoomIn, zoomOut}));
 
@@ -507,21 +507,7 @@ public abstract class AbstractView extends JPanel implements ChangeListener {
 		increaseZoomBy(littleZoom);
 	}
 	public void increaseZoomBy(double littleZoom){
-		int previousWidth = getImage().getWidth();
-		int previousHeight = getImage().getHeight();
-
 		setZoomTo(this.zoomingFactor+littleZoom);
-
-		//		moveViewportWithZoom(previousWidth,previousHeight);
-		repaint();
-	}
-	private void moveViewportWithZoom(int previousWidth, int previousHeight) {
-		java.awt.Point centrePoint = runwayView.getViewPosition();
-		int deltaX = getImage().getWidth()-previousWidth;
-		int deltaY = getImage().getHeight()-previousHeight;
-
-		centrePoint.translate(deltaX/2, deltaY/2);
-		getLabel().scrollRectToVisible(new Rectangle(centrePoint, runwayView.getSize()));
 	}
 
 	public void zoomIn(){
@@ -565,6 +551,7 @@ public abstract class AbstractView extends JPanel implements ChangeListener {
 		
 		@Override 
 		public void mouseDragged(MouseEvent e) {
+			
 			java.awt.Point cp = e.getPoint();
 			java.awt.Point vp = runwayView.getViewPosition();
 
@@ -574,12 +561,12 @@ public abstract class AbstractView extends JPanel implements ChangeListener {
 				return;
 			}
 
-			
 			vp.translate(pp.x-cp.x, pp.y-cp.y);
 			getLabel().scrollRectToVisible(new Rectangle(vp, runwayView.getSize()));
 
 			pp.setLocation(cp);
 			repaint();
+			
 		}
 		@Override 
 		public void mousePressed(MouseEvent e) {
@@ -1116,7 +1103,7 @@ public abstract class AbstractView extends JPanel implements ChangeListener {
 		}
 
 		private boolean firstPaint = true;
-		//TODO bookmark
+
 		/** Draws all the graphics that appear the runway and do not move with panning, zooming or rotation */
 		private void paintOverlays(Graphics2D g){
 			if (this.firstPaint) {

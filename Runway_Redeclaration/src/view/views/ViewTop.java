@@ -11,6 +11,11 @@ import core.concrete.PositionedObstacle;
 import core.interfaces.AirfieldInterface;
 import core.interfaces.DeclaredRunwayInterface;
 
+/**
+ * 
+ * @author Shakib-Bin Hamid
+ * @editor Stefan Collier
+ */
 public class ViewTop extends AbstractView{
 	/**
 	 * [X] Version 0: Nada Complete
@@ -76,7 +81,6 @@ public class ViewTop extends AbstractView{
 		drawPlane(g2, runwayWidth()/21, new Point(runwayWidth()/2-h*runwayWidth()/20-h*distanceBetweenThem,vertToRunway()+getAirfield().getLongSpacer()+2*runwayWidth()/21), !getRunway().isSmallEnd());
 
 	}
-
 
 	private void drawAirfield(Graphics2D g2) {
 		drawSurroundingArea(g2);
@@ -240,6 +244,7 @@ public class ViewTop extends AbstractView{
 		g2.setStroke(new BasicStroke(0.5f));
 		super.drawRectangle_inM(g2, topLeft, runWidth, runHeight, RUNWAY_COLOUR);
 	}
+	
 	private void drawThresholds(Graphics2D g) {
 		Graphics2D g2 = (Graphics2D) g.create();
 
@@ -254,6 +259,7 @@ public class ViewTop extends AbstractView{
 		super.drawLine_inM(g2, leftMarker, leftMarker.offsetYByM(getAirfield().getRunwayGirth()));
 		super.drawLine_inM(g2, rightMarker, rightMarker.offsetYByM(getAirfield().getRunwayGirth()));
 	}
+	
 	private void drawDistances(Graphics2D g) {
 		Graphics2D g2 = (Graphics2D) g.create();
 		int level = 1;
@@ -262,12 +268,12 @@ public class ViewTop extends AbstractView{
 		super.PIXEL_BUFFER = Ym_to_pixels((vertToRunway()-INITIAL_BUFFER)/6);
 		super.PIXEL_BUFFER = Math.max(super.PIXEL_BUFFER, 12);
 		
-		//TODO allign to TORA
 		drawDistance(g2, "LDA", getRunway().getLDA(), getRunway().getDisplacedThreshold(), -level++, vertToRunway());
 		drawDistance(g2, "TORA", getRunway().getTORA(), getRunway().getStartOfRoll(), -level++, vertToRunway());
 		drawDistance(g2, "ASDA", getRunway().getASDA(), getRunway().getStartOfRoll(), -level++, vertToRunway());
 		drawDistance(g2, "TODA", getRunway().getTODA(), getRunway().getStartOfRoll(), -level++, vertToRunway());
 	}
+	
 	private void drawClearwayAndStopway(Graphics2D g) {
 		Graphics2D g2 = (Graphics2D) g.create();
 		double girth = getAirfield().getRunwayGirth();
