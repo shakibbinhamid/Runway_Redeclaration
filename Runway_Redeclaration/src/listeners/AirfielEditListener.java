@@ -15,6 +15,7 @@ public class AirfielEditListener implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		@SuppressWarnings("unused")
 		FormEditAirfield fa = new FormEditAirfield(topFrame);
 	}
 	

@@ -5,19 +5,27 @@ import javax.swing.JSplitPane;
 import coreInterfaces.AirfieldInterface;
 import coreInterfaces.DeclaredRunwayInterface;
 
+/**
+ * This class (extends JSplitPane) holdes the two views.
+ * The views are updated from this class.
+ * 
+ * @author Shakib-Bin Hamid
+ * @see {@link JSplitPane}
+ * @see {@link ViewTop}
+ * @see {@link ViewSide}
+ */
 public class ViewPanel extends JSplitPane{
 	
-	private AirfieldInterface field;
-	private DeclaredRunwayInterface runway;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	
 	private ViewTop view1;
 	private ViewSide view2;
 
 	public ViewPanel(AirfieldInterface field, DeclaredRunwayInterface runway){
 		super(JSplitPane.VERTICAL_SPLIT);
-		
-		this.field = field;
-		this.runway = runway;
 		
 		view1 = new ViewTop(field, runway);
 		view2 = new ViewSide(field, runway);
@@ -33,18 +41,30 @@ public class ViewPanel extends JSplitPane{
 		setOneTouchExpandable(true);
 	}
 	
+	/**
+	 * Both of the views are updated with this runway values.
+	 * The views are reset to initial looks.
+	 * @param run
+	 */
 	public void updateView(DeclaredRunwayInterface run){
-		this.runway = run;
 		view1.setRunway(run);
 		view1.repaint();
 		view2.setRunway(run);
 		view2.repaint();
 	}
 	
+	/**
+	 * Returns the top view
+	 * @return top view
+	 */
 	public ViewTop getTopView(){
 		return view1;
 	}
 	
+	/**
+	 * Returns the side on view
+	 * @return side view
+	 */
 	public ViewSide getSideView(){
 		return view2;
 	}

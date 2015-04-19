@@ -23,6 +23,7 @@ public class LoadAirportListener implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
+		@SuppressWarnings("unused")
 		LoadListener lis = new LoadListener(frame, filter, typeDir);
 	}
 }

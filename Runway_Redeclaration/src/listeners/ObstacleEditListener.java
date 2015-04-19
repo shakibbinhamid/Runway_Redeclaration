@@ -15,6 +15,7 @@ public class ObstacleEditListener implements ActionListener{
 	}
 	
 	public void actionPerformed(ActionEvent e) {		
+		@SuppressWarnings("unused")
 		FormEditObstacle fo = new FormEditObstacle(topFrame);
 	}
 

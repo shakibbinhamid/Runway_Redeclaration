@@ -19,9 +19,9 @@ public class LoadListener{
 
 	private TopFrame frame;
 	private javax.swing.filechooser.FileFilter filter;
-	FileSystem fs;
+	private FileSystem fs;
 	private String typeDir;
-	File chosen = null;
+	private File chosen = null;
 	
 	public LoadListener(TopFrame frame, javax.swing.filechooser.FileFilter filter, String typeDir){
 		this.frame = frame;
@@ -60,10 +60,15 @@ public class LoadListener{
 		}
 	}
 	
-	class FormLoadObstacle extends FormObstacle{
+	private class FormLoadObstacle extends FormObstacle{
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+		
 		private ObstacleInterface currentObstacle;
 
-		public FormLoadObstacle(TopFrame tf){
+		private FormLoadObstacle(TopFrame tf){
 			super(tf, "Load obstacle");
 			currentObstacle = fs.loadObs(chosen);
 			setInitialTextfields();
@@ -72,7 +77,7 @@ public class LoadListener{
 			init();
 		}
 		
-		public void setInitialTextfields(){
+		private void setInitialTextfields(){
 			for(JTextField jtf : getTextFields()){
 				if(getTextFields().indexOf(jtf) == 0){
 					jtf.setText(currentObstacle.getName());
