@@ -10,6 +10,11 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 
 public class FormGeneral extends JDialog {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	protected JPanel centerPanel;		
 	protected JPanel buttonPanel;	
 	protected JButton button;

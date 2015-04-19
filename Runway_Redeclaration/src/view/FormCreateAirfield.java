@@ -14,16 +14,17 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 
-import view.FormAirfield.JButtonStateController;
-import core.Airfield;
 import core.DeclaredRunway;
 import exceptions.VariableDeclarationException;
 
 public class FormCreateAirfield extends FormAirfield {
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	
 	protected JLabel angleLabel;
 	protected SelfCheckingField angleTextBox;

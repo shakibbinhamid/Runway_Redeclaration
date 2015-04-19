@@ -27,6 +27,11 @@ import exceptions.UnrecognisedAirfieldIntifierException;
  */
 
 public class FormObstacle extends FormGeneral {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	protected TopFrame topFrame;
 	private ArrayList<JTextField> textFields;
 	

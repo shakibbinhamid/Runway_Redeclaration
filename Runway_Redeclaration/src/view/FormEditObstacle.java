@@ -9,6 +9,11 @@ import javax.swing.JTextField;
 import core.PositionedObstacle;
 
 public class FormEditObstacle extends FormObstacle{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	protected PositionedObstacle currentObstacle;
 	
 	public FormEditObstacle(TopFrame tf){

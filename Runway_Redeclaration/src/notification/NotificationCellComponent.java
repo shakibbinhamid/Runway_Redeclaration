@@ -9,7 +9,6 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -21,11 +20,16 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 
 /**
- * This is the panel of a Single Notification.
- * @author shakib-bin hamid
+ * This is the panel (extends JPanel) of a Single Notification.
+ * @author Shakib-Bin Hamid
  *
  */
 public class NotificationCellComponent extends JPanel {
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	
 	private static final Color FILE_COLOR = new Color(128, 0, 0); 
 	private static final Color CALC_COLOR = new Color(75, 0, 130); 
@@ -118,6 +122,11 @@ public class NotificationCellComponent extends JPanel {
 		super.paint(g);
 	}
 	
+	/**
+	 * The primary method of notification
+	 * @param s the details to notify
+	 * @param c the color to view it.
+	 */
 	public void notify(String s, String c){ 
 		switch(c){ 
 		case Notification.FILE: 
@@ -134,7 +143,7 @@ public class NotificationCellComponent extends JPanel {
 		} 
 	} 
 	
-	public void notifyError(String s){
+	private void notifyError(String s){
 		addLog(s, ERROR_COLOR);
 	}
 	

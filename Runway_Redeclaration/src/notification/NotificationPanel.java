@@ -13,12 +13,17 @@ import javax.swing.event.TableModelListener;
 import view.LogPanel;
 
 /**
- * This is the Central Notificatin Panel.
+ * This is the Central Notificatin Panel (extends JPanel).
  * Primary method is notifyIt
  * @author Shakib-Bin Hamid
  *
  */
 public class NotificationPanel extends JPanel{
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	
 	private static List<NotificationCellComponent> nots;
 	private static JTable notsTable;

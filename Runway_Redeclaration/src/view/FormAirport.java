@@ -12,6 +12,11 @@ import javax.swing.JTextField;
 import core.Airport;
 
 public class FormAirport extends FormGeneral {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	protected JLabel nameLabel;
 	protected JTextField name;
 	protected TopFrame topFrame;

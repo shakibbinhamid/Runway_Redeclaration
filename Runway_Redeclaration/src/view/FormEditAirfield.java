@@ -13,11 +13,15 @@ import notification.Notification;
 import notification.NotificationPanel;
 import core.Airfield;
 import coreInterfaces.PositionedObstacleInterface;
-import exceptions.CannotMakeRunwayException;
 import exceptions.UnrecognisedAirfieldIntifierException;
 import exceptions.VariableDeclarationException;
 
 public class FormEditAirfield extends FormAirfield{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	protected Airfield currentAirfield;
 	protected JLabel airfieldLabel, airfieldNameLabel, smallVLabel, largeVLabel;
 	

@@ -14,10 +14,14 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.Document;
 
-import core.Airport;
 import core.DeclaredRunway;
 
 public class FormAirfield extends FormGeneral{
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	
 	protected TopFrame topFrame;
 	protected ArrayList<SelfCheckingField> smallValueTextFields;
