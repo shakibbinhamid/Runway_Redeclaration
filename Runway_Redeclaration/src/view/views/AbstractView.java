@@ -1,5 +1,7 @@
 package view.views;
 
+import io.CustomFilter;
+
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -30,7 +32,9 @@ import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
@@ -113,11 +117,11 @@ public abstract class AbstractView extends JPanel implements ChangeListener {
 
 	private ToolBar toolbar;
 
-	private static BufferedImage iselect, izoomIn, izoomOut, irotateClockwise, irotateAnti, izoomRefresh;
+	private static BufferedImage iselect, izoomIn, izoomOut, irotateClockwise, irotateAnti, izoomRefresh, isave;
 
 	private JToggleButton select, zoomIn, zoomOut;
 
-	private JButton zoomRefresh, rotateClockwise, rotateAnti;
+	private JButton zoomRefresh, rotateClockwise, rotateAnti, save;
 
 	public static final int SELECTION_TOOL = 0;
 	public static final int ZOOM_IN_TOOl = 1;
@@ -156,6 +160,7 @@ public abstract class AbstractView extends JPanel implements ChangeListener {
 		irotateClockwise = readImage("/clock.png");
 		irotateAnti = readImage("/anticlock.png");
 		iselect = readImage("/pointer.png");
+		isave = readImage("/save.gif");
 
 		select = new JToggleButton(new ImageIcon(iselect));
 		zoomIn = new JToggleButton(new ImageIcon(izoomIn));
@@ -177,10 +182,10 @@ public abstract class AbstractView extends JPanel implements ChangeListener {
 		}
 
 		zoomRefresh = new JButton(new ImageIcon(izoomRefresh));
-		JToggleButton dontYouRotateBaby = new JToggleButton("R");
+		save = new JButton(new ImageIcon(isave));
 
 		toolbar.add(zoomRefresh);
-		toolbar.add(dontYouRotateBaby);
+		toolbar.add(save);
 		this.add(toolbar, BorderLayout.EAST);
 
 		select.addActionListener(new ActionListener() {
@@ -219,15 +224,33 @@ public abstract class AbstractView extends JPanel implements ChangeListener {
 				incrementRotation(false);
 			}
 		});
-		dontYouRotateBaby.addItemListener(new ItemListener() {
+		save.addActionListener(new ActionListener() {
+			
 			@Override
-			public void itemStateChanged(ItemEvent itemEvent) {
-				int state = itemEvent.getStateChange();
-				if (state == ItemEvent.SELECTED) {
-					setRotationToMatchRunway();
-				} else {
-					resetRotation();
+			public void actionPerformed(ActionEvent e) {
+
+				JFileChooser fc = new JFileChooser();
+				fc.setDialogTitle("Save TopDown View");
+
+				fc.setAcceptAllFileFilterUsed(false);
+				fc.setCurrentDirectory(new File("./"));
+				fc.addChoosableFileFilter(new CustomFilter("JPG", ".jpg", "JPEG Files"));
+				fc.addChoosableFileFilter(new CustomFilter("PNG", ".png", "PNG Files"));
+				int select = fc.showSaveDialog(null);
+				if(select == JFileChooser.APPROVE_OPTION){
+					File fileToSave = fc.getSelectedFile();
+					try {
+						CustomFilter filter = (CustomFilter) fc.getFileFilter();
+						//Fix for Mac
+						if(filter == null) filter = new CustomFilter("JPG", ".jpg", "JPEG Files");
+						save(fileToSave.getAbsolutePath() + filter.getExt(), filter.getName());
+						JOptionPane.showMessageDialog(null, "Saved Successfully at "+ fileToSave.getAbsolutePath(), "SAVING DONE", JOptionPane.INFORMATION_MESSAGE);
+					} catch (IOException e1) {
+						JOptionPane.showMessageDialog(null, "Could not save!", "SAVING FAILED", JOptionPane.ERROR_MESSAGE);
+						e1.printStackTrace();
+					}
 				}
+
 			}
 		});
 
