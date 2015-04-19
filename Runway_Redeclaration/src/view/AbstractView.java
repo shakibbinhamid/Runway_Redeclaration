@@ -9,6 +9,7 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -567,7 +568,7 @@ public abstract class AbstractView extends JPanel implements ChangeListener {
 		int centreX = getImage().getWidth()/2-runwayView.getWidth()/2;
 		int centreY;
 		if(sameScaleAsX){
-			centreY = getImage().getHeight()/2-runwayView.getHeight();
+			centreY = getImage().getHeight()/2-runwayView.getHeight()-20;
 		}else{
 			centreY = getImage().getHeight()/2-runwayView.getHeight()/2;
 		}
@@ -876,8 +877,8 @@ public abstract class AbstractView extends JPanel implements ChangeListener {
 		ImageIO.write(image, ext, new File(fullpath));
 	}
 
-	public static final Color getTransparant(Color color, int transparency){
-		return new Color(color.getRed(),color.getGreen(),color.getBlue(),transparency);
+	public static final Color getTransparant(Color color, int transparancy){
+		return new Color(color.getRed(),color.getGreen(),color.getBlue(),transparancy);
 	}
 
 	protected abstract double largestHeight();
@@ -999,13 +1000,6 @@ public abstract class AbstractView extends JPanel implements ChangeListener {
 
 			Point result =  getPivot().offsetXByM(xbuf).offsetYByM(ybuf);
 
-
-			//			if(getRotationTransformationAngle_Deg()!=0){
-			//				System.out.println("Rotate("+getRotationTransformationAngle_Deg()+"): "+core_Xm()+","+core_Ym()+" -> "+result.core_Xm()+","+result.core_Ym());
-			//				if(result.core_Xm() != core_Xm() || result.core_Ym() != core_Ym()){
-			//					System.out.println("^---> Change: "+(result.core_Xm() - core_Xm()) +"   "+(result.core_Ym() - core_Ym()));
-			//				}
-			//			}
 			return result;
 		}
 	}
@@ -1050,13 +1044,73 @@ public abstract class AbstractView extends JPanel implements ChangeListener {
 			drawScale(g, x,y, metresToScale(), doesScalePointDown());
 
 			if(allowRotation){
-				drawCompass(g);
+				drawCompass(g,100,100,true);
 			}
 		}
 
-		private void drawCompass(Graphics2D g) {
-			// TODO Auto-generated method stub
+		private void drawCompass(Graphics2D g, int centreX, int centreY, boolean isActive) {
+			RenderingHints rh = new RenderingHints(RenderingHints.KEY_ANTIALIASING,
+					RenderingHints.VALUE_ANTIALIAS_ON);
 
+			rh.put(RenderingHints.KEY_RENDERING,
+					RenderingHints.VALUE_RENDER_QUALITY);
+
+			g.setRenderingHints(rh);
+			Graphics2D g2 = (Graphics2D) g.create();
+			Graphics2D g3 = (Graphics2D) g.create();
+
+			
+			
+			int diamter = 40;
+			float compasswdith = 2f;
+			int transparancy = isActive? 255:100;
+
+
+			Color compassBackground = getTransparant(Color.WHITE, transparancy-55);
+			Color compassBorder = getTransparant(Color.GRAY, transparancy);
+			Color north = getTransparant(Color.RED, transparancy);
+			Color south = getTransparant(Color.BLUE, transparancy);
+			Color centreDot = getTransparant(Color.WHITE, transparancy);
+			Color black = getTransparant(Color.BLACK, transparancy);
+			
+			g2.setColor(compassBackground);
+			g2.fillOval(centreX-diamter/2, centreY-diamter/2, diamter, diamter);
+
+			g3.setColor(compassBorder);
+			g3.setStroke(new BasicStroke(compasswdith));
+			g3.drawOval(centreX-diamter/2, centreY-diamter/2, diamter, diamter);
+
+			//Preparing g3 for being the outlining graphics
+			g3.setColor(black);
+			g3.setStroke(new BasicStroke(0.5f));
+			
+			//bobble
+			g2.setColor(compassBorder);
+			int bobbleDiamter = diamter/5;
+			int bobbleY = centreY-diamter/2-bobbleDiamter/2;
+			g2.fillOval(centreX-bobbleDiamter/2, bobbleY-bobbleDiamter/2, bobbleDiamter, bobbleDiamter);
+			g3.drawOval(centreX-bobbleDiamter/2, bobbleY-bobbleDiamter/2, bobbleDiamter, bobbleDiamter);
+			
+			//North head & South head
+			int headHeight =  diamter/2-1;
+			int headRadius = diamter/10;
+			int[] xes  = new int[]{centreX-headRadius,centreX,centreX+headRadius};
+			int[] yses = new int[]{centreY,centreY-headHeight,centreY};
+			
+			g2.setColor(north);
+			g2.fillPolygon(xes,yses,xes.length);
+			g3.drawPolygon(xes,yses,xes.length);
+
+			g2.setColor(south);
+			yses[1] = centreY+headHeight;
+			g2.fillPolygon(xes,yses,xes.length);
+			g3.drawPolygon(xes,yses,xes.length);
+
+			
+			//centre dot
+			g2.setColor(centreDot);
+			int dotDiamter = diamter/10;
+			g2.fillOval(centreX-dotDiamter/2, centreY-dotDiamter/2, dotDiamter, dotDiamter);
 		}
 
 
