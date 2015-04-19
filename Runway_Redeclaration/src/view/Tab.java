@@ -15,22 +15,29 @@ import coreInterfaces.DeclaredRunwayInterface;
 import coreInterfaces.PositionedObstacleInterface;
 
 /**
- * This is a Tab. A Tab holds is responsible for viewing all data and views of an airfield.
+ * This is a Tab (extends JPanel). A Tab holds is responsible for viewing all data and views of an airfield.
  * It shows information on the left side, view on the right side.
  * No upperclass should know about the internal structure of this class.
  * 
  * Major method is changeCurrentRunway
  * @author shakib-binhamid
- *
+ * @see {@link ChooseRunwayPanel}
+ * @see {@link InfoPanel}
+ * @see {@link ViewPanel}
  */
 public class Tab extends JPanel{
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	
 	private AirfieldInterface field;
 	private PositionedObstacleInterface obs;
 	
 	private JPanel dataPanel;
-		private ChooseRunwayPanel selectDirectionPanel;
-		private InfoPanel info;
+	private ChooseRunwayPanel selectDirectionPanel;
+	private InfoPanel info;
 	private ViewPanel views;
 	
 	public Tab(AirfieldInterface field){
@@ -56,8 +63,7 @@ public class Tab extends JPanel{
 		this.add(views, BorderLayout.CENTER);
 		
 	}
-	
-	//=============================== GETTERS AND SETTERS =============================//
+
 	public InfoPanel getInfoPanel(){
 		return info;
 	}
@@ -78,10 +84,22 @@ public class Tab extends JPanel{
 		this.field = field;
 	}
 	
+	/**
+	 * Saves the top view to the specified path as the specified extension
+	 * @param fullpath absolute path of file
+	 * @param ext extension such as "png" or "jpg" etc
+	 * @throws IOException
+	 */
 	public void saveTopView(String fullpath, String ext) throws IOException{
 		this.views.getTopView().save(fullpath, ext);
 	}
 	
+	/**
+	 * Saves the side view to the specified path as the specified extension
+	 * @param fullpath absolute path of file
+	 * @param ext extension such as "png" or "jpg" etc
+	 * @throws IOException
+	 */
 	public void saveSideView(String fullpath, String ext) throws IOException{
 		this.views.getSideView().save(fullpath, ext);
 	}
@@ -96,7 +114,18 @@ public class Tab extends JPanel{
 		views.updateView(another[1]);
 	}
 	
+	/**
+	 * This panel (extends JPanel) lets you choose between runways
+	 * 
+	 * @author Shakib-Bin Hamid
+	 * @see {@link JRadioButton}
+	 */
 	private class ChooseRunwayPanel extends JPanel{
+		
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 		
 		private JRadioButton smallAngled;
 		private JRadioButton bigAngled;
@@ -136,7 +165,6 @@ public class Tab extends JPanel{
 			this.add(bigAngled);
 		}
 	}
-
 }
 
 

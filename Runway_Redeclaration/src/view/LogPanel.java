@@ -19,20 +19,28 @@ import notification.NotificationPanel;
  * 
  * This panel shows the central log and the current airport name
  * 
- * @author shakib-binhamid
+ * @author Shakib-Bin Hamid
  * @editor Jonathon
+ * @see {@link Logger}
+ * @see {@link NotificationPanel}
  */
 public class LogPanel extends JPanel{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	private JLabel airportLabel;
 	private NotificationPanel notPanel;
 	
 	private File devLog;
 	private static String log; 
 	private static Logger LOGGER = Logger.getLogger("DevLogs");
+	public static final String LOG_LOCATION = "./dat/devLog";
+	public static final String LOG_FILE_EXT = ".txt";
 
 	public LogPanel(){
-		devLog = this.makeFile();
 		init();
 	}
 
@@ -40,6 +48,8 @@ public class LogPanel extends JPanel{
 
 		this.setLayout(new BorderLayout());
 
+		devLog = this.makeFile();
+		
 		airportLabel = new JLabel("Airport");
 		airportLabel.setFont(new Font("verdana", Font.ITALIC, 15));
 		airportLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -50,6 +60,16 @@ public class LogPanel extends JPanel{
 		this.add(notPanel, BorderLayout.CENTER);
 		
 	}
+	
+	private File makeFile(){
+		int i = 0;
+		File f = new File(LOG_LOCATION+i+LOG_FILE_EXT);
+		while(f.exists()){
+			f = new File(LOG_LOCATION+i+LOG_FILE_EXT);
+			i++;
+		}
+		return f;
+	}
 
 	/**
 	 * Update the airport label to the specified name
@@ -59,24 +79,26 @@ public class LogPanel extends JPanel{
 		airportLabel.setText(airportName);
 	}
 	
-	private File makeFile(){
-		int i = 0;
-		File f = new File("./dat/devLog"+i+".txt");
-		while(f.exists()){
-			f = new File("./dat/devLog"+i+".txt");
-			i++;
-		}
-		return f;
-	}
-	
+	/**
+	 * Returns the developer's log file
+	 * @return developer's log
+	 */
 	public File getDevFile(){
 		return devLog;
 	}
 	
+	/**
+	 * Adds the String to dev log. No newline is inserted.
+	 * No actual log is written to file until the application closes.
+	 * @param info
+	 */
 	public static void log(String info){
 		log += info;
 	}
 	
+	/**
+	 * The log file is saved to the default developer log position
+	 */
 	public void saveLogToDeveloper(){
 		try {
 			devLog.createNewFile();

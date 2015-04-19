@@ -7,8 +7,7 @@ import java.util.Calendar;
  * This is a backbone of a Notification
  * A Notification has a title, details.
  * It also has a type.
- * @author shakib-bin hamid
- *
+ * @author Shakib-Bin Hamid
  */
 public class Notification {
 	

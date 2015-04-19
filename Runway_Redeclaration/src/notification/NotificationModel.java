@@ -4,12 +4,18 @@ import java.util.List;
 import javax.swing.table.AbstractTableModel;
 
 public class NotificationModel extends AbstractTableModel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	List<NotificationCellComponent> feeds;
 
 	protected NotificationModel(List<NotificationCellComponent> feeds) {
 		this.feeds = feeds;
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public Class getColumnClass(int columnIndex) {
 		return NotificationCellComponent.class; 
 	}

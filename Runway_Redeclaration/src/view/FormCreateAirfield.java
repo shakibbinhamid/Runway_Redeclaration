@@ -14,29 +14,28 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 
-import view.FormAirfield.JButtonStateController;
-import core.Airfield;
 import core.DeclaredRunway;
 import exceptions.VariableDeclarationException;
 
 public class FormCreateAirfield extends FormAirfield {
 	
-	JLabel angleLabel;
-	SelfCheckingField angleTextBox;
-	JLabel sideLabel;
-	JComboBox<String> sideComboBox;	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	
-	JPanel mainPanel;
-	JPanel helpImgPanel;
+	protected JLabel angleLabel;
+	protected SelfCheckingField angleTextBox;
+	protected JLabel sideLabel;
+	protected JComboBox<String> sideComboBox;	
+	protected JPanel mainPanel;
+	protected JPanel helpImgPanel;
 
 	public FormCreateAirfield(TopFrame topFrame) {
 		super(topFrame, "Create Airfield");
-		//setHeaderLabels("Insert Left Starting Runway values", "Insert Right Starting Runway values");
-		String[] sides = {" ","L","R","C"};
+		String[] sides = {"L","R","C"};
 		angleLabel = new JLabel("Insert Airfield Angle to the North:");
 		angleTextBox = new SelfCheckingField(DeclaredRunway.ANGLE_REGEX);
 		sideLabel = new JLabel("Choose the Side of the Runway:");

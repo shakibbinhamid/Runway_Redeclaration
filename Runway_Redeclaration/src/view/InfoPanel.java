@@ -15,11 +15,25 @@ import coreInterfaces.DeclaredRunwayInterface;
 import coreInterfaces.ObstacleInterface;
 import coreInterfaces.PositionedObstacleInterface;
 
+/**
+ * This Panel (extends JPanel) and lets you update values for the Airfield and Obstacle values
+ * @author Shakib-Bin Hamid
+ * 
+ * @see {@link TablePanel}
+ * @see {@link AirfieldInterface} 
+ * @see {@link DeclaredRunwayInterface} 
+ * @see {@link ObstacleInterface}   
+ * @see {@link JTable} 
+ */
 public class InfoPanel extends JPanel{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	private static final String[] runwayColumnNames 	= 	{"Parameter","Default (m)", "Redeclared (m)"};
 	private static final String[] obstacleColumnNames 	= 	{"Parameter", "Value (m)"};
-	private static final String DEGREE  = "\u00b0";
 
 	private AirfieldInterface field;
 	private DeclaredRunwayInterface defaultRunway;
@@ -56,14 +70,29 @@ public class InfoPanel extends JPanel{
 		this.add(advancedDataTable);
 
 	}
-
-	//=============================== GETTERS AND SETTERS =============================//
+	
+	/**
+	 * Returns the current default runway (without any redeclaration)
+	 * @return current default runway
+	 */
 	public DeclaredRunwayInterface getDefaultRunway() {
 		return defaultRunway;
 	}
 
+	/**
+	 * Returns the current runway
+	 * @return current runway
+	 */
 	public DeclaredRunwayInterface getRunway() {
 		return runway;
+	}
+	
+	/**
+	 * Returns the current Obstacle on the current Airfield
+	 * @return the current airfield
+	 */
+	public ObstacleInterface getObs() {
+		return obs;
 	}
 
 	/**
@@ -75,10 +104,6 @@ public class InfoPanel extends JPanel{
 		this.defaultRunway = runways[0];
 		this.runway = runways[1];
 		updateRunwayTables(runways);
-	}
-
-	public ObstacleInterface getObs() {
-		return obs;
 	}
 
 	/**
@@ -193,15 +218,15 @@ public class InfoPanel extends JPanel{
 		return null;
 	}
 
-	public void updateRunwayTable(String[][] data){
+	private void updateRunwayTable(String[][] data){
 		updateTable(runwayDataTable, data);
 	}
 
-	public void updateObstacleTable(String[][] data){
+	private void updateObstacleTable(String[][] data){
 		updateTable(obstacleDataTable, data);
 	}
 
-	public void updateAdvancedTable(String[][] data){
+	private void updateAdvancedTable(String[][] data){
 		updateTable(advancedDataTable, data);
 	}	
 
@@ -217,15 +242,25 @@ public class InfoPanel extends JPanel{
 	 * We use it for both obstacle and runway data.
 	 * 
 	 * Primary method is redraw table with an array of rows of data (string)
-	 * @author shakib-binhamid
+	 * @author Shakib-Bin Hamid
 	 *
 	 */
 	private class TablePanel extends JPanel{
 
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+		
 		private JTable table;
 		private String title;
 
 		private DefaultTableModel tableModel = new DefaultTableModel(){
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public boolean isCellEditable(int row, int column) {
 				return false;
@@ -235,7 +270,7 @@ public class InfoPanel extends JPanel{
 		/**
 		 * Cannot change table name and column headers once constructed.
 		 */
-		TablePanel (String panelName, String[] columnNames){
+		private TablePanel (String panelName, String[] columnNames){
 
 			title = panelName;	
 

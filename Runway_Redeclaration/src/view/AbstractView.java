@@ -35,6 +35,7 @@ import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import javax.swing.JViewport;
+import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -333,7 +334,7 @@ public abstract class AbstractView extends JPanel implements ChangeListener {
 		resetZoom();
 		rescaleImageSize();
 		resetLocation();
-		resetLocation();
+		//resetLocation();
 	}
 
 	//======[ Core Objects ]=====================================================================================================
@@ -587,8 +588,14 @@ public abstract class AbstractView extends JPanel implements ChangeListener {
 		}
 		java.awt.Point centrePoint = new java.awt.Point(centreX, centreY);
 
-
-		getLabel().scrollRectToVisible(new Rectangle(centrePoint, runwayView.getSize()));
+		SwingUtilities.invokeLater(new Runnable() {
+			
+			@Override
+			public void run() {
+				getLabel().scrollRectToVisible(new Rectangle(centrePoint, runwayView.getSize()));
+			}
+		});
+		
 		repaintMe();
 	}
 	//===========================================================================================================================

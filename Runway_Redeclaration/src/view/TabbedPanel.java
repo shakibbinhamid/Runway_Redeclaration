@@ -3,20 +3,24 @@ package view;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 
 import coreInterfaces.AirfieldInterface;
 import coreInterfaces.AirportInterface;
 /**
- * This is just a holder class for all the tabs.
+ * This is just a holder class (extends JTabbedPane) for all the tabs.
  * 
  * primary method is updateTabs
  * @author shakib-binhamid
- *
+ * @see {@link JTabbedPane}
  */
 public class TabbedPanel extends JTabbedPane{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	private AirportInterface airport;
 	private ArrayList<Tab> tabs;
 	
@@ -58,6 +62,10 @@ public class TabbedPanel extends JTabbedPane{
 		}
 	}
 	
+	/**
+	 * Removes the given field if it exists on the tabbedpanel
+	 * @param field the field to remove from view
+	 */
 	public void removeTab(AirfieldInterface field){
 		
 		int index = this.indexOfTab(field.getName());

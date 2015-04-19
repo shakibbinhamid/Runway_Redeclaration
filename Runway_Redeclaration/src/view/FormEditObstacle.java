@@ -9,7 +9,12 @@ import javax.swing.JTextField;
 import core.PositionedObstacle;
 
 public class FormEditObstacle extends FormObstacle{
-	PositionedObstacle currentObstacle;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	protected PositionedObstacle currentObstacle;
 	
 	public FormEditObstacle(TopFrame tf){
 		super(tf, "Edit obstacle");
@@ -22,9 +27,7 @@ public class FormEditObstacle extends FormObstacle{
 	}
 	
 	public void setInitialTextfields(){
-		
 		for(JTextField jtf : getTextFields()){
-			
 			if(getTextFields().indexOf(jtf) == 0){
 				jtf.setText(currentObstacle.getName());
 			}
@@ -44,9 +47,9 @@ public class FormEditObstacle extends FormObstacle{
 	}
 	
 	public void setTextfieldListener(){
-		
 		for(final JTextField jtf : getTextFields()){
 			jtf.addFocusListener(new FocusListener() {
+				
 				public void focusLost(FocusEvent e) {
 					if (jtf.getText().equals("")){
 						if(getTextFields().indexOf(jtf) == 0){
@@ -67,8 +70,7 @@ public class FormEditObstacle extends FormObstacle{
 					}
 				}
 				
-				public void focusGained(FocusEvent e) {
-				}
+				public void focusGained(FocusEvent e) {}
 			});
 		}
 	}

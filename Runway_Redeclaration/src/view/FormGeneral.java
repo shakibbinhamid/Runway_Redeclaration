@@ -10,6 +10,11 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 
 public class FormGeneral extends JDialog {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	protected JPanel centerPanel;		
 	protected JPanel buttonPanel;	
 	protected JButton button;
@@ -34,7 +39,7 @@ public class FormGeneral extends JDialog {
 		      Point p = topFrame.getLocation(); 
 		      setLocation(p.x + parentSize.width / 4, p.y + parentSize.height / 4);
 		      setPreferredSize(new Dimension(300,450));
-		    }
+		}
 	}
 	
 	public void init(){}

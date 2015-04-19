@@ -25,11 +25,11 @@ public class LoadObstacleListener implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		if(frame.getAirport() != null){
+			@SuppressWarnings("unused")
 			LoadListener lis = new LoadListener(frame, filter, typeDir);
 		}
 		else{
 			JOptionPane.showMessageDialog(null, "You cannot load an object while there is no airport to load it to.", "No Airport Error", JOptionPane.ERROR_MESSAGE);
-
 		}
 	}
 }

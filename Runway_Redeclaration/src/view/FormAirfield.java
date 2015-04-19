@@ -14,43 +14,26 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.Document;
 
-import core.Airport;
 import core.DeclaredRunway;
 
 public class FormAirfield extends FormGeneral{
 	
-	public static void main(String[] args) {
-		TopFrame tf = new TopFrame();
-		Airport airp = new Airport("Gatwicked");
-		tf.loadOrCreateAirport(airp);
-		FormAirfield fa = new FormAirfield(tf, "Test");
-		//FormObstacle fo = new FormObstacle(tf);
-	}
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	
 	protected TopFrame topFrame;
-	ArrayList<SelfCheckingField> smallValueTextFields;
-	ArrayList<SelfCheckingField> bigValueTextFields;
+	protected ArrayList<SelfCheckingField> smallValueTextFields;
+	protected ArrayList<SelfCheckingField> bigValueTextFields;
 	
-	JPanel upperPanel;
-		JPanel textFieldsPanel;
+	protected JPanel upperPanel;
+		protected JPanel textFieldsPanel;
 	
-	JLabel smallValuesLabel;
-	JLabel largeValuesLabel;
-	
-	SelfCheckingField smallTORATextBox;
-	SelfCheckingField smallTODATextBox;
-	SelfCheckingField smallASDATextBox;
-	SelfCheckingField smallLDATextBox;
-	
-	JLabel toraLabel;
-	JLabel todaLabel;
-	JLabel asdaLabel;
-	JLabel ldaLabel;
-	
-	SelfCheckingField bigTORATextBox;
-	SelfCheckingField bigTODATextBox;
-	SelfCheckingField bigASDATextBox;
-	SelfCheckingField bigLDATextBox;
+	protected JLabel smallValuesLabel, largeValuesLabel;
+	protected SelfCheckingField smallTORATextBox, smallTODATextBox, smallASDATextBox, smallLDATextBox;
+	protected JLabel toraLabel,todaLabel,asdaLabel,ldaLabel;
+	protected SelfCheckingField bigTORATextBox,  bigTODATextBox, bigASDATextBox, bigLDATextBox;
 	
 	public FormAirfield(TopFrame topFrame, String title) {
 		super(topFrame, title);
@@ -60,7 +43,6 @@ public class FormAirfield extends FormGeneral{
 		setToolTips();
 		storeUserInput();
 		setLayout();
-		//init();
 	}
 	
 	public void init(){
@@ -83,7 +65,6 @@ public class FormAirfield extends FormGeneral{
 			doc.addDocumentListener(docListener);
 		}
 	}
-
 	
 	private void initialiseStuff(){
 		smallValueTextFields = new ArrayList<>(10);
@@ -92,8 +73,8 @@ public class FormAirfield extends FormGeneral{
 		upperPanel = new JPanel();
 		textFieldsPanel = new JPanel();
 		
-		smallValuesLabel = new JLabel("<html>"+"<i>"+" Left Starting Runway"+"</i>" +" values"+"</html>");
-		largeValuesLabel = new JLabel("<html>"+"<i>"+" Right Starting Runway"+"</i>" +" values"+"</html>");
+		smallValuesLabel = new JLabel("<html>"+"<i>"+" Left Starting Runway"+"</i>" +" (meters)"+"</html>");
+		largeValuesLabel = new JLabel("<html>"+"<i>"+" Right Starting Runway"+"</i>" +" (meters)"+"</html>");
 		
 		smallValuesLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		largeValuesLabel.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -121,11 +102,6 @@ public class FormAirfield extends FormGeneral{
 		smallASDATextBox = new SelfCheckingField(DeclaredRunway.DIST_REGEX);
 		smallLDATextBox = new SelfCheckingField(DeclaredRunway.DIST_REGEX);
 		
-	}
-	
-	private void setHeaderLabels(String s1, String s2){
-		smallValuesLabel.setText(s1);
-		largeValuesLabel.setText(s2);
 	}
 	
 	private void storeUserInput(){

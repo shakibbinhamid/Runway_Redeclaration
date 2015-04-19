@@ -24,10 +24,18 @@ import exceptions.VariableDeclarationException;
 
 /**
  * This is the entry point of our program
- * @author shakib-binhamid
- *
+ * @author Shakib-Bin Hamid
+ * @see {@link JSplitPane}
+ * @see {@link LogPanel}
+ * @see {@link TabbedPanel}
+ * @see {@link WelcomePanel}
  */
 public class TopFrame extends JFrame{
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	
 	private JSplitPane topPanel;
 		private LogPanel logPanel;
@@ -45,6 +53,7 @@ public class TopFrame extends JFrame{
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+					@SuppressWarnings("unused")
 					TopFrame frame = new TopFrame();
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -144,6 +153,10 @@ public class TopFrame extends JFrame{
 		}
 	}
 	
+	/**
+	 * Removes the given airfield from the view and backbone
+	 * @param field the field to remove
+	 */
 	public void removeField(AirfieldInterface field){
 		try {
 			airport.removeAirfield(field.getName());
