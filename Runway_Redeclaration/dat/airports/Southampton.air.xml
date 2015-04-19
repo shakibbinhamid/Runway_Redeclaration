@@ -1,8 +1,8 @@
 <airport name="Southampton">
    <airfields class="java.util.ArrayList">
-      <airfieldInterface class="core.Airfield">
+      <airfieldInterface class="core.concrete.Airfield">
          <runways length="2">
-            <declaredRunwayInterface class="core.DeclaredRunway">
+            <declaredRunwayInterface class="core.concrete.DeclaredRunway">
                <decTora>1723.0</decTora>
                <decLda>1650.0</decLda>
                <decAsda>1723.0</decAsda>
@@ -13,7 +13,7 @@
                <angle>20</angle>
                <direction>L</direction>
             </declaredRunwayInterface>
-            <declaredRunwayInterface class="core.DeclaredRunway">
+            <declaredRunwayInterface class="core.concrete.DeclaredRunway">
                <decTora>1650.0</decTora>
                <decLda>1605.0</decLda>
                <decAsda>1650.0</decAsda>
@@ -26,7 +26,7 @@
             </declaredRunwayInterface>
          </runways>
          <defaultRunways length="2">
-            <declaredRunwayInterface class="core.DeclaredRunway">
+            <declaredRunwayInterface class="core.concrete.DeclaredRunway">
                <decTora>1723.0</decTora>
                <decLda>1650.0</decLda>
                <decAsda>1723.0</decAsda>
@@ -37,7 +37,7 @@
                <angle>20</angle>
                <direction>L</direction>
             </declaredRunwayInterface>
-            <declaredRunwayInterface class="core.DeclaredRunway">
+            <declaredRunwayInterface class="core.concrete.DeclaredRunway">
                <decTora>1650.0</decTora>
                <decLda>1605.0</decLda>
                <decAsda>1650.0</decAsda>

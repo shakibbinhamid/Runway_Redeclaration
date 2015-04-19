@@ -13,11 +13,14 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
-import notification.Notification;
-import notification.NotificationPanel;
-import coreInterfaces.AirfieldInterface;
-import coreInterfaces.AirportInterface;
-import coreInterfaces.ObstacleInterface;
+import view.customComponents.Notification;
+import view.customComponents.NotificationPanel;
+import view.panels.LogPanel;
+import view.panels.TabbedPanel;
+import view.panels.WelcomePanel;
+import core.interfaces.AirfieldInterface;
+import core.interfaces.AirportInterface;
+import core.interfaces.ObstacleInterface;
 import exceptions.CannotMakeRunwayException;
 import exceptions.UnrecognisedAirfieldIntifierException;
 import exceptions.VariableDeclarationException;
@@ -243,7 +246,7 @@ public class TopFrame extends JFrame{
 		return logPanel;
 	}
 	
-	protected void switchToTabbedPanel(){
+	public void switchToTabbedPanel(){
 		if(hasAirport()){
 			this.remove(welcomePanel);
 			topPanel.setRightComponent(this.tabbedPanel);

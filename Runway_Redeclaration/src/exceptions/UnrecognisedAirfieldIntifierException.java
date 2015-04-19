@@ -3,7 +3,7 @@ package exceptions;
 import java.util.Iterator;
 import java.util.List;
 
-import coreInterfaces.AirportInterface;
+import core.interfaces.AirportInterface;
 
 
 
