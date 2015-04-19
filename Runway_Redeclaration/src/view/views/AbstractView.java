@@ -562,9 +562,7 @@ public abstract class AbstractView extends JPanel implements ChangeListener {
 		public void mousePressed(MouseEvent e) {
 			if(runwayView.isOnScale(e.getX(), e.getY())){
 				movingScale = true;
-				System.out.println("movingScale set true");
 			}else{
-				System.out.println("nada");
 				pp.setLocation(e.getPoint());
 			}
 		}
@@ -602,7 +600,6 @@ public abstract class AbstractView extends JPanel implements ChangeListener {
 		@Override
 		public void mouseReleased(MouseEvent e){
 			if (movingScale) {
-				System.out.println("movingScale set false");
 				movingScale = false;
 			}
 		}
@@ -1255,9 +1252,9 @@ public abstract class AbstractView extends JPanel implements ChangeListener {
 		public void heighlightScale(Graphics2D g){
 			Graphics2D g2 = (Graphics2D) g.create();
 			
-			g2.setColor(Color.PINK);
+			g2.setColor(getTransparant(Color.BLACK, 125));
 			g2.setStroke(new BasicStroke(1f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10f, new float[]{2}, 0.5f));
-			g2.drawRect(scaleStartX-buff, scaleStartY-scaleHeight, scaleEndX-scaleStartX+buff*2, scaleHeight*2);
+			g2.drawRect(scaleStartX-buff, scaleStartY-scaleHeight/2, scaleEndX-scaleStartX+buff*2, scaleHeight);
 
 
 		}
