@@ -1,0 +1,2 @@
+Finally, you can save airports, airfields, and obstacles
+through the 'Save' menu. These can then be loaded later.

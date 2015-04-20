@@ -1,0 +1,3 @@
+The notifications panel will tell you what is happening in the application. 
+Expand the notification by pressing 'More', this will let you see more detail.
+You can also print the notification to PDF by pressing the 'Print' button.

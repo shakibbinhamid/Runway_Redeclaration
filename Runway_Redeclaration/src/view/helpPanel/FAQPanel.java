@@ -55,6 +55,7 @@ public class FAQPanel extends JFrame{
 		
 		answerBox = new JTextArea();
 		answerBox.setLineWrap(true);
+		answerBox.setWrapStyleWord(true);
 		answerBox.setEditable(false);
 		answerBox.setFont(new Font(answerBox.getFont().getFontName(), answerBox.getFont().getStyle(), 18));
 		answerBox.setBackground(this.getBackground());
@@ -72,8 +73,6 @@ public class FAQPanel extends JFrame{
 				answerBox.setText(qa.getAnswer());
 				
 				if(qa.hasImage()){
-					System.out.println("yh");
-					System.out.println("setting image...");
 					image.setIcon(qa.getImage());
 				}
 				else
@@ -86,12 +85,13 @@ public class FAQPanel extends JFrame{
 		
 		this.add(questionsList, BorderLayout.LINE_START);
 		
-		JPanel answerPanel = new JPanel(new GridLayout());
+		JPanel answerPanel = new JPanel(new GridLayout(4,4));
 		answerPanel.setBorder(BorderFactory.createEmptyBorder(0,10,0,10));
 		answerPanel.add(answerBox);
+		answerPanel.add(image);
 		this.add(answerPanel, BorderLayout.CENTER);
 		
-		this.add(image, BorderLayout.PAGE_END);
+		
 		
 		this.setSize(800, 600);
 		this.setVisible(true);

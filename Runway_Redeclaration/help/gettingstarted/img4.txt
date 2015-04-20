@@ -1,0 +1,2 @@
+There is also the top and side views that provide a visual insight.
+Use the navigational buttons to pan and zoom the view.

@@ -1,0 +1,2 @@
+When loading an obstacle (like loading an airport), 
+the panels will all update to display the new information.

@@ -1,0 +1,1 @@
+Alternatively, you can edit the properties of the entities already loaded.

@@ -1,0 +1,1 @@
+To start, you can create or load an airport from the respective menu.
