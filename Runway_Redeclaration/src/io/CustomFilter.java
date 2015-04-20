@@ -14,6 +14,10 @@ public class CustomFilter extends FileFilter{
 		this.description = description;
 	}
 	
+	public CustomFilter(String ext){
+		this.ext = ext;
+	}
+	
 	public boolean accept(File f) {
 		 return f.getName().endsWith(ext) || f.isDirectory();
 	}
