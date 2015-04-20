@@ -1,5 +1,8 @@
 package io;
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 import view.customComponents.Notification;
@@ -78,7 +81,7 @@ public class FileSystem {
 	public boolean saveObs(Obstacle o) throws NothingToSaveException{
 		return saveObs(o, new File(getObsDir() + o.getName() + getObsExt()));
 	}
-	
+
 	public boolean saveObs(Obstacle o, File savefile) throws NothingToSaveException{
 		checkNull(o);
 		String dir = savefile.getAbsolutePath();
@@ -99,7 +102,7 @@ public class FileSystem {
 	public boolean saveAir(Airport a) throws NothingToSaveException{
 		return saveAir(a, new File(getAirDir() + a.getName() + getAirExt()));
 	}
-	
+
 	public boolean saveAir(Airport a, File savefile) throws NothingToSaveException{
 		checkNull(a);
 		String dir = savefile.getAbsolutePath();
@@ -111,7 +114,7 @@ public class FileSystem {
 			return false;
 		}
 	}
-	
+
 	private void checkNull(Savable a) throws NothingToSaveException {
 		if(a == null){
 			throw new NothingToSaveException();
@@ -150,53 +153,102 @@ public class FileSystem {
 		}
 		return false;
 	}
-	
+
 	public boolean checkAirExt(File chosen) {
 		String dir = chosen.getName();
 		String[] exts = dir.split("\\.");
-		
+
 		if(exts.length < 3)								return false;
 		if(!exts[exts.length - 1].equals("xml")) 		return false;
 		if(!exts[exts.length - 2].equals("air")) 		return false;
-		
+
 		return true;
-		
+
 	}
-	
+
 	public boolean checkObsExt(File chosen) {
 		String dir = chosen.getName();
 		String[] exts = dir.split("\\.");
-		
+
 		if(exts.length < 3)								return false;
 		if(!exts[exts.length - 1].equals("xml")) 		return false;
 		if(!exts[exts.length - 2].equals("obj")) 		return false;
-		
+
 		return true;
-		
+
 	}
-	
+
 	//Getters for standard values
 	public String getAirDir(){
 		return wd + datDir + airDir + "/";
 	}
-	
+
 	public String getObsDir(){
 		return wd + datDir + objDir + "/";
 	}
-	
+
 	public String getAirExt(){
 		return airext + xmlext;
 	}
-	
+
 	public String getAirExtOnly(){
 		return airext;
 	}
-	
+
 	public String getObsExt(){
 		return objext + xmlext;
 	}
-	
+
 	public String getXMLExt(){
 		return xmlext;
+	}
+
+	//Returns an array list on every file under a given directory
+	public ArrayList<File> getAllFiles(File folder) {
+
+		ArrayList<File> files = new ArrayList<File>();
+
+		for (File file : folder.listFiles()) {
+			if (file.isDirectory()) {
+				for(File nestedFile : getAllFiles(file)){
+					files.add(nestedFile);
+				}
+			} else {
+				files.add(file);
+			}
+		}
+
+		return files;
+	}
+
+	//Returns an array list on every file that passes a filter under a given directory
+	public ArrayList<File> getAllFilteredFiles(File folder, CustomFilter cf) {
+
+		ArrayList<File> files = new ArrayList<File>();
+
+		for (File file : folder.listFiles()) {
+			if (file.isDirectory()) {
+				for(File nestedFile : getAllFiles(file)){
+					files.add(nestedFile);
+				}
+			} else {
+				if(cf.accept(file)){
+					files.add(file);
+				}
+			}
+		}
+
+		return files;
+	}
+
+	public String getTextFromFile(File des) {
+		String text = null;
+		try {
+			text = new String(Files.readAllBytes(Paths.get(des.getAbsolutePath())));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return text;
 	}
 }
