@@ -29,6 +29,8 @@ import view.createLoadSaveListeners.SaveAirportAsListener;
 import view.createLoadSaveListeners.SaveAirportListener;
 import view.createLoadSaveListeners.SaveObjectListener;
 import view.createLoadSaveListeners.SaveObstacleAsListener;
+import view.helpPanel.FAQPanel;
+import view.helpPanel.GettingStartedPanel;
 import view.panels.TabbedPanel;
 import core.interfaces.AirfieldInterface;
 
@@ -57,9 +59,9 @@ public class TopMenu extends JMenuBar{
 	
 	private JMenuItem exit;
 	private JMenuItem editRunway, editObstacle, removeObs, removeField;
-	private JMenuItem about, contact;
+	private JMenuItem about, contact, gettingStarted, faq;
 	
-	static ImageIcon icreate, iload, isave, iedit, iview, icalc, iairport, iairfield, iobstacle, iabout, icontact, iexit, iremove;
+	static ImageIcon icreate, iload, isave, iedit, iview, icalc, iairport, iairfield, iobstacle, iabout, icontact, iexit, iremove,igetStar, ifaq;;
 	
 	private TopFrame frame; 
 	
@@ -145,6 +147,8 @@ public class TopMenu extends JMenuBar{
 		icalc = getIcon("/icalc.png");
 		iremove = getIcon("/bin.png");
 		iview = getIcon("/view.png");
+		igetStar = getIcon("/gettingstarted.png");
+		ifaq = getIcon("/faq.png");
 	}
 	
 	private void createFileMenu(){
@@ -366,8 +370,27 @@ public class TopMenu extends JMenuBar{
 		//================================HELP MENU==============================================//
 		about = getMenuItem("About", iabout, SwingConstants.LEFT);
 		contact = getMenuItem("Contact", icontact, SwingConstants.LEFT);
-		
-		help = getMenu("Help", null, new JMenuItem[]{about, contact});
+		gettingStarted = getMenuItem("Getting Started", igetStar, SwingConstants.LEFT);
+		gettingStarted.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new GettingStartedPanel();
+				
+			}
+			
+		});
+		faq = getMenuItem("FAQ", ifaq, SwingConstants.LEFT);
+		faq.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new FAQPanel();
+				
+			}
+			
+		});
+		help = getMenu("Help", null, new JMenuItem[]{gettingStarted, faq, about, contact});
 	}
 	
 	private void addMenus(JMenu[] menus){
