@@ -75,7 +75,7 @@ public class TopMenu extends JMenuBar{
 		createHelpMenu();
 		
 		//================================Adding menus========================================//
-		addMenus(new JMenu[] {create, load, save, edit, remove });//, help});
+		addMenus(new JMenu[] {create, load, save, edit, remove, help });//, help});
 		
 	}
 	
