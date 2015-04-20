@@ -359,7 +359,7 @@ public abstract class AbstractView extends JPanel implements ChangeListener {
 		resetZoom();
 		rescaleImageSize();
 		resetLocation();
-		//resetLocation();
+		runwayView.resetScalePosition();
 	}
 
 	//======[ Core Objects ]=====================================================================================================
@@ -1106,10 +1106,9 @@ public abstract class AbstractView extends JPanel implements ChangeListener {
 
 		/** Draws all the graphics that appear the runway and do not move with panning, zooming or rotation */
 		private void paintOverlays(Graphics2D g){
-			if (this.firstPaint) {
+			if (this.firstPaint || this.scaleIsOutOfBounds()) {
 				this.firstPaint = false;
-				this.scaleStartX = getScaleLocation()[0];
-				this.scaleStartY = getScaleLocation()[1];
+				resetScalePosition();
 			}
 			this.scaleEndX = this.scaleStartX+Xm_to_pixels(metresToScale());
 			this.scaleHeight = bumpHeight+g.getFontMetrics().getHeight();
@@ -1123,6 +1122,11 @@ public abstract class AbstractView extends JPanel implements ChangeListener {
 				int diameter = 40;
 				drawCompass(g,this.getWidth()-3*diameter/4,this.getHeight()-3*diameter/4,diameter,this.activeCompass);
 			}
+		}
+
+		public void resetScalePosition() {
+			this.scaleStartX = getScaleLocation()[0];
+			this.scaleStartY = getScaleLocation()[1];			
 		}
 
 		private void drawCompass(Graphics2D g, int centreX, int centreY, int diameter, boolean isActive) {
@@ -1267,6 +1271,14 @@ public abstract class AbstractView extends JPanel implements ChangeListener {
 			g2.drawRect(scaleStartX-buff, scaleStartY-scaleHeight/2, scaleEndX-scaleStartX+buff*2, scaleHeight);
 
 
+		}
+		
+		protected boolean scaleIsOutOfBounds(){
+			int viewWidth = this.getWidth();
+			int viewHeight = this.getHeight();
+			
+			return(0 >= this.scaleStartX || this.scaleStartX >= viewWidth || 
+					0 >= this.scaleStartY || this.scaleStartY >= viewHeight);
 		}
 		
 	}
