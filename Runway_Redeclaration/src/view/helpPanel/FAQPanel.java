@@ -27,7 +27,7 @@ public class FAQPanel extends JFrame{
 	private final int scaler = 400;
 	
 	private ArrayList<QA> questions;
-	private JList questionsList;
+	private JList<QA> questionsList;
 	private JTextArea answerBox;
 	private JLabel image;
 	
@@ -44,20 +44,25 @@ public class FAQPanel extends JFrame{
 	}
 
 	private void init() {
-		this.setTitle(title);
 		
+		questions.forEach(x -> System.out.println(x.hasImage()));
+		System.out.println();
+		
+		this.setTitle(title);
 		this.setLayout(new BorderLayout());
-		questionsList = new JList(questions.toArray());
+		
+		questionsList = new JList<>(questions.stream().toArray(QA[]::new));
+		
 		answerBox = new JTextArea();
 		answerBox.setLineWrap(true);
 		answerBox.setEditable(false);
 		answerBox.setFont(new Font(answerBox.getFont().getFontName(), answerBox.getFont().getStyle(), 18));
 		answerBox.setBackground(this.getBackground());
+		
 		questionsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		
 		image =  new JLabel();
 		
-
 		questionsList.addListSelectionListener(new ListSelectionListener() {
 
 			@Override
@@ -67,11 +72,12 @@ public class FAQPanel extends JFrame{
 				answerBox.setText(qa.getAnswer());
 				
 				if(qa.hasImage()){
+					System.out.println("yh");
 					System.out.println("setting image...");
 					image.setIcon(qa.getImage());
 				}
 				else
-				{
+				{ System.out.println("No");
 					image.setIcon(null);
 				}
 			}
@@ -104,8 +110,9 @@ public class FAQPanel extends JFrame{
 			}
 			else {
 				if (qa.length == 3){
-					File imgDir = new File(helpDir + qa[2]);
+					File imgDir = new File(helpDir + "img0.png");
 					if (imgDir.exists()){
+						System.out.println("image");
 						questions.add(new QA(qa[0], qa[1], new ImageIcon(ImageTools.getScaledImage(new ImageIcon(imgDir.getAbsolutePath()).getImage(), scaler))));
 					}
 					else{
