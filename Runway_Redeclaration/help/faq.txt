@@ -1,6 +1,6 @@
-How do I pan a view?/To pan, simply click and drag in the view you wish to pan./img0.png#
-How canI zoom in and out of the views?/Use the magnifying glass tools, or alternatively you can use the scroll wheel on your mouse./img1.png#
-How canI move the scale in the views?/The scales will move as you pan each view. However, if you want to change the position manually, you can hover your mouse (with the default mouse selected) over a scale and a dashed box will appear around it. Click and drag to move the scale./img2.png#
-How canI move a view toolbar?/Toolbars can be moved by clicking and dragging the top end of a toolbar. It can then be placed again anywhere around a view by releasing the mouse button. Placing it outside of the view will pop the toolbar into its own window./img3.png
-
+How can I pan a view?/To pan, simply click and drag in the view you wish to pan.#
+How can I zoom in and out of the views?/Use the magnifying glass tools, or alternatively you can use the scroll wheel on your mouse./zoom.png#
+How can I move the scale in the views?/The scales will move as you pan each view. However, if you want to change the position manually, you can hover your mouse (with the default mouse selected) over a scale and a dashed box will appear around it. Click and drag to move the scale./scale.png#
+How can I save a screenshot of one of the airfield views?/Simply click on the save icon in the toolbar next to the view you want to save, or select a view from the save menu./screenshot.png#
+How can I reset a view to its default position?/Press the reset button for the view you want to reset./reset.png#
  
