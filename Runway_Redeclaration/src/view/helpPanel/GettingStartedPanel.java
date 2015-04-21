@@ -4,12 +4,16 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.File;
 
+import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.KeyStroke;
 import javax.swing.border.EmptyBorder;
 
 public class GettingStartedPanel extends JFrame{
@@ -48,7 +52,7 @@ public class GettingStartedPanel extends JFrame{
 		middle.setLayout(new GridLayout(2,1));
 		bottom.add(prev, BorderLayout.LINE_START);
 		middle.add(text, BorderLayout.CENTER);
-		text.setBorder(new EmptyBorder(0, 0,10,0));
+		text.setBorder(new EmptyBorder(0, 0, 10, 0));
 		bottom.add(next, BorderLayout.LINE_END);
 		middle.add(bottom);
 		middle.setBorder(new EmptyBorder(10, 10, 10, 10));
@@ -58,8 +62,7 @@ public class GettingStartedPanel extends JFrame{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				ss.prevSlide();
-				update();
+				prev();
 			}
 			
 		});
@@ -67,11 +70,37 @@ public class GettingStartedPanel extends JFrame{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				ss.nextSlide();
-				update();
+				next();
 			}
 			
 		});
+		
+		AbstractAction right = new AbstractAction(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				next();
+				
+			}
+			
+		};
+		
+		AbstractAction left = new AbstractAction() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				prev();
+				
+			}
+			
+		};
+		
+		this.getRootPane().getInputMap().put( KeyStroke.getKeyStroke( "LEFT" ), "doLeftAction" );
+		this.getRootPane().getActionMap().put("doLeftAction", left );
+		this.getRootPane().getInputMap().put(KeyStroke.getKeyStroke( "RIGHT" ), "doRightAction" );
+		this.getRootPane().getActionMap().put("doRightAction", right );
+		
+
 		
 		update();
 		
@@ -90,5 +119,14 @@ public class GettingStartedPanel extends JFrame{
 		text.setHorizontalTextPosition(JLabel.CENTER);
 	}
 	
+	private void prev(){
+		ss.prevSlide();
+		update();
+	}
+	
+	private void next(){
+		ss.nextSlide();
+		update();
+	}
 	
 }
