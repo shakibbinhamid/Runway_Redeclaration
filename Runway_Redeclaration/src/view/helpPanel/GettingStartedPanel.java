@@ -1,6 +1,7 @@
 package view.helpPanel;
 
 import java.awt.BorderLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -9,6 +10,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
 
 public class GettingStartedPanel extends JFrame{
 
@@ -37,15 +39,20 @@ public class GettingStartedPanel extends JFrame{
 		this.add(ss, BorderLayout.CENTER);
 		
 		JPanel bottom = new JPanel();
+		JPanel middle = new JPanel();
 		prev = new JButton("Previous");
 		next = new JButton("Next");
 		text = new JLabel("hi");
 		
 		bottom.setLayout(new BorderLayout());
+		middle.setLayout(new GridLayout(2,1));
 		bottom.add(prev, BorderLayout.LINE_START);
-		bottom.add(text, BorderLayout.CENTER);
+		middle.add(text, BorderLayout.CENTER);
+		text.setBorder(new EmptyBorder(0, 0,10,0));
 		bottom.add(next, BorderLayout.LINE_END);
-		this.add(bottom, BorderLayout.PAGE_END);
+		middle.add(bottom);
+		middle.setBorder(new EmptyBorder(10, 10, 10, 10));
+		this.add(middle, BorderLayout.PAGE_END);
 		
 		prev.addActionListener(new ActionListener() {
 
