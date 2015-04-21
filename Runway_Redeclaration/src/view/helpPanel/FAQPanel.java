@@ -45,8 +45,6 @@ public class FAQPanel extends JFrame{
 
 	private void init() {
 		
-		questions.forEach(x -> System.out.println(x.hasImage()));
-		System.out.println();
 		
 		this.setTitle(title);
 		this.setLayout(new BorderLayout());
@@ -76,9 +74,11 @@ public class FAQPanel extends JFrame{
 					image.setIcon(qa.getImage());
 				}
 				else
-				{ System.out.println("No");
+				{ 
 					image.setIcon(null);
 				}
+				
+				image.revalidate();
 			}
 			
 		});
@@ -110,9 +110,8 @@ public class FAQPanel extends JFrame{
 			}
 			else {
 				if (qa.length == 3){
-					File imgDir = new File(helpDir + "img0.png");
+					File imgDir = new File(helpDir + qa[2]);
 					if (imgDir.exists()){
-						System.out.println("image");
 						questions.add(new QA(qa[0], qa[1], new ImageIcon(ImageTools.getScaledImage(new ImageIcon(imgDir.getAbsolutePath()).getImage(), scaler))));
 					}
 					else{
