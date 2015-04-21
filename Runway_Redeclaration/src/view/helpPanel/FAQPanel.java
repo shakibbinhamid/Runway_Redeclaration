@@ -24,7 +24,7 @@ public class FAQPanel extends JFrame{
 	private final String faqText = "./help/faq.txt";
 	private final String helpDir = "./help/";
 	private final String title = "Frequently Asked Questions";
-	private final int scaler = 400;
+	private final int scaler = 500;
 	
 	private ArrayList<QA> questions;
 	private JList<QA> questionsList;
@@ -44,8 +44,6 @@ public class FAQPanel extends JFrame{
 	}
 
 	private void init() {
-		
-		
 		this.setTitle(title);
 		this.setLayout(new BorderLayout());
 		
@@ -85,7 +83,7 @@ public class FAQPanel extends JFrame{
 		
 		this.add(questionsList, BorderLayout.LINE_START);
 		
-		JPanel answerPanel = new JPanel(new GridLayout(4,4));
+		JPanel answerPanel = new JPanel(new GridLayout(2,1));
 		answerPanel.setBorder(BorderFactory.createEmptyBorder(0,10,0,10));
 		answerPanel.add(answerBox);
 		answerPanel.add(image);
