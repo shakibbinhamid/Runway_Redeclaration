@@ -14,7 +14,7 @@ import javax.mail.internet.MimeMessage;
 
 public class EmailSystem {
 	
-    public void sendEmail(String email, String subject, String message){
+    public static void sendEmail(String email, String subject, String message){
     	try {
 			send("runway.redeclaration.tool", "barbecue", email, subject, message);
 		} catch (MessagingException e) {
@@ -23,11 +23,11 @@ public class EmailSystem {
 		}
     }
     
-    private void send(final String username, final String password, String recipientEmail, String title, String message) throws AddressException, MessagingException {
+    private static void send(final String username, final String password, String recipientEmail, String title, String message) throws AddressException, MessagingException {
     	send(username, password, recipientEmail, "", title, message);
     }
 
-    private void send(final String username, final String password, String recipientEmail, String ccEmail, String title, String message) throws AddressException, MessagingException {
+    private static void send(final String username, final String password, String recipientEmail, String ccEmail, String title, String message) throws AddressException, MessagingException {
         Security.addProvider(new com.sun.net.ssl.internal.ssl.Provider());
         final String SSL_FACTORY = "javax.net.ssl.SSLSocketFactory";
 
