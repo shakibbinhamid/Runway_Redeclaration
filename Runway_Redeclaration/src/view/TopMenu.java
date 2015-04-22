@@ -36,6 +36,7 @@ import view.createLoadSaveListeners.SaveAirportAsListener;
 import view.createLoadSaveListeners.SaveAirportListener;
 import view.createLoadSaveListeners.SaveObjectListener;
 import view.createLoadSaveListeners.SaveObstacleAsListener;
+import view.helpPanel.AboutPanel;
 import view.helpPanel.FAQPanel;
 import view.helpPanel.GettingStartedPanel;
 import view.panels.TabbedPanel;
@@ -385,6 +386,15 @@ public class TopMenu extends JMenuBar{
 	private void createHelpMenu(){
 		//================================HELP MENU==============================================//
 		about = getMenuItem("About", iabout, SwingConstants.LEFT);
+		about.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new AboutPanel();
+				
+			}
+			
+		});
 		contact = getMenuItem("Contact", icontact, SwingConstants.LEFT);
 		gettingStarted = getMenuItem("Getting Started", igetStar, SwingConstants.LEFT);
 		gettingStarted.addActionListener(new ActionListener(){
