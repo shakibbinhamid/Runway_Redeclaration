@@ -106,6 +106,7 @@ public class GettingStartedPanel extends JFrame{
 		
 		this.pack();
 		this.setSize(600, 600);
+		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		this.setVisible(true);
 		
 		

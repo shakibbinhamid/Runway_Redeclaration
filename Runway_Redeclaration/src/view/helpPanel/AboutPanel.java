@@ -50,6 +50,7 @@ public class AboutPanel extends JFrame{
 		
 		this.setTitle("About - " + aboutText);
 		this.setSize(550, 250);
+		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		this.setVisible(true);
 		
 	}
