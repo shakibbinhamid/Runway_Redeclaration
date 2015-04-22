@@ -47,6 +47,9 @@ public class TopFrame extends JFrame{
 	
 	private AirportInterface airport;
 	
+	public static final String EMAIL_REGEX = 
+			"^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+			+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 	private static String EMAIL = null;
 	private static boolean EMAIL_ENABLED = false;
 

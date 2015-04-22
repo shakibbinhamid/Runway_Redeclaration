@@ -22,8 +22,9 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import view.createEditForms.FormAirport;
 import view.createEditForms.FormCreateAirfield;
@@ -36,6 +37,7 @@ import view.createLoadSaveListeners.SaveAirportAsListener;
 import view.createLoadSaveListeners.SaveAirportListener;
 import view.createLoadSaveListeners.SaveObjectListener;
 import view.createLoadSaveListeners.SaveObstacleAsListener;
+import view.customComponents.SelfCheckingField;
 import view.helpPanel.AboutPanel;
 import view.helpPanel.FAQPanel;
 import view.helpPanel.GettingStartedPanel;
@@ -507,15 +509,37 @@ public class TopMenu extends JMenuBar{
 		 */
 		private static final long serialVersionUID = 1L;
 		
+		JPanel toppanel, insidepanel;
+		JButton ok;
+		SelfCheckingField tf;
+		
 		EnterEmail(){
 			init();
 		}
+		
+		private void enableOrDisable(){
+			if(!tf.getText().matches(TopFrame.EMAIL_REGEX))
+				ok.setEnabled(false);
+			else
+				ok.setEnabled(true);
+		}
+		
 		private void init(){
-			JPanel toppanel = new JPanel(new BorderLayout());
-			JPanel insidepanel = new JPanel(new BorderLayout());
+			toppanel = new JPanel(new BorderLayout());
+			insidepanel = new JPanel(new BorderLayout());
 			
-			JTextField tf = new JTextField();
-			JButton ok = new JButton("OK");
+			tf = new SelfCheckingField(TopFrame.EMAIL_REGEX);
+			ok = new JButton("OK");
+			ok.setEnabled(false);
+			
+			tf.getDocument().addDocumentListener(new DocumentListener() {
+				@Override
+				public void removeUpdate(DocumentEvent e) {enableOrDisable();}
+				@Override
+				public void insertUpdate(DocumentEvent e) {enableOrDisable();}
+				@Override
+				public void changedUpdate(DocumentEvent e) {enableOrDisable();}
+			});
 			
 			ok.addActionListener(new ActionListener() {
 				@Override
@@ -535,7 +559,7 @@ public class TopMenu extends JMenuBar{
 			this.setContentPane(toppanel);
 			this.setLocationRelativeTo(frame);
 			this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-			this.setPreferredSize(new Dimension(30, 300));
+			this.setMinimumSize(new Dimension(300, 50));
 			this.getRootPane().setDefaultButton(ok);
 			this.pack();
 			this.setVisible(true);
