@@ -46,6 +46,9 @@ public class TopFrame extends JFrame{
 		private WelcomePanel welcomePanel;
 	
 	private AirportInterface airport;
+	
+	private static String EMAIL = null;
+	private static boolean EMAIL_ENABLED = false;
 
 	public TopFrame(){
 		init();
@@ -123,6 +126,26 @@ public class TopFrame extends JFrame{
 
 	}
 	
+	public static void setEmail(String email){
+		EMAIL = email;
+	}
+	
+	public static String getEmail(){
+		return EMAIL;
+	}
+	
+	public static boolean hasEmail(){
+		return EMAIL != null;
+	}
+	
+	public static void setEnableEmail(boolean enable){
+		EMAIL_ENABLED = enable;
+	}
+	
+	public static boolean isEmailEnabled(){
+		return EMAIL_ENABLED;
+	}
+	
 	/**
 	 * To be used by the airport loader or creator
 	 * Causes a Notification on the Notification Panel
@@ -181,11 +204,12 @@ public class TopFrame extends JFrame{
 			field.addObstacle(obs, distanceFromLeft, distanceFromRight);
 			if(field.hasObstacle()){
 				tabbedPanel.updateTab(field);
-				NotificationPanel.notifyIt(obs.getName() + " Loaded", obs.getName() + " placed on " + 
-																field.getName() + "\n"+
-																"Distance from "+field.getSmallAngledRunway().getIdentifier() +": "+ field.getPositionedObstacle().distanceFromSmallEnd() + " m"+"\n"+
-																"Distance from "+field.getLargeAngledRunway().getIdentifier() +": "+ field.getPositionedObstacle().distanceFromLargeEnd() + " m",
-																Notification.FILE);
+				String title = obs.getName() + " Loaded";
+				String details = obs.getName() + " placed on " + 
+						field.getName() + "\n"+
+						"Distance from "+field.getSmallAngledRunway().getIdentifier() +": "+ field.getPositionedObstacle().distanceFromSmallEnd() + " m"+"\n"+
+						"Distance from "+field.getLargeAngledRunway().getIdentifier() +": "+ field.getPositionedObstacle().distanceFromLargeEnd() + " m";
+				NotificationPanel.notifyIt(title, details, Notification.FILE);
 			}
 		} catch (VariableDeclarationException e) {
 			JOptionPane.showMessageDialog(this, "Your Obstacle has made the runway unusable --- " + e.getMessage(), "ERROR: Unusable Runway", JOptionPane.ERROR_MESSAGE);
