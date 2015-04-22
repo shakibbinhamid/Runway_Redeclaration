@@ -93,6 +93,7 @@ public class FAQPanel extends JFrame{
 		
 		this.setSize(1000, 600);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		this.setLocationRelativeTo(null);
 		this.setVisible(true);
 	}
 
