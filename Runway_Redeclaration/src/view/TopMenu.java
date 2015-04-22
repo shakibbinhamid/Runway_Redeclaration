@@ -39,6 +39,7 @@ import view.createLoadSaveListeners.SaveObjectListener;
 import view.createLoadSaveListeners.SaveObstacleAsListener;
 import view.customComponents.SelfCheckingField;
 import view.helpPanel.AboutPanel;
+import view.helpPanel.ContactPanel;
 import view.helpPanel.FAQPanel;
 import view.helpPanel.GettingStartedPanel;
 import view.panels.TabbedPanel;
@@ -398,6 +399,15 @@ public class TopMenu extends JMenuBar{
 			
 		});
 		contact = getMenuItem("Contact", icontact, SwingConstants.LEFT);
+		contact.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new ContactPanel();
+				
+			}
+			
+		});
 		gettingStarted = getMenuItem("Getting Started", igetStar, SwingConstants.LEFT);
 		gettingStarted.addActionListener(new ActionListener(){
 
