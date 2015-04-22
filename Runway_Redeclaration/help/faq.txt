@@ -1,6 +1,11 @@
+Can I load a new airport or obstacle when I already have one loaded?/Yes, just load a new file as normal and it will replace the current file being used in the interface./loadnewair.png#
 How can I pan a view?/To pan, simply click and drag in the view you wish to pan.#
 How can I zoom in and out of the views?/Use the magnifying glass tools, or alternatively you can use the scroll wheel on your mouse./zoom.png#
 How can I move the scale in the views?/The scales will move as you pan each view. However, if you want to change the position manually, you can hover your mouse (with the default mouse selected) over a scale and a dashed box will appear around it. Click and drag to move the scale./scale.png#
 How can I save a screenshot of one of the airfield views?/Simply click on the save icon in the toolbar next to the view you want to save, or select a view from the save menu./screenshot.png#
+How can I set the top view to face north?/With the default mouse pointer selected from the toolbar, click on the compass in the bottom right of the view./compass.png#
+How can I rotate the view?/Click the rotation buttons to rotate the associated view./rotate.png#
 How can I reset a view to its default position?/Press the reset button for the view you want to reset./reset.png#
+How can I see a breakdown of runway calculations?/In the notifications panel, click the 'more' button to expand the view. This will explain the notification fully. When you add an obstacle to the runway, viewing the full information for the 'obstacle added' notification will give you a full breakdown of the completed calculations. By clicking on the 'print' button you can export the calculations to a PDF file./calculation.png#
+
  

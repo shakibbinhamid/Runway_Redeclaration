@@ -13,9 +13,9 @@ import io.FileSystem;
 
 public class AboutPanel extends JFrame{
 
-	private static final String aboutDir = "./about.txt";
-	private static final String licenseDir = "./ccl.txt";
-	private static final String photoDir = "./groupphoto.jpg";
+	private static final String aboutDir = "./help/about.txt";
+	private static final String licenseDir = "./help/ccl.txt";
+	private static final String photoDir = "./help/groupphoto.jpg";
 	private static final int scaler = 250;
 	
 	private String aboutText, licenseText;
