@@ -87,7 +87,7 @@ public class TopMenu extends JMenuBar{
 		createEmailMenu();
 		
 		//================================Adding menus========================================//
-		addMenus(new JMenu[] {create, load, save, edit, remove, help, email });
+		addMenus(new JMenu[] {create, load, save, edit, remove, email, help });
 		
 	}
 	
