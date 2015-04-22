@@ -16,6 +16,7 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -59,6 +60,7 @@ public class FAQPanel extends JFrame{
 		questionsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		
 		image =  new JLabel();
+		image.setHorizontalAlignment(SwingConstants.CENTER);
 		
 		questionsList.addListSelectionListener(new ListSelectionListener() {
 
@@ -86,7 +88,9 @@ public class FAQPanel extends JFrame{
 		JPanel answerPanel = new JPanel(new GridLayout(2,1));
 		answerPanel.setBorder(BorderFactory.createEmptyBorder(0,10,0,10));
 		answerPanel.add(answerBox);
-		answerPanel.add(image);
+		JPanel imagePanel = new JPanel(new BorderLayout());
+		imagePanel.add(image, BorderLayout.CENTER);
+		answerPanel.add(imagePanel);
 		this.add(answerPanel, BorderLayout.CENTER);
 		
 		
