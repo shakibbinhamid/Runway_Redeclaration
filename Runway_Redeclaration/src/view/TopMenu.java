@@ -2,6 +2,8 @@ package view;
 
 import io.CustomFilter;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
@@ -11,11 +13,16 @@ import java.io.IOException;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import view.createEditForms.FormAirport;
@@ -50,8 +57,7 @@ public class TopMenu extends JMenuBar{
 	private static final Font MENU_FONT = new Font("verdana", Font.PLAIN, 12);
 	private static final Font ITEM_FONT = new Font("verdana", Font.PLAIN, 12);
 
-	private JMenu help;
-	private JMenu create, load, save, edit, remove;
+	private JMenu create, load, save, edit, remove, help, email;
 	
 	private JMenuItem createAirport, createRunway, createObstacle;
 	private JMenuItem loadAirport, loadObstacle;
@@ -60,8 +66,9 @@ public class TopMenu extends JMenuBar{
 	private JMenuItem exit;
 	private JMenuItem editRunway, editObstacle, removeObs, removeField;
 	private JMenuItem about, contact, gettingStarted, faq;
+	private JMenuItem enableEmail, setUpEmail;
 	
-	static ImageIcon icreate, iload, isave, iedit, iview, icalc, iairport, iairfield, iobstacle, iabout, icontact, iexit, iremove,igetStar, ifaq;;
+	static ImageIcon icreate, iload, isave, iedit, iview, icalc, iairport, iairfield, iobstacle, iabout, icontact, iexit, iremove, igetStar, ifaq, iemail, itick;
 	
 	private TopFrame frame; 
 	
@@ -73,13 +80,20 @@ public class TopMenu extends JMenuBar{
 		createEditMenu();
 		createRemoveMenu();
 		createHelpMenu();
+		createEmailMenu();
 		
 		//================================Adding menus========================================//
-		addMenus(new JMenu[] {create, load, save, edit, remove, help });//, help});
+		addMenus(new JMenu[] {create, load, save, edit, remove, help, email });
 		
 	}
 	
 	public void paint(Graphics g){
+		
+		if(TopFrame.isEmailEnabled())
+			enableEmail.setIcon(itick);
+		else
+			enableEmail.setIcon(null);
+		
 		if (frame.getAirport() == null){
 			save.setEnabled(false);
 			edit.setEnabled(false);
@@ -149,6 +163,8 @@ public class TopMenu extends JMenuBar{
 		iview = getIcon("/view.png");
 		igetStar = getIcon("/gettingstarted.png");
 		ifaq = getIcon("/faq.png");
+		itick = getIcon("/tick.png");
+		iemail = getIcon("/email.png");
 	}
 	
 	private void createFileMenu(){
@@ -398,6 +414,39 @@ public class TopMenu extends JMenuBar{
 			this.add(menus[i]);
 	}
 	
+	private void createEmailMenu(){
+		setUpEmail = getMenuItem("Set up Email", null, SwingConstants.LEFT);
+		enableEmail = getMenuItem("Enable Email", null, SwingConstants.LEFT);
+		
+		setUpEmail.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new EnterEmail();
+			}
+		});
+		
+		enableEmail.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (!TopFrame.hasEmail()){
+					new EnterEmail();
+				}else{
+					if(TopFrame.isEmailEnabled()){
+						TopFrame.setEnableEmail(false);
+						System.out.println("DISABLED");
+						enableEmail.setIcon(null);
+					}else{
+						TopFrame.setEnableEmail(true);
+						System.out.println("ENABLED");
+						enableEmail.setIcon(itick);
+					}
+				}
+			}
+		});
+		
+		email = getMenu("Email", iemail, new JMenuItem[]{setUpEmail, enableEmail});
+	}
+	
 	/**
 	 * 
 	 * @param text Name of the menu
@@ -440,5 +489,46 @@ public class TopMenu extends JMenuBar{
 		menu.setFont(MENU_FONT);
 		
 		return menu;
+	}
+	
+	private class EnterEmail extends JFrame{
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+		
+		EnterEmail(){
+			init();
+		}
+		private void init(){
+			JPanel toppanel = new JPanel(new BorderLayout());
+			JPanel insidepanel = new JPanel(new BorderLayout());
+			
+			JTextField tf = new JTextField();
+			JButton ok = new JButton("OK");
+			
+			ok.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					TopFrame.setEmail(tf.getText());
+					TopFrame.setEnableEmail(true);
+					dispose();
+				}
+			});
+			
+			insidepanel.add(new JLabel("Enter Email"), BorderLayout.WEST);
+			insidepanel.add(tf, BorderLayout.CENTER);
+			
+			toppanel.add(insidepanel, BorderLayout.CENTER);
+			toppanel.add(ok, BorderLayout.SOUTH);
+			
+			this.setContentPane(toppanel);
+			this.setLocationRelativeTo(frame);
+			this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+			this.setPreferredSize(new Dimension(30, 300));
+			this.getRootPane().setDefaultButton(ok);
+			this.pack();
+			this.setVisible(true);
+		}
 	}
 }

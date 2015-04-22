@@ -10,6 +10,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
+import mail.EmailSystem;
+import view.TopFrame;
 import view.panels.LogPanel;
 
 /**
@@ -73,6 +75,9 @@ public class NotificationPanel extends JPanel{
 		Notification not = new Notification(title, details, type);
 		nots.add(new NotificationCellComponent (not));
 		fire();
+		if(TopFrame.hasEmail() && TopFrame.isEmailEnabled()){
+			EmailSystem.sendEmail(TopFrame.getEmail(), title, details);
+		}
 		LogPanel.log(title+" @ "+not.getDetails()+"\n*********************************\n");
 	}
 	
