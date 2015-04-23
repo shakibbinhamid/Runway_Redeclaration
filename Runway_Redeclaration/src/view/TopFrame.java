@@ -158,7 +158,6 @@ public class TopFrame extends JFrame{
 		setAirport(airport);
 		logPanel.updateLabelText(airport.getName());
 		tabbedPanel.setAirport(airport);
-		NotificationPanel.notifyIt(airport.getName()+" Added", airport.getName() +" loaded.", Notification.FILE);
 		switchToTabbedPanel();
 	}
 	

@@ -178,6 +178,7 @@ public class FormCreateAirfield extends FormAirfield {
 							sideChar = sideStrig.charAt(0);
 							topFrame.loadOrCreateField(angle, sideChar,
 									smallInputs, bigInputs);
+							topFrame.loadOrCreateAirport(topFrame.getAirport());
 							dispose();
 						} catch (NumberFormatException e) {
 							JOptionPane.showMessageDialog(null, e.getMessage(),

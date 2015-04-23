@@ -12,6 +12,8 @@ import javax.swing.SwingUtilities;
 
 import view.TopFrame;
 import view.createEditForms.FormObstacle;
+import view.customComponents.Notification;
+import view.customComponents.NotificationPanel;
 import core.interfaces.AirportInterface;
 import core.interfaces.ObstacleInterface;
 
@@ -54,6 +56,7 @@ public class LoadListener{
 				if(fs.checkAir(chosen)){
 					AirportInterface airport = fs.loadAir(chosen);
 					frame.loadOrCreateAirport(airport);
+					NotificationPanel.notifyIt(airport.getName()+" Added", airport.getName() +" loaded.", Notification.FILE);
 					frame.getLogPanel().repaint();
 				}
 			}

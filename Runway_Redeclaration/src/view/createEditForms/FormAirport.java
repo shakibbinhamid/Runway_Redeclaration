@@ -10,6 +10,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import view.TopFrame;
+import view.customComponents.Notification;
+import view.customComponents.NotificationPanel;
 import core.concrete.Airport;
 
 public class FormAirport extends FormGeneral {
@@ -51,8 +53,10 @@ public class FormAirport extends FormGeneral {
 				else{
 					Airport airport = new Airport(name.getText());
 					dispose();	
+					topFrame.loadOrCreateAirport(airport);
+					NotificationPanel.notifyIt(airport.getName()+" Added", airport.getName() +" created.", Notification.FILE);
 					FormCreateAirfield fa = new FormCreateAirfield(topFrame);
-					topFrame.loadOrCreateAirport(airport);					
+					topFrame.loadOrCreateAirport(airport);	
 				}	
 			}
 		});
