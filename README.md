@@ -20,7 +20,7 @@ The main features are -
 The development heavily focused on the usability of the application and is thus very user friendly.
 
 Developers:
-Shakib-Bin Hamid
-Stefan Collier
-Vlad Catrici
+Shakib-Bin Hamid,
+Stefan Collier,
+Vlad Catrici,
 Jonathon Pepler
